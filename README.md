@@ -25,7 +25,7 @@ let d1 = require("d1-web");
 
 ### Install manually
 
-Add the [distributed](https://github.com/vvvkor/d1-web/tree/master/dist) CSS and JavaScript to the head of your document.
+Add the [distributed](https://github.com/vvvkor/d1-web/archive/master.zip) CSS and JavaScript to the head of your document.
 
 ```
 <!doctype html>
