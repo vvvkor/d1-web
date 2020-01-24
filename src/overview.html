@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>d1 - Overview</title>
+    <meta charset="utf-8">
+    <meta name="viewport" 
+      content="width=device-width, initial-scale=1">
+	<!-- CDN --REMOVE->
+	<link href="https://cdn.jsdelivr.net/npm/d1x@0.0.0/dist/d1.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/d1x@0.0.0/dist/d1.min.js"></script>
+	<!-- local-npm-src REMOVE-->
+	<link href="../src/index.css" rel="stylesheet">
+	<script src="../dist/d1.min.js"></script>
+	<!-- -->
+  </head>
+  <body id="body" class="pad">
+
+
+<div class="hide" id="topbar">
+	<a href="#menu" class="pad hide-desktop" data-ico="menu" title="Menu">&equiv;</a>
+	<a href="#top" class="pad"><b>d1</b> front-end framework</a>
+	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1" title="GitHub" class="pad">GitHub</a>
+</div>
+<div>
+<div class="hide-desktop"><a href="#menu" class="pad hover" title="Menu" data-ico="menu">&equiv;</a></div>
+<ul class="nav flip bg hover center target-mobile" id="menu">
+	<li><a href="#n0" class="fit"><b>Logo</b></a></li>
+	<li>
+		<a href="#n1">Item</a>
+	</li>
+	<li>
+		<a><span>Parent<small class="text-n"><br>nested</small></span></a>
+		<ul>
+			<li><a><span>Subitem<small class="text-n"><br>info</small></span></a>
+				<ul>
+					<li><a href="#n2">Deep</a></li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+	<li id="navi-search" class="shift">
+		<form>
+			<input type="search" size="5" title="search string" class="rad">&nbsp;<input type="submit" value="Find">
+		</form>
+	</li>
+	<li>
+		<a>Last</a>
+		<ul>
+			<li><a href="#n3">Subitem</a></li>
+		</ul>
+	</li>
+</ul>
+
+	
+<div class="row flip">
+<!-- left -->
+<div class="pad">
+	<div data-class-mobile="bg-y text-y" data-class-desktop="text-n">
+		Mobile
+		<span class="hide-mobile">off</span>
+		<span class="hide-desktop">on</span>
+	</div>
+	<div data-class-desktop="bg-y text-y" data-class-mobile="text-n">
+		Desktop
+		<span class="hide-desktop">off</span>
+		<span class="hide-mobile">on</span>
+	</div>
+	<div>
+		<a href="#body" data-set="invert">Invert</a>
+	</div>
+	<div class="full center bg-w">
+		Full
+	</div>
+</div>
+
+<!-- central -->
+<div class="pad col-2">
+C
+</div>
+
+<!-- right -->
+<div class="pad bg-n">
+
+	<h2 class="mar">Components</h2>
+	<!-- togglers -->
+	<ul>
+		<li><a href="#tog">Toggle</a>
+		<div id="tog" class="pad bord yel bg-w target mem">Togglable</div>
+		<li><div class="pop">
+			<a href="#pop">Popup</a>
+			<div id="pop" class="pad shift">
+				Pop
+				<div class="pop">
+					<a href="#pop2">Internal popup</a>
+					<div id="pop2" class="pad shift">Nested</div>
+				</div>
+			</div>
+		</div>
+		<li><div class="pop">
+			<a href="#x">Hover</a>
+			<div class="pad shift">
+				Pop left
+				<div class="pop">
+					<a href="#x">Internal popup</a>
+					<div class="pad shift">Nested, left</div>
+				</div>
+			</div>
+		</div>
+		<li><a href="#modal">Modal</a>
+		<li><a href="#full">Full</a>
+		<li><a href="#gal1">Gallery</a>
+		<li><span class="gallery">
+			<a href="https://picsum.photos/id/360/1000/700.jpg" class="pic" title="Sunset">#1</a>
+			<a href="https://picsum.photos/id/830/1000/700.jpg" class="pic" title="Boat">#2</a>
+			<a href="https://picsum.photos/id/844/1000/700.jpg" class="pic" title="Ocean">#3</a>
+		</span>
+		<li><a href="#drw">Drawer</a>
+		<li><a href="#topbar" data-set="topbar let bg-w" data-unset="hide">Topbar</a>
+		<!--details>
+			<summary>Summary</summary>
+			<div class="bg pad">Details</div>
+		</details-->
+	</ul>
+
+	<!-- togglable -->
+	
+	<ul class="nav tabs rad mem hover">
+		<li><a href="#tab1">Tab1</a></li>
+		<li><a href="#tab2">Tab2</a></li>
+		<li><a href="#tab3">Tab3</a></li>
+	</ul>
+	<div class="bord pad">
+		<div id="tab2">2<br>2</div>
+		<div id="tab3">3<br>3<br>3</div>
+		<div id="tab1">1</div>
+	</div>
+	<div id="modal" class="dlg rad c pad">
+		<a class="close pad" href="#cancel" data-ico="close">&times;</a>
+		<p>Modal</p>
+	</div>
+	<div id="full" class="dlg full center pad bg-w">
+		<a class="close pad" href="#cancel" data-ico="close">&times;</a>
+		Fullscreen modal
+	</div>
+	<div class="gal">
+		<a id="gal1" href="#gal2" style="--img:url(https://picsum.photos/id/360/1000/700.jpg)" data-caption="1/3 - Sunset"  ></a>
+		<a id="gal2" href="#gal3" style="--img:url(https://picsum.photos/id/830/1000/700.jpg)" data-caption="2/3 - Boat"></a>
+		<a id="gal3" href="#gal1" style="--img:url(https://picsum.photos/id/844/1000/700.jpg)" data-caption-x="3/3 - Ocean" ></a>
+		<a class="close" href="#cancel" data-ico="close">&times;</a>
+	</div>
+	<div class="drawer shift pad" id="drw">
+		<a class="close pad" href="#cancel" data-ico="close">&times;</a>
+		Demo drawer
+	</div>
+
+	<!-- dialogs -->
+	<p>
+		<a href="#done" class="alert" title="Hello!">Alert</a>,
+		<a href="?a=1&b=2" class="dialog" title="Continue?">Confirm</a>,
+		<a href="?a=1&b=2" class="dialog" title="Continue to new tab?" target="_blank">Confirm-new-tab</a>,
+		<a href="#top" class="dialog" title="Continue?">Confirm-hash</a>,
+		<a href="?a=1&b=Hello!&c=3" class="dialog text-w" data-prompt="b" data-caption="Greeting:" data-ok="Fine" data-cancel="No way" data-reverse="">Prompt</a>.
+	</p>
+	<form class="mar">
+		<input type="text" name="nm" id="nms" value="qq" size="5" required pattern="[A-Za-z]{2,}" title="Two or more letters">
+		<input type="submit" name="s1" value="OK">
+		<input type="submit" name="s2" value="Confirm" class="dialog bg-w" title="Warning!" data-prompt="nm">
+		<a href="?nm=" class="dialog" data-prompt="nm" data-caption="Name:" data-src="#nms">Prompt</a>
+	</form>
+
+</div>
+</div>
+</div>
+  </body>
+</html>

@@ -1,0 +1,17 @@
+{
+	"time": 1540892417713,
+	"seq": 1,
+	"request": {
+		"value": "ru"
+	},
+	"data": [
+		{
+			"id": "1",
+			"nm": "Moscow"
+		},
+		{
+			"id": "2",
+			"nm": "St. Petersburg"
+		}
+	]
+}

@@ -1,0 +1,56 @@
+{
+  "name": "d1-web",
+  "version": "1.0.0",
+  "description": "Lightweight responsive front-end framework",
+  "main": "dist/d1.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "build:css": "postcss src/index.css -o dist/d1.css",
+    "minify:css": "postcss dist/d1.css -u cssnano -o dist/d1.min.css --no-map",
+    "build:docs": "copyfiles ./src/index.html ./docs -f",
+    "build:docs.cmt": "cross-var replace-in-file \"/REMOVE-/g\" \"\" \"docs/*.*\" --isRegex",
+    "build:version": "cross-var replace-in-file \"/0\\.0\\.0/g\" \"$npm_package_version\" \"dist/*.*\" --isRegex",
+    "build:docs.version": "cross-var replace-in-file \"/0\\.0\\.0/g\" \"$npm_package_version\" \"docs/*.*\" --isRegex",
+    "webpack": "webpack",
+    "build": "npm run build:css && npm run minify:css && npm run build:docs && npm run build:docs.cmt && npm run build:docs.version && webpack && npm run build:version",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vvvkor/d1-web.git"
+  },
+  "keywords": [
+    "css",
+    "javascript",
+    "lightweight",
+    "micro",
+    "framework"
+  ],
+  "author": "Vadim Korolev <vadimkor@yandex.ru> (https://github.com/vvvkor)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vvvkor/d1-web/issues"
+  },
+  "homepage": "https://github.com/vvvkor/d1-web#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/cli": "^7.7.7",
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "babel-loader": "^8.0.6",
+    "copyfiles": "^2.1.1",
+    "cross-var": "^1.1.0",
+    "cssnano": "^4.1.10",
+    "perfectionist": "^2.4.0",
+    "postcss-calc": "^7.0.1",
+    "postcss-cli": "^7.1.0",
+    "postcss-custom-properties": "^8.0.11",
+    "postcss-discard-comments": "^2.0.4",
+    "replace-in-file": "^3.4.4",
+    "terser": "^4.4.3",
+    "webpack": "^4.41.4",
+    "webpack-cli": "^3.3.10"
+  }
+}
