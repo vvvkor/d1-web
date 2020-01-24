@@ -1,4 +1,4 @@
-/*! d1-web v1.0.0 */
+/*! d1-web v1.0.1 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -89,7 +89,7 @@
 /* 0 */
 /***/ (function(module, exports) {
 
-/*! d1 app v1.0.0 */
+/*! app - core of d1-web */
 // (() => {
 //let main = new (function(){
 module.exports = new function () {

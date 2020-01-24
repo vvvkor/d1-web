@@ -1,4 +1,4 @@
-/*! d1 app v0.0.0 */
+/*! app - core of d1-web */
 
 // (() => {
 //let main = new (function(){

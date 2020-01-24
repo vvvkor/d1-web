@@ -20,13 +20,14 @@ Then use in your CSS file:
 ```
 And optionally bundle into your JavaScript file:
 ```javascript
-var d1 = require("d1-web");
+let d1 = require("d1-web");
 ```
 
 ### Install manually
 
 Add the [distributed](https://github.com/vvvkor/d1-web/tree/master/dist) CSS and JavaScript to the head of your document.
 
+```
 <!doctype html>
 <html lang="en">
   <head>
@@ -40,7 +41,7 @@ Add the [distributed](https://github.com/vvvkor/d1-web/tree/master/dist) CSS and
   <body>
   </body>
 </html>
-
+```
 
 ### Use from CDN
 
@@ -61,8 +62,8 @@ Add the [distributed](https://github.com/vvvkor/d1-web/tree/master/dist) CSS and
 
 ## Docs
 
-[Documentation](https://vvvkor.github.io/d1-web/)
-[Overview](https://vvvkor.github.io/d1-web/)
+- [Documentation](https://vvvkor.github.io/d1-web/)
+- [Overview](https://vvvkor.github.io/d1-web/)
 
 ## Browser Support
 
