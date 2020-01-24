@@ -1,6 +1,6 @@
 {
   "name": "d1-web",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Lightweight responsive front-end framework",
   "main": "dist/d1.js",
   "directories": {
@@ -9,7 +9,7 @@
   "scripts": {
     "build:css": "postcss src/index.css -o dist/d1.css",
     "minify:css": "postcss dist/d1.css -u cssnano -o dist/d1.min.css --no-map",
-    "build:docs": "copyfiles ./src/index.html ./docs -f",
+    "build:docs": "copyfiles ./src/*.html ./docs -f",
     "build:docs.cmt": "cross-var replace-in-file \"/REMOVE-/g\" \"\" \"docs/*.*\" --isRegex",
     "build:version": "cross-var replace-in-file \"/0\\.0\\.0/g\" \"$npm_package_version\" \"dist/*.*\" --isRegex",
     "build:docs.version": "cross-var replace-in-file \"/0\\.0\\.0/g\" \"$npm_package_version\" \"docs/*.*\" --isRegex",

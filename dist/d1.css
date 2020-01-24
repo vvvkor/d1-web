@@ -1,4 +1,4 @@
-/*! d1-web v1.0.3 */
+/*! d1-web v1.0.4 */
 
 :root {
     --text: #000;
@@ -614,7 +614,8 @@ ul.nav, .nav ul {
 .tabs+div>div:not(:target):not(:last-child):not(.toggle),
 .tabs+div>div:target:not(.toggle)~*, .dlg:not(:target):not(.toggle),
 .nav li:not(:hover)>ul:not(.toggle), .pop:not(:hover)>div:not(.toggle),
-.js .toggle.off:not(.topbar):not(.drawer) {
+.js .toggle.off:not(.topbar):not(.drawer), .js .hide-js,
+body:not(.js) .hide-nojs {
     display: none;
 }
 
@@ -701,7 +702,7 @@ mark {
         display: block;
     }
 
-    .row.flip[class]>* {
+    .row[class].flip[class]>* {
         margin-right: 0;
     }
 

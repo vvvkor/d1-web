@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>d1 - Documentation</title>
+	<title>d1-web - Documentation</title>
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 
 	<!-- CDN --REMOVE->
@@ -40,11 +40,11 @@
 	</style>
 </head>
 <body class="-bg" data-d1='{"hOk":"#yes","debug":1,"disable":["-theme","-valid","-icons"],"plug":{"toggle":{"keepHash":1},"gallery":{"idPrefix":"image-"},"theme":{"fonts":["sans-serif","serif","mono","PT Sans","PT Serif","PT Mono","Roboto Slab"]},"-scroll":{"qHideOnScroll":".drawer[id]"},"-icons":{"pSvg":"icon-"}}}'>
-<div class="topbar toggle shade  row let center fit" id="topbar">
+<div class="topbar toggle shade  row let center fit" id="topline">
 	<a href="#menu" class="pad -let hide-desktop" data-ico="menu" title="Menu">&equiv;</a>
 	<a href="#top" class="pad -let"><b>d1</b></a>
 	<code class="pad nobr">npm i d1-web</code>
-	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1" title="GitHub" class="pad -let">GitHub</a>
+	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1-web" title="GitHub" class="pad -let">GitHub</a>
 	<span class="shift pad text-n">v0.0.0</span>
 	<a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="pad -let" data-ico="download" title="Download">Download</a>
 </div>
@@ -52,58 +52,68 @@
 <div class="-pad row -wrap -center flip">
 
 <div class="stick pad target-mobile" data-class-mobile="drawer toggle-mobile off pad" data-class-desktop="stick pad" id="menu">
-	<div class="hide-desktop">
+	<div class="hide-desktop pad">
 		<a href="#cancel" class="close pad text-n">&#x2715;</a>
-		<h3 class="mar">d1 front-end framework</h3>
+		<b>d1 front-end framework</b>
 	</div>
 	<ul class="fit pad --toggle --tree mem -accordion">
-		<li><a href="#start">Get started</a>
-		<li><a href="#typo">Typography</a>
+		<li><a href="#get-started">Get started</a>
+			<!--ul id="n-get-started" class="toggle">
+			<li><a href="#install-npm">With NPM</a>
+			<li><a href="#install-manually">Manually</a>
+			<li><a href="#use-cdn">With NPM</a>
+			</ul-->
+		<li><a href="#typography">Typography</a>
+			<!--ul id="n-typography" class="toggle">
+			<li><a href="#inline">Inline</a>
+			<li><a href="#blocks">Blocks</a>
+			<li><a href="#headings">Headings</a>
+			</ul-->
 		<li><a href="#grid">Grid</a>
 		<li><a href="#n-list">Lists</a> &rsaquo;
-			<ul id="n-list" class="toggle ">
+			<ul id="n-list" class="toggle">
 			<li><a href="#list-basic">Basic</a>
 			<li><a href="#list-tree">Tree</a>
 			</ul>
 		<li><a href="#n-table">Tables</a> &rsaquo;
-			<ul id="n-table" class="toggle ">
+			<ul id="n-table" class="toggle">
 			<li><a href="#table-basic">Basic</a>
 			<li><a href="#table-responsive">Responsive</a>
 			<li><a href="#table-interactive">Interactive</a>
 			</ul>
 		<li><a href="#n-forms">Forms</a> &rsaquo;
-			<ul id="n-forms" class="toggle ">
+			<ul id="n-forms" class="toggle">
 			<li><a href="#buttons">Buttons</a>
-			<li><a href="#form-inline">Inline</a>
-			<li><a href="#form-stacked">Stacked</a>
-			<li><a href="#form-grid">Grid layout</a>
-			<li><a href="#form-table">Table layout</a>
-			<li><a href="#input-color">Color</a>
+			<li><a href="#form-inline">Inline form</a>
+			<li><a href="#form-stacked">Stacked form</a>
+			<li><a href="#form-grid">Form as grid</a>
+			<li><a href="#form-table">Form as table</a>
+			<li><a href="#input-color">Color input</a>
 			<li><a href="#input-boxes">Checkboxes</a>
 			<li><a href="#input-set">Set value</a>
 			<li><a href="#calendar">Calendar</a>
 			<li><a href="#edit">Edit</a>
 			<li><a href="#lookup">Lookup</a>
-			<li><a href="#valid">Validation</a>
+			<li><a href="#validate">Validation</a>
 			<!--li><a href="#form-validate">Validation</a-->
 			</ul>
 		<li><a href="#n-components">Components</a> &rsaquo;
-			<ul id="n-components" class="toggle ">
+			<ul id="n-components" class="toggle">
 			<li><a href="#components">Overview</a>
-			<li><a href="#target-div">Toggle</a>
-			<li><a href="#toggle-popup">Popup</a>
+			<li><a href="#target">Target</a>
+			<li><a href="#popup">Popup</a>
 			<li><a href="#nav">Navigation</a>
-			<li><a href="#toggle-tabs">Tabs</a>
-			<li><a href="#toggle-dlg">Modal</a>
-			<li><a href="#toggle-full">Fullscreen</a>
+			<li><a href="#tabs">Tabs</a>
+			<li><a href="#dlg">Modal</a>
+			<li><a href="#dlg-full">Fullscreen</a>
 			<li><a href="#dialog">Dialog</a>
-			<li><a href="#gallery">Gallery</a>
-			<li><a href="#toggle-drawer">Drawer</a>
-			<li><a href="#topbars">Topbar</a>
-			<li><a href="#toggle-details">Details</a>
+			<li><a href="#galleries">Gallery</a>
+			<li><a href="#drawer">Drawer</a>
+			<li><a href="#topbar">Topbar</a>
+			<li><a href="#details">Details</a>
 			</ul>
 		<li><a href="#n-util">Utilities</a> &rsaquo;
-			<ul id="n-util" class="toggle ">
+			<ul id="n-util" class="toggle">
 			<li><a href="#fetch">Fetch</a>
 			<li><a href="#toggle-class">Toggle class</a>
 			<li><a href="#responsive-class">Responsive class</a>
@@ -114,13 +124,13 @@
 			<li><a href="#theme">Theme</a>
 			</ul>
 		<li><a href="#n-style">Style</a> &rsaquo;
-			<ul id="n-style" class="toggle ">
+			<ul id="n-style" class="toggle">
 			<li><a href="#colors">Colors</a>
-			<li><a href="#blocks">Blocks</a>
-			<li><a href="#custom">Customization</a>
+			<li><a href="#boxes">Boxes</a>
+			<li><a href="#customize">Customization</a>
 			</ul>
 		<!--li><a href="#blocks">Images and icons</a-->
-		<li><a href="#ref">Reference</a>
+		<li><a href="#reference">Reference</a>
 	</ul>
 </div>
 
@@ -140,16 +150,18 @@
 	<div class="target-desktop" id="xx3">xx3d</div>
 -->
 
-<h2 id="start">Get started</h2>
+<h2 id="get-started">Get started</h2>
 
 <p>
 <b>d1</b> is a lightweight responsive front-end framework
 with interactive components and utilities.
 Neutral default style can be customized with CSS variables.
-Most components are usable without JavaScript. 
+Most components are usable without JavaScript.<br>
+<p><a href="overview.html">Quick overview</a>
 </p>
 
-<h3>Install with NPM</h3>
+<h3 id="install-npm">Install with NPM</h3>
+
 <p>Install to your repository:
 <pre>npm install d1css</pre>
 <p>Then use in your CSS file:
@@ -157,7 +169,7 @@ Most components are usable without JavaScript.
 <p>And optionally bundle into your JavaScript file:
 <pre><code class="language-js">let d1 = require("d1css");</code></pre>
 
-<h3>Install manually</h3>
+<h3 id="install-manually">Install manually</h3>
 
 <p>Add the <a href="https://github.com/vvvkor/d1-web/archive/master.zip">distributed</a> CSS and JavaScript to the <code>head</code> of your document.</p>
 
@@ -176,20 +188,20 @@ Most components are usable without JavaScript.
 &lt;/html&gt;
 </code></pre>
 
-<h3>CDN</h3>
+<h3 id="use-cdn">CDN</h3>
+
 <p>Add CDN links to the <code>head</code> of your document.
 
 <pre><code class="language-html">&lt;link href="https://cdn.jsdelivr.net/npm/d1css/dist/d1.min.css" rel="stylesheet"&gt;
 &lt;script src="https://cdn.jsdelivr.net/npm/d1css/dist/d1.min.js"&gt;&lt;/script&gt;
 </code></pre>
 
-
-<h2 id="typo">Typography</h2>
+<h2 id="typography">Typography</h2>
 
 <p>
 Mostly, default styling is kept.
 
-<h3>Inline</h3>
+<h3 id="inline">Inline</h3>
 
 	<b>Bold</b>
 	<i>Italic</i>
@@ -217,17 +229,24 @@ Mostly, default styling is kept.
 	<a href="#x">Link</a>
 	<a>Link without href</a>
 
+<h3 id="blocks">Blocks</h3>
 
-<h3>Headings</h3>
+	<p>Paragraph<br>New line</p>
+	<p>Paragraph</p>
+	<pre class="-l">Preformatted <code>code</code></pre>
+	<blockquote class="-l">Blockqoute</blockquote>
+
+
+<h3 id="headings">Headings</h3>
 
 <table class="let mar opts-h1">
-	<tr><td><code>h1..h6</code><td>Default margins<td><input name="demo-h" type="radio" data-nodes="#headings>*" data-set="" checked>
-	<tr><td><code>.mar</code><td>Smaller margins<td><input name="demo-h" type="radio" data-nodes="#headings>*" data-set="mar">
-	<tr><td><code>.fit</code><td>No margins<td><input name="demo-h" type="radio" data-nodes="#headings>*" data-set="fit">
+	<tr><td><code>h1..h6</code><td>Default margins<td><input name="demo-h" type="radio" data-nodes="#heads>*" data-set="" checked>
+	<tr><td><code>.mar</code><td>Smaller margins<td><input name="demo-h" type="radio" data-nodes="#heads>*" data-set="mar">
+	<tr><td><code>.fit</code><td>No margins<td><input name="demo-h" type="radio" data-nodes="#heads>*" data-set="fit">
 </table>
 
 
-<div id="headings" class="code">
+<div id="heads" class="code">
 	<h1>Heading 1</h1>
 	<h2>Heading 2</h2>
 	<h3>Heading 3</h3>
@@ -235,13 +254,6 @@ Mostly, default styling is kept.
 	<h5>Heading 5</h5>
 	<h6>Heading 6</h6>
 </div>
-
-<h3>Blocks</h3>
-
-	<p>Paragraph<br>New line</p>
-	<p>Paragraph</p>
-	<pre class="-l">Preformatted <code>code</code></pre>
-	<blockquote class="-l">Blockqoute</blockquote>
 
 
 
@@ -257,7 +269,7 @@ By default, they all have equal width.
 <legend>Options</legend>
 <label><input name="grid-flip" type="checkbox" data-nodes="#cols" data-set="flip"> Stack on small screen <code>.flip</code></label><br>
 <label><input name="grid-center" type="checkbox" data-nodes="#cols" data-set="center"> Center columns vertically <code>.center</code></label><br>
-<label><input name="grid-mar" type="checkbox" data-nodes="#cols" data-set="fit"> Remove hotizontal margins <code>.fit</code></label><br>
+<label><input name="grid-mar" type="checkbox" data-nodes="#cols" data-set="fit"> Remove horizontal margins <code>.fit</code></label><br>
 <label><input name="grid-mar" type="checkbox" data-nodes="#cols" data-set="mar"> Add vertical margins <code>.mar</code></label><br>
 <label><input name="grid-main-over" type="checkbox" data-nodes="#col-main-over" data-set="bg text-e pad mar nobr" data-unset="hide"> Overflow content</label><br>
 <label><input name="grid-let" type="checkbox" data-nodes="#cols" data-set="let"> Allow columns wrapping <code>.let</code></label> (disables column width modifiers, auto width)
@@ -324,19 +336,19 @@ By default, they all have equal width.
 
 
 
-<h2 id="list">Lists</h2>
+<h2 id="lists">Lists</h2>
 
 <h3 id="list-basic">Basic lists</h3>
 
 <fieldset class="mar">
 <legend>Options</legend>
-	<label><input name="ul-demo" type="radio" data-nodes="#lists>*" data-set="" checked> Default</label><br>
-	<label><input name="ul-demo" type="radio" data-nodes="#lists>*" data-set="fit"> Remove margins and list style <code>.fit</code></label><br>
-	<label><input name="ul-demo" type="radio" data-nodes="#lists>*" data-set="row"> Wide horizontal <code>.row</code></label><br>
-	<label><input name="ul-demo" type="radio" data-nodes="#lists>*" data-set="row let"> Compact horizontal <code>.row.let</code></label>
+	<label><input name="ul-demo" type="radio" data-nodes="#demo-lists>*" data-set="" checked> Default</label><br>
+	<label><input name="ul-demo" type="radio" data-nodes="#demo-lists>*" data-set="fit"> Remove margins and list style <code>.fit</code></label><br>
+	<label><input name="ul-demo" type="radio" data-nodes="#demo-lists>*" data-set="row"> Wide horizontal <code>.row</code></label><br>
+	<label><input name="ul-demo" type="radio" data-nodes="#demo-lists>*" data-set="row let"> Compact horizontal <code>.row.let</code></label>
 </fieldset>
 
-<div id="lists" class="code">
+<div id="demo-lists" class="code">
 	<ul>
 		<li>Unordered
 		<li>List
@@ -396,7 +408,7 @@ To remember state, use <code>.mem</code>.
 
 
 
-<h2 id="table">Tables</h2>
+<h2 id="tables">Tables</h2>
 
 <h3 id="table-basic">Basic table</h3>
 
@@ -592,7 +604,7 @@ For color options see <a href="#colors-buttons">Colors</a> section.
 </form>
 </div>
 
-<h3 id="form-grid">Grid layout</h3>
+<h3 id="form-grid">Form as grid</h3>
 
 <div class="code">
 <form method="post">
@@ -624,7 +636,7 @@ For color options see <a href="#colors-buttons">Colors</a> section.
 </div>
 
 
-<h3 id="form-table">Table layout</h3>
+<h3 id="form-table">Form as table</h3>
 
 <p>
 For aligned form, <code>table</code> may be used, which is arguably not semantic, but very convenient.
@@ -727,7 +739,7 @@ Table will become stacked on small screen.
 </div>
 
 
-<h3 id="input-color">Color</h3>
+<h3 id="input-color">Color input</h3>
 
 <div class="code">
 	<label for="demo-color">Color</label>
@@ -754,7 +766,7 @@ Table will become stacked on small screen.
 	
 	
 	
-	<h3 id="calendar">Calendar</h3>
+<h3 id="calendar">Calendar</h3>
 	
 	<p>Replacement of standard HTML date inputs.
 
@@ -769,7 +781,7 @@ Table will become stacked on small screen.
 	</form>
 </div>
 
-	<h3 id="edit">Edit</h3>
+<h3 id="edit">Edit</h3>
 
 	<p>
 	Auto-adjust <code>textarea</code> height to content <code>.adjust</code>.
@@ -783,7 +795,7 @@ Table will become stacked on small screen.
 	
 	<div id="editor-commands" class="target mar pad bg">
 	<table class="let shift sort hover">
-	<caption>Editor tools<caption>
+	<caption>Editor tools</caption>
 	<thead>
 	<tr><th>Code<th>Command<th>Description
 	</thead>
@@ -844,7 +856,7 @@ Table will become stacked on small screen.
   rows="5">Write formatted text.</textarea>
 </div>
 
-	<h3 id="lookup">Lookup</h3>
+<h3 id="lookup">Lookup</h3>
 	
 	<p>Autocomplete lookups with data from XHTTP request.
 
@@ -874,11 +886,11 @@ Table will become stacked on small screen.
   <select name="town" id="town" data-filter="{q}.json" data-placeholder="..." data-cache="10"></select>
 </div>
 
-<h3 id="valid">Validation</h3>
+<h3 id="validate">Validation</h3>
 
 <p>Custom form validation.
 
-<h4>Custom input validation messages</h4>
+<h4 id="validate-messages">Custom input validation messages</h4>
 
 <p>To customize input validation messages, provide validation hint in <code>[data-hint]</code> attribute of input element. Placeholders inside percent characters are replaced with value of corresponding attribute of input element.
 
@@ -947,7 +959,7 @@ Table will become stacked on small screen.
 <a href="#x" onclick="testsubmit.click();return false;">submit</a></div>
 </form-->
 
-<h4>Custom hint elements for input validation</h4>
+<h4 id="validate-hints">Custom hint elements for input validation</h4>
 
 <p>Another option is to add sibling element with class <code>.text-e</code> after input. It will be visible only if input value is not valid. Contrary, sibling element with class <code>.text-y</code> will be visible only if input value is valid.
 <p>To improve usability, add class <code>.js-unhint</code> to <code>form</code>. This will disble default brower-specific tooltips and disables reporting empty required inputs as invalid until submitting.
@@ -1012,7 +1024,7 @@ Table will become stacked on small screen.
 </div>
 
 <!--
-<h3 id="form-validate">Validation</h3>
+<h3 id="validate-form">Validation</h3>
 
 <p>To customize input validation messages, provide validation hint in <code>data-hint</code> attribute of input element. Placeholders inside percent characters are replaced with value of corresponding attribute of input element.
 
@@ -1055,7 +1067,7 @@ To store elements state in local storage, add <code>.mem</code> class like in fo
 Dialogs and drawers do not require such enhancements.
 
 
-<h3 id="target-div">Target</h3>
+<h3 id="target">Target</h3>
 
 <p>
 Use link pointing at element with <code>.target</code> class.
@@ -1066,7 +1078,7 @@ Use link pointing at element with <code>.target</code> class.
 <div id="tog" class="pad bord yel target mem">Togglable</div>
 </div>
 
-<h3 id="toggle-popup">Popup</h3>
+<h3 id="popup">Popup</h3>
 
 <p>
 Inside <code>div</code> with <code>.pop</code> class, use link pointing at sibling <code>div</code> element.<br>
@@ -1168,7 +1180,7 @@ and expand it to dropdown navbar on large screen.
 </div>
 
 
-<h3 id="toggle-tabs">Tabs</h3>
+<h3 id="tabs">Tabs</h3>
 
 <p>
 Use list with <code>.nav.tabs</code> classes as tabs headers.<br>
@@ -1190,7 +1202,7 @@ Next sibling <code>div</code> should contain <code>div</code> tab panels.
 </div>
 
 
-<h3 id="toggle-dlg">Modal</h3>
+<h3 id="dlg">Modal</h3>
 
 <p>
 Use link pointing at element with <code>.dlg</code> class.<br>
@@ -1207,7 +1219,7 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 </div>
 	
 		
-<h3 id="toggle-full">Modal fullscreen</h3>
+<h3 id="dlg-full">Modal fullscreen</h3>
 
 <p>
 Use link pointing at element with <code>.dlg.full</code> classes.<br>
@@ -1215,14 +1227,14 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 </p>
 
 <div class="code">
-<a href="#full">Open fullscreen modal</a>
-<div id="full" class="dlg full center pad bg-w">
+<a href="#modal-full">Open fullscreen modal</a>
+<div id="modal-full" class="dlg full center pad bg-w">
 	<a class="close pad" href="#cancel" data-ico="close">&times;</a>
 	Fullscreen modal
 </div>
 </div>
 
-	<h3 id="dialog">Dialog</h3>
+<h3 id="dialog">Dialog</h3>
 	
 	<p>Replacement for standard Javascript dialogs.
 	<ul class="opts-dlg">
@@ -1249,7 +1261,7 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 
 
 
-<h3 id="gallery">Gallery</h3>
+<h3 id="galleries">Gallery</h3>
 
 
 <div class="hide">
@@ -1259,7 +1271,7 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 	<a href="https://picsum.photos/id/844/1000/700.jpg">#3</a>
 </div>
 
-<h4 id="toggle-gallery">Pure CSS gallery</h4>
+<h4 id="gal">Pure CSS gallery</h4>
 
 <p>
 Inside <code>div</code> with class <code>.gal</code>, add sequence of links, each one pointing at the next and having <code>[style]</code> attribute with <code>--img</code> CSS proprty pointing at image.
@@ -1283,11 +1295,11 @@ Enter key press navigates to the next image (depends on browser).
 </div>
 </div>
 
-	<h4 id="gen-gallery">Generated gallery</h4>
+<h4 id="gallery">Generated gallery</h4>
 	
 	<p>
 	Place links with class <code>.pic</code> inside <code>div</code> with class <code>.gallery</code>
-	to generate gallery similar to <a href="#toggle-gallery">pure CSS gallery</a>.
+	to generate gallery similar to <a href="#gal">pure CSS gallery</a>.
 	</p>
 	
 <div class="code">
@@ -1300,7 +1312,7 @@ Enter key press navigates to the next image (depends on browser).
 
 
 
-<h3 id="toggle-drawer">Drawer</h3>
+<h3 id="drawer">Drawer</h3>
 
 <p>
 Use link pointing at element with <code>.drawer</code> class.<br>
@@ -1317,12 +1329,12 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 </div>
 
 
-<h3 id="topbars">Topbar</h3>
+<h3 id="topbar">Topbar</h3>
 
 <p class="opts-topbar">
-<label><input name="demo-top" type="radio" data-nodes="#topbar" data-set="hide"> Disable top bar</label><br>
-<label><input name="demo-top" type="radio" data-nodes="#topbar" data-set="topbar shade  row let center fit" checked> Fixed top bar <code>.topbar</code></label><br>
-<label><input name="demo-top" type="radio" data-nodes="#topbar" data-set="topbar toggle shade  row let center fit"> Scrollable top bar <code>.topbar.toggle</code></label>
+<label><input name="demo-top" type="radio" data-nodes="#topline" data-set="hide"> Disable top bar</label><br>
+<label><input name="demo-top" type="radio" data-nodes="#topline" data-set="topbar shade  row let center fit" checked> Fixed top bar <code>.topbar</code></label><br>
+<label><input name="demo-top" type="radio" data-nodes="#topline" data-set="topbar toggle shade  row let center fit"> Scrollable top bar <code>.topbar.toggle</code></label>
 </p>
 
 <div class="bord">
@@ -1338,7 +1350,7 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 	</div>
 </div-->
 
-<h3 id="toggle-details">Details</h3>
+<h3 id="details">Details</h3>
 
 <p><i class="bg-w">Warning</i>: limited browser support.
 
@@ -1521,7 +1533,7 @@ Replace element's content with icon <code>[data-ico]</code> Provide <code>[title
 	-->
 </div>
 
-<h4 id="custom-icons">Customizing icons</h4>
+<h4 id="icons-custom">Customizing icons</h4>
 
 <p>
 In your document, provide SVG <code>symbol</code> with <code>[id]</code> containing prefixed icon name.
@@ -1697,7 +1709,7 @@ let double = function(x){
 	</ul>
 </div>
 
-<h4>Invert</h4>
+<h4 id="invert">Invert</h4>
 <!--opts-invert-->
 <div class="code">
 <div class="invert pad">
@@ -1707,13 +1719,13 @@ let double = function(x){
 </div>
 </div>
 
-	<h3 id="blocks">Blocks</h3>
+<h3 id="boxes">Boxes</h3>
 
-<h4>Media object</h4>
+<h4 class="media-object">Media object</h4>
 
 <div class="code">
 <div class="row center">
-	<a href="#media" class="col-0 text-y" data-icon="ok/50/50"></a>
+	<a href="#media" class="col-0 pad bg-n let" data-icon="user/50/50"></a>
 	<div>
 		Some description
 		<br>
@@ -1724,36 +1736,36 @@ let double = function(x){
 </div>
 </div>
 	
-<h4>Figure</h4>
+<h4 id="figure">Figure</h4>
 
 <div class="code">
 	<figure class="bg c pad">
-		<div class="text-i" data-icon="place/80/80/bg-w"></div>
+		<div class="text-i" data-icon="pin/80/80/bg-w"></div>
 		<figcaption>
 			Figure caption
 		</figcaption>
 	</figure>
 </div>
 	
-<h4>Box</h4>
+<h4 id="box">Shaded box</h4>
 
 <div class="code">
 	<div class="shade -dlg c pad rad">
-		<div class="text-n" data-icon="ok/80/80"></div>
+		<p class="text-w" data-icon="warning/100/100">
 		<p><b>No items yet</b>
 		<p>Click the button to create new item</p>
-		<a href="#add" class="btn bg-i">Add new item</a>
+		<p><a href="#add" class="btn bg-y">Add new item</a>
 	</div>
 </div>
 	
-<h4>Full height</h4>
+<h4 id="full">Full height</h4>
 
 <div class="code">
 <div class="full bg-w center">Full</div>
 </div>
 
 
-<h3 id="custom">Customization with CSS vars</h3>
+<h3 id="customize">Customization with CSS vars</h3>
 
 <ul>
 <li><code>--text</code> - base text color; default: <code>#000</code>
@@ -1777,7 +1789,7 @@ let double = function(x){
 
 
 
-<h2 id="ref">Reference</h2>
+<h2 id="reference">Reference</h2>
 
 <!--
 most important:
@@ -1799,19 +1811,19 @@ most important:
 <tr><th>.tree<td><a href="#list-tree">Tree</a><td>ul<td>.accordion .fit
 <tr><th>button, a.btn<td><a href="#colors-buttons">Button</a><td><a href="#form-table">form</a> submit button a span<td>.bg-x <i>[data-target]</i>
 <tr><th>.flip<td>Responsive<td>.row .nav table<td>
-<tr><th>.hide<td>Visibility by media<td>div<td>.hide-mobile .hide-desktop .hide-print .hide-screen
-<tr><th>.target<td><a href="#target-div">Toggle</a><td>div<td>.toggle .off .mem <i>.act</i>
-<tr><th>.pop<td><a href="#toggle-popup">Popup</a><td><td>.pop>.shift
+<tr><th>.hide<td>Visibility by media<td>div<td>.hide-mobile .hide-desktop .hide-print .hide-screen .hide-js .hide-nojs
+<tr><th>.target<td><a href="#target">Toggle</a><td>div<td>.toggle .off .mem <i>.act</i>
+<tr><th>.pop<td><a href="#popup">Popup</a><td><td>.pop>.shift
 <tr><th>.nav<td><a href="#nav">Navigation</a><td>ul<td>.flip .hover .let .bg .center .nav.tabs.mem<i>.act .shift</i>
-<tr><th>.tabs<td><a href="#toggle-tabs">Tabs</a><td>ul.nav<td>
-<tr><th>.dlg<td><a href="#toggle-dlg">Modal</a><td>.close<td>.dlg.c.let .dlg.full.center
+<tr><th>.tabs<td><a href="#tabs">Tabs</a><td>ul.nav<td>
+<tr><th>.dlg<td><a href="#dlg">Modal</a><td>.close<td>.dlg.c.let .dlg.full.center
 <tr><th>.gal<td><a href="#gallery">Gallery</a><td>a .close<td><i>[data-info]</i>
-<tr><th>.drawer<td><a href="#toggle-drawer">Drawer</a><td>div a.close<td>.shift
-<tr><th>.topbar<td><a href="#scroll">Top bar</a><td><td>.toggle
+<tr><th>.drawer<td><a href="#drawer">Drawer</a><td>div a.close<td>.shift
+<tr><th>.topbar<td><a href="#topbar">Top bar</a><td><td>.toggle
 <tr><th>.let<td>Specific modifications to components<td>.row, .nav, .dlg, .topbar, table<td>
 <!--tr><th>.switch<td><a href="#toggle-radio">Togglable (radio)</a><td>label div<td>.pop .tabs -->
 <tr><th>.icon<td>Small image<td>img svg a button<td>
-<tr><th>.fix<td><a data-href="#fix">Fixed block</a><td><td>.r .l
+<tr><th>.fix<td>Fixed block<td><td>.r .l
 <tr><th>.text-<td><a href="#colors">Text color</a><td>* .invert<td>.text-e .text-w .text-i .text-y .text-n
 <tr><th>.bg<td><a href="#colors">Background color</a><td>* .invert<td>.bg-e .bg-w .bg-i .bg-y .bg-n .yel
 <tr><th>.r .c .l<td>Align<td>*<td>
@@ -1828,9 +1840,9 @@ most important:
 </table>
 </div>
 
-<h3 class="item">
+<h3 id="reference-alpha" class="item">
 	<a href="#ref-alpha">Alphabetical reference</a>
-	<a href="#" class="close l text-n"><span data-icon="up"></span></a>
+	<!--a href="#" class="close l text-n"><span data-icon="up"></span></a-->
 </h3>
 
 <div id="ref-alpha" class="target mem">
@@ -1858,8 +1870,10 @@ most important:
 <li><code>.full</code> &mdash; fullscreen block
 <li><code>.gal</code> &mdash; fullscreen gallery
 <li><code>.hide</code> &mdash; hidden
+<li><code>.hide-js</code> &mdash; hidden only if JavaScript controls page
 <li><code>.hide-desktop</code> &mdash; hidden only on large screen
 <li><code>.hide-mobile</code> &mdash; hidden only on small screen
+<li><code>.hide-nojs</code> &mdash; hidden only if JavaScript does not control page
 <li><code>.hide-print</code> &mdash; hidden on print
 <li><code>.hide-screen</code> &mdash; hidden on screen
 <li><code>.hover</code> &mdash; highlight link or table row on hover
@@ -1905,35 +1919,6 @@ most important:
 <!--footer class="pad bg">
 	d1 is created by <a href="mailto:vadimkor@yandex.ru">Vadim Korolev</a>
 </footer-->
-
-<!--
-<a class="fix r pad hover hide-print" href="#customize">Customize</a>
-<div class="drawer shift pad hide-print" id="customize">
-	<a class="close pad" href="#cancel">&times;</a>
-	<form id="cfg" class="pad">
-		<h3>Style configurator</h3>
-		
-		<input type="range" name="text" value="-220" min="-255" max="360" data-func="dusk" data-alpha> Text<br>
-		<input type="range" name="text_alpha" value="0" min="0" max=".7" step=".01"> <small class="text-n">lightness</small><br>
-		<input type="range" name="bg" value="-1" min="-128" max="360" data-func="lite" data-alpha> Background<br>
-		<input type="range" name="bg_alpha" value="1" min=".5" max="1" step=".01"> <small class="text-n">lightness</small><br>
-		<input type="range" name="bg-pane" value="-255" min="-255" max="360" data-func="mid" data-alpha> Panel<br>
-		<input type="range" name="bg-pane_alpha" value=".05" min="0" max="1" step=".01"> <small class="text-n">opacity</small><br>
-		<input type="range" name="border" value="-255" min="-255" max="360" data-func="vivid" data-alpha data-width> Border<br>
-		<input type="range" name="border_alpha" value=".16" min="0" max="1" step=".01"> <small class="text-n">opacity</small><br>
-		<input type="range" name="border_width" value=".1" min="0" max="1" step=".1" data-suffix="em"> <small class="text-n">width</small><br>
-		<input type="range" name="text-hilite" value="-255" min="-255" max="360" data-func="vivid"> Highlight<br>
-		<input type="range" name="bg-hilite" value="-255" min="-255" max="360" data-alpha data-func="vivid"> <small class="text-n">background</small><br>
-		<input type="range" name="bg-hilite_alpha" value=".05" min="0" max="1" step=".01"> <small class="text-n">opacity</small><br>
-		<input type="range" name="link" value="240" min="-255" max="360" data-func="vivid"> Link<br>
-		<input type="range" name="hover" value="220" min="-255" max="360" data-func="bright"> <small class="text-n">hover</small><br>
-		<input type="range" name="visited" value="280" min="-255" max="360" data-func="vivid"> <small class="text-n">visited</small><br>
-		<input type="range" name="rad" value=".2" min="0" max="2" step=".1"> Radius <br>
-		<input type="range" name="gap" value="1" min="0" max="2" step=".1"> Gap<br>
-		<pre class="small"></pre>
-	</form>
-</div>
--->
 
 <svg style="display:none;" width="0" height="0">
 <symbol id="icons-add" viewBox="0 0 7 7"><path d="M3 1h1v2h2v1h-2v2h-1v-2h-2v-1h2z"/></symbol>

@@ -1,4 +1,4 @@
-/*! d1-web v1.0.3 */
+/*! d1-web v1.0.4 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -3239,9 +3239,9 @@ module.exports = new function () {
     if (e && !box && !sel) {
       on = !on;
       e.preventDefault();
-    }
+      e.stopPropagation();
+    } //app.dbg(['setclass?', c, on, q, e, box, sel]);
 
-    app.dbg(['setclass?', c, on, q]);
 
     if (c !== false) {
       app.e(q, function (m) {

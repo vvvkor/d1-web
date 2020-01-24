@@ -69,8 +69,9 @@ module.exports = new(function () {
     if(e && !box && !sel){
       on = !on;
       e.preventDefault();
+      e.stopPropagation();
     }
-    app.dbg(['setclass?', c, on, q]);
+    //app.dbg(['setclass?', c, on, q, e, box, sel]);
     if (c !== false){
       app.e(q, m => this.setClass(n, on, m, c));
       app.fire('updated', {q: q});

@@ -327,7 +327,9 @@ a.act>.is-off, a:not(.act)>.is-on,
  .nav li:not(:hover)>ul:not(.toggle), /* .nav ul (auto id) */
    .pop:not(:hover)>div:not(.toggle), /* .pop>div[id] */
 /* js */
-.js .toggle.off:not(.topbar):not(.drawer)
+.js .toggle.off:not(.topbar):not(.drawer),
+/* detect js */
+.js .hide-js, body:not(.js) .hide-nojs
 	{display:none;}
 
 /* show (override) */
@@ -377,7 +379,7 @@ mark{background-color:var(--bg-warning);}
 	/* mobile */
 	body{font-size:medium;}
 	ul.flip, .flip /*.row.flip, .nav.flip*/{display:block;} /* should have less priority then hiding (like .off) */
-	.row.flip[class]>*{margin-right:0;}
+	.row[class].flip[class]>*{margin-right:0;}
 		.row.flip.mar[class]>*+*:not(.mar){margin-top:var(--gap-xs);}
 	form>table tr, form>table tr>*{display:block;padding:0;}
 	form>table tr{padding-bottom:var(--gap-s);}
