@@ -1,6 +1,10 @@
-/*! d1-web v1.0.4 */
+/*! d1-web v1.0.5 */
 
 :root {
+    --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
+    --font-cap: var(--font);
+    --font-mono: monospace;
+    --font-print: serif;
     --text: #000;
     --bg: #fff;
     --bg-pane: rgba(0, 0, 0, .05);
@@ -130,7 +134,9 @@ input, button, select, textarea {
 }
 
 body {
-    font: 120%/1.5 "pt sans", Roboto, "Segoe UI", sans-serif;
+    font: 120%/1.5 sans-serif;
+    font-family: "PT Sans", Roboto, "Segoe UI", sans-serif;
+    font-family: var(--font);
 }
 
 body, .invert {
@@ -152,6 +158,11 @@ ul, ol, dl, blockquote, pre, hr, p, figure {
 h1, h2, h3, h4, h5, h6 {
     margin: 3rem 0 1.5rem 0;
     line-height: 1.2;
+    font-family: "PT Sans", Roboto, "Segoe UI", sans-serif;
+    font-family: var(--font-cap);
+}
+
+h1[id], h2[id], h3[id], h4[id], h5[id], h6[id] {
     padding-right: 3em;
 }
 
@@ -199,6 +210,7 @@ blockquote, pre, fieldset {
 
 pre, code {
     font-family: monospace;
+    font-family: var(--font-mono);
     white-space: pre-wrap;
 }
 
@@ -359,6 +371,90 @@ form>p, form>.row {
 
 form>table tr>* {
     border: none;
+}
+
+.over {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: none;
+}
+
+.over.hover {
+    transition: 1s opacity;
+    opacity: 0;
+}
+
+.item:hover .over.hover, .over.let {
+    opacity: .5;
+}
+
+.bar {
+    display: flex;
+    overflow: hidden;
+    background-color: #eee;
+    background-color: var(--bg-lite);
+    border-radius: .2em;
+    border-radius: var(--radius);
+    min-height: .3em;
+}
+
+.bar>* {
+    display: inline-block;
+    min-height: .3em;
+    background-color: currentColor;
+}
+
+.tip {
+    position: relative;
+}
+
+.tip:after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    background-color: #999;
+    background-color: var(--text-lite);
+    color: #fff;
+    color: var(--bg);
+    padding: 0 .5em;
+    padding: 0 var(--gap-s);
+    border-radius: .2em;
+    border-radius: var(--radius);
+    white-space: nowrap;
+}
+
+.tip.shift:after {
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+.tip:after {
+    display: block;
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 1s;
+}
+
+.tip:hover:after {
+    opacity: 1;
+    z-index: 2;
+}
+
+.pop>.btn:not(.toggle) {
+    top: auto;
+    bottom: 100%;
+    white-space: nowrap;
+    min-width: 0;
+}
+
+.pop>.btn.shift:not(.toggle) {
+    right: auto;
+    left: 50%;
+    transform: translate(-50%, 0);
 }
 
 .target, .toggle {
@@ -593,23 +689,6 @@ ul.nav, .nav ul {
     background-color: var(--bg);
 }
 
-.topbar.off {
-    top: -3.3rem;
-    top: calc(-0.1rem - var(--topbar));
-}
-
-.topbar+* {
-    margin-top: 3.2rem;
-    margin-top: var(--topbar);
-}
-
-.topbar~* h1[id], .topbar~* h2[id], .topbar~* h3[id], .topbar~* h4[id],
-.topbar~* h5[id], .topbar~* h6[id] {
-    margin-top: 0;
-    padding-top: 3.7rem;
-    padding-top: calc(.5rem + var(--topbar));
-}
-
 .hide[class], .gal>*, a.act>.is-off, a:not(.act)>.is-on, .target:not(:target),
 .tabs+div>div:not(:target):not(:last-child):not(.toggle),
 .tabs+div>div:target:not(.toggle)~*, .dlg:not(:target):not(.toggle),
@@ -796,17 +875,34 @@ mark {
         max-width: 40em;
     }
 
+    .topbar.off {
+        top: -3.3rem;
+        top: calc(-0.1rem - var(--topbar));
+    }
+
+    .topbar+* {
+        margin-top: 3.2rem;
+        margin-top: var(--topbar);
+    }
+
+    .topbar~* h1[id], .topbar~* h2[id], .topbar~* h3[id], .topbar~* h4[id],
+    .topbar~* h5[id], .topbar~* h6[id] {
+        margin-top: 0;
+        padding-top: 3.7rem;
+        padding-top: calc(.5rem + var(--topbar));
+    }
+
     input, button, select, textarea {
         padding: .2em;
         padding: var(--gap-xs);
         line-height: normal;
     }
 
-    input, button, select, textarea, .btn {
+    input, button, select, textarea, a.btn {
         border: thin solid #aaa;
     }
 
-    .btn, button, [type="submit"] {
+    a.btn, button[type], input[type="submit"] {
         padding: .5em 1em;
         padding: var(--gaps-n);
         border-radius: .2em;
@@ -814,18 +910,23 @@ mark {
         margin: .2em 0;
         margin: var(--gap-xs) 0;
         border-color: transparent;
+    }
+
+    a.btn, button:not([disabled]), [type="submit"]:not([disabled]) {
         cursor: pointer;
     }
 
-    form>.btn, form>button, form>[type="submit"], form>a>button {
+    form>a.btn, form>button, form>[type="submit"], form>a>button {
         padding: .2em .5em;
         padding: var(--gap-xs) var(--gap-s);
         margin: 0;
     }
 
-    .btn.fit {
+    .btn, a.btn.fit, button.fit, [type="submit"].fit {
         padding: 0 .5em;
         padding: 0 var(--gap-s);
+        border-radius: .2em;
+        border-radius: var(--radius);
     }
 
     a.btn:hover, button:hover:not([disabled]),
@@ -1004,11 +1105,14 @@ mark {
 
     body {
         font: 12pt/1.3 serif;
+        font-family: serif;
+        font-family: var(--font-print);
         background: none;
     }
 
     h1, h2, h3, h4, h5, h6 {
         page-break-after: avoid;
+        font-family: inherit;
     }
 
     pre, blockquote {
@@ -1020,7 +1124,7 @@ mark {
         border-width: 0 0 thin 0;
     }
 
-    button, [type="submit"], .btn {
+    button, [type="submit"], a.btn {
         border: thin solid rgba(0, 0, 0, .16);
         border: var(--border);
         padding: .25em .5em;
@@ -1082,6 +1186,10 @@ a.let {
     color: inherit;
 }
 
+img.fit {
+    display: block;
+}
+
 .center {
     margin: 0 auto;
 }
@@ -1136,7 +1244,7 @@ form .mar {
     max-width: 16em;
 }
 
-@media (max-width: 899px) {
+@media screen and (max-width: 899px) {
     .js table.flip {
         width: 100%;
         box-sizing: border-box;
@@ -1178,7 +1286,7 @@ form .mar {
     }
 }
 
-@media (max-width: 640px) {
+@media screen and (max-width: 640px) {
     .js table.flip tr>* {
         width: 100%;
     }

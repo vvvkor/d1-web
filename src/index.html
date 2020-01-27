@@ -137,6 +137,7 @@
 			<li><a href="#boxes">Boxes</a>
 			<li><a href="#tags">Tags</a>
 			<li><a href="#bars">Bars</a>
+			<li><a href="#tips">Tooltips</a>
 			<li><a href="#customize">Customization</a>
 			</ul>
 		<!--li><a href="#blocks">Images and icons</a-->
@@ -1099,7 +1100,7 @@ Popups can be nested.
 
 <div class="code">
 <div class="pop">
-	<a href="#pop">Popup</a>
+	Text <a href="#pop">popup</a> text
 	<div id="pop" class="pad shift">Pop</div>
 </div>
 </div>
@@ -1777,15 +1778,22 @@ let double = function(x){
 <h4 id="overlay">Overlay</h4>
 
 <table class="let mar opts-over">
-	<tr><td><input name="over-invert" type="checkbox" data-nodes="#over" data-set="invert" checked><td><code>.invert</code><td>Invert
-	<tr><td><input name="over-hover" type="checkbox" data-nodes="#over" data-set="hover" checked><td><code>.hover</code><td>Hover effect
-	<tr><td><input name="over-center" type="checkbox" data-nodes="#over" data-set="row center c" checked><td><code>.hover</code><td>Centrify
+	<caption>Overlay 1</caption>
+	<tr><td><input name="over1-invert" type="checkbox" data-nodes="#over1" data-set="invert" checked><td><code>.invert</code><td>Invert
+	<tr><td><input name="over1-hover" type="checkbox" data-nodes="#over1" data-set="hover" checked><td><code>.hover</code><td>Hover effect
+	<tr><td><input name="over1-let" type="checkbox" data-nodes="#over1" data-set="let"><td><code>.let</code><td>Semi-transparent
+</table>
+<table class="let mar opts-over">
+	<caption>Overlay 2</caption>
+	<tr><td><input name="over2-invert" type="checkbox" data-nodes="#over2" data-set="invert" checked><td><code>.invert</code><td>Invert
+	<tr><td><input name="over2-center" type="checkbox" data-nodes="#over2" data-set="row center c" checked><td><code>.row.center.c</code><td>Centrify
 </table>
 
 <div class="code">
 <div class="item">
 	<img class="fit" src="https://i.picsum.photos/id/844/1000/400.jpg">
-	<div class="over pad hover invert row center c" id="over">
+	<div class="over hover invert bg-w" id="over1"></div>
+	<div class="over pad invert row center c" id="over2">
 		<div>
 			<h1 class="mar">Overlay</h1>
 			<p>Text <a href="#x">link</a></p>
@@ -1841,6 +1849,27 @@ let double = function(x){
 	</p>
 </div>
 </div>
+
+<h3 id="tips">Tooltips</h3>
+
+<table class="let mar opts-over">
+	<tr><td><input name="tip-shift" type="checkbox" data-nodes="#demo-tips .tip, #demo-tips .pop>.btn" data-set="shift" checked><td><code>.shift</code><td>Centrify
+	<tr><td><input name="tip-bg" type="checkbox" data-nodes="#demo-tips .pop>.btn" data-set="bg-e" checked><td><code>.bg-e</code><td>Danger popup tooltip
+</table>
+
+<div class="code" id="demo-tips">
+<div>
+	Text
+	<a href="#x" class="tip shift" data-tip="This is a tooltip">tooltip</a>
+	text
+	<div class="pop">
+		<a href="#x">popup-tooltip</a>
+		<div class="btn shift">This is a popup tooltip</div>
+	</div>
+	text
+</div>
+</div>
+
 
 <h3 id="customize">Customization with CSS vars</h3>
 

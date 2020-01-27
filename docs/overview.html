@@ -6,14 +6,21 @@
     <meta name="viewport" 
       content="width=device-width, initial-scale=1">
 	<!-- CDN -->
-	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.0.4/dist/d1.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.0.4/dist/d1.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.0.5/dist/d1.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.0.5/dist/d1.min.js"></script>
 	<!-- local-npm-src ->
 	<link href="../src/index.css" rel="stylesheet">
 	<script src="../dist/d1.min.js"></script>
 	<!-- -->
+	<style>
+		/* Roboto, Open Sans, Georgia, PT Sans, PT Serif, PT Mono */
+		@import url('https://fonts.googleapis.com/css?family=PT+Sans&display=swap');
+		@import url('https://fonts.googleapis.com/css?family=PT+Serif&display=swap');
+		@import url('https://fonts.googleapis.com/css?family=PT+Mono&display=swap');
+		@import url('https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap');
+	</style>
   </head>
-  <body id="body" class="" data-d1='{"debug":true}'>
+  <body id="body" class="" data-d1='{"debug":true,"plug":{"toggle":{"keepHash":true},"theme":{"fonts":["sans-serif","serif","monospace","PT Sans","PT Serif","PT Mono","Roboto Slab"]}}}'>
 
 
 <div class="hide" id="topbar">
@@ -22,7 +29,7 @@
 	<code class="pad nobr">npm i d1-web</code>
 	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1-web" title="GitHub" class="pad -let">GitHub</a>
 	<a href="index.html" class="pad -let">Docs</a>
-	<span class="shift pad text-n">v1.0.4</span>
+	<span class="shift pad text-n">v1.0.5</span>
 	<a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="pad -let" data-ico="download" title="Download">Download</a>
 </div>
 
@@ -64,16 +71,16 @@
 	<div class="">
 		<div class="pad mar shade" data-class-mobile="pad mar bord" data-class-desktop="pad mar shade">
 			<div>
-				<b class="btn fit rad bg-w hide-js">JavaScript off</b>
-				<b class="btn fit rad bg-y hide-nojs">JavaScript on</b>
+				<b class="btn bg-w hide-js">JavaScript off</b>
+				<b class="btn bg-y hide-nojs">JavaScript on</b>
 			</div>
 			<div>
-				<b class="btn fit rad bg-i hide-desktop">Mobile layout</b>
-				<b class="btn fit rad bg-n hide-mobile">Desktop layout</b>
+				<b class="btn bg-i hide-desktop">Mobile layout</b>
+				<b class="btn bg-n hide-mobile">Desktop layout</b>
 			</div>
 			<div>
 				<a href="#body" data-set="invert">Invert document</a>
-				<b class="small btn fit rad bg-e hide-js" title="Requires Javascript">JS</b>
+				<b class="small btn bg-e hide-js" title="Requires Javascript">JS</b>
 			</div>
 		</div>
 		<div class="pad mar shade">
@@ -126,7 +133,7 @@
 				</span>
 				<li><a href="#drw">Drawer</a>
 				<li><a href="#x" data-nodes="#topbar" data-set="topbar toggle shade  row let center fit" data-unset="hide">Topbar</a>
-					<b class="small btn fit rad bg-e hide-js" title="Requires Javascript">JS</b>
+					<b class="small btn bg-e hide-js" title="Requires Javascript">JS</b>
 				<!--details>
 					<summary>Summary</summary>
 					<div class="bg pad">Details</div>
@@ -170,7 +177,7 @@
 
 		<div class="pad mar shade">
 			<!-- dialogs -->
-			<h3 class="mar">Dialogs <b class="small btn fit rad bg-e hide-js" title="Requires Javascript">JS</b></h3>
+			<h3 class="mar">Dialogs <b class="small btn bg-e hide-js" title="Requires Javascript">JS</b></h3>
 			<p>
 				<a href="#done" class="alert" title="Hello!">Alert</a>,
 				<a href="?a=1&b=2" class="dialog" title="Continue?">Confirm</a>,
