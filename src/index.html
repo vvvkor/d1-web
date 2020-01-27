@@ -124,6 +124,7 @@
 			<ul id="n-util" class="toggle">
 			<li><a href="#fetch">Fetch</a>
 			<li><a href="#toggle-class">Toggle class</a>
+			<li><a href="#filters">Filters</a>
 			<li><a href="#responsive-class">Responsive class</a>
 			<li><a href="#items">Items</a>
 			<li><a href="#icons">Icons</a>
@@ -1389,6 +1390,7 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 
 
 <h3 id="toggle-class">Toggle class</h3>
+
 <!--opts-set-class-->
 <p>Toggle class or other attribute 
 <code>a[href^="#"][data-set][data-unset][data-attr]</code>, 
@@ -1419,7 +1421,58 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 </div>
 <a href="#x" data-set="invert" data-nodes="body" class="hide" accesskey="i">(invert)</a>
 
+<h3 id="filters">Filters</h3>
+
+<p>Based on <a href="#toggle-class">class toggler</a>.
+
+<div class="code" id="demo-filter">
+<span class="pad">Filters "AND"</span>
+<a href="#x" class="pad hover" data-set="not-red" data-nodes="#demo-filter article:not(.bg-e)">red</a>
+<a href="#x" class="pad hover" data-set="not-yellow" data-nodes="#demo-filter article:not(.bg-w)">yellow</a>
+<a href="#x" class="pad hover" data-set="not-green" data-nodes="#demo-filter article:not(.bg-y)">green</a>
+<a href="#x" class="pad hover" data-set="not-plain" data-nodes="#demo-filter article:not(.plain)">plain</a>
+<a href="#x" class="pad hover" data-set="not-shade" data-nodes="#demo-filter article:not(.shade)">shadow</a>
+<a href="#x" class="pad hover" data-set="not-btn" data-nodes="#demo-filter article:not(.btn)">inverted</a>
+<hr>
+<div class="row mar let">
+	<article class="pad mar bg-e plain">A</article>
+	<article class="pad mar bg-w plain">B</article>
+	<article class="pad mar bg-y plain">C</article>
+	<article class="pad mar bg-e shade">D</article>
+	<article class="pad mar bg-w shade">E</article>
+	<article class="pad mar bg-y shade">F</article>
+	<article class="pad mar bg-e btn">G</article>
+	<article class="pad mar bg-w btn">H</article>
+	<article class="pad mar bg-y btn">I</article>
+</div>
+</div>
+
+<p>
+
+<div class="code" id="demo-filter-or">
+<span class="pad">Filters "OR"</span>
+<a href="#x" class="act pad hover" data-set="or-color-red" data-nodes="#demo-filter-or article.bg-e">red</a>
+<a href="#x" class="pad hover" data-set="or-color-yellow" data-nodes="#demo-filter-or article.bg-w">yellow</a>
+<a href="#x" class="pad hover" data-set="or-color-green" data-nodes="#demo-filter-or article.bg-y">green</a>
+<a href="#x" class="act pad hover" data-set="or-decor-plain" data-nodes="#demo-filter-or article.plain">plain</a>
+<a href="#x" class="pad hover" data-set="or-decor-shade" data-nodes="#demo-filter-or article.shade">shadow</a>
+<a href="#x" class="pad hover" data-set="or-decor-btn" data-nodes="#demo-filter-or article.btn">inverted</a>
+<hr>
+<div class="row mar let">
+	<article class="or pad mar bg-e plain">A</article>
+	<article class="or pad mar bg-w plain">B</article>
+	<article class="or pad mar bg-y plain">C</article>
+	<article class="or pad mar bg-e shade">D</article>
+	<article class="or pad mar bg-w shade">E</article>
+	<article class="or pad mar bg-y shade">F</article>
+	<article class="or pad mar bg-e btn">G</article>
+	<article class="or pad mar bg-w btn">H</article>
+	<article class="or pad mar bg-y btn">I</article>
+</div>
+</div>
+
 <h3 id="responsive-class">Responsive class</h3>
+
 <!--opts-resp-class-->
 <p>Class depending on available width <code>[data-class-mobile], [data-class-desktop]</code>.<br>
 Toggles on resize.
