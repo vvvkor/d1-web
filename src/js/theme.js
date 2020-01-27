@@ -14,11 +14,11 @@ module.exports = new(function () {
   };
 
   this.init = function(){
-    //this.restore(document.documentElement, 'theme-html');
-    this.restore(document.body, 'theme-body');
+    this.restore(document.documentElement, 'theme-html');
+    //this.restore(document.body, 'theme-body');
 
     //button
-    let a = app.ins('a', 'Theme', {href: '#' + this.opt.idTheme, className: 'fix pad btn theme-btn'}, document.body);
+    let a = app.ins('a', 'Theme', {href: '#' + this.opt.idTheme, className: 'fix pad btn theme-btn hide-print'}, document.body);
     let s = a.style;
     s.transform = 'rotate(-90deg)';
     s.transformOrigin = '100% 100%';
@@ -37,7 +37,7 @@ module.exports = new(function () {
     this.put('Menu', ['rgba(255,255,255,0)', 'rgba(0,0,0,.1)', 'hsla(1,100%,55%,.3)', 'hsla(45,100%,50%,.3)', 'hsla(120,100%,35%,.3)', 'hsla(180,100%,35%,.3)', 'hsla(220,100%,55%,.3)', 'hsla(290,100%,50%,.3)'], ['--bg-pane', '--bg-hilite']);
     this.put('Links', ['#000', '#777', '#c00', '#c60', '#090', '#088', '#00c', '#909'], ['--link', '--visited', '--hover']);
     this.put('Text', ['#000', '#222', '#444', '#555',  '#666', '#777', '#888', '#999'], '--text');
-    this.put('Font', this.opt.fonts || ['sans-serif', 'serif', 'monospace'], 'font-family');
+    this.put('Font', this.opt.fonts || ['sans-serif', 'serif', 'monospace'], '--font');
     this.put('Gaps', ['0.5', '0.7', '1', '1.2', '1.5'], '--gap');
   }
   
@@ -50,7 +50,8 @@ module.exports = new(function () {
     if(k instanceof Array) k.forEach(w => this.style(w, v, 1));
     else{
       //let n = (k.substr(0, 2)=='--') ? document.documentElement : document.body;
-      let n = document.body;
+      //let n = document.body;
+      let n = document.documentElement;
       n.style.setProperty(k, v);
       localStorage.setItem('theme-'+n.tagName.toLowerCase(), n.style.cssText);
     }
@@ -58,9 +59,10 @@ module.exports = new(function () {
   
   this.unstyle = function(e){
     e.preventDefault();
-    /*document.documentElement.style = */document.body.style = '';
+    document.documentElement.style = '';
+    //document.body.style = '';
     localStorage.removeItem('theme-html');
-    localStorage.removeItem('theme-body');
+    //localStorage.removeItem('theme-body');
   }
   
   this.h = function(s, l){

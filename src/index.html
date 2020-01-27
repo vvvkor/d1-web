@@ -39,8 +39,11 @@
 		@import url('https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap');
 	</style>
 </head>
-<body class="-bg" data-d1='{"hOk":"#yes","debug":1,"disable":["-theme","-valid","-icons"],"plug":{"toggle":{"keepHash":1},"gallery":{"idPrefix":"image-"},"theme":{"fonts":["sans-serif","serif","mono","PT Sans","PT Serif","PT Mono","Roboto Slab"]},"-scroll":{"qHideOnScroll":".drawer[id]"},"-icons":{"pSvg":"icon-"}}}'>
-<div class="topbar toggle shade  row let center fit" id="topline">
+<body class="-bg" data-d1='{"hOk":"#yes","debug":true,"disable":["-theme","-valid","-icons"],"plug":{"toggle":{"keepHash":true},"gallery":{"idPrefix":"image-"},"theme":{"fonts":["sans-serif","serif","monospace","PT Sans","PT Serif","PT Mono","Roboto Slab"]},"-scroll":{"qHideOnScroll":".drawer[id]"},"-icons":{"pSvg":"icon-"}}}'>
+<div
+  class="topbar toggle shade  row let center fit hide-print"
+  id="topline"
+>
 	<a href="#menu" class="pad -let hide-desktop" data-ico="menu" title="Menu">&equiv;</a>
 	<a href="#top" class="pad -let"><b>d1</b></a>
 	<code class="pad nobr">npm i d1-web</code>
@@ -51,7 +54,12 @@
 
 <div class="-pad row -wrap -center flip">
 
-<div class="stick pad target-mobile" data-class-mobile="drawer toggle-mobile off pad" data-class-desktop="stick pad" id="menu">
+<div 
+  class="stick pad target-mobile hide-print"
+  data-class-mobile="drawer toggle-mobile off pad hide-print"
+  data-class-desktop="stick pad hide-print"
+  id="menu"
+>
 	<div class="hide-desktop pad">
 		<a href="#cancel" class="close pad text-n">&#x2715;</a>
 		<b>d1 front-end framework</b>
@@ -127,6 +135,8 @@
 			<ul id="n-style" class="toggle">
 			<li><a href="#colors">Colors</a>
 			<li><a href="#boxes">Boxes</a>
+			<li><a href="#tags">Tags</a>
+			<li><a href="#bars">Bars</a>
 			<li><a href="#customize">Customization</a>
 			</ul>
 		<!--li><a href="#blocks">Images and icons</a-->
@@ -570,6 +580,7 @@ For color options see <a href="#colors-buttons">Colors</a> section.
 	<a href="#x" class="pad rad btn hover">L-hover</a>
 	-->
 <span class="btn bg-n">Span</span>
+<b class="btn bg-w">B</b>
 <a href="#x" class="pad bord rad hover">Link-pad-bord</a>
 <a href="#x" class="pad rad hover">Link-pad</a>
 <a href="#x">Link</a>
@@ -1333,8 +1344,8 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 
 <p class="opts-topbar">
 <label><input name="demo-top" type="radio" data-nodes="#topline" data-set="hide"> Disable top bar</label><br>
-<label><input name="demo-top" type="radio" data-nodes="#topline" data-set="topbar shade  row let center fit" checked> Fixed top bar <code>.topbar</code></label><br>
-<label><input name="demo-top" type="radio" data-nodes="#topline" data-set="topbar toggle shade  row let center fit"> Scrollable top bar <code>.topbar.toggle</code></label>
+<label><input name="demo-top" type="radio" data-nodes="#topline" data-set="topbar shade  row let center fit hide-print" checked> Fixed top bar <code>.topbar</code></label><br>
+<label><input name="demo-top" type="radio" data-nodes="#topline" data-set="topbar toggle shade  row let center fit hide-print"> Scrollable top bar <code>.topbar.toggle</code></label>
 </p>
 
 <div class="bord">
@@ -1643,10 +1654,15 @@ let double = function(x){
 <button type="button">Normal</button>
 <button type="button" disabled>Disabled</button>
 <button type="button" class="hover bord">Hover</button>
+<button type="button" class="fit">Fit</button>
+<hr>
+<a href="#x" class="btn">.btn</a>
+<a href="#x" class="btn bg-y">.btn.bg-y</a>
 <a href="#x" class="pad bord rad hover let">Link</a>
 <a href="#x" class="pad bord rad hover">Link</a>
 <a href="#x" class="pad rad hover">Link</a>
-<b class="btn fit rad bg-w">Fit</b>
+<a href="#x" class="btn fit bg-w">Fit</a>
+<b class="btn bg-w">B</b>
 	
 </div>
 
@@ -1662,7 +1678,7 @@ let double = function(x){
 <p class="pad bord">Border</p>
 <p class="pad bg bord">Bg+Border</p>
 <p class="pad bg-i bord">Status+Border</p>
-<p class="btn bg-y">Button-like</p>
+<p class="btn pad bg-y">Button-like</p>
 </div>
 	
 <h4 id="colors-icons">Links and Icons</h4>
@@ -1757,13 +1773,74 @@ let double = function(x){
 		<p><a href="#add" class="btn bg-y">Add new item</a>
 	</div>
 </div>
-	
+
+<h4 id="overlay">Overlay</h4>
+
+<table class="let mar opts-over">
+	<tr><td><input name="over-invert" type="checkbox" data-nodes="#over" data-set="invert" checked><td><code>.invert</code><td>Invert
+	<tr><td><input name="over-hover" type="checkbox" data-nodes="#over" data-set="hover" checked><td><code>.hover</code><td>Hover effect
+	<tr><td><input name="over-center" type="checkbox" data-nodes="#over" data-set="row center c" checked><td><code>.hover</code><td>Centrify
+</table>
+
+<div class="code">
+<div class="item">
+	<img class="fit" src="https://i.picsum.photos/id/844/1000/400.jpg">
+	<div class="over pad hover invert row center c" id="over">
+		<div>
+			<h1 class="mar">Overlay</h1>
+			<p>Text <a href="#x">link</a></p>
+		</div>
+	</div>
+</div>
+</div>
+
+
 <h4 id="full">Full height</h4>
 
 <div class="code">
 <div class="full bg-w center">Full</div>
 </div>
 
+<h3 id="tags">Tags (badges)</h3>
+
+<div class="code">
+	<span class="btn">Tag</span>
+	<span class="btn bg-e">Danger</span>
+	<span class="btn bg-w">Warning</span>
+	<span class="btn bg-y">Success</span>
+	<span class="btn bg-i">Info</span>
+	<span class="btn bg-n">Note</span>
+	<br>
+	<b class="btn">Tag</b>
+	<b class="btn bg-e">Danger</b>
+	<b class="btn bg-w">Warning</b>
+	<b class="btn bg-y">Success</b>
+	<b class="btn bg-i">Info</b>
+	<b class="btn bg-n">Note</b>
+</div>
+
+<h3 id="bars">Bars (progress)</h3>
+
+<div class="code">
+<div class="narrow">
+	<div class="row">
+		<div>Progress</div>
+		<div class="col-0 shift">70%</div>
+	</div>
+	<div class="bar text-i"><i style="width:70%"></i></div>
+	<p class="bar text-e"><i style="width:20%"></i></p>
+	<p class="bar text-w"><i style="width:40%"></i></p>
+	<p class="bar text-y"><i style="width:100%"></i></p>
+	<p class="bar text-i"><i style="width:70%"></i></p>
+	<p class="bar text-n"><i style="width:55%"></i></p>
+	<p class="bar"><i style="width:25%"></i></p>
+	<p class="bar">
+		<i class="text-e" style="width:20%"></i>
+		<i class="text-w" style="width:40%"></i>
+		<i class="text-y" style="width:30%"></i>
+	</p>
+</div>
+</div>
 
 <h3 id="customize">Customization with CSS vars</h3>
 
@@ -1809,7 +1886,7 @@ most important:
 <tr><th>table<td><a href="#table">Table</a><td>.roll<td>.hover .fit .let .shift .flip
 <tr><th>ul, ol, dl<td><a href="#list">List</a><td><td>.fit .row
 <tr><th>.tree<td><a href="#list-tree">Tree</a><td>ul<td>.accordion .fit
-<tr><th>button, a.btn<td><a href="#colors-buttons">Button</a><td><a href="#form-table">form</a> submit button a span<td>.bg-x <i>[data-target]</i>
+<tr><th>button, a.btn<td><a href="#colors-buttons">Button</a><td><a href="#form-table">form</a> submit button a span<td>.bg-x .fit <i>[data-target]</i>
 <tr><th>.flip<td>Responsive<td>.row .nav table<td>
 <tr><th>.hide<td>Visibility by media<td>div<td>.hide-mobile .hide-desktop .hide-print .hide-screen .hide-js .hide-nojs
 <tr><th>.target<td><a href="#target">Toggle</a><td>div<td>.toggle .off .mem <i>.act</i>

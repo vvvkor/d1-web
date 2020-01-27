@@ -1155,7 +1155,8 @@ module.exports = {
   play: [12, 'M3 2v8l7-4z'],
   pause: [9, 'M2 2h2v5h-2zm3 0h2v5h-2z'],
   stop: [9, 'M2 2h5v5h-5z'],
-  rec: [10, 'M5 2a3 3 0 1 0 .01 0z']
+  rec: [10, 'M5 2a3 3 0 1 0 .01 0z'],
+  layer: [14, 'M1 4l6-3 6 3-6 3zm0 3l2-1 4 2 4-2 2 1-6 3zm0 3l2-1 4 2 4-2 2 1-6 3z']
 };
 
 /***/ }),
@@ -3042,12 +3043,12 @@ module.exports = new function () {
   this.init = function () {
     var _this = this;
 
-    //this.restore(document.documentElement, 'theme-html');
-    this.restore(document.body, 'theme-body'); //button
+    this.restore(document.documentElement, 'theme-html'); //this.restore(document.body, 'theme-body');
+    //button
 
     var a = app.ins('a', 'Theme', {
       href: '#' + this.opt.idTheme,
-      className: 'fix pad btn theme-btn'
+      className: 'fix pad btn theme-btn hide-print'
     }, document.body);
     var s = a.style;
     s.transform = 'rotate(-90deg)';
@@ -3077,7 +3078,7 @@ module.exports = new function () {
     this.put('Menu', ['rgba(255,255,255,0)', 'rgba(0,0,0,.1)', 'hsla(1,100%,55%,.3)', 'hsla(45,100%,50%,.3)', 'hsla(120,100%,35%,.3)', 'hsla(180,100%,35%,.3)', 'hsla(220,100%,55%,.3)', 'hsla(290,100%,50%,.3)'], ['--bg-pane', '--bg-hilite']);
     this.put('Links', ['#000', '#777', '#c00', '#c60', '#090', '#088', '#00c', '#909'], ['--link', '--visited', '--hover']);
     this.put('Text', ['#000', '#222', '#444', '#555', '#666', '#777', '#888', '#999'], '--text');
-    this.put('Font', this.opt.fonts || ['sans-serif', 'serif', 'monospace'], 'font-family');
+    this.put('Font', this.opt.fonts || ['sans-serif', 'serif', 'monospace'], '--font');
     this.put('Gaps', ['0.5', '0.7', '1', '1.2', '1.5'], '--gap');
   };
 
@@ -3093,7 +3094,8 @@ module.exports = new function () {
       return _this2.style(w, v, 1);
     });else {
       //let n = (k.substr(0, 2)=='--') ? document.documentElement : document.body;
-      var n = document.body;
+      //let n = document.body;
+      var n = document.documentElement;
       n.style.setProperty(k, v);
       localStorage.setItem('theme-' + n.tagName.toLowerCase(), n.style.cssText);
     }
@@ -3101,11 +3103,9 @@ module.exports = new function () {
 
   this.unstyle = function (e) {
     e.preventDefault();
-    /*document.documentElement.style = */
+    document.documentElement.style = ''; //document.body.style = '';
 
-    document.body.style = '';
-    localStorage.removeItem('theme-html');
-    localStorage.removeItem('theme-body');
+    localStorage.removeItem('theme-html'); //localStorage.removeItem('theme-body');
   };
 
   this.h = function (s, l) {
@@ -3257,7 +3257,7 @@ module.exports = new function () {
     n.style.position = 'relative';
     var a = app.ins('a', app.i('up', '&uarr;'), {
       href: '#',
-      className: 'close l text-n'
+      className: 'close l text-n hide-print'
     }, n);
   };
 
