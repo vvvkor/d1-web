@@ -264,8 +264,8 @@ form>table tr>*{border:none;}
 .item:hover .over.hover, .over.let{opacity:.7;}
 
 /* bar */
-.bar{display:flex;overflow:hidden;background-color:var(--bg-lite);border-radius:var(--radius);min-height:5px;}
-.bar>*{display:inline-block;height:5px;background-color:currentColor;}
+.bar{display:flex;overflow:hidden;background-color:var(--bg-lite);border-radius:var(--radius);min-height:.3em;}
+.bar>*{display:inline-block;height:.3em;background-color:currentColor;}
 
 /* tip */
 [data-tip]{position:relative;}
