@@ -17,6 +17,7 @@ module.exports = new(function () {
     ccDlg: 'dlg rad',
     customDialog: 1,
     aConfirm: '_confirm',
+    aHead: 'data-head',
     aPrompt: 'data-prompt',
     cBtn: 'btn pad',
     qAlert: 'a.alert',
@@ -67,8 +68,9 @@ module.exports = new(function () {
       n.form.reportValidity();
       return;
     }
+    let h = app.attr(n, this.opt.aHead).replace(/%([\w\-]+)%/g, (m, a) => n.getAttribute(a));
     let p = app.attr(n, this.opt.aPrompt);
-    let t = app.attr(n, app.opt.aCaption, n.title || p || '!');
+    let t = app.attr(n, app.opt.aCaption, n.title || p || '!').replace(/%([\w\-]+)%/g, (m, a) => n.getAttribute(a));
     let rev = app.attr(n, 'data-reverse');
     let src = app.attr(n, 'data-src');
     src = src ? app.q(src) : null;
@@ -77,7 +79,7 @@ module.exports = new(function () {
     let al = n.matches(this.opt.qAlert);
     let def = p ? (src ? src.value : app.get(n, p)) : null;
     if(this.opt.customDialog){
-      this.initDlg(n, '', t, al ? null : (w => this.onAnswer(n, f, p, w)), def, rev);
+      this.initDlg(n, h, t, al ? null : (w => this.onAnswer(n, f, p, w)), def, rev);
     }
     else{
       if(al) v = alert(t);//undef

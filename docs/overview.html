@@ -6,8 +6,8 @@
     <meta name="viewport" 
       content="width=device-width, initial-scale=1">
 	<!-- CDN -->
-	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.0.5/dist/d1.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.0.5/dist/d1.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.0.6/dist/d1.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.0.6/dist/d1.min.js"></script>
 	<!-- local-npm-src ->
 	<link href="../src/index.css" rel="stylesheet">
 	<script src="../dist/d1.min.js"></script>
@@ -45,33 +45,35 @@
 <!-- container -->
 <div>
   <!-- menu -->
-  <div class="hide-desktop"><a href="#menu" class="pad hover" title="Menu" data-ico="menu">&equiv;</a></div>
-  <ul class="nav flip bg hover center target-mobile" id="menu">
-	<li><a href="#"><span><b>d1-web</b><small class="text-n"><br>v1.0.5</small></span></a></li>
-	<li><a href="index.html" data-icon="text" class="text-e bg-w">Docs</a>
-	<li class="hide-nojs"><a href="#x" data-nodes="#topbar" data-set="topbar toggle shade  row let center fit" data-unset="hide">Topbar</a>
-	<li>
-		<a><span>Parent<small class="text-n"><br>nested</small></span></a>
-		<ul>
-			<li><a><span>Subitem<small class="text-n"><br>info</small></span></a>
-				<ul>
-					<li><a href="#n2">Deep</a></li>
-				</ul>
-			</li>
-		</ul>
-	</li>
-	<li id="navi-search" class="shift">
-		<form>
-			<input type="search" size="5" title="search string" class="rad">&nbsp;<input type="submit" value="Find">
-		</form>
-	</li>
-	<li>
-		<a>Last</a>
-		<ul>
-			<li><a href="#n3">Subitem</a></li>
-		</ul>
-	</li>
-  </ul>
+  <header class="bg">
+	  <div class="hide-desktop"><a href="#nav" class="pad hover" title="Menu" data-ico="menu">&equiv;</a></div>
+	  <ul class="nav flip hover center target-mobile" id="nav">
+		<li><a href="#"><span><b>d1-web</b><small class="text-n"><br>v1.0.6</small></span></a></li>
+		<li><a href="index.html" data-icon="text" class="text-e bg-w">Docs</a>
+		<li class="hide-nojs"><a href="#x" data-nodes="#topbar" data-set="topbar toggle shade  row let center fit" data-unset="hide">Topbar</a>
+		<li>
+			<a><span>Parent<small class="text-n"><br>nested</small></span></a>
+			<ul>
+				<li><a><span>Subitem<small class="text-n"><br>info</small></span></a>
+					<ul>
+						<li><a href="#n2">Deep</a></li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+		<li id="navi-search" class="shift">
+			<form>
+				<input type="search" size="5" title="search string" class="rad">&nbsp;<input type="submit" value="Find">
+			</form>
+		</li>
+		<li>
+			<a>Last</a>
+			<ul>
+				<li><a href="#n3">Subitem</a></li>
+			</ul>
+		</li>
+	  </ul>
+	</header>
 
   <!-- row -->
   <div class="row flip pad">
@@ -92,129 +94,6 @@
 			</div>
 		</div>
 		<div class="pad mar shade">
-			<div class="row">
-				<div>Progress</div>
-				<div class="col-0 shift">70%</div>
-			</div>
-			<div class="bar text-i"><i style="width:70%"></i></div>
-			<p class="bar text-e"><i style="width:20%"></i></p>
-			<p class="bar text-w"><i style="width:40%"></i></p>
-			<p class="bar text-y"><i style="width:100%"></i></p>
-			<p class="bar text-i"><i style="width:70%"></i></p>
-			<p class="bar text-n"><i style="width:55%"></i></p>
-			<p class="bar"><i style="width:25%"></i></p>
-			<p class="bar">
-				<i class="text-e" style="width:20%"></i>
-				<i class="text-w" style="width:40%"></i>
-				<i class="text-y" style="width:30%"></i>
-			</p>
-		</div>
-		<div class="pad mar shade">
-			Tooltips: 
-			<a href="#x" class="shift" data-tip="This is a tooltip">simple</a>
-			and
-			<div class="pop">
-				<a href="#x">popup</a>
-				<div class="btn bg-e shift">This is a popup tooltip</div>
-			</div>.
-		</div>
-		<div class="pad mar shade">
-			<b class="btn">Tag</b>
-			<b class="btn bg-e">Danger</b>
-			<b class="btn bg-w">Warning</b>
-			<b class="btn bg-y">Success</b>
-			<b class="btn bg-i">Info</b>
-			<b class="btn bg-n">Note</b>
-		</div>
-		<div class="pad mar shade">
-			<div class="row center">
-				<a href="#media" class="col-0 pad bg-n let" data-icon="user/50/50"></a>
-				<div>
-					Media object
-					<br>
-					<time class="text-n" datetime="1970-01-01">January 1970</time>
-					<br>
-					<a href="#media" class="-btn -inv">Link</a>
-				</div>
-			</div>
-		</div>
-		<div class="pad mar shade">
-			<figure class="bg c pad">
-				<div class="text-i" data-icon="pin/50/50/bg-w"></div>
-				<figcaption>
-					Figure caption
-				</figcaption>
-			</figure>
-		</div>
-		<div class="pad mar shade rad invert">
-			Inverted text
-			<a href="#x">link</a>
-			<span class="bg-e text-e">colors</span>
-		</div>
-		<div class="pad mar shade">
-		</div>
-		<div class="pad mar shade">
-			<div class="full center bg-w">
-				Full
-			</div>
-		</div>
-	</div>
-
-	<!-- central -->
-	
-	<div class="pad mar 	col-2">
-	
-		<h1 class="fit">Overview</h1>
-		
-		<p class="pad bg-y stick item shade" data-icon="ok///icon text-y">
-			<a href="#delete" data-ico="close" class="pad close">&times;</a>
-			Sticky message
-		</p>
-		
-		<pre><code class="language-html">&lt;!-- HTML --&gt;
-&lt;a href="#top"&gt;Top&lt;/a&gt;</code></pre>
-
-		<div class="code">
-<abbr title="Hypertext Markup Language">HTML</abbr>
-<code>code</code> sample.
-		</div>
-		
-		<div class="mar pad shade">
-			<a href="#demo-all-icons"><span class="is-off" data-ico="sun"></span><span class="is-on" data-ico="no"></span> Show icons</a>
-			<div id="demo-all-icons" class="target"><hr>
-			</div>
-			<svg style="display:none;" width="0" height="0">
-				<symbol id="icon-sun" viewBox="0 0 16 16"><path d="M1 8l7-7 7 7-7 7zm2-5v10h10v-10z"></path></symbol>
-				<!--symbol id="icon-columns" viewBox="0 0 9 9"><path d="M1 1h7v1h-7zm0 2h3v5h-3zm4 0h3v5h-3z"></path></symbol-->
-			</svg>
-  </div>
-		
-		<div class="mar pad shade">
-		<table class="mar shift let hover" id="tab-items">
-			<tbody>
-				<tr>
-					<th>
-						<a data-ico="add" class="text-y" title="Add item" href="#copy" data-item="#tab-item-tpl">+</a>
-						<a data-ico="delete" class="text-w" title="Remove all visible items" href="#delall" data-item="#tab-items>tbody">&#x2715;</a>
-						<a data-ico="ban" class="text-e" title="Clear container" href="#clear" data-item="#tab-items">&#x2715;</a>
-					</th>
-					<th>Name</th>
-					<th>Value</th>
-				</tr>
-				<tr class="hide item" id="tab-item-tpl"><td><a href="#copy">+</a> <a href="#hide">&mdash;</a> <a href="#del">&#x2715;</a></td><td>Table row item</td><td>
-					<div class="item"><a href="#copy">+</a> <a href="#del">&times;</a> <input name="items[]"> </div>
-				</td></tr>
-			</tbody>
-		</table>
-		</div>
-
-	</div>
-
-	
-	<!-- right -->
-	
-	<div>
-		<div class="pad mar shade">
 			<h3 class="mar">Components</h3>
 			<!-- togglers -->
 			<ul>
@@ -226,16 +105,16 @@
 						Pop
 						<div class="pop">
 							<a href="#pop2">Internal popup</a>
-							<div id="pop2" class="pad shift">Nested</div>
+							<div id="pop2" class="pad">Nested</div>
 						</div>
 					</div>
 				</div>
 				<li><div class="pop">
 					<a href="#x">Hover</a>
-					<div class="pad shift">
-						Pop left
+					<div class="pad">
+						Internal popup
 						<div class="pop">
-							<a href="#x">Internal popup</a>
+							<a href="#x">to the left</a>
 							<div class="pad shift">Nested, left</div>
 						</div>
 					</div>
@@ -248,7 +127,7 @@
 					<a href="https://picsum.photos/id/830/1000/700.jpg" class="pic" title="Boat">#2</a>
 					<a href="https://picsum.photos/id/844/1000/700.jpg" class="pic" title="Ocean">#3</a>
 				</span>
-				<li><a href="#drw">Drawer</a>
+				<li><a href="#menu">Drawer & tree</a>
 				<!--li><a href="#x" data-nodes="#topbar" data-set="topbar toggle shade  row let center fit" data-unset="hide">Topbar</a>
 					<b class="small btn bg-e hide-js" title="Requires Javascript">JS</b-->
 				<!--details>
@@ -272,9 +151,34 @@
 				<a id="gal3" href="#gal1" style="--img:url(https://picsum.photos/id/844/1000/700.jpg)" data-caption-x="3/3 - Ocean" ></a>
 				<a class="close" href="#cancel" data-ico="close">&times;</a>
 			</div>
-			<div class="drawer shift pad" id="drw">
+			<div class="drawer pad" id="menu">
 				<a class="close pad" href="#cancel" data-ico="close">&times;</a>
-				Demo drawer
+				<h3 data-icon="flag">Languages</h3>
+				<ul class="tree accordion mem fit">
+					<li><a href="#ul1">Computer</a>
+						<ul id="ul1">
+							<li>Programming
+								<ul class="small">
+									<li>JavaScript</li>
+									<li>PHP</li>
+								</ul>
+							</li>
+							<li>Markup
+								<ul class="small">
+									<li>HTML</li>
+									<li>CSS</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<li><a>Human</a>
+						<ul id="ul2">
+							<li>English</li>
+							<li>Spanish</li>
+							<li>Russial</li>
+						</ul>
+					</li>
+				</ul>
 			</div>
 		</div>
 		
@@ -287,33 +191,253 @@
 			</ul>
 			<div class="bord">
 				<div id="tab2" class="pad bg-w">2<br>2</div>
-				<div id="tab3">
+				<div id="tab3" class="pad">3</div>
+				<div id="tab1">
 					<div class="item">
-						<img class="fit" src="https://i.picsum.photos/id/844/500/200.jpg">
-						<div class="over invert bg-y hover"></div>
-						<div class="over pad row center c invert"><b>Overlay</b></div>
+						<img class="fit" src="https://i.picsum.photos/id/844/900/200.jpg" height="200">
+						<div class="over invert bg-w hover"></div>
+						<div class="over pad row center c invert">
+							<div>
+								<h3 class="mar">Overlay</h3>
+								<p>Text <a href="#x">link</a></p>
+							</div>
+						</div>
 					</div>
 				</div>
-				<div id="tab1" class="pad">1</div>
 			</div>
 		</div>
 
 		<div class="pad mar shade">
 			<!-- dialogs -->
 			<h3 class="mar">Dialogs <b class="small btn bg-e hide-js" title="Requires Javascript">JS</b></h3>
-			<p>
-				<a href="#done" class="alert" title="Hello!">Alert</a>,
-				<a href="?a=1&b=2" class="dialog" title="Continue?">Confirm</a>,
-				<a href="?a=1&b=2" class="dialog" title="Continue to new tab?" target="_blank">Confirm-new-tab</a>,
-				<a href="#top" class="dialog" title="Continue?">Confirm-hash</a>,
-				<a href="?a=1&b=Hello!&c=3" class="dialog text-w" data-prompt="b" data-caption="Greeting:" data-ok="Fine" data-cancel="No way" data-reverse="">Prompt</a>.
-			</p>
+			<ul>
+				<li><a href="#done" class="alert" title="How is it going" data-head="Hello">Alert</a>
+				<li><a href="?a=1&b=2" class="dialog" title="Continue?">Confirm</a>
+				<li><a href="?a=1&b=2" class="dialog" title="Continue to new tab?" target="_blank">Confirm to new tab</a>
+				<li><a href="#top" class="dialog" title="Continue to %href%?">Confirm hash</a>
+				<li><a href="?a=1&b=Hello!&c=3" class="dialog text-w" data-prompt="b" data-caption="Greeting:" data-ok="Fine" data-cancel="No way" data-reverse="">Prompt</a>
+				<li><a href="?nm=" class="dialog" data-prompt="nm" data-caption="Name:" data-src="#nms">Prompt from input</a>
+			</ul>
 			<form class="mar">
 				<input type="text" name="nm" id="nms" value="qq" size="5" required pattern="[A-Za-z]{2,}" title="Two or more letters">
 				<input type="submit" name="s1" value="OK">
-				<input type="submit" name="s2" value="Confirm" class="dialog bg-w" title="Warning!" data-prompt="nm">
-				<a href="?nm=" class="dialog" data-prompt="nm" data-caption="Name:" data-src="#nms">Prompt</a>
+				<input type="submit" name="s2" value="Confirm" class="dialog bg-w" title="Submit with" data-prompt="nm" data-head="Attention!">
 			</form>
+		</div>
+	</div>
+
+	<!-- central -->
+	
+	<div class="pad mar col-2" data-class-desktop="pad mar col-2" data-class-mobile="">
+	
+		<h1 class="fit">Overview</h1>
+		
+		<p class="pad bg-e text-e" data-icon="ban///icon text-e">Alert</p>
+		<p class="pad bg-w text-w" data-icon="warning///icon text-w">Warning</p>
+		<p class="pad bg-y text-y stick item shade bord" data-icon="ok///icon text-y">
+			<a href="#delete" data-ico="close" class="pad close">&times;</a>
+			Sticky success message
+		</p>
+		<p class="pad bg-i text-i" data-icon="info///icon text-i">Info</p>
+		<p class="pad bg-n text-n" data-icon="text///icon text-n">Note</p>
+		
+		<pre><code class="language-js">// JavaScript
+let double = function (x) {
+	console.log('double', x);
+	return 2 * x;
+}</code></pre>
+
+		<div class="mar pad shade">
+			Highlight: 
+			<a href="#x" data-nodes="#code abbr" data-set="bg-w" class="hover">abbreviation</a>
+			<label><input type="checkbox" data-nodes="#code code" data-set="btn bg-i"> code</label>
+			<select data-nodes="#code b">
+				<option value="" selected>- sample -</option>
+				<option value="text-e">danger</option>
+				<option value="text-w">warning</option>
+				<option value="text-y">success</option>
+				<option value="text-i">info</option>
+				<option value="text-n">note</option>
+			</select>
+			</p>
+			<div class="code" id="code">
+<!-- HTML -->
+<abbr title="Hypertext Markup Language">HTML</abbr>
+<code>code</code> <b>sample</b>.
+			</div>
+		</div>
+		
+		<div class="mar pad shade">
+			<a href="#demo-all-icons"><span class="is-off" data-icon="sun"><i></i></span><span class="is-on" data-icon="no"><i></i></span> Show icons</a>
+			<div id="demo-all-icons" class="target"><hr>
+			</div>
+			<svg style="display:none;" width="0" height="0">
+				<symbol id="icon-sun" viewBox="0 0 16 16"><path d="M1 8l7-7 7 7-7 7zm2-5v10h10v-10z"></path></symbol>
+				<!--symbol id="icon-columns" viewBox="0 0 9 9"><path d="M1 1h7v1h-7zm0 2h3v5h-3zm4 0h3v5h-3z"></path></symbol-->
+			</svg>
+		</div>
+		
+		<div class="mar pad shade">
+		<table class="mar shift let hover" id="tab-items">
+			<tbody>
+				<tr>
+					<th>
+						<a data-ico="add" class="text-y" title="Add item" href="#copy" data-item="#tab-item-tpl">+</a>
+						<a data-ico="delete" class="text-w" title="Remove all visible items" href="#delall" data-item="#tab-items>tbody">&#x2715;</a>
+						<a data-ico="ban" class="text-e" title="Clear container" href="#clear" data-item="#tab-items">&#x2715;</a>
+					</th>
+					<th>Name</th>
+					<th>Value</th>
+				</tr>
+				<tr class="hide item" id="tab-item-tpl"><td><a href="#copy">+</a> <a href="#hide">&mdash;</a> <a href="#del">&#x2715;</a></td><td>Table row item</td><td>
+					<div class="item"><a href="#copy">+</a> <a href="#del">&times;</a> <input name="items[]"> </div>
+				</td></tr>
+			</tbody>
+		</table>
+		</div>
+		
+		<hr>
+		
+		<!-- tablex -->
+		<p>
+			<input name="q" value="" type="search" id="table-filter" placeholder="Filter table" autocomplete="off">
+			<span id="filter-info"></span>
+		</p>
+		<table class="flip let shift hover c2 r3 sort" data-filter="#table-filter" data-filter-report="#filter-info" data-filter-cols="0 2" data-case-x>
+			<!--caption>Web languages</caption-->
+			<thead>
+				<tr><th>Language</th><th>Type</th><th>Year</th></tr>
+			</thead>
+			<tbody>
+				<tr><td>HTML</td><td>Markup</td><td>1993</td></tr>
+				<tr><td>JavaScript</td><td>Programming</td><td>1995</td></tr>
+				<tr><td>CSS</td><td>Style</td><td>1996</td></tr>
+			</tbody>
+		</table>
+
+		<!-- filter -->
+		<div class="filter mem item mar pad bg" id="filter-items" data-filter-color="green;yellow">
+			<a href="#x" data-filter class="close pad text-y hover" data-ico="refresh">Reset</a>
+			<i>Colors:</i>
+			<a href="#x" class="hover" data-filter="color">any</a>
+			<a href="#x" class="hover" data-filter="color=+red">red</a>
+			<a href="#x" class="hover" data-filter="color=+yellow">yellow</a>
+			<a href="#x" class="hover" data-filter="color=+green">green</a>
+			<label><input type="checkbox" data-filter="color"> any</label>
+			<label><input type="checkbox" data-filter="color=+red"> red</label>
+			<label><input type="checkbox" data-filter="color=+yellow"> yellow</label>
+			<label><input type="checkbox" data-filter="color=+green"> green</label>
+			<br>
+			<i>Style:</i>
+			<a href="#x" class="hover" data-filter="style">any</a>
+			<a href="#x" class="hover" data-filter="style=plain">plain</a>
+			<a href="#x" class="hover" data-filter="style=shade">shadow</a>
+			<a href="#x" class="hover" data-filter="style=btn">inverted</a>
+			<label><input type="radio" name="fltr" data-filter="style"> any</label>
+			<label><input type="radio" name="fltr" data-filter="style=plain"> plain</label>
+			<label><input type="radio" name="fltr" data-filter="style=shade"> shadow</label>
+			<label><input type="radio" name="fltr" data-filter="style=btn"> inverted</label>
+			<select data-filter="style">
+				<option value="">any</option>
+				<option value="plain">plain</option>
+				<option value="shade">shadow</option>
+				<option value="btn">inverted</option>
+			</select>
+			
+			<div class="row mar let">
+				<article data-color="red"    data-style="plain" class="item pad bg-e plain">A</article>
+				<article data-color="yellow" data-style="plain" class="item pad bg-w plain">B</article>
+				<article data-color="green"  data-style="plain" class="item pad bg-y plain">C</article>
+				<article data-color="red"    data-style="shade" class="item pad bg-e shade">D</article>
+				<article data-color="yellow" data-style="shade" class="item pad bg-w shade">E</article>
+				<article data-color="green"  data-style="shade" class="item pad bg-y shade">F</article>
+				<article data-color="red"    data-style="btn"   class="item pad bg-e btn">G</article>
+				<article data-color="yellow" data-style="btn"   class="item pad bg-w btn">H</article>
+				<article data-color="green"  data-style="btn"   class="item pad bg-y btn">I</article>
+			</div>
+		</div>
+		
+		<!-- fetch -->
+		<ul class="nav bg hover">
+			<li><i class="bg-i">Fetch</i>
+			<li><a href="data.json" data-target="#preview">Preview</a>
+			<li><a href="#clear" data-item="#preview" data-ico="delete">Clear preview</a>
+			<li><a href="data.json" data-target="#dlg-inner">Dialog</a>
+			<li><a href="data.json" data-target="#xxx" data-head="Fetched data">Generated dialog</a>
+		</ul>
+		<pre class="bg-i fit pad" id="preview">[preview area]</pre>
+		<div id="preview-dlg" class="dlg pad"><a class="close pad" href="#cancel" data-ico="close">×</a><p class="pad" id="dlg-inner">(preview)</p></div>
+	</div>
+
+	
+	<!-- right -->
+	
+	<div>
+		<div class="pad mar shade">
+			<div class="row center">
+				<a href="#media" class="col-0 pad bg-n let" data-icon="user/50/50"></a>
+				<div>
+					Media object
+					<br>
+					<time class="text-n" datetime="1970-01-01">January 1970</time>
+					<br>
+					<a href="#media" class="-btn -inv">Link</a>
+				</div>
+			</div>
+		</div>
+		<div class="pad mar shade">
+			<figure class="bg c pad">
+				<div class="text-i" data-icon="pin/80/80/bg-y"></div>
+				<figcaption>
+					Figure caption
+				</figcaption>
+			</figure>
+		</div>
+		<div class="pad mar shade">
+			<div class="narrow">
+				<div class="row">
+					<div>Progress</div>
+					<div class="col-0 shift">85%</div>
+				</div>
+				<div class="bar">
+					<i class="text-e" style="width:20%"></i>
+					<i class="text-w" style="width:35%"></i>
+					<i class="text-y" style="width:30%"></i>
+				</div>
+				<p class="bar text-e"><i style="width:20%"></i></p>
+				<p class="bar text-w"><i style="width:40%"></i></p>
+				<p class="bar text-y"><i style="width:100%"></i></p>
+				<p class="bar text-i"><i style="width:70%"></i></p>
+				<p class="bar text-n"><i style="width:55%"></i></p>
+				<!--p class="bar"><i style="width:25%"></i></p-->
+			</div>
+		</div>
+		<div class="pad mar shade">
+			Tooltips: 
+			<a href="#x" class="shift" data-tip="This is a tooltip">simple</a>
+			and
+			<div class="pop">
+				<a href="#x">popup</a>
+				<div class="btn bg-e shift">This is a popup tooltip</div>
+			</div>.
+		</div>
+		<div class="pad mar shade">
+			<b class="btn">Tag</b>
+			<b class="btn bg-e">Danger</b>
+			<b class="btn bg-w">Warning</b>
+			<b class="btn bg-y">OK</b>
+			<b class="btn bg-i">Info</b>
+			<b class="btn bg-n">Note</b>
+		</div>
+		<div class="pad mar shade rad invert">
+			Inverted text
+			<a href="#x">link</a>
+			<span class="bg-e text-e">colors</span>
+		</div>
+		<div class="pad mar shade">
+			<div class="full center bg-w">
+				Full
+			</div>
 		</div>
 	</div><!-- /right -->
   </div><!-- /row -->

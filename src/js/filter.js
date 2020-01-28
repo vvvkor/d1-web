@@ -79,7 +79,7 @@ module.exports = new(function () {
 
   this.used = function(n, f){
     let x = app.attr(n, this.opt.aFilter).split(/=\+?/, 2);
-    return (!f[x[0]] && !x[1]) || (f[x[0]] && f[x[0]].length > 0 && f[x[0]].indexOf(x[1]) != -1);
+    return (x[0] && !f[x[0]] && !x[1]) || (f[x[0]] && f[x[0]].length > 0 && f[x[0]].indexOf(x[1]) != -1);
     //return ((f[x[0]] || '') == (x[1] || ''));
   }
   

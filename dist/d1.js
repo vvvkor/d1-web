@@ -1,4 +1,4 @@
-/*! d1-web v1.0.5 */
+/*! d1-web v1.0.6 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -717,6 +717,7 @@ module.exports = new function () {
     ccDlg: 'dlg rad',
     customDialog: 1,
     aConfirm: '_confirm',
+    aHead: 'data-head',
     aPrompt: 'data-prompt',
     cBtn: 'btn pad',
     qAlert: 'a.alert',
@@ -803,8 +804,13 @@ module.exports = new function () {
       return;
     }
 
+    var h = app.attr(n, this.opt.aHead).replace(/%([\w\-]+)%/g, function (m, a) {
+      return n.getAttribute(a);
+    });
     var p = app.attr(n, this.opt.aPrompt);
-    var t = app.attr(n, app.opt.aCaption, n.title || p || '!');
+    var t = app.attr(n, app.opt.aCaption, n.title || p || '!').replace(/%([\w\-]+)%/g, function (m, a) {
+      return n.getAttribute(a);
+    });
     var rev = app.attr(n, 'data-reverse');
     var src = app.attr(n, 'data-src');
     src = src ? app.q(src) : null;
@@ -814,7 +820,7 @@ module.exports = new function () {
     var def = p ? src ? src.value : app.get(n, p) : null;
 
     if (this.opt.customDialog) {
-      this.initDlg(n, '', t, al ? null : function (w) {
+      this.initDlg(n, h, t, al ? null : function (w) {
         return _this3.onAnswer(n, f, p, w);
       }, def, rev);
     } else {
@@ -1062,7 +1068,7 @@ module.exports = new function () {
         var dlg = app.closest(d, '.dlg[id]');
         if (dlg) toggle.toggle(dlg, true);
       } else {
-        dialog.initDlg(null, '', req.responseText);
+        dialog.initDlg(null, app.attr(n, dialog.opt.aHead), req.responseText);
       }
     } else console.error('XHTTP request failed', req);
 
@@ -2125,7 +2131,7 @@ module.exports = new function () {
 
   this.used = function (n, f) {
     var x = app.attr(n, this.opt.aFilter).split(/=\+?/, 2);
-    return !f[x[0]] && !x[1] || f[x[0]] && f[x[0]].length > 0 && f[x[0]].indexOf(x[1]) != -1; //return ((f[x[0]] || '') == (x[1] || ''));
+    return x[0] && !f[x[0]] && !x[1] || f[x[0]] && f[x[0]].length > 0 && f[x[0]].indexOf(x[1]) != -1; //return ((f[x[0]] || '') == (x[1] || ''));
   };
 
   this.store = function (n, f) {

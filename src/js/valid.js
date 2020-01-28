@@ -47,7 +47,7 @@ module.exports = new(function () {
 
   this.setCustomMessage = function(n) {
     let t = n.getAttribute('data-hint') || '';// || n.title;
-    t = t.replace(/%([\w\-]+)%/g, function(m,v){ return n.getAttribute(v); })
+    t = t.replace(/%([\w\-]+)%/g, (m, v) => n.getAttribute(v));
     n.setCustomValidity(t);
   }
   

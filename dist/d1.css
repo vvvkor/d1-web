@@ -1,4 +1,4 @@
-/*! d1-web v1.0.5 */
+/*! d1-web v1.0.6 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -398,12 +398,12 @@ form>table tr>* {
     background-color: var(--bg-lite);
     border-radius: .2em;
     border-radius: var(--radius);
-    min-height: .3em;
+    min-height: 5px;
 }
 
 .bar>* {
     display: inline-block;
-    min-height: .3em;
+    height: 5px;
     background-color: currentColor;
 }
 
@@ -839,23 +839,6 @@ mark {
         padding: var(--gaps-l);
     }
 
-    .stick {
-        z-index: 3;
-        position: sticky;
-        top: 0;
-        max-height: 100vh;
-        align-self: flex-start;
-        overflow: auto;
-        box-sizing: border-box;
-    }
-
-    .topbar~* .stick {
-        top: 3.2rem;
-        top: var(--topbar);
-        max-height: calc(100vh - 3.2rem);
-        max-height: calc(100vh - var(--topbar));
-    }
-
     .nav:not(.let)>li.shift>ul:not(.toggle),
     .nav:not(.let)>li.shift~li>ul:not(.toggle), .pop>div.shift:not(.toggle) {
         left: auto;
@@ -891,6 +874,23 @@ mark {
         margin-top: 0;
         padding-top: 3.7rem;
         padding-top: calc(.5rem + var(--topbar));
+    }
+
+    .stick {
+        z-index: 3;
+        position: sticky;
+        top: 0;
+        max-height: 100vh;
+        align-self: flex-start;
+        overflow: auto;
+        box-sizing: border-box;
+    }
+
+    .topbar~* .stick {
+        top: 3.2rem;
+        top: var(--topbar);
+        max-height: calc(100vh - 3.2rem);
+        max-height: calc(100vh - var(--topbar));
     }
 
     input, button, select, textarea {
