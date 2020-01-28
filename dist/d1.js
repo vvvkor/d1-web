@@ -1165,7 +1165,7 @@ module.exports = {
 
 var app = __webpack_require__(0);
 
-['code', 'icons', 'toggle', 'dialog', 'gallery', 'tablex', 'scroll', 'calendar', 'lookup', 'edit', 'valid', 'tools', 'form', 'items', 'fliptable', 'fetch', 'theme'].forEach(function (p) {
+['code', 'icons', 'toggle', 'dialog', 'gallery', 'tablex', 'scroll', 'calendar', 'lookup', 'edit', 'valid', 'tools', 'form', 'items', 'filter', 'fliptable', 'fetch', 'theme'].forEach(function (p) {
   return app.plug(__webpack_require__(7)("./" + p + ".js"));
 }); //let opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}};
 
@@ -1187,19 +1187,20 @@ var map = {
 	"./edit.js": 10,
 	"./example.js": 11,
 	"./fetch.js": 4,
-	"./fliptable.js": 12,
-	"./form.js": 13,
+	"./filter.js": 12,
+	"./fliptable.js": 13,
+	"./form.js": 14,
 	"./gallery.js": 3,
-	"./icons.js": 14,
+	"./icons.js": 15,
 	"./iconset.js": 5,
-	"./items.js": 15,
-	"./lookup.js": 16,
-	"./scroll.js": 17,
-	"./tablex.js": 18,
-	"./theme.js": 19,
+	"./items.js": 16,
+	"./lookup.js": 17,
+	"./scroll.js": 18,
+	"./tablex.js": 19,
+	"./theme.js": 20,
 	"./toggle.js": 1,
-	"./tools.js": 20,
-	"./valid.js": 21
+	"./tools.js": 21,
+	"./valid.js": 22
 };
 
 
@@ -2022,6 +2023,166 @@ module.exports = new function () {
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
+/*! filter - filter items */
+var app = __webpack_require__(0);
+
+module.exports = new function () {
+  "use strict";
+
+  this.name = 'filter';
+  this.opt = {
+    qFilter: '.filter',
+    qItem: '.item',
+    aFilter: 'data-filter',
+    cMem: 'mem'
+  };
+
+  this.init = function () {
+    var _this = this;
+
+    app.e(this.opt.qFilter, function (n) {
+      return _this.prepare(n);
+    });
+  };
+
+  this.prepare = function (n) {
+    var _this2 = this;
+
+    n.vInit = {};
+    this.forAttrs(n, function (a, k) {
+      return n.vInit[k] = a.value;
+    });
+    app.b('a[' + this.opt.aFilter + ']', 'click', function (e) {
+      return _this2.applyControl(e.target);
+    });
+    app.b(':not(a)[' + this.opt.aFilter + ']', 'input', function (e) {
+      return _this2.applyControl(e.target);
+    });
+    this.restore(n);
+    this.apply(n);
+  };
+
+  this.applyControl = function (n) {
+    var f = app.closest(n, this.opt.qFilter);
+    var x = app.attr(n, this.opt.aFilter).split(/=/, 2);
+
+    if (f) {
+      if (x[0]) {
+        var a = this.opt.aFilter + '-' + x[0];
+        var v = (n.tagName == 'SELECT' ? n.value : x[1]) || '';
+
+        if (v.substr(0, 1) == '+' && v.length > 1) {
+          v = v.substr(1);
+          var w = app.attr(f, a).split(/;/);
+          var i = w.indexOf(v);
+          if (i == -1) w.push(v);else delete w[i];
+          v = w.filter(function (val, key, arr) {
+            return val !== '' && arr.indexOf(val) === key;
+          }).join(';');
+        }
+
+        f.setAttribute(a, v);
+        this.apply(f);
+      } else {
+        this.reset(f);
+      }
+    }
+  };
+
+  this.apply = function (n) {
+    var _this3 = this;
+
+    var f = {};
+    var z = this.opt.aFilter.length;
+    this.forAttrs(n, function (a, k) {
+      return a.value.length > 0 ? f[k] = a.value.split(/;/) : null;
+    });
+    app.dbg(['filter', f]);
+    app.e(app.qq(this.opt.qItem, n), function (m) {
+      return m.classList[_this3.match(m, f) ? 'remove' : 'add'](app.opt.cHide);
+    });
+    app.e(app.qq('[' + this.opt.aFilter + ']', n), function (m) {
+      return _this3.setUsed(m, f);
+    });
+    this.store(n, f);
+    app.fire('updated', {
+      n: n
+    });
+  };
+
+  this.match = function (n, f) {
+    var r = true;
+    Object.keys(f).forEach(function (k) {
+      return f[k] && f[k].length > 0 && f[k].indexOf(app.attr(n, 'data-' + k)) == -1 ? r = false : null;
+    });
+    return r;
+  };
+
+  this.setUsed = function (n, f) {
+    var u = this.used(n, f);
+    if (n.tagName == 'A') n.classList[u ? 'add' : 'remove'](app.opt.cAct);else if (n.type == 'checkbox') n.checked = u;else if (n.type == 'radio') n.checked = u;else if (n.tagName == 'SELECT') n.value = (f[app.attr(n, this.opt.aFilter)] || [''])[0];
+  };
+
+  this.used = function (n, f) {
+    var x = app.attr(n, this.opt.aFilter).split(/=\+?/, 2);
+    return !f[x[0]] && !x[1] || f[x[0]] && f[x[0]].length > 0 && f[x[0]].indexOf(x[1]) != -1; //return ((f[x[0]] || '') == (x[1] || ''));
+  };
+
+  this.store = function (n, f) {
+    if (n.id && n.classList.contains(this.opt.cMem)) localStorage.setItem('filter-' + n.id, JSON.stringify(f));
+  };
+
+  this.restore = function (n) {
+    var _this4 = this;
+
+    if (n.id && n.classList.contains(this.opt.cMem)) {
+      var f = localStorage.getItem('filter-' + n.id);
+
+      if (f) {
+        //create attributes if not exist
+        app.e(app.qq('[' + this.opt.aFilter + ']', n), function (m) {
+          var x = app.attr(m, _this4.opt.aFilter).split(/=/);
+
+          if (x[0]) {
+            x = _this4.opt.aFilter + '-' + x[0];
+            if (!n.hasAttribute(x)) n.setAttribute(x, '');
+          }
+        }); //parse
+
+        try {
+          f = JSON.parse(f);
+          this.forAttrs(n, function (a, k) {
+            return n.setAttribute(a.name, (f[k] || []).join(';'));
+          });
+        } catch (e) {
+          console.error('Failed JSON parse filter-' + n.id);
+        }
+      }
+    }
+  };
+
+  this.reset = function (n) {
+    //this.forAttrs(n, a => n.removeAttribute(a.name))
+    this.forAttrs(n, function (a, k) {
+      return k in n.vInit ? n.setAttribute(a.name, n.vInit[k] || '') : n.removeAttribute(a.name);
+    });
+    this.apply(n);
+  };
+
+  this.forAttrs = function (n, f) {
+    var _this5 = this;
+
+    var z = this.opt.aFilter.length;
+    app.a(n.attributes).forEach(function (a) {
+      return a.name.substr(0, z) == _this5.opt.aFilter ? f(a, a.name.substr(z + 1)) : null;
+    });
+  };
+}();
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
 /*! fliptable - responsive table */
 var app = __webpack_require__(0);
 
@@ -2072,7 +2233,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! form - utilities for form inputs */
@@ -2139,7 +2300,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! icons - include svg icons */
@@ -2236,7 +2397,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! items - copy, hide, delete items */
@@ -2318,7 +2479,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! lookup - autocomplete lookups with data from XHTTP request */
@@ -2610,7 +2771,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! scroll - scrolling behaviours (topbar, drawer) */
@@ -2720,7 +2881,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! tablex - filter and sort HTML table */
@@ -3025,7 +3186,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! theme - live theme configurator */
@@ -3140,7 +3301,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! tools - miscellaneous utilities */
@@ -3272,7 +3433,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! valid - custom form validation messages */

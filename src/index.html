@@ -123,9 +123,9 @@
 		<li><a href="#n-util">Utilities</a> &rsaquo;
 			<ul id="n-util" class="toggle">
 			<li><a href="#fetch">Fetch</a>
-			<li><a href="#toggle-class">Toggle class</a>
-			<li><a href="#filters">Filters</a>
 			<li><a href="#responsive-class">Responsive class</a>
+			<li><a href="#toggle-class">Toggle class</a>
+			<li><a href="#filters">Filter</a>
 			<li><a href="#items">Items</a>
 			<li><a href="#icons">Icons</a>
 			<li><a href="#code-highlight">Code highlight</a>
@@ -1389,6 +1389,26 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 </div>
 
 
+<h3 id="responsive-class">Responsive class</h3>
+
+<!--opts-resp-class-->
+<p>Class depending on available width <code>[data-class-mobile], [data-class-desktop]</code>.<br>
+Toggles on resize.
+
+<div class="code">
+	<div data-class-mobile="text-y" data-class-desktop="text-n">
+		Mobile
+		<span class="hide-mobile">off</span>
+		<span class="hide-desktop">on</span>
+	</div>
+	<div data-class-desktop="text-y" data-class-mobile="text-n">
+		Desktop
+		<span class="hide-desktop">off</span>
+		<span class="hide-mobile">on</span>
+	</div>
+</div>
+ 
+
 <h3 id="toggle-class">Toggle class</h3>
 
 <!--opts-set-class-->
@@ -1421,42 +1441,35 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 </div>
 <a href="#x" data-set="invert" data-nodes="body" class="hide" accesskey="i">(invert)</a>
 
-<h3 id="filters">Filters</h3>
-
-<p>Based on <a href="#toggle-class">class toggler</a>.
+<h4 id="filter-and">"AND" filter</h4>
 
 <div class="code" id="demo-filter">
-<span class="pad">Filters "AND"</span>
-<a href="#x" class="pad hover" data-set="not-red" data-nodes="#demo-filter article:not(.bg-e)">red</a>
 <a href="#x" class="pad hover" data-set="not-yellow" data-nodes="#demo-filter article:not(.bg-w)">yellow</a>
 <a href="#x" class="pad hover" data-set="not-green" data-nodes="#demo-filter article:not(.bg-y)">green</a>
-<a href="#x" class="pad hover" data-set="not-plain" data-nodes="#demo-filter article:not(.plain)">plain</a>
 <a href="#x" class="pad hover" data-set="not-shade" data-nodes="#demo-filter article:not(.shade)">shadow</a>
 <a href="#x" class="pad hover" data-set="not-btn" data-nodes="#demo-filter article:not(.btn)">inverted</a>
 <hr>
 <div class="row mar let">
-	<article class="pad mar bg-e plain">A</article>
-	<article class="pad mar bg-w plain">B</article>
-	<article class="pad mar bg-y plain">C</article>
-	<article class="pad mar bg-e shade">D</article>
-	<article class="pad mar bg-w shade">E</article>
-	<article class="pad mar bg-y shade">F</article>
-	<article class="pad mar bg-e btn">G</article>
-	<article class="pad mar bg-w btn">H</article>
-	<article class="pad mar bg-y btn">I</article>
+	<article class="pad mar bg-w">A</article>
+	<article class="pad mar bg-y">B</article>
+	<article class="pad mar bg-w shade">C</article>
+	<article class="pad mar bg-y shade">D</article>
+	<article class="pad mar bg-w btn">E</article>
+	<article class="pad mar bg-y btn">F</article>
+	<article class="pad mar bg-w btn shade">G</article>
+	<article class="pad mar bg-y btn shade">H</article>
 </div>
 </div>
 
-<p>
+<h4 id="filter-and">"OR" filter</h4>
 
 <div class="code" id="demo-filter-or">
-<span class="pad">Filters "OR"</span>
 <a href="#x" class="act pad hover" data-set="or-color-red" data-nodes="#demo-filter-or article.bg-e">red</a>
 <a href="#x" class="pad hover" data-set="or-color-yellow" data-nodes="#demo-filter-or article.bg-w">yellow</a>
 <a href="#x" class="pad hover" data-set="or-color-green" data-nodes="#demo-filter-or article.bg-y">green</a>
-<a href="#x" class="act pad hover" data-set="or-decor-plain" data-nodes="#demo-filter-or article.plain">plain</a>
-<a href="#x" class="pad hover" data-set="or-decor-shade" data-nodes="#demo-filter-or article.shade">shadow</a>
-<a href="#x" class="pad hover" data-set="or-decor-btn" data-nodes="#demo-filter-or article.btn">inverted</a>
+<a href="#x" class="act pad hover" data-set="or-style-plain" data-nodes="#demo-filter-or article.plain">plain</a>
+<a href="#x" class="pad hover" data-set="or-style-shade" data-nodes="#demo-filter-or article.shade">shadow</a>
+<a href="#x" class="pad hover" data-set="or-style-btn" data-nodes="#demo-filter-or article.btn">inverted</a>
 <hr>
 <div class="row mar let">
 	<article class="or pad mar bg-e plain">A</article>
@@ -1471,25 +1484,69 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 </div>
 </div>
 
-<h3 id="responsive-class">Responsive class</h3>
-
-<!--opts-resp-class-->
-<p>Class depending on available width <code>[data-class-mobile], [data-class-desktop]</code>.<br>
-Toggles on resize.
+<h3 id="filters">Multi-parameter filter</h3>
 
 <div class="code">
-	<div data-class-mobile="text-y" data-class-desktop="text-n">
-		Mobile
-		<span class="hide-mobile">off</span>
-		<span class="hide-desktop">on</span>
-	</div>
-	<div data-class-desktop="text-y" data-class-mobile="text-n">
-		Desktop
-		<span class="hide-desktop">off</span>
-		<span class="hide-mobile">on</span>
+<div class="filter mem" id="filter-items" data-filter-color="green;yellow">
+	<b>Color (multiple select)</b>
+	<p>
+	As links: 
+	<a href="#x" class="pad hover" data-filter="color">any</a>
+	<a href="#x" class="pad hover" data-filter="color=+red">red</a>
+	<a href="#x" class="pad hover" data-filter="color=+yellow">yellow</a>
+	<a href="#x" class="pad hover" data-filter="color=+green">green</a>
+	<p>
+	As checkboxes:
+	<label><input type="checkbox" data-filter="color"> any</label>
+	<label><input type="checkbox" data-filter="color=+red"> red</label>
+	<label><input type="checkbox" data-filter="color=+yellow"> yellow</label>
+	<label><input type="checkbox" data-filter="color=+green"> green</label>
+
+	<hr>
+
+	<b>Style (single select)</b>
+	<p>
+	As links:
+	<a href="#x" class="pad hover" data-filter="style">any</a>
+	<a href="#x" class="pad hover" data-filter="style=plain">plain</a>
+	<a href="#x" class="pad hover" data-filter="style=shade">shadow</a>
+	<a href="#x" class="pad hover" data-filter="style=btn">inverted</a>
+	<p>
+	As radio:
+	<label><input type="radio" name="fltr" data-filter="style"> any</label>
+	<label><input type="radio" name="fltr" data-filter="style=plain"> plain</label>
+	<label><input type="radio" name="fltr" data-filter="style=shade"> shadow</label>
+	<label><input type="radio" name="fltr" data-filter="style=btn"> inverted</label>
+	<p>
+	As select:
+	<select data-filter="style">
+		<option value="">any</option>
+		<option value="plain">plain</option>
+		<option value="shade">shadow</option>
+		<option value="btn">inverted</option>
+	</select>
+	
+	<hr>
+	
+	<a href="#x" data-filter>Reset filter</a>
+	
+	<hr>
+	
+	<b>Items</b>
+	<div class="row mar let">
+		<article data-color="red"    data-style="plain" class="item pad mar bg-e plain">A</article>
+		<article data-color="yellow" data-style="plain" class="item pad mar bg-w plain">B</article>
+		<article data-color="green"  data-style="plain" class="item pad mar bg-y plain">C</article>
+		<article data-color="red"    data-style="shade" class="item pad mar bg-e shade">D</article>
+		<article data-color="yellow" data-style="shade" class="item pad mar bg-w shade">E</article>
+		<article data-color="green"  data-style="shade" class="item pad mar bg-y shade">F</article>
+		<article data-color="red"    data-style="btn"   class="item pad mar bg-e btn">G</article>
+		<article data-color="yellow" data-style="btn"   class="item pad mar bg-w btn">H</article>
+		<article data-color="green"  data-style="btn"   class="item pad mar bg-y btn">I</article>
 	</div>
 </div>
-		 
+</div>
+
 <!--
 <ul id="js-behaviours">
 	<li>Dropdown <code>.toggle</code> &mdash; toggle, escape
@@ -1710,12 +1767,12 @@ let double = function(x){
 <button type="button" class="hover bord">Hover</button>
 <button type="button" class="fit">Fit</button>
 <hr>
-<a href="#x" class="btn">.btn</a>
-<a href="#x" class="btn bg-y">.btn.bg-y</a>
 <a href="#x" class="pad bord rad hover let">Link</a>
 <a href="#x" class="pad bord rad hover">Link</a>
 <a href="#x" class="pad rad hover">Link</a>
-<a href="#x" class="btn fit bg-w">Fit</a>
+<a href="#x" class="btn">a.btn</a>
+<a href="#x" class="btn bg-y">a.btn</a>
+<a href="#x" class="btn fit bg-w">a.btn.fit</a>
 <b class="btn bg-w">B</b>
 	
 </div>
@@ -1906,14 +1963,14 @@ let double = function(x){
 <h3 id="tips">Tooltips</h3>
 
 <table class="let mar opts-over">
-	<tr><td><input name="tip-shift" type="checkbox" data-nodes="#demo-tips .tip, #demo-tips .pop>.btn" data-set="shift" checked><td><code>.shift</code><td>Centrify
+	<tr><td><input name="tip-shift" type="checkbox" data-nodes="#demo-tips [data-tip], #demo-tips .pop>.btn" data-set="shift" checked><td><code>.shift</code><td>Centrify
 	<tr><td><input name="tip-bg" type="checkbox" data-nodes="#demo-tips .pop>.btn" data-set="bg-e" checked><td><code>.bg-e</code><td>Danger popup tooltip
 </table>
 
 <div class="code" id="demo-tips">
 <div>
 	Text
-	<a href="#x" class="tip shift" data-tip="This is a tooltip">tooltip</a>
+	<a href="#x" class="shift" data-tip="This is a tooltip">tooltip</a>
 	text
 	<div class="pop">
 		<a href="#x">popup-tooltip</a>

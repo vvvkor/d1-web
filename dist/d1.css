@@ -388,7 +388,7 @@ form>table tr>* {
 }
 
 .item:hover .over.hover, .over.let {
-    opacity: .5;
+    opacity: .7;
 }
 
 .bar {
@@ -407,11 +407,11 @@ form>table tr>* {
     background-color: currentColor;
 }
 
-.tip {
+[data-tip] {
     position: relative;
 }
 
-.tip:after {
+[data-tip]:after {
     content: attr(data-tip);
     position: absolute;
     bottom: 100%;
@@ -427,19 +427,19 @@ form>table tr>* {
     white-space: nowrap;
 }
 
-.tip.shift:after {
+[data-tip].shift:after {
     left: 50%;
     transform: translate(-50%, 0);
 }
 
-.tip:after {
+[data-tip]:after {
     display: block;
     opacity: 0;
     z-index: -1;
     transition: opacity 1s;
 }
 
-.tip:hover:after {
+[data-tip]:hover:after {
     opacity: 1;
     z-index: 2;
 }
@@ -689,7 +689,8 @@ ul.nav, .nav ul {
     background-color: var(--bg);
 }
 
-.hide[class], .gal>*, a.act>.is-off, a:not(.act)>.is-on, .target:not(:target),
+.hide[class], [class*="not-"], .or:not([class*="or-"]), .gal>*, a.act>.is-off,
+a:not(.act)>.is-on, .target:not(:target),
 .tabs+div>div:not(:target):not(:last-child):not(.toggle),
 .tabs+div>div:target:not(.toggle)~*, .dlg:not(:target):not(.toggle),
 .nav li:not(:hover)>ul:not(.toggle), .pop:not(:hover)>div:not(.toggle),

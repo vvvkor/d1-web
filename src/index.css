@@ -261,21 +261,21 @@ form>table tr>*{border:none;}
 /* overlay */
 .over{position:absolute;top:0;left:0;right:0;bottom:0;background:none;}
 .over.hover{transition:1s opacity;opacity:0;}
-.item:hover .over.hover, .over.let{opacity:.5;}
+.item:hover .over.hover, .over.let{opacity:.7;}
 
 /* bar */
 .bar{display:flex;overflow:hidden;background-color:var(--bg-lite);border-radius:var(--radius);min-height:.3em;}
 .bar>*{display:inline-block;min-height:.3em;background-color:currentColor;}
 
 /* tip */
-.tip{position:relative;}
-.tip:after{content:attr(data-tip);position:absolute;bottom:100%;left:0;background-color:var(--text-lite);color:var(--bg);padding:0 var(--gap-s);border-radius:var(--radius);white-space:nowrap;}
-	.tip.shift:after{left:50%;transform:translate(-50%,0);}
+[data-tip]{position:relative;}
+[data-tip]:after{content:attr(data-tip);position:absolute;bottom:100%;left:0;background-color:var(--text-lite);color:var(--bg);padding:0 var(--gap-s);border-radius:var(--radius);white-space:nowrap;}
+	[data-tip].shift:after{left:50%;transform:translate(-50%,0);}
 	/* simple */
-	/*.tip:not(:hover):after{display:none;}*/
+	/*[data-tip]:not(:hover):after{display:none;}*/
 	/* animate */
-	.tip:after{display:block;opacity:0;z-index:-1;transition:opacity 1s;}
-	.tip:hover:after{opacity:1;z-index:2;}
+	[data-tip]:after{display:block;opacity:0;z-index:-1;transition:opacity 1s;}
+	[data-tip]:hover:after{opacity:1;z-index:2;}
 /* tip as popup */
 .pop>.btn:not(.toggle){top:auto;bottom:100%;white-space:nowrap;min-width:0;}
 .pop>.btn.shift:not(.toggle){right:auto;left:50%;transform:translate(-50%,0);}

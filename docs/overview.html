@@ -12,6 +12,20 @@
 	<link href="../src/index.css" rel="stylesheet">
 	<script src="../dist/d1.min.js"></script>
 	<!-- -->
+	<script>
+		console.log('d1=', d1);
+		d1.b([document], 'DOMContentLoaded', function(n){
+			let d = d1.q('#demo-all-icons');
+			if(d && d1.plugins.icons){
+				let i = 0;
+				Object.keys(d1.plugins.icons.icons).forEach(function(k){
+					let dd = d1.ins('a', k, {title: ++i, className: 'pad hover'}, d);
+					dd.style.width = '6em';
+					d1.plugins.icons.addIcon(k, dd, 0);
+				});
+			}
+		});
+	</script>
 	<style>
 		/* Roboto, Open Sans, Georgia, PT Sans, PT Serif, PT Mono */
 		@import url('https://fonts.googleapis.com/css?family=PT+Sans&display=swap');
@@ -23,14 +37,9 @@
   <body id="body" class="" data-d1='{"debug":true,"plug":{"toggle":{"keepHash":true},"theme":{"fonts":["sans-serif","serif","monospace","PT Sans","PT Serif","PT Mono","Roboto Slab"]}}}'>
 
 
-<div class="hide" id="topbar">
-	<a href="#menu" class="pad -let hide-desktop" data-ico="menu" title="Menu">&equiv;</a>
-	<a href="#top" class="pad -let"><b>d1</b></a>
-	<code class="pad nobr">npm i d1-web</code>
-	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1-web" title="GitHub" class="pad -let">GitHub</a>
-	<a href="index.html" class="pad -let">Docs</a>
-	<span class="shift pad text-n">v1.0.5</span>
-	<a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="pad -let" data-ico="download" title="Download">Download</a>
+<div class="topbar toggle shade  row let" id="topbar">
+	<a href="#x" class="pad">Topbar</a>
+	<a href="#x" class="pad shift">Right</a>
 </div>
 
 <!-- container -->
@@ -38,10 +47,9 @@
   <!-- menu -->
   <div class="hide-desktop"><a href="#menu" class="pad hover" title="Menu" data-ico="menu">&equiv;</a></div>
   <ul class="nav flip bg hover center target-mobile" id="menu">
-	<li><a href="#n0" class="fit"><b>Logo</b></a></li>
-	<li>
-		<a href="#n1">Item</a>
-	</li>
+	<li><a href="#"><span><b>d1-web</b><small class="text-n"><br>v1.0.5</small></span></a></li>
+	<li><a href="index.html" data-icon="text" class="text-e bg-w">Docs</a>
+	<li class="hide-nojs"><a href="#x" data-nodes="#topbar" data-set="topbar toggle shade  row let center fit" data-unset="hide">Topbar</a>
 	<li>
 		<a><span>Parent<small class="text-n"><br>nested</small></span></a>
 		<ul>
@@ -69,7 +77,7 @@
   <div class="row flip pad">
 	<!-- left -->
 	<div class="">
-		<div class="pad mar shade" data-class-mobile="pad mar bord" data-class-desktop="pad mar shade">
+		<div class="pad mar shade rad" data-class-mobile="pad mar bord rad" data-class-desktop="pad mar shade rad">
 			<div>
 				<b class="btn bg-w hide-js">JavaScript off</b>
 				<b class="btn bg-y hide-nojs">JavaScript on</b>
@@ -84,6 +92,68 @@
 			</div>
 		</div>
 		<div class="pad mar shade">
+			<div class="row">
+				<div>Progress</div>
+				<div class="col-0 shift">70%</div>
+			</div>
+			<div class="bar text-i"><i style="width:70%"></i></div>
+			<p class="bar text-e"><i style="width:20%"></i></p>
+			<p class="bar text-w"><i style="width:40%"></i></p>
+			<p class="bar text-y"><i style="width:100%"></i></p>
+			<p class="bar text-i"><i style="width:70%"></i></p>
+			<p class="bar text-n"><i style="width:55%"></i></p>
+			<p class="bar"><i style="width:25%"></i></p>
+			<p class="bar">
+				<i class="text-e" style="width:20%"></i>
+				<i class="text-w" style="width:40%"></i>
+				<i class="text-y" style="width:30%"></i>
+			</p>
+		</div>
+		<div class="pad mar shade">
+			Tooltips: 
+			<a href="#x" class="shift" data-tip="This is a tooltip">simple</a>
+			and
+			<div class="pop">
+				<a href="#x">popup</a>
+				<div class="btn bg-e shift">This is a popup tooltip</div>
+			</div>.
+		</div>
+		<div class="pad mar shade">
+			<b class="btn">Tag</b>
+			<b class="btn bg-e">Danger</b>
+			<b class="btn bg-w">Warning</b>
+			<b class="btn bg-y">Success</b>
+			<b class="btn bg-i">Info</b>
+			<b class="btn bg-n">Note</b>
+		</div>
+		<div class="pad mar shade">
+			<div class="row center">
+				<a href="#media" class="col-0 pad bg-n let" data-icon="user/50/50"></a>
+				<div>
+					Media object
+					<br>
+					<time class="text-n" datetime="1970-01-01">January 1970</time>
+					<br>
+					<a href="#media" class="-btn -inv">Link</a>
+				</div>
+			</div>
+		</div>
+		<div class="pad mar shade">
+			<figure class="bg c pad">
+				<div class="text-i" data-icon="pin/50/50/bg-w"></div>
+				<figcaption>
+					Figure caption
+				</figcaption>
+			</figure>
+		</div>
+		<div class="pad mar shade rad invert">
+			Inverted text
+			<a href="#x">link</a>
+			<span class="bg-e text-e">colors</span>
+		</div>
+		<div class="pad mar shade">
+		</div>
+		<div class="pad mar shade">
 			<div class="full center bg-w">
 				Full
 			</div>
@@ -91,11 +161,58 @@
 	</div>
 
 	<!-- central -->
+	
 	<div class="pad mar 	col-2">
-	C
+	
+		<h1 class="fit">Overview</h1>
+		
+		<p class="pad bg-y stick item shade" data-icon="ok///icon text-y">
+			<a href="#delete" data-ico="close" class="pad close">&times;</a>
+			Sticky message
+		</p>
+		
+		<pre><code class="language-html">&lt;!-- HTML --&gt;
+&lt;a href="#top"&gt;Top&lt;/a&gt;</code></pre>
+
+		<div class="code">
+<abbr title="Hypertext Markup Language">HTML</abbr>
+<code>code</code> sample.
+		</div>
+		
+		<div class="mar pad shade">
+			<a href="#demo-all-icons"><span class="is-off" data-ico="sun"></span><span class="is-on" data-ico="no"></span> Show icons</a>
+			<div id="demo-all-icons" class="target"><hr>
+			</div>
+			<svg style="display:none;" width="0" height="0">
+				<symbol id="icon-sun" viewBox="0 0 16 16"><path d="M1 8l7-7 7 7-7 7zm2-5v10h10v-10z"></path></symbol>
+				<!--symbol id="icon-columns" viewBox="0 0 9 9"><path d="M1 1h7v1h-7zm0 2h3v5h-3zm4 0h3v5h-3z"></path></symbol-->
+			</svg>
+  </div>
+		
+		<div class="mar pad shade">
+		<table class="mar shift let hover" id="tab-items">
+			<tbody>
+				<tr>
+					<th>
+						<a data-ico="add" class="text-y" title="Add item" href="#copy" data-item="#tab-item-tpl">+</a>
+						<a data-ico="delete" class="text-w" title="Remove all visible items" href="#delall" data-item="#tab-items>tbody">&#x2715;</a>
+						<a data-ico="ban" class="text-e" title="Clear container" href="#clear" data-item="#tab-items">&#x2715;</a>
+					</th>
+					<th>Name</th>
+					<th>Value</th>
+				</tr>
+				<tr class="hide item" id="tab-item-tpl"><td><a href="#copy">+</a> <a href="#hide">&mdash;</a> <a href="#del">&#x2715;</a></td><td>Table row item</td><td>
+					<div class="item"><a href="#copy">+</a> <a href="#del">&times;</a> <input name="items[]"> </div>
+				</td></tr>
+			</tbody>
+		</table>
+		</div>
+
 	</div>
 
+	
 	<!-- right -->
+	
 	<div>
 		<div class="pad mar shade">
 			<h3 class="mar">Components</h3>
@@ -132,8 +249,8 @@
 					<a href="https://picsum.photos/id/844/1000/700.jpg" class="pic" title="Ocean">#3</a>
 				</span>
 				<li><a href="#drw">Drawer</a>
-				<li><a href="#x" data-nodes="#topbar" data-set="topbar toggle shade  row let center fit" data-unset="hide">Topbar</a>
-					<b class="small btn bg-e hide-js" title="Requires Javascript">JS</b>
+				<!--li><a href="#x" data-nodes="#topbar" data-set="topbar toggle shade  row let center fit" data-unset="hide">Topbar</a>
+					<b class="small btn bg-e hide-js" title="Requires Javascript">JS</b-->
 				<!--details>
 					<summary>Summary</summary>
 					<div class="bg pad">Details</div>
@@ -164,14 +281,20 @@
 		<div class="pad mar shade">
 			<h3 class="mar">Tabs</h3>
 			<ul class="nav tabs rad mem hover">
-				<li><a href="#tab1">Tab1</a></li>
-				<li><a href="#tab2">Tab2</a></li>
-				<li><a href="#tab3">Tab3</a></li>
+				<li><a href="#tab1">#1</a></li>
+				<li><a href="#tab2">#2</a></li>
+				<li><a href="#tab3">#3</a></li>
 			</ul>
-			<div class="bord pad">
-				<div id="tab2">2<br>2</div>
-				<div id="tab3">3<br>3<br>3</div>
-				<div id="tab1">1</div>
+			<div class="bord">
+				<div id="tab2" class="pad bg-w">2<br>2</div>
+				<div id="tab3">
+					<div class="item">
+						<img class="fit" src="https://i.picsum.photos/id/844/500/200.jpg">
+						<div class="over invert bg-y hover"></div>
+						<div class="over pad row center c invert"><b>Overlay</b></div>
+					</div>
+				</div>
+				<div id="tab1" class="pad">1</div>
 			</div>
 		</div>
 
