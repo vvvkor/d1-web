@@ -1,4 +1,4 @@
-/*! d1-web v1.0.6 */
+/*! d1-web v1.0.7 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -465,7 +465,8 @@ module.exports = new function () {
   };
 
   this.after = function (n) {
-    this.shown = null; //let modal = app.q(this.opt.qDlg+':not(.'+app.opt.cOff+'), '+this.opt.qGal+':target'); // :target not updated after Esc key
+    this.shown = null; //do it just once when dialog is opened
+    //let modal = app.q(this.opt.qDlg+':not(.'+app.opt.cOff+'), '+this.opt.qGal+':target'); // :target not updated after Esc key
 
     var modal = app.q(this.opt.qDlg + ':not(.' + app.opt.cOff + '), ' + this.opt.qGal + '[id="' + location.hash.substr(1) + '"]');
     var bar = window.innerWidth - document.documentElement.clientWidth; //scroll bar width
@@ -477,9 +478,14 @@ module.exports = new function () {
     app.dbg(['after', n, modal, s.paddingRight]);
 
     if (modal) {
-      //let f = app.q('input, a:not(.' + app.opt.cClose + ')', modal);
-      var f = app.q('input, a:not([href="' + app.opt.hClose + '"])', modal);
-      if (f) f.focus();
+      //let f1 = app.q('input, a:not(.' + app.opt.cClose + ')', modal);
+      var f1 = app.q('input, a:not([href="' + app.opt.hClose + '"])', modal);
+      var f = app.q(':focus', modal);
+
+      if (f1 && !f && (!n || !modal.contains(n))) {
+        app.dbg(['focus', n, modal, f1, f]);
+        f1.focus(); //focus just once when dialog is opened
+      }
     }
   };
 

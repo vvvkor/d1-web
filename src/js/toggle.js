@@ -65,7 +65,7 @@ module.exports = new(function () {
   }
 
   this.after = function(n){
-    this.shown = null;
+    this.shown = null;//do it just once when dialog is opened
     //let modal = app.q(this.opt.qDlg+':not(.'+app.opt.cOff+'), '+this.opt.qGal+':target'); // :target not updated after Esc key
     let modal = app.q(this.opt.qDlg+':not(.'+app.opt.cOff+'), '+this.opt.qGal+'[id="' + location.hash.substr(1) + '"]');
     let bar = window.innerWidth - document.documentElement.clientWidth; //scroll bar width
@@ -74,9 +74,13 @@ module.exports = new(function () {
     if(!(modal && s.paddingRight)) s.paddingRight = modal ? '' + bar + 'px' : ''; // avoid width reflow
     app.dbg(['after', n, modal, s.paddingRight]);
     if(modal){
-      //let f = app.q('input, a:not(.' + app.opt.cClose + ')', modal);
-      let f = app.q('input, a:not([href="' + app.opt.hClose + '"])', modal);
-      if(f) f.focus();
+      //let f1 = app.q('input, a:not(.' + app.opt.cClose + ')', modal);
+      let f1 = app.q('input, a:not([href="' + app.opt.hClose + '"])', modal);
+      let f = app.q(':focus', modal);
+      if(f1 && !f && (!n || !modal.contains(n))){
+        app.dbg(['focus', n, modal, f1, f]);
+        f1.focus();//focus just once when dialog is opened
+      }
     }
   }
 

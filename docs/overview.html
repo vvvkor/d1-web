@@ -1,13 +1,13 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>d1-web - Overview</title>
+    <title>Overview - d1</title>
     <meta charset="utf-8">
     <meta name="viewport" 
       content="width=device-width, initial-scale=1">
 	<!-- CDN -->
-	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.0.6/dist/d1.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.0.6/dist/d1.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.0.7/dist/d1.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.0.7/dist/d1.min.js"></script>
 	<!-- local-npm-src ->
 	<link href="../src/index.css" rel="stylesheet">
 	<script src="../dist/d1.min.js"></script>
@@ -47,12 +47,11 @@
   <!-- menu -->
   <header class="bg">
 	  <div class="hide-desktop"><a href="#nav" class="pad hover" title="Menu" data-ico="menu">&equiv;</a></div>
-	  <ul class="nav flip hover center target-mobile" id="nav">
-		<li><a href="#"><span><b>d1-web</b><small class="text-n"><br>v1.0.6</small></span></a></li>
-		<li><a href="index.html" data-icon="text" class="text-e bg-w">Docs</a>
-		<li class="hide-nojs"><a href="#x" data-nodes="#topbar" data-set="topbar toggle shade  row let center fit" data-unset="hide">Topbar</a>
+	  <ul class="nav flip hover target-mobile" id="nav">
+		<li><a href="#"><b>d1</b> <small class="text-n">v1.0.7</small></a></li>
+		<li><a href="index.html" class="bg-w text-w" data-icon="text">Docs</a>
 		<li>
-			<a><span>Parent<small class="text-n"><br>nested</small></span></a>
+			<a>Parent</a>
 			<ul>
 				<li><a><span>Subitem<small class="text-n"><br>info</small></span></a>
 					<ul>
@@ -63,7 +62,7 @@
 		</li>
 		<li id="navi-search" class="shift">
 			<form>
-				<input type="search" size="5" title="search string" class="rad">&nbsp;<input type="submit" value="Find">
+				<input name="q" type="search" size="5" title="search string" class="rad">&nbsp;<input type="submit" value="Find">
 			</form>
 		</li>
 		<li>
@@ -80,18 +79,23 @@
 	<!-- left -->
 	<div class="">
 		<div class="pad mar shade rad" data-class-mobile="pad mar bord rad" data-class-desktop="pad mar shade rad">
-			<div>
+			<h3 class="mar">Status</h3>
+			<p>
 				<b class="btn bg-w hide-js">JavaScript off</b>
 				<b class="btn bg-y hide-nojs">JavaScript on</b>
-			</div>
-			<div>
+				<br>
 				<b class="btn bg-i hide-desktop">Mobile layout</b>
 				<b class="btn bg-n hide-mobile">Desktop layout</b>
-			</div>
-			<div>
-				<a href="#body" data-set="invert">Invert document</a>
-				<b class="small btn bg-e hide-js" title="Requires Javascript">JS</b>
-			</div>
+			</p>
+		</div>
+		<div class="pad mar shade">
+			<h3 class="mar">Page setup <b class="small btn bg-e hide-js" title="Requires Javascript">JS</b></h3>
+			<p>
+			<a class="hover" href="#x" data-nodes="#topbar" data-set="topbar toggle shade  row let center fit" data-unset="hide">Topbar</a><br>
+			<a class="hover" href="#body" data-set="invert">Invert document</a><br>
+			<a class="hover" href="#x" data-nodes="html" data-set="scroller">Custom scroll</a>
+			<b class="text-w" title="Works on Webkit and Firefox" data-ico="warning"></b>
+			</p>
 		</div>
 		<div class="pad mar shade">
 			<h3 class="mar">Components</h3>
@@ -112,10 +116,10 @@
 				<li><div class="pop">
 					<a href="#x">Hover</a>
 					<div class="pad">
-						Internal popup
+						Internal popup on
 						<div class="pop">
-							<a href="#x">to the left</a>
-							<div class="pad shift">Nested, left</div>
+							<a href="#x">hover</a>
+							<div class="pad shift">Nested, to the left on desktop</div>
 						</div>
 					</div>
 				</div>
@@ -123,9 +127,9 @@
 				<li><a href="#full">Full</a>
 				<li><a href="#gal1">Gallery</a>
 				<li><span class="gallery">
-					<a href="https://picsum.photos/id/360/1000/700.jpg" class="pic" title="Sunset">#1</a>
-					<a href="https://picsum.photos/id/830/1000/700.jpg" class="pic" title="Boat">#2</a>
-					<a href="https://picsum.photos/id/844/1000/700.jpg" class="pic" title="Ocean">#3</a>
+					<a href="https://picsum.photos/id/360/1000/700.jpg" class="pic" title="Red">#1</a>
+					<a href="https://picsum.photos/id/844/1000/700.jpg" class="pic" title="Green">#2</a>
+					<a href="https://picsum.photos/id/830/1000/700.jpg" class="pic" title="Blue">#3</a>
 				</span>
 				<li><a href="#menu">Drawer & tree</a>
 				<!--li><a href="#x" data-nodes="#topbar" data-set="topbar toggle shade  row let center fit" data-unset="hide">Topbar</a>
@@ -146,9 +150,9 @@
 				Fullscreen modal
 			</div>
 			<div class="gal">
-				<a id="gal1" href="#gal2" style="--img:url(https://picsum.photos/id/360/1000/700.jpg)" data-caption="1/3 - Sunset"  ></a>
-				<a id="gal2" href="#gal3" style="--img:url(https://picsum.photos/id/830/1000/700.jpg)" data-caption="2/3 - Boat"></a>
-				<a id="gal3" href="#gal1" style="--img:url(https://picsum.photos/id/844/1000/700.jpg)" data-caption-x="3/3 - Ocean" ></a>
+				<a id="gal1" href="#gal2" style="--img:url(https://picsum.photos/id/360/1000/700.jpg)" data-caption="1/3 - Red"  ></a>
+				<a id="gal2" href="#gal3" style="--img:url(https://picsum.photos/id/844/1000/700.jpg)" data-caption-x="2/3 - Green" ></a>
+				<a id="gal3" href="#gal1" style="--img:url(https://picsum.photos/id/830/1000/700.jpg)" data-caption="3/3 - Blue"></a>
 				<a class="close" href="#cancel" data-ico="close">&times;</a>
 			</div>
 			<div class="drawer pad" id="menu">
@@ -182,8 +186,8 @@
 			</div>
 		</div>
 		
-		<div class="pad mar shade">
-			<h3 class="mar">Tabs</h3>
+		<div class="-pad mar -shade">
+			<!--h3 class="mar">Tabs</h3-->
 			<ul class="nav tabs rad mem hover">
 				<li><a href="#tab1">#1</a></li>
 				<li><a href="#tab2">#2</a></li>
@@ -230,7 +234,13 @@
 	
 	<div class="pad mar col-2" data-class-desktop="pad mar col-2" data-class-mobile="">
 	
-		<h1 class="fit">Overview</h1>
+		<div class="small">
+			<a class="" href="https://github.com/vvvkor/d1-web">d1</a> &rsaquo;
+			<a class="" href="index.html">Docs</a> &rsaquo;
+			<a class="">Overview</a>
+		</div>
+	
+		<h1 class="mar">Overview</h1>
 		
 		<p class="pad bg-e text-e" data-icon="ban///icon text-e">Alert</p>
 		<p class="pad bg-w text-w" data-icon="warning///icon text-w">Warning</p>
@@ -241,11 +251,240 @@
 		<p class="pad bg-i text-i" data-icon="info///icon text-i">Info</p>
 		<p class="pad bg-n text-n" data-icon="text///icon text-n">Note</p>
 		
-		<pre><code class="language-js">// JavaScript
+		<h2 class="mem" id="typo">Typography</h2>
+		
+			<b>Bold</b>
+			<i>Italic</i>
+			<s>Strike</s>
+			<ins>Insert</ins>
+			<del>Delete</del>
+			<sub>Subscript</sub>
+			<sup>Superscript</sup>
+			
+			<time datetime="1970-01-01">Time</time>
+			<abbr title="Abbreviation">Abbr</abbr>
+			<q>Quote in <q>quote</q></q>
+			<cite>Cite</cite>
+			<mark>Mark</mark>
+			<dfn>Dfn</dfn>
+			
+			<code>Code</code>
+			<var>Var</var>
+			<kbd>Kbd</kbd>
+			<samp>Samp</samp>
+
+			<a href="#x">Link</a>
+			<a>Link without href</a>
+
+			<p>Paragraph.<br>New line inside paragraph.</p>
+			<blockquote>Blockqoute</blockquote>
+			<pre><code class="language-js">// JavaScript preformatted code
 let double = function (x) {
 	console.log('double', x);
 	return 2 * x;
 }</code></pre>
+		
+		
+		<h2 class="mem" id="forms">Forms</h2>
+		
+		<ul class="nav shade hover">
+			<li><a href="#form-inline">Inline</a>
+			<li><a href="#form-stack">Stacked</a>
+			<li><a href="#form-flex">Using flex</a>
+			<li><a href="#form-table">Using table</a>
+		</ul>
+		
+		<div class="dlg rad" id="form-inline">
+			<a href="#cancel" class="close pad" data-ico="close">&times;</a>
+			<h3 class="fit pad bg">Inline form</h3>
+			<div class="mar pad">
+			<form action="">
+				<input type="search" name="nm">
+				<input type="submit" value="Search">
+			</form>
+			</div>
+		</div>
+		
+		<div class="dlg rad" id="form-stack">
+			<a href="#cancel" class="close pad" data-ico="close">&times;</a>
+			<h3 class="fit pad bg">Stacked form</h3>
+			<div class="mar pad">
+			<form action="">
+			  <p>
+				<label for="name">Name</label><br>
+				<input type="text" name="name" id="name" required="">
+			  </p>
+			  <p>
+				<label for="age">Age</label><br>
+				<input type="number" name="age" id="age">
+			  </p>
+			  <p>
+				<input type="submit" value="OK">
+				<a href="#x" class="pad hover">Link</a>
+			  </p>
+			</form>
+			</div>
+		</div>
+		
+		<div class="dlg let rad" id="form-flex">
+			<a href="#cancel" class="close pad" data-ico="close">&times;</a>
+			<h3 class="fit pad bg">Flex form</h3>
+			<div class="pad read center">
+			<form action="" class="mar pad shade">
+			  <div class="row flip">
+				<label for="i1">Name</label>
+				<div class="-col-3"><input type="text" name="i1" id="i1"></div>
+			  </div>
+			  <fieldset>
+				<legend><a href="#fs0">Fieldset</a></legend>
+				<div id="fs0" class="--hide --toggle target ">
+				  <div class="row flip">
+					<label for="i3">Age</label>
+					<div class="-col-3"><input type="number" name="i3" id="i3"></div>
+				  </div>
+				</div>
+			  </fieldset>
+			  <div class="row flip">
+				<div aria-hidden="true"></div>
+				<div class="-col-3">
+				  <input type="checkbox" name="i2" id="i2">
+				  <label for="i2">Agreed</label>
+				</div>
+			  </div>
+			  <div class="row flip">
+				<div aria-hidden="true"></div>
+				<div class="-col-3"><input type="submit" value="Submit"></div>
+			  </div>
+			</form>
+			</div>
+		</div>
+		
+		<div class="dlg let rad" id="form-table">
+			<div class="bg-n stick">
+				<a href="#cancel" class="close pad" data-ico="close">&times;</a>
+				<h3 class="fit pad">Table form</h3>
+			</div>
+			<div class="pad read center">
+			<form action="" class="mar pad shade">
+				<table class="flip">
+				<tr>
+					<td><label for="nm">Name</label>
+					<td><input type="text" name="nm" id="nm" required pattern="[A-Za-z]{2,}" title="Two up to four letters" data-hint="%minlength% up to %maxlength% letters" autocomplete="off" minlength="2" maxlength="4">
+					<div>
+						<a href="#nm" data-value="test">Test</a>,
+						<a href="#nm" data-value="">Reset</a>
+					</div>
+					
+					
+				<tr><td colspan="2">
+				<fieldset>
+					<legend><a href="#fs1">Input types</a></legend>
+					<table id="fs1" class="target mem">
+					
+					<tr>
+						<td><label for="usr_id">Lookup</label>
+						<td>
+							<input required
+							  type="text"
+							  name="usr_id"
+							  id="usr_id"
+							  value="1"
+							  placeholder="search"
+							  data-lookup="data.json?q={q}"
+							  data-label="User One"
+							  data-cache="10"
+							  data-url="#user-{id}">
+					<tr>
+						<td><label for="country">Chained</label>
+						<td>
+						  <select name="country" id="country" data-chain="#town">
+							<option value="">-</option>
+							<option value="ru">Russia</option>
+							<option value="fr">France</option>
+							<option value="no">No</option>
+						  </select>
+						  <select name="town" id="town" data-filter="{q}.json" data-placeholder="..." data-cache="10"></select>
+					<tr>
+						<td><label for="lng">Select</label>
+						<td>
+						<select name="lng" id="lng" required>
+							<option value="" selected>-</option>
+							<option value="en">English</option>
+							<option value="ru">Russian</option>
+						</select>
+					<tr>
+						<td><label for="rdo">Readonly</label>
+						<td><input type="text" name="rdo" id="rdo" readonly value="read only">
+					<tr>
+						<td><label for="dis">Disabled</label>
+						<td><input type="text" name="dis" id="dis" disabled value="not sent">
+					<tr>
+						<td><label for="dt">Date</label>
+						<td><input type="date" name="dt" id="dt" class="calendar">
+					<tr>
+						<td><label for="tm">Time</label>
+						<td><input type="time" name="tm" id="tm">
+					<tr>
+						<td><label for="dtl">Datetime</label>
+						<td><input type="datetime-local" name="dtl" id="dtl" class="calendar">
+					<tr>
+						<td><label for="num">Number</label>
+						<td><input type="number" name="num" id="num" min="1" max="10" step="0.1" data-info="some info" data-hint="Enter number between %min% and %max%, step %step% (%data-info%).">
+					<tr>
+						<td><label for="rng">Range</label>
+						<td><input type="range" name="rng" id="rng">
+					<tr>
+						<td><label for="clrn">Color</label>
+						<td><input type="color" name="clrn" id="clrn" value="#ff0000">
+					<tr>
+						<td><label for="eml">E-mail</label>
+						<td><input type="email" name="eml" id="eml" value="">
+					<tr>
+						<td><label for="ur">URL</label>
+						<td><input type="url" name="ur" id="ur" value="">
+					<tr>
+						<td><label for="msg">Textarea</label>
+						<td><textarea class="edit adjust" data-tools="/*@xbi_.pqf" name="msg" id="msg" cols="20" rows="5" required></textarea>
+					<tr>
+						<td>Upload
+						<td><label class="drop" title="Drop image" for="up"><input id="up" type="file" name="up[]" multiple></label>
+					<tr>
+						<td>Box
+						<td><label for="bx0"><input id="bx0" type="checkbox" required class="" name="bx0" value="1" title="You need to check the box to continue"> Required box</label>
+						
+					</table>
+				</fieldset>
+				<fieldset>
+					<legend><a href="#fs2">Switches</a></legend>
+					<table id="fs2" class="target mem">
+						<tr>
+							<td>Box
+							<td>
+								<label for="bx1"><input id="bx1" type="checkbox" class="" name="colors" value="1" data-group="colors"> <b>All</b></label><br>
+								<label for="bx2"><input id="bx2" type="checkbox" class="colors" name="color[]" value="red"> Red</label><br>
+								<label for="bx3"><input id="bx3" type="checkbox" class="colors" name="color[]" value="green"> Green</label><br>
+								<label for="bx4"><input id="bx4" type="checkbox" class="colors" name="color[]" value="blue"> Blue</label><br>
+						<tr>
+							<td>Radio
+							<td>
+								<label for="rd1"><input id="rd1" type="radio" name="ra1" required value="sun"> Sun</label><br>
+								<label for="rd2"><input id="rd2" type="radio" name="ra1" value="moon"> Moon</label><br>
+					</table>
+				</fieldset>
+				
+				<tr>
+					<td>
+					<td>
+						<input type="submit" value="Submit">
+						<input type="submit" value="Disabled" disabled>
+						<input type="submit" value="Confirm" class="bg-w dialog" name="btn2" title="Confirm?">
+				</table>
+			</form>
+			</div>
+		</div>
+		
+		<h2 class="mem" id="utils">Utilities</h2>
+		
 
 		<div class="mar pad shade">
 			Highlight: 
@@ -268,7 +507,7 @@ let double = function (x) {
 		</div>
 		
 		<div class="mar pad shade">
-			<a href="#demo-all-icons"><span class="is-off" data-icon="sun"><i></i></span><span class="is-on" data-icon="no"><i></i></span> Show icons</a>
+			<a href="#demo-all-icons"><span class="is-off text-w" data-icon="sun"><i></i></span><span class="is-on" data-icon="no"><i></i></span> Show icons</a>
 			<div id="demo-all-icons" class="target"><hr>
 			</div>
 			<svg style="display:none;" width="0" height="0">
@@ -278,6 +517,7 @@ let double = function (x) {
 		</div>
 		
 		<div class="mar pad shade">
+		<div class="roll">
 		<table class="mar shift let hover" id="tab-items">
 			<tbody>
 				<tr>
@@ -294,6 +534,7 @@ let double = function (x) {
 				</td></tr>
 			</tbody>
 		</table>
+		</div>
 		</div>
 		
 		<hr>
@@ -367,6 +608,34 @@ let double = function (x) {
 		</ul>
 		<pre class="bg-i fit pad" id="preview">[preview area]</pre>
 		<div id="preview-dlg" class="dlg pad"><a class="close pad" href="#cancel" data-ico="close">×</a><p class="pad" id="dlg-inner">(preview)</p></div>
+		
+		<!-- cols -->
+		<!--
+		<h3 id="cols">Columns</h3>
+		<p>
+		With gap:
+		<label><input type="radio" name="colz" data-nodes="#colz" data-set="row flip by-1"> 1</label>
+		<label><input type="radio" name="colz" data-nodes="#colz" data-set="row flip by-2"> 2</label>
+		<label><input type="radio" name="colz" data-nodes="#colz" data-set="row flip by-3" checked> 3</label>
+		<label><input type="radio" name="colz" data-nodes="#colz" data-set="row flip by-4"> 4</label>
+		<br>
+		Without gap:
+		<label><input type="radio" name="colz" data-nodes="#colz" data-set="row flip fit by-1"> 1</label>
+		<label><input type="radio" name="colz" data-nodes="#colz" data-set="row flip fit by-2"> 2</label>
+		<label><input type="radio" name="colz" data-nodes="#colz" data-set="row flip fit by-3"> 3</label>
+		<label><input type="radio" name="colz" data-nodes="#colz" data-set="row flip fit by-4"> 4</label>
+		</p>
+		
+		<div class="bord">
+		<div class="row flip by-3" id="colz">
+			<div class="bg-e item">#1 <a href="#copy">+</a> <a href="#del">-</a></div>
+			<div class="bg-w item">#2 <a href="#copy">+</a> <a href="#del">-</a></div>
+			<div class="bg-y item">#3 <a href="#copy">+</a> <a href="#del">-</a></div>
+			<div class="bg-i item">#4 <a href="#copy">+</a> <a href="#del">-</a></div>
+			<div class="bg-n item">#5 <a href="#copy">+</a> <a href="#del">-</a></div>
+		</div>
+		</div>
+		-->
 	</div>
 
 	
@@ -385,14 +654,14 @@ let double = function (x) {
 				</div>
 			</div>
 		</div>
-		<div class="pad mar shade">
-			<figure class="bg c pad">
-				<div class="text-i" data-icon="pin/80/80/bg-y"></div>
-				<figcaption>
-					Figure caption
-				</figcaption>
-			</figure>
-		</div>
+		
+		<figure class="c pad mar shade">
+			<div class="text-i" data-icon="pin/80/80/bg-y"></div>
+			<figcaption>
+				Figure caption
+			</figcaption>
+		</figure>
+
 		<div class="pad mar shade">
 			<div class="narrow">
 				<div class="row">
@@ -421,7 +690,7 @@ let double = function (x) {
 				<div class="btn bg-e shift">This is a popup tooltip</div>
 			</div>.
 		</div>
-		<div class="pad mar shade">
+		<div class="-pad mar -shade">
 			<b class="btn">Tag</b>
 			<b class="btn bg-e">Danger</b>
 			<b class="btn bg-w">Warning</b>
@@ -434,10 +703,8 @@ let double = function (x) {
 			<a href="#x">link</a>
 			<span class="bg-e text-e">colors</span>
 		</div>
-		<div class="pad mar shade">
-			<div class="full center bg-w">
-				Full
-			</div>
+		<div class="full center bg-w mar shade">
+			Full height
 		</div>
 	</div><!-- /right -->
   </div><!-- /row -->

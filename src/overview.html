@@ -251,11 +251,240 @@
 		<p class="pad bg-i text-i" data-icon="info///icon text-i">Info</p>
 		<p class="pad bg-n text-n" data-icon="text///icon text-n">Note</p>
 		
-		<pre><code class="language-js">// JavaScript
+		<h2 class="mem" id="typo">Typography</h2>
+		
+			<b>Bold</b>
+			<i>Italic</i>
+			<s>Strike</s>
+			<ins>Insert</ins>
+			<del>Delete</del>
+			<sub>Subscript</sub>
+			<sup>Superscript</sup>
+			
+			<time datetime="1970-01-01">Time</time>
+			<abbr title="Abbreviation">Abbr</abbr>
+			<q>Quote in <q>quote</q></q>
+			<cite>Cite</cite>
+			<mark>Mark</mark>
+			<dfn>Dfn</dfn>
+			
+			<code>Code</code>
+			<var>Var</var>
+			<kbd>Kbd</kbd>
+			<samp>Samp</samp>
+
+			<a href="#x">Link</a>
+			<a>Link without href</a>
+
+			<p>Paragraph.<br>New line inside paragraph.</p>
+			<blockquote>Blockqoute</blockquote>
+			<pre><code class="language-js">// JavaScript preformatted code
 let double = function (x) {
 	console.log('double', x);
 	return 2 * x;
 }</code></pre>
+		
+		
+		<h2 class="mem" id="forms">Forms</h2>
+		
+		<ul class="nav shade hover">
+			<li><a href="#form-inline">Inline</a>
+			<li><a href="#form-stack">Stacked</a>
+			<li><a href="#form-flex">Using flex</a>
+			<li><a href="#form-table">Using table</a>
+		</ul>
+		
+		<div class="dlg rad" id="form-inline">
+			<a href="#cancel" class="close pad" data-ico="close">&times;</a>
+			<h3 class="fit pad bg">Inline form</h3>
+			<div class="mar pad">
+			<form action="">
+				<input type="search" name="nm">
+				<input type="submit" value="Search">
+			</form>
+			</div>
+		</div>
+		
+		<div class="dlg rad" id="form-stack">
+			<a href="#cancel" class="close pad" data-ico="close">&times;</a>
+			<h3 class="fit pad bg">Stacked form</h3>
+			<div class="mar pad">
+			<form action="">
+			  <p>
+				<label for="name">Name</label><br>
+				<input type="text" name="name" id="name" required="">
+			  </p>
+			  <p>
+				<label for="age">Age</label><br>
+				<input type="number" name="age" id="age">
+			  </p>
+			  <p>
+				<input type="submit" value="OK">
+				<a href="#x" class="pad hover">Link</a>
+			  </p>
+			</form>
+			</div>
+		</div>
+		
+		<div class="dlg let rad" id="form-flex">
+			<a href="#cancel" class="close pad" data-ico="close">&times;</a>
+			<h3 class="fit pad bg">Flex form</h3>
+			<div class="pad read center">
+			<form action="" class="mar pad shade">
+			  <div class="row flip">
+				<label for="i1">Name</label>
+				<div class="-col-3"><input type="text" name="i1" id="i1"></div>
+			  </div>
+			  <fieldset>
+				<legend><a href="#fs0">Fieldset</a></legend>
+				<div id="fs0" class="--hide --toggle target ">
+				  <div class="row flip">
+					<label for="i3">Age</label>
+					<div class="-col-3"><input type="number" name="i3" id="i3"></div>
+				  </div>
+				</div>
+			  </fieldset>
+			  <div class="row flip">
+				<div aria-hidden="true"></div>
+				<div class="-col-3">
+				  <input type="checkbox" name="i2" id="i2">
+				  <label for="i2">Agreed</label>
+				</div>
+			  </div>
+			  <div class="row flip">
+				<div aria-hidden="true"></div>
+				<div class="-col-3"><input type="submit" value="Submit"></div>
+			  </div>
+			</form>
+			</div>
+		</div>
+		
+		<div class="dlg let rad" id="form-table">
+			<div class="bg-n stick">
+				<a href="#cancel" class="close pad" data-ico="close">&times;</a>
+				<h3 class="fit pad">Table form</h3>
+			</div>
+			<div class="pad read center">
+			<form action="" class="mar pad shade">
+				<table class="flip">
+				<tr>
+					<td><label for="nm">Name</label>
+					<td><input type="text" name="nm" id="nm" required pattern="[A-Za-z]{2,}" title="Two up to four letters" data-hint="%minlength% up to %maxlength% letters" autocomplete="off" minlength="2" maxlength="4">
+					<div>
+						<a href="#nm" data-value="test">Test</a>,
+						<a href="#nm" data-value="">Reset</a>
+					</div>
+					
+					
+				<tr><td colspan="2">
+				<fieldset>
+					<legend><a href="#fs1">Input types</a></legend>
+					<table id="fs1" class="target mem">
+					
+					<tr>
+						<td><label for="usr_id">Lookup</label>
+						<td>
+							<input required
+							  type="text"
+							  name="usr_id"
+							  id="usr_id"
+							  value="1"
+							  placeholder="search"
+							  data-lookup="data.json?q={q}"
+							  data-label="User One"
+							  data-cache="10"
+							  data-url="#user-{id}">
+					<tr>
+						<td><label for="country">Chained</label>
+						<td>
+						  <select name="country" id="country" data-chain="#town">
+							<option value="">-</option>
+							<option value="ru">Russia</option>
+							<option value="fr">France</option>
+							<option value="no">No</option>
+						  </select>
+						  <select name="town" id="town" data-filter="{q}.json" data-placeholder="..." data-cache="10"></select>
+					<tr>
+						<td><label for="lng">Select</label>
+						<td>
+						<select name="lng" id="lng" required>
+							<option value="" selected>-</option>
+							<option value="en">English</option>
+							<option value="ru">Russian</option>
+						</select>
+					<tr>
+						<td><label for="rdo">Readonly</label>
+						<td><input type="text" name="rdo" id="rdo" readonly value="read only">
+					<tr>
+						<td><label for="dis">Disabled</label>
+						<td><input type="text" name="dis" id="dis" disabled value="not sent">
+					<tr>
+						<td><label for="dt">Date</label>
+						<td><input type="date" name="dt" id="dt" class="calendar">
+					<tr>
+						<td><label for="tm">Time</label>
+						<td><input type="time" name="tm" id="tm">
+					<tr>
+						<td><label for="dtl">Datetime</label>
+						<td><input type="datetime-local" name="dtl" id="dtl" class="calendar">
+					<tr>
+						<td><label for="num">Number</label>
+						<td><input type="number" name="num" id="num" min="1" max="10" step="0.1" data-info="some info" data-hint="Enter number between %min% and %max%, step %step% (%data-info%).">
+					<tr>
+						<td><label for="rng">Range</label>
+						<td><input type="range" name="rng" id="rng">
+					<tr>
+						<td><label for="clrn">Color</label>
+						<td><input type="color" name="clrn" id="clrn" value="#ff0000">
+					<tr>
+						<td><label for="eml">E-mail</label>
+						<td><input type="email" name="eml" id="eml" value="">
+					<tr>
+						<td><label for="ur">URL</label>
+						<td><input type="url" name="ur" id="ur" value="">
+					<tr>
+						<td><label for="msg">Textarea</label>
+						<td><textarea class="edit adjust" data-tools="/*@xbi_.pqf" name="msg" id="msg" cols="20" rows="5" required></textarea>
+					<tr>
+						<td>Upload
+						<td><label class="drop" title="Drop image" for="up"><input id="up" type="file" name="up[]" multiple></label>
+					<tr>
+						<td>Box
+						<td><label for="bx0"><input id="bx0" type="checkbox" required class="" name="bx0" value="1" title="You need to check the box to continue"> Required box</label>
+						
+					</table>
+				</fieldset>
+				<fieldset>
+					<legend><a href="#fs2">Switches</a></legend>
+					<table id="fs2" class="target mem">
+						<tr>
+							<td>Box
+							<td>
+								<label for="bx1"><input id="bx1" type="checkbox" class="" name="colors" value="1" data-group="colors"> <b>All</b></label><br>
+								<label for="bx2"><input id="bx2" type="checkbox" class="colors" name="color[]" value="red"> Red</label><br>
+								<label for="bx3"><input id="bx3" type="checkbox" class="colors" name="color[]" value="green"> Green</label><br>
+								<label for="bx4"><input id="bx4" type="checkbox" class="colors" name="color[]" value="blue"> Blue</label><br>
+						<tr>
+							<td>Radio
+							<td>
+								<label for="rd1"><input id="rd1" type="radio" name="ra1" required value="sun"> Sun</label><br>
+								<label for="rd2"><input id="rd2" type="radio" name="ra1" value="moon"> Moon</label><br>
+					</table>
+				</fieldset>
+				
+				<tr>
+					<td>
+					<td>
+						<input type="submit" value="Submit">
+						<input type="submit" value="Disabled" disabled>
+						<input type="submit" value="Confirm" class="bg-w dialog" name="btn2" title="Confirm?">
+				</table>
+			</form>
+			</div>
+		</div>
+		
+		<h2 class="mem" id="utils">Utilities</h2>
+		
 
 		<div class="mar pad shade">
 			Highlight: 
@@ -369,8 +598,6 @@ let double = function (x) {
 			</div>
 		</div>
 		
-		<h2 id="h2">Heading with link to top</h2>
-		
 		<!-- fetch -->
 		<ul class="nav bg hover">
 			<li><i class="bg-i">Fetch</i>
@@ -383,16 +610,32 @@ let double = function (x) {
 		<div id="preview-dlg" class="dlg pad"><a class="close pad" href="#cancel" data-ico="close">×</a><p class="pad" id="dlg-inner">(preview)</p></div>
 		
 		<!-- cols -->
+		<!--
 		<h3 id="cols">Columns</h3>
+		<p>
+		With gap:
+		<label><input type="radio" name="colz" data-nodes="#colz" data-set="row flip by-1"> 1</label>
+		<label><input type="radio" name="colz" data-nodes="#colz" data-set="row flip by-2"> 2</label>
+		<label><input type="radio" name="colz" data-nodes="#colz" data-set="row flip by-3" checked> 3</label>
+		<label><input type="radio" name="colz" data-nodes="#colz" data-set="row flip by-4"> 4</label>
+		<br>
+		Without gap:
+		<label><input type="radio" name="colz" data-nodes="#colz" data-set="row flip fit by-1"> 1</label>
+		<label><input type="radio" name="colz" data-nodes="#colz" data-set="row flip fit by-2"> 2</label>
+		<label><input type="radio" name="colz" data-nodes="#colz" data-set="row flip fit by-3"> 3</label>
+		<label><input type="radio" name="colz" data-nodes="#colz" data-set="row flip fit by-4"> 4</label>
+		</p>
+		
 		<div class="bord">
-		<div class="row by-2 -mar flip -fit">
-			<div class="bg-y">#1</div>
-			<div class="bg-y">#2</div>
-			<div class="bg-i">#3</div>
-			<div class="bg-i">#4</div>
-			<div class="bg-i">#5</div>
+		<div class="row flip by-3" id="colz">
+			<div class="bg-e item">#1 <a href="#copy">+</a> <a href="#del">-</a></div>
+			<div class="bg-w item">#2 <a href="#copy">+</a> <a href="#del">-</a></div>
+			<div class="bg-y item">#3 <a href="#copy">+</a> <a href="#del">-</a></div>
+			<div class="bg-i item">#4 <a href="#copy">+</a> <a href="#del">-</a></div>
+			<div class="bg-n item">#5 <a href="#copy">+</a> <a href="#del">-</a></div>
 		</div>
 		</div>
+		-->
 	</div>
 
 	

@@ -80,7 +80,7 @@ module.exports = new(function () {
 
   this.addTopLink = function(n){
     n.style.position = 'relative';
-    let a = app.ins('a', app.i('up', '&uarr;'), {href:'#', className: 'close l text-n hide-print'}, n);
+    let a = app.ins('a', app.i('up', '&uarr;'), {href:'#', className: 'small close l text-n hide-print'}, n);
   }
 
   this.onResize = function() {

@@ -1,5 +1,7 @@
 /*! d1-web v0.0.0 */
 
+/* @import url("css/columns.css"); */
+
 /* test */
 /*
 ::placeholder {
@@ -18,8 +20,9 @@
 - .full -> .full:not(.dlg)
 - .hid) -> .hide / .target / .off
 - .hide-x -> .target-x / .toggle-x
-- (none) -> table.flip
 - table.let -> table.fit
+- table -> table.bord
+- (none) -> table.flip
 - (none) -> table.let
 - hx.let -> hx.fit
 - (none) -> nav.center
@@ -28,27 +31,29 @@
 - .topbar -> .topbar(.let)
 - (.col-3) -> form>.row>:first-child
 - [data-class] -> [data-set]
-= form>table, form>button / *?* /
+- form>table -> table.flip
+- form>button / *?* /
 
 # js classes
 - .js
-- .js-unhint ?
+- .js-unhint
 - .js-live-val
 - .subinput
 - .input-tools
-- .th-dup
+x .th-dup
 ~ .hide(-x)
 - .target(-x)
 - .toggle(-x)
 - .off
-- .unpop
+x .unpop
 - .mem
 - .gallery
 - .pic
-- .item
+- .item, .over
 + (.act)
 - (.is-on)
 - (.is-off)
+- .not-, .or, .or-
 
 # todo
 css restructure
@@ -396,24 +401,6 @@ mark{background-color:var(--bg-warning);}
 	.row.center{align-items:center;}
 	.shift{margin-left:auto;} /* .nav>li.shift, .row>*.shift */
 
-
-.row[class*="by-"]{flex-wrap:wrap;justify-content:space-between;}
-.row[class*="by-"]:not(.fit){margin-bottom:-2%;}
-.row[class*="by-"]>*{flex:none;margin-right:0 !important;}
-@media (min-width: 900px){
-	.row[class*="by-"]:not(.fit)>*{margin-bottom:2%;}
-		.row[class*="by-"].fit::after{content:"";flex:auto;}
-		/*.row[class*="by-"]:not(.fit)>:last-child{margin-left:2%;}*/
-	.row.by-1>*{width:100%;}
-	.row.by-2>*{width:49%;}
-	.row.by-3>*{width:32%;}
-	.row.by-4>*{width:23.5%;}
-	.row.by-2.fit>*{width:50%;}
-	.row.by-3.fit>*{width:33.33%;}
-	.row.by-4.fit>*{width:25%;}
-}
-
-
 /* media */
 
 @media (max-width: 899px){
@@ -434,7 +421,7 @@ mark{background-color:var(--bg-warning);}
 	/* desktop */
 	form>.row>:first-child:not(:only-child), fieldset>*>.row>:first-child:not(:only-child){text-align:right;flex:.3;}
 	form table:not(.bord):not(.let) td:first-child:nth-last-child(2):not([colspan]){text-align:right;/*min-*/width:12em;}
-		fieldset table td:first-child:not([colspan]){/*min-*/width:calc(12em - var(--gap-n) - var(--gap-s));}
+		fieldset table:not(.bord):not(.let) td:first-child:nth-last-child(2):not([colspan]){/*min-*/width:calc(12em - var(--gap-n) - var(--gap-s));}
 	.dlg{min-width:20em;}
 	.dlg.pad{padding:var(--gaps-l);}
 	.nav:not(.let)>li.shift>ul:not(.toggle), .nav:not(.let)>li.shift~li>ul:not(.toggle), .pop>div.shift:not(.toggle){left:auto;right:0;}

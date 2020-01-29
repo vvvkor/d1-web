@@ -1,0 +1,29 @@
+/* columns */
+
+.row[class*="by-"]{flex-wrap:wrap;justify-content:space-between;}
+.row[class*="by-"][class][class]>*:not(.x){flex:none;margin-right:0;}
+
+/* fix bottom */
+.row[class*="by-"]:not(.fit)>*{margin-bottom:2%;}
+.row[class*="by-"]:not(.fit){margin-bottom:-2%;}
+
+/* align last line */
+.row[class*="by-"].fit::after{content:"";flex:auto;}
+.row.by-3:not(.fit) :last-child:nth-child(3n+2){margin-right:34%;}
+.row.by-4:not(.fit) :last-child:nth-child(4n+2){margin-right:51%;}
+.row.by-4:not(.fit) :last-child:nth-child(4n+3){margin-right:25.5%;}
+
+/* widths */
+.row.by-1>*{width:100%;}
+.row.by-2>*{width:49%;}
+.row.by-3>*{width:32%;}
+.row.by-4>*{width:23.5%;}
+.row.by-2.fit>*{width:50%;}
+.row.by-3.fit>*{width:33.33%;}
+.row.by-4.fit>*{width:25%;}
+
+/* stack on mobile */
+@media (max-width: 899px){
+	.row[class*="by-"][class].flip>*:not(.x){width:100%;margin-right:0;}
+	.row[class*="by-"].flip::after{display:none;}
+}

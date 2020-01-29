@@ -1,4 +1,4 @@
-/*! d1-web v1.0.6 */
+/*! d1-web v1.0.7 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -463,7 +463,8 @@ module.exports = new function () {
   };
 
   this.after = function (n) {
-    this.shown = null; //let modal = app.q(this.opt.qDlg+':not(.'+app.opt.cOff+'), '+this.opt.qGal+':target'); // :target not updated after Esc key
+    this.shown = null; //do it just once when dialog is opened
+    //let modal = app.q(this.opt.qDlg+':not(.'+app.opt.cOff+'), '+this.opt.qGal+':target'); // :target not updated after Esc key
 
     var modal = app.q(this.opt.qDlg + ':not(.' + app.opt.cOff + '), ' + this.opt.qGal + '[id="' + location.hash.substr(1) + '"]');
     var bar = window.innerWidth - document.documentElement.clientWidth; //scroll bar width
@@ -475,9 +476,14 @@ module.exports = new function () {
     app.dbg(['after', n, modal, s.paddingRight]);
 
     if (modal) {
-      //let f = app.q('input, a:not(.' + app.opt.cClose + ')', modal);
-      var f = app.q('input, a:not([href="' + app.opt.hClose + '"])', modal);
-      if (f) f.focus();
+      //let f1 = app.q('input, a:not(.' + app.opt.cClose + ')', modal);
+      var f1 = app.q('input, a:not([href="' + app.opt.hClose + '"])', modal);
+      var f = app.q(':focus', modal);
+
+      if (f1 && !f && (!n || !modal.contains(n))) {
+        app.dbg(['focus', n, modal, f1, f]);
+        f1.focus(); //focus just once when dialog is opened
+      }
     }
   };
 
@@ -2204,7 +2210,7 @@ module.exports = new function () {
     var _this = this;
 
     app.e(this.opt.qFlipTable, function (n) {
-      return _this.prepareFlipTable(n);
+      return app.closest(n, 'form') ? null : _this.prepareFlipTable(n);
     });
   };
 
@@ -2290,8 +2296,7 @@ module.exports = new function () {
     var d = app.q(n.hash);
 
     if (d) {
-      d.value = app.attr(n, 'data-value');
-      toggle.esc();
+      d.value = app.attr(n, 'data-value'); //toggle.esc();//todo: is it needed?
     }
   };
 
@@ -2564,7 +2569,7 @@ module.exports = new function () {
       if (n.title) m.title = n.title;
       app.e('[for="' + n.id + '"]', function (lbl) {
         return lbl.htmlFor = m.id;
-      });
+      }); //app.b('[for="' + n.id + '"]', 'click', e => m.focus());
     }
 
     if (n.placeholder) m.placeholder = n.placeholder;
@@ -3428,7 +3433,7 @@ module.exports = new function () {
     n.style.position = 'relative';
     var a = app.ins('a', app.i('up', '&uarr;'), {
       href: '#',
-      className: 'close l text-n hide-print'
+      className: 'small close l text-n hide-print'
     }, n);
   };
 

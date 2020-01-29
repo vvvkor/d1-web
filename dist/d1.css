@@ -1,4 +1,4 @@
-/*! d1-web v1.0.6 */
+/*! d1-web v1.0.7 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -319,6 +319,10 @@ dt, dd {
     margin-bottom: var(--gap-s);
 }
 
+table {
+    box-sizing: border-box;
+}
+
 th, td {
     padding: .25em .5em;
     padding: var(--gaps-s);
@@ -326,29 +330,22 @@ th, td {
     background-clip: padding-box;
 }
 
-table tr>*, fieldset, hr, .roll>table {
+table.bord tr>*, fieldset, hr {
     border: thin solid rgba(0, 0, 0, .16);
     border: var(--border);
 }
 
-input, select {
-    max-width: 100%;
-}
-
-textarea {
-    width: 100%;
+table.bord {
+    border: none;
 }
 
 hr {
     border-width: thin 0 0 0;
 }
 
-table.let tr>* {
-    border-width: 0 0 thin 0;
-}
-
-table.let tr:last-child>* {
-    border-width: 0;
+table.let tr:not(:last-child)>* {
+    border-bottom: thin solid rgba(0, 0, 0, .16);
+    border-bottom: var(--border);
 }
 
 table.shift {
@@ -356,21 +353,23 @@ table.shift {
     margin: 0;
 }
 
+table.fit tr>* {
+    padding: 0;
+}
+
 .roll {
     overflow-x: auto;
 }
 
-.roll>table {
+.roll>table.bord {
+    border: thin solid rgba(0, 0, 0, .16);
+    border: var(--border);
     border-width: medium;
 }
 
 form>p, form>.row {
     margin: .5em 0;
     margin: var(--gap-s) 0;
-}
-
-form>table tr>* {
-    border: none;
 }
 
 .over {
@@ -398,12 +397,12 @@ form>table tr>* {
     background-color: var(--bg-lite);
     border-radius: .2em;
     border-radius: var(--radius);
-    min-height: 5px;
+    min-height: .3em;
 }
 
 .bar>* {
     display: inline-block;
-    height: 5px;
+    min-height: .3em;
     background-color: currentColor;
 }
 
@@ -715,7 +714,7 @@ body:not(.js) .hide-nojs {
     }
 }
 
-.bg, blockquote, pre, code, thead, tfoot {
+.bg, blockquote, pre, code, thead tr, tfoot {
     background-color: rgba(0, 0, 0, .05);
     background-color: var(--bg-pane);
 }
@@ -791,14 +790,27 @@ mark {
         margin-top: var(--gap-xs);
     }
 
-    form>table tr, form>table tr>* {
+    table.flip tbody, table.flip tr, table.flip tr>* {
         display: block;
-        padding: 0;
+        text-align: left;
     }
 
-    form>table tr {
-        padding-bottom: .5em;
-        padding-bottom: var(--gap-s);
+    table.flip tr {
+        margin-bottom: 1em;
+        margin-bottom: var(--gap-n);
+        border: thin solid rgba(0, 0, 0, .16);
+        border: var(--border);
+        border-width: medium;
+    }
+
+    form table.flip tr {
+        margin-bottom: .5em;
+        margin-bottom: var(--gap-s);
+        border: none;
+    }
+
+    form table.flip tr>* {
+        padding: 0;
     }
 
     .nav.flip ul {
@@ -820,12 +832,12 @@ mark {
         flex: .3;
     }
 
-    form>table td:first-child:not([colspan]) {
+    form table:not(.bord):not(.let) td:first-child:nth-last-child(2):not([colspan]) {
         text-align: right;
         width: 12em;
     }
 
-    fieldset table td:first-child:not([colspan]) {
+    fieldset table:not(.bord):not(.let) td:first-child:nth-last-child(2):not([colspan]) {
         width: 10.5em;
         width: calc(12em - var(--gap-n) - var(--gap-s));
     }
@@ -891,6 +903,14 @@ mark {
         top: var(--topbar);
         max-height: calc(100vh - 3.2rem);
         max-height: calc(100vh - var(--topbar));
+    }
+
+    input, select {
+        max-width: 100%;
+    }
+
+    textarea {
+        width: 100%;
     }
 
     input, button, select, textarea {
@@ -1179,10 +1199,6 @@ ul.fit li {
     list-style: none;
 }
 
-table.fit>*>tr>*, .roll>table.fit {
-    border: none;
-}
-
 a.let {
     color: inherit;
 }
@@ -1245,50 +1261,16 @@ form .mar {
     max-width: 16em;
 }
 
-@media screen and (max-width: 899px) {
-    .js table.flip {
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    .js table.flip thead {
-        display: none;
-    }
-
-    .js table.flip tr:not(.hide) {
-        display: flex;
-        flex-wrap: wrap;
-        margin: 1em 0;
-        margin: var(--gap-n) 0;
-        padding: 1em;
-        padding: var(--gap-n);
-        box-shadow: 0 .2em .8em rgba(0, 0, 0, .3);
-        box-shadow: var(--shade);
-        background-color: #fff;
-        background-color: var(--bg);
-    }
-
-    .js table.flip.let tr {
-        box-shadow: none;
-        border: thin solid rgba(0, 0, 0, .16);
-        border: var(--border);
-    }
-
-    .js table.flip tr>* {
-        display: block;
-        width: 50%;
-        box-sizing: border-box;
-        text-align: left;
-        border: none;
-    }
-
-    .js table.flip .th-dup {
-        display: block;
-    }
+.scroller::-webkit-scrollbar {
+    width: .5em;
+    background: #eee;
 }
 
-@media screen and (max-width: 640px) {
-    .js table.flip tr>* {
-        width: 100%;
-    }
+.scroller::-webkit-scrollbar-thumb {
+    background: #ccc;
+}
+
+.scroller {
+    scrollbar-width: thin;
+    scrollbar-color: #ccc #eee;
 }

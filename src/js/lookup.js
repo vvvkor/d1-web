@@ -52,6 +52,7 @@ module.exports = new(function () {
       m.id = 'lookup-' + n.id;
       if(n.title) m.title = n.title;
       app.e('[for="' + n.id + '"]', lbl => lbl.htmlFor = m.id);
+      //app.b('[for="' + n.id + '"]', 'click', e => m.focus());
     }
     if(n.placeholder) m.placeholder = n.placeholder;
     m.autocomplete = 'off';
