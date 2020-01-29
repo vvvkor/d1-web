@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>d1-web - Overview</title>
+    <title>Overview - d1</title>
     <meta charset="utf-8">
     <meta name="viewport" 
       content="width=device-width, initial-scale=1">
@@ -47,12 +47,11 @@
   <!-- menu -->
   <header class="bg">
 	  <div class="hide-desktop"><a href="#nav" class="pad hover" title="Menu" data-ico="menu">&equiv;</a></div>
-	  <ul class="nav flip hover center target-mobile" id="nav">
-		<li><a href="#"><span><b>d1-web</b><small class="text-n"><br>v0.0.0</small></span></a></li>
-		<li><a href="index.html" data-icon="text" class="text-e bg-w">Docs</a>
-		<li class="hide-nojs"><a href="#x" data-nodes="#topbar" data-set="topbar toggle shade  row let center fit" data-unset="hide">Topbar</a>
+	  <ul class="nav flip hover target-mobile" id="nav">
+		<li><a href="#"><b>d1</b> <small class="text-n">v0.0.0</small></a></li>
+		<li><a href="index.html" class="bg-w text-w" data-icon="text">Docs</a>
 		<li>
-			<a><span>Parent<small class="text-n"><br>nested</small></span></a>
+			<a>Parent</a>
 			<ul>
 				<li><a><span>Subitem<small class="text-n"><br>info</small></span></a>
 					<ul>
@@ -80,18 +79,23 @@
 	<!-- left -->
 	<div class="">
 		<div class="pad mar shade rad" data-class-mobile="pad mar bord rad" data-class-desktop="pad mar shade rad">
-			<div>
+			<h3 class="mar">Status</h3>
+			<p>
 				<b class="btn bg-w hide-js">JavaScript off</b>
 				<b class="btn bg-y hide-nojs">JavaScript on</b>
-			</div>
-			<div>
+				<br>
 				<b class="btn bg-i hide-desktop">Mobile layout</b>
 				<b class="btn bg-n hide-mobile">Desktop layout</b>
-			</div>
-			<div>
-				<a href="#body" data-set="invert">Invert document</a>
-				<b class="small btn bg-e hide-js" title="Requires Javascript">JS</b>
-			</div>
+			</p>
+		</div>
+		<div class="pad mar shade">
+			<h3 class="mar">Page setup <b class="small btn bg-e hide-js" title="Requires Javascript">JS</b></h3>
+			<p>
+			<a class="hover" href="#x" data-nodes="#topbar" data-set="topbar toggle shade  row let center fit" data-unset="hide">Topbar</a><br>
+			<a class="hover" href="#body" data-set="invert">Invert document</a><br>
+			<a class="hover" href="#x" data-nodes="html" data-set="scroller">Custom scroll</a>
+			<b class="text-w" title="Works on Webkit and Firefox" data-ico="warning"></b>
+			</p>
 		</div>
 		<div class="pad mar shade">
 			<h3 class="mar">Components</h3>
@@ -112,10 +116,10 @@
 				<li><div class="pop">
 					<a href="#x">Hover</a>
 					<div class="pad">
-						Internal popup
+						Internal popup on
 						<div class="pop">
-							<a href="#x">to the left</a>
-							<div class="pad shift">Nested, left</div>
+							<a href="#x">hover</a>
+							<div class="pad shift">Nested, to the left on desktop</div>
 						</div>
 					</div>
 				</div>
@@ -123,9 +127,9 @@
 				<li><a href="#full">Full</a>
 				<li><a href="#gal1">Gallery</a>
 				<li><span class="gallery">
-					<a href="https://picsum.photos/id/360/1000/700.jpg" class="pic" title="Sunset">#1</a>
-					<a href="https://picsum.photos/id/830/1000/700.jpg" class="pic" title="Boat">#2</a>
-					<a href="https://picsum.photos/id/844/1000/700.jpg" class="pic" title="Ocean">#3</a>
+					<a href="https://picsum.photos/id/360/1000/700.jpg" class="pic" title="Red">#1</a>
+					<a href="https://picsum.photos/id/844/1000/700.jpg" class="pic" title="Green">#2</a>
+					<a href="https://picsum.photos/id/830/1000/700.jpg" class="pic" title="Blue">#3</a>
 				</span>
 				<li><a href="#menu">Drawer & tree</a>
 				<!--li><a href="#x" data-nodes="#topbar" data-set="topbar toggle shade  row let center fit" data-unset="hide">Topbar</a>
@@ -146,9 +150,9 @@
 				Fullscreen modal
 			</div>
 			<div class="gal">
-				<a id="gal1" href="#gal2" style="--img:url(https://picsum.photos/id/360/1000/700.jpg)" data-caption="1/3 - Sunset"  ></a>
-				<a id="gal2" href="#gal3" style="--img:url(https://picsum.photos/id/830/1000/700.jpg)" data-caption="2/3 - Boat"></a>
-				<a id="gal3" href="#gal1" style="--img:url(https://picsum.photos/id/844/1000/700.jpg)" data-caption-x="3/3 - Ocean" ></a>
+				<a id="gal1" href="#gal2" style="--img:url(https://picsum.photos/id/360/1000/700.jpg)" data-caption="1/3 - Red"  ></a>
+				<a id="gal2" href="#gal3" style="--img:url(https://picsum.photos/id/844/1000/700.jpg)" data-caption-x="2/3 - Green" ></a>
+				<a id="gal3" href="#gal1" style="--img:url(https://picsum.photos/id/830/1000/700.jpg)" data-caption="3/3 - Blue"></a>
 				<a class="close" href="#cancel" data-ico="close">&times;</a>
 			</div>
 			<div class="drawer pad" id="menu">
@@ -182,8 +186,8 @@
 			</div>
 		</div>
 		
-		<div class="pad mar shade">
-			<h3 class="mar">Tabs</h3>
+		<div class="-pad mar -shade">
+			<!--h3 class="mar">Tabs</h3-->
 			<ul class="nav tabs rad mem hover">
 				<li><a href="#tab1">#1</a></li>
 				<li><a href="#tab2">#2</a></li>
@@ -230,7 +234,13 @@
 	
 	<div class="pad mar col-2" data-class-desktop="pad mar col-2" data-class-mobile="">
 	
-		<h1 class="fit">Overview</h1>
+		<div class="small">
+			<a class="" href="https://github.com/vvvkor/d1-web">d1</a> &rsaquo;
+			<a class="" href="index.html">Docs</a> &rsaquo;
+			<a class="">Overview</a>
+		</div>
+	
+		<h1 class="mar">Overview</h1>
 		
 		<p class="pad bg-e text-e" data-icon="ban///icon text-e">Alert</p>
 		<p class="pad bg-w text-w" data-icon="warning///icon text-w">Warning</p>
@@ -268,7 +278,7 @@ let double = function (x) {
 		</div>
 		
 		<div class="mar pad shade">
-			<a href="#demo-all-icons"><span class="is-off" data-icon="sun"><i></i></span><span class="is-on" data-icon="no"><i></i></span> Show icons</a>
+			<a href="#demo-all-icons"><span class="is-off text-w" data-icon="sun"><i></i></span><span class="is-on" data-icon="no"><i></i></span> Show icons</a>
 			<div id="demo-all-icons" class="target"><hr>
 			</div>
 			<svg style="display:none;" width="0" height="0">
@@ -278,6 +288,7 @@ let double = function (x) {
 		</div>
 		
 		<div class="mar pad shade">
+		<div class="roll">
 		<table class="mar shift let hover" id="tab-items">
 			<tbody>
 				<tr>
@@ -294,6 +305,7 @@ let double = function (x) {
 				</td></tr>
 			</tbody>
 		</table>
+		</div>
 		</div>
 		
 		<hr>
@@ -357,6 +369,8 @@ let double = function (x) {
 			</div>
 		</div>
 		
+		<h2 id="h2">Heading with link to top</h2>
+		
 		<!-- fetch -->
 		<ul class="nav bg hover">
 			<li><i class="bg-i">Fetch</i>
@@ -367,6 +381,18 @@ let double = function (x) {
 		</ul>
 		<pre class="bg-i fit pad" id="preview">[preview area]</pre>
 		<div id="preview-dlg" class="dlg pad"><a class="close pad" href="#cancel" data-ico="close">×</a><p class="pad" id="dlg-inner">(preview)</p></div>
+		
+		<!-- cols -->
+		<h3 id="cols">Columns</h3>
+		<div class="bord">
+		<div class="row by-2 -mar flip -fit">
+			<div class="bg-y">#1</div>
+			<div class="bg-y">#2</div>
+			<div class="bg-i">#3</div>
+			<div class="bg-i">#4</div>
+			<div class="bg-i">#5</div>
+		</div>
+		</div>
 	</div>
 
 	
@@ -385,14 +411,14 @@ let double = function (x) {
 				</div>
 			</div>
 		</div>
-		<div class="pad mar shade">
-			<figure class="bg c pad">
-				<div class="text-i" data-icon="pin/80/80/bg-y"></div>
-				<figcaption>
-					Figure caption
-				</figcaption>
-			</figure>
-		</div>
+		
+		<figure class="c pad mar shade">
+			<div class="text-i" data-icon="pin/80/80/bg-y"></div>
+			<figcaption>
+				Figure caption
+			</figcaption>
+		</figure>
+
 		<div class="pad mar shade">
 			<div class="narrow">
 				<div class="row">
@@ -421,7 +447,7 @@ let double = function (x) {
 				<div class="btn bg-e shift">This is a popup tooltip</div>
 			</div>.
 		</div>
-		<div class="pad mar shade">
+		<div class="-pad mar -shade">
 			<b class="btn">Tag</b>
 			<b class="btn bg-e">Danger</b>
 			<b class="btn bg-w">Warning</b>
@@ -434,10 +460,8 @@ let double = function (x) {
 			<a href="#x">link</a>
 			<span class="bg-e text-e">colors</span>
 		</div>
-		<div class="pad mar shade">
-			<div class="full center bg-w">
-				Full
-			</div>
+		<div class="full center bg-w mar shade">
+			Full height
 		</div>
 	</div><!-- /right -->
   </div><!-- /row -->

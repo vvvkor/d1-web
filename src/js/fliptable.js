@@ -10,7 +10,6 @@ module.exports = new(function () {
 
   this.opt = {
     qFlipTable: 'table.flip',
-    ccCellHead: 'bg text-n hide th-dup'
   };
 
   this.init = function () {
@@ -22,20 +21,22 @@ module.exports = new(function () {
     let tds = app.qq('tbody tr>*', t);
     let order = (app.attr(t, 'data-order') || '0 1 2 3').split(/\D+/);
     //t.parentNode.classList.remove('roll');
-    for(let i=0; i<tds.length; i++){
+    for(let i = 0; i < tds.length; i++){
       let td = tds[i];
       let th = ths[td.cellIndex];
       let ord = order.indexOf('' + td.cellIndex);
       if(ord==-1) ord = 99;
       td.style.order = ord;
-      if(td.textContent.replace(/\s+$/, '').length>0){
-        let v = app.ins('div');
+      //if(td.textContent.replace(/\s+$/, '').length>0){
+        let c = app.ins('div', '', {className: 'row'});
+        if(th) app.ins('div', th.textContent, {className: 'hide-desktop'}, c)
+        let v = app.ins('div', '', {}, c);
         while(td.firstChild) v.appendChild(td.firstChild);
         td.textContent = '';
-        if(th) app.ins('div', th.textContent, {className: this.opt.ccCellHead}, td)
-        td.appendChild(v);
-      }
+        td.appendChild(c);
+      //}
     }
+    app.e(app.qq('thead', t), n => n.classList.add('hide-mobile'));
   }
 
 })();

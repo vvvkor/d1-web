@@ -2197,8 +2197,7 @@ module.exports = new function () {
 
   this.name = 'fliptable';
   this.opt = {
-    qFlipTable: 'table.flip',
-    ccCellHead: 'bg text-n hide th-dup'
+    qFlipTable: 'table.flip'
   };
 
   this.init = function () {
@@ -2219,22 +2218,27 @@ module.exports = new function () {
       var th = ths[td.cellIndex];
       var ord = order.indexOf('' + td.cellIndex);
       if (ord == -1) ord = 99;
-      td.style.order = ord;
+      td.style.order = ord; //if(td.textContent.replace(/\s+$/, '').length>0){
 
-      if (td.textContent.replace(/\s+$/, '').length > 0) {
-        var v = app.ins('div');
+      var c = app.ins('div', '', {
+        className: 'row'
+      });
+      if (th) app.ins('div', th.textContent, {
+        className: 'hide-desktop'
+      }, c);
+      var v = app.ins('div', '', {}, c);
 
-        while (td.firstChild) {
-          v.appendChild(td.firstChild);
-        }
-
-        td.textContent = '';
-        if (th) app.ins('div', th.textContent, {
-          className: this.opt.ccCellHead
-        }, td);
-        td.appendChild(v);
+      while (td.firstChild) {
+        v.appendChild(td.firstChild);
       }
+
+      td.textContent = '';
+      td.appendChild(c); //}
     }
+
+    app.e(app.qq('thead', t), function (n) {
+      return n.classList.add('hide-mobile');
+    });
   };
 }();
 
