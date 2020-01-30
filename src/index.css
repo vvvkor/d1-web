@@ -252,7 +252,7 @@ table.bord tr>*, fieldset, hr{border:var(--border);}
 	table.bord{border:none;}
 hr{border-width:thin 0 0 0;}
 table.let tr:not(:last-child)>*{border-bottom:var(--border);}
-table.shift{width:100%;margin:0;}
+table.shift{width:100%;/*margin:0;*/}
 table.fit tr>*{padding:0;}
 .roll{overflow-x:auto;}
 	.roll>table.bord{border:var(--border);border-width:medium;}
@@ -443,7 +443,7 @@ mark{background-color:var(--bg-warning);}
 		.topbar~* h1[id], .topbar~* h2[id], .topbar~* h3[id], .topbar~* h4[id], .topbar~* h5[id], .topbar~* h6[id]{margin-top:0;padding-top:calc(.5rem + var(--topbar));}/*?*/
 	/*h1[id], h2[id], h3[id], h4[id], h4[id], h5[id]{z-index:-1;}/*?*/ /* with:h1-link-not-clickable, without:covers-prev */
 	/*h1[id]:before, h2[id]:before, h3[id]:before, h4[id]:before
-	{display:block;content:"";height:calc(.5rem + var(--topbar));margin-top:calc(.1rem - var(--topbar));}/*?*/ /*covers-prev*/
+	{display:block;content:"";height:calc(.5rem + var(--topbar));margin-top:calc(.1rem - var(--topbar));}/*?*/ /*covers-prev if position is relative (which is set when adding link to top) */
 	.stick{z-index:3;position:sticky;top:0;max-height:100vh;align-self:flex-start;/*stretch*/overflow:auto;box-sizing:border-box;}
 		.topbar~* .stick{top:var(--topbar);max-height:calc(100vh - var(--topbar));}/*?*/
 

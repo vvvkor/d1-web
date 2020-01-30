@@ -10,10 +10,12 @@ module.exports = new(function () {
   this.drw = null;
 
   this.opt = {
+    cTheme: 'js-theme',
     idTheme: 'theme-config'
   };
 
   this.init = function(){
+    if(!document.body.classList.contains(this.opt.cTheme)) return;
     this.restore(document.documentElement, 'theme-html');
     //this.restore(document.body, 'theme-body');
 

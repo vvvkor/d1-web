@@ -1,4 +1,4 @@
-/*! d1-web v1.0.10 */
+/*! d1-web v1.0.11 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -350,7 +350,6 @@ table.let tr:not(:last-child)>* {
 
 table.shift {
     width: 100%;
-    margin: 0;
 }
 
 table.fit tr>* {

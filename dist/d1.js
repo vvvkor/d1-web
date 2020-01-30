@@ -1,4 +1,4 @@
-/*! d1-web v1.0.10 */
+/*! d1-web v1.0.11 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -3215,12 +3215,14 @@ module.exports = new function () {
   this.name = 'theme';
   this.drw = null;
   this.opt = {
+    cTheme: 'js-theme',
     idTheme: 'theme-config'
   };
 
   this.init = function () {
     var _this = this;
 
+    if (!document.body.classList.contains(this.opt.cTheme)) return;
     this.restore(document.documentElement, 'theme-html'); //this.restore(document.body, 'theme-body');
     //button
 
