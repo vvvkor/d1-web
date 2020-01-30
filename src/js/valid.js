@@ -61,8 +61,11 @@ module.exports = new(function () {
     if (!ok && e) {
       e.preventDefault();
       e.stopPropagation();
-      let f = app.q(':invalid', n);
-      if(f) f.focus();
+      let f = app.q('[name]:invalid:not(.hide):not(.off), [name]:invalid~.subinput', n);
+      if(f){
+        app.dbg(['focus validate', f]);
+        f.focus();
+      }
     }
     if(this.isLive(n)){
       //app.e(app.qq('[type="submit"]', n), m => m.disabled = !ok);//if no cUnhint

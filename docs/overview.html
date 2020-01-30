@@ -6,8 +6,8 @@
     <meta name="viewport" 
       content="width=device-width, initial-scale=1">
 	<!-- CDN -->
-	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.0.7/dist/d1.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.0.7/dist/d1.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.0.8/dist/d1.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.0.8/dist/d1.min.js"></script>
 	<!-- local-npm-src ->
 	<link href="../src/index.css" rel="stylesheet">
 	<script src="../dist/d1.min.js"></script>
@@ -29,12 +29,14 @@
 	<style>
 		/* Roboto, Open Sans, Georgia, PT Sans, PT Serif, PT Mono */
 		@import url('https://fonts.googleapis.com/css?family=PT+Sans&display=swap');
+		@import url('https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap');
+		/*
 		@import url('https://fonts.googleapis.com/css?family=PT+Serif&display=swap');
 		@import url('https://fonts.googleapis.com/css?family=PT+Mono&display=swap');
-		@import url('https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap');
+		*/
 	</style>
   </head>
-  <body id="body" class="" data-d1='{"debug":true,"plug":{"toggle":{"keepHash":true},"theme":{"fonts":["sans-serif","serif","monospace","PT Sans","PT Serif","PT Mono","Roboto Slab"]}}}'>
+  <body id="body" class="" data-d1='{"debug":true,"plug":{"toggle":{"keepHash":true},"theme":{"fonts":["sans-serif","serif","monospace","PT Sans","Roboto Slab"]}}}'>
 
 
 <div class="topbar toggle shade  row let" id="topbar">
@@ -48,7 +50,7 @@
   <header class="bg">
 	  <div class="hide-desktop"><a href="#nav" class="pad hover" title="Menu" data-ico="menu">&equiv;</a></div>
 	  <ul class="nav flip hover target-mobile" id="nav">
-		<li><a href="#"><b>d1</b> <small class="text-n">v1.0.7</small></a></li>
+		<li><a href="?"><b>d1</b> <small class="text-n">v1.0.8</small></a></li>
 		<li><a href="index.html" class="bg-w text-w" data-icon="text">Docs</a>
 		<li>
 			<a>Parent</a>
@@ -91,6 +93,7 @@
 		<div class="pad mar shade">
 			<h3 class="mar">Page setup <b class="small btn bg-e hide-js" title="Requires Javascript">JS</b></h3>
 			<p>
+			<label><input type="checkbox" data-nodes="#topbar" data-set="topbar toggle shade  row let center fit" data-unset="hide"> Topbar</label><br>
 			<a class="hover" href="#x" data-nodes="#topbar" data-set="topbar toggle shade  row let center fit" data-unset="hide">Topbar</a><br>
 			<a class="hover" href="#body" data-set="invert">Invert document</a><br>
 			<a class="hover" href="#x" data-nodes="html" data-set="scroller">Custom scroll</a>
@@ -198,7 +201,7 @@
 				<div id="tab3" class="pad">3</div>
 				<div id="tab1">
 					<div class="item">
-						<img class="fit" src="https://i.picsum.photos/id/844/900/200.jpg" height="200">
+						<img class="fit" src="https://i.picsum.photos/id/844/900/200.jpg" height="200" alt="Green">
 						<div class="over invert bg-w hover"></div>
 						<div class="over pad row center c invert">
 							<div>
@@ -215,7 +218,7 @@
 			<!-- dialogs -->
 			<h3 class="mar">Dialogs <b class="small btn bg-e hide-js" title="Requires Javascript">JS</b></h3>
 			<ul>
-				<li><a href="#done" class="alert" title="How is it going" data-head="Hello">Alert</a>
+				<li><a href="#done" class="alert" title="This is a simple alert." data-head="Hello">Alert</a>
 				<li><a href="?a=1&b=2" class="dialog" title="Continue?">Confirm</a>
 				<li><a href="?a=1&b=2" class="dialog" title="Continue to new tab?" target="_blank">Confirm to new tab</a>
 				<li><a href="#top" class="dialog" title="Continue to %href%?">Confirm hash</a>
@@ -234,10 +237,11 @@
 	
 	<div class="pad mar col-2" data-class-desktop="pad mar col-2" data-class-mobile="">
 	
+		<!-- breadcrumbs -->
 		<div class="small">
 			<a class="" href="https://github.com/vvvkor/d1-web">d1</a> &rsaquo;
 			<a class="" href="index.html">Docs</a> &rsaquo;
-			<a class="">Overview</a>
+			<a class="let" href="overview.html">Overview</a>
 		</div>
 	
 		<h1 class="mar">Overview</h1>
@@ -290,15 +294,46 @@ let double = function (x) {
 		<ul class="nav shade hover">
 			<li><a href="#form-inline">Inline</a>
 			<li><a href="#form-stack">Stacked</a>
-			<li><a href="#form-flex">Using flex</a>
-			<li><a href="#form-table">Using table</a>
+			<li><a href="#form-flex">Responsive flex</a>
+			<li><a href="#form-table">Responsive table</a>
+			<li><a href="#buttons">Buttons</a>
 		</ul>
+		
+		<div class="dlg rad" id="buttons">
+			<a href="#cancel" class="close pad" data-ico="close">&times;</a>
+			<h3 class="fit pad bg">Buttons</h3>
+			<div class="mar pad nobr">
+				<button type="button">Button</button>
+				<input type="submit" value="Submit">
+				<button type="button" disabled="">Disabled</button>
+				<button type="button" class="hover">Hover</button>
+				<button type="button" class="fit">Fit</button>
+				<br>
+				<button type="button" class="bg-e" data-icon="ban">Error</button>
+				<button type="button" class="bg-w" data-icon="warning">Warning</button>
+				<button type="button" class="bg-i" data-icon="info">Info</button>
+				<button type="button" class="bg-y" data-icon="ok">OK</button>
+				<button type="button" class="bg-n" data-icon="left">Back</button>
+				<br>
+				<a href="#x" class="btn">Link</a>
+				<a href="#x" class="btn bg-y" data-icon="ok">Link</a>
+				<a href="#x" class="pad bord rad hover let">Link</a>
+				<a href="#x" class="pad bord rad hover">Link</a>
+				<a href="#x" class="pad rad hover">Link</a>
+				<a href="#x" class="">Link</a>
+				<br>
+				<a href="#x" class="btn fit bg-w">Link</a>
+				<span class="btn bg-i">Span</span>
+				<b class="btn bg-e">B</b>
+			</div>
+		</div>
+		
 		
 		<div class="dlg rad" id="form-inline">
 			<a href="#cancel" class="close pad" data-ico="close">&times;</a>
 			<h3 class="fit pad bg">Inline form</h3>
-			<div class="mar pad">
-			<form action="">
+			<div class="mar pad nobr">
+			<form>
 				<input type="search" name="nm">
 				<input type="submit" value="Search">
 			</form>
@@ -309,7 +344,7 @@ let double = function (x) {
 			<a href="#cancel" class="close pad" data-ico="close">&times;</a>
 			<h3 class="fit pad bg">Stacked form</h3>
 			<div class="mar pad">
-			<form action="">
+			<form>
 			  <p>
 				<label for="name">Name</label><br>
 				<input type="text" name="name" id="name" required="">
@@ -328,32 +363,32 @@ let double = function (x) {
 		
 		<div class="dlg let rad" id="form-flex">
 			<a href="#cancel" class="close pad" data-ico="close">&times;</a>
-			<h3 class="fit pad bg">Flex form</h3>
+			<h3 class="fit pad bg">Responsive flex form with custom validation tooltips</h3>
 			<div class="pad read center">
-			<form action="" class="mar pad shade">
+			<form class="mar pad shade">
 			  <div class="row flip">
 				<label for="i1">Name</label>
-				<div class="-col-3"><input type="text" name="i1" id="i1"></div>
+				<div><input type="text" name="i1" id="i1" required pattern="[A-Za-z]{2,}" title="Two up to four letters" autocomplete="off" minlength="2" maxlength="4" data-hint="Enter %minlength% up to %maxlength% letters"></div>
 			  </div>
 			  <fieldset>
 				<legend><a href="#fs0">Fieldset</a></legend>
-				<div id="fs0" class="--hide --toggle target ">
+				<div id="fs0" class="target">
 				  <div class="row flip">
 					<label for="i3">Age</label>
-					<div class="-col-3"><input type="number" name="i3" id="i3"></div>
+					<div><input type="number" name="i3" id="i3"></div>
 				  </div>
 				</div>
 			  </fieldset>
 			  <div class="row flip">
 				<div aria-hidden="true"></div>
-				<div class="-col-3">
+				<div>
 				  <input type="checkbox" name="i2" id="i2">
 				  <label for="i2">Agreed</label>
 				</div>
 			  </div>
 			  <div class="row flip">
 				<div aria-hidden="true"></div>
-				<div class="-col-3"><input type="submit" value="Submit"></div>
+				<div><input type="submit" value="Submit"></div>
 			  </div>
 			</form>
 			</div>
@@ -362,18 +397,25 @@ let double = function (x) {
 		<div class="dlg let rad" id="form-table">
 			<div class="bg-n stick">
 				<a href="#cancel" class="close pad" data-ico="close">&times;</a>
-				<h3 class="fit pad">Table form</h3>
+				<h3 class="fit pad">Responsive table form with custom validation messages</h3>
 			</div>
-			<div class="pad read center">
-			<form action="" class="mar pad shade">
-				<table class="flip">
+			<form class="js-unhint -js-live-val">
+			<section class="pad">
+			  <div class="read center">
+				<table class="flip mar">
 				<tr>
 					<td><label for="nm">Name</label>
-					<td><input type="text" name="nm" id="nm" required pattern="[A-Za-z]{2,}" title="Two up to four letters" data-hint="%minlength% up to %maxlength% letters" autocomplete="off" minlength="2" maxlength="4">
-					<div>
-						<a href="#nm" data-value="test">Test</a>,
-						<a href="#nm" data-value="">Reset</a>
+					<td><input type="text" name="nm" id="nm" required pattern="[A-Za-z]{2,}" title="Two up to four letters" autocomplete="off" minlength="2" maxlength="4" data-hint="Enter %minlength% up to %maxlength% letters">
+					<div class="pop">
+						<a href="#pop-set">Set value</a>
+						<div class="pad" id="pop-set">
+							<a href="#nm" data-value="One">One</a><br>
+							<a href="#nm" data-value="Two">Two</a><br>
+						</div>
 					</div>
+					<a href="#nm" data-value="" class="text-n">Reset</a>
+					<div class="mar small text-e">Type 2 up to 4 letters</div>
+					<div class="mar small text-y">Looks good</div>
 					
 					
 				<tr><td colspan="2">
@@ -394,6 +436,7 @@ let double = function (x) {
 							  data-label="User One"
 							  data-cache="10"
 							  data-url="#user-{id}">
+							<div class="mar small text-e">Type and select from lookup</div>
 					<tr>
 						<td><label for="country">Chained</label>
 						<td>
@@ -412,6 +455,7 @@ let double = function (x) {
 							<option value="en">English</option>
 							<option value="ru">Russian</option>
 						</select>
+						<span class="mar small text-e">Select language</span>
 					<tr>
 						<td><label for="rdo">Readonly</label>
 						<td><input type="text" name="rdo" id="rdo" readonly value="read only">
@@ -419,17 +463,18 @@ let double = function (x) {
 						<td><label for="dis">Disabled</label>
 						<td><input type="text" name="dis" id="dis" disabled value="not sent">
 					<tr>
-						<td><label for="dt">Date</label>
-						<td><input type="date" name="dt" id="dt" class="calendar">
-					<tr>
 						<td><label for="tm">Time</label>
 						<td><input type="time" name="tm" id="tm">
 					<tr>
+						<td><label for="dt">Date</label>
+						<td><input type="date" name="dt" id="dt" class="calendar" required>
+					<tr>
 						<td><label for="dtl">Datetime</label>
-						<td><input type="datetime-local" name="dtl" id="dtl" class="calendar">
+						<td><input type="datetime-local" name="dtl" id="dtl" class="calendar" required>
 					<tr>
 						<td><label for="num">Number</label>
-						<td><input type="number" name="num" id="num" min="1" max="10" step="0.1" data-info="some info" data-hint="Enter number between %min% and %max%, step %step% (%data-info%).">
+						<td><input type="number" name="num" id="num" required min="1" max="10" step="0.1" data-info="some info" data-hint="Enter number between %min% and %max%, step %step% (%data-info%).">
+						<div class="mar small text-e">Enter number between 1 and 10, step 0.1</div>
 					<tr>
 						<td><label for="rng">Range</label>
 						<td><input type="range" name="rng" id="rng">
@@ -445,13 +490,14 @@ let double = function (x) {
 					<tr>
 						<td><label for="msg">Textarea</label>
 						<td><textarea class="edit adjust" data-tools="/*@xbi_.pqf" name="msg" id="msg" cols="20" rows="5" required></textarea>
+						<div class="mar small text-e">Type something</div>
 					<tr>
 						<td>Upload
 						<td><label class="drop" title="Drop image" for="up"><input id="up" type="file" name="up[]" multiple></label>
 					<tr>
 						<td>Box
-						<td><label for="bx0"><input id="bx0" type="checkbox" required class="" name="bx0" value="1" title="You need to check the box to continue"> Required box</label>
-						
+						<td><input id="bx0" type="checkbox" required class="" name="bx0" value="1" title="You need to check the box to continue"> <span><label for="bx0">Required box</label></span>
+						<div class="mar small text-e">Check to continue</div>
 					</table>
 				</fieldset>
 				<fieldset>
@@ -467,20 +513,28 @@ let double = function (x) {
 						<tr>
 							<td>Radio
 							<td>
-								<label for="rd1"><input id="rd1" type="radio" name="ra1" required value="sun"> Sun</label><br>
-								<label for="rd2"><input id="rd2" type="radio" name="ra1" value="moon"> Moon</label><br>
+								<input id="rd1" type="radio" name="ra1" required value="sun"> <span><label for="rd1">Sun</label></span><br>
+								<input id="rd2" type="radio" name="ra1" value="moon"> <span><label for="rd2">Moon</label></span><br>
+								<div class="mar small text-e">Select to continue</div>
 					</table>
 				</fieldset>
 				
-				<tr>
-					<td>
-					<td>
-						<input type="submit" value="Submit">
-						<input type="submit" value="Disabled" disabled>
-						<input type="submit" value="Confirm" class="bg-w dialog" name="btn2" title="Confirm?">
 				</table>
+			  </div>
+			</section>
+			 <div class="pad bg">
+			  <div class="read center">
+				<table class="flip">
+					<tr>
+						<td>
+						<td>
+							<input type="submit" value="Submit">
+							<input type="submit" value="Disabled" disabled>
+							<input type="submit" value="Confirm" class="bg-w dialog" name="btn2" title="Confirm?">
+				</table>
+			  </div>
+			 </div>
 			</form>
-			</div>
 		</div>
 		
 		<h2 class="mem" id="utils">Utilities</h2>
@@ -498,11 +552,11 @@ let double = function (x) {
 				<option value="text-i">info</option>
 				<option value="text-n">note</option>
 			</select>
-			</p>
 			<div class="code" id="code">
 <!-- HTML -->
 <abbr title="Hypertext Markup Language">HTML</abbr>
-<code>code</code> <b>sample</b>.
+<code>code</code>
+<b>sample</b>.
 			</div>
 		</div>
 		
@@ -586,15 +640,15 @@ let double = function (x) {
 			</select>
 			
 			<div class="row mar let">
-				<article data-color="red"    data-style="plain" class="item pad bg-e plain">A</article>
-				<article data-color="yellow" data-style="plain" class="item pad bg-w plain">B</article>
-				<article data-color="green"  data-style="plain" class="item pad bg-y plain">C</article>
-				<article data-color="red"    data-style="shade" class="item pad bg-e shade">D</article>
-				<article data-color="yellow" data-style="shade" class="item pad bg-w shade">E</article>
-				<article data-color="green"  data-style="shade" class="item pad bg-y shade">F</article>
-				<article data-color="red"    data-style="btn"   class="item pad bg-e btn">G</article>
-				<article data-color="yellow" data-style="btn"   class="item pad bg-w btn">H</article>
-				<article data-color="green"  data-style="btn"   class="item pad bg-y btn">I</article>
+				<div data-color="red"    data-style="plain" class="item pad bg-e plain">A</div>
+				<div data-color="yellow" data-style="plain" class="item pad bg-w plain">B</div>
+				<div data-color="green"  data-style="plain" class="item pad bg-y plain">C</div>
+				<div data-color="red"    data-style="shade" class="item pad bg-e shade">D</div>
+				<div data-color="yellow" data-style="shade" class="item pad bg-w shade">E</div>
+				<div data-color="green"  data-style="shade" class="item pad bg-y shade">F</div>
+				<div data-color="red"    data-style="btn"   class="item pad bg-e btn">G</div>
+				<div data-color="yellow" data-style="btn"   class="item pad bg-w btn">H</div>
+				<div data-color="green"  data-style="btn"   class="item pad bg-y btn">I</div>
 			</div>
 		</div>
 		
@@ -644,13 +698,13 @@ let double = function (x) {
 	<div>
 		<div class="pad mar shade">
 			<div class="row center">
-				<a href="#media" class="col-0 pad bg-n let" data-icon="user/50/50"></a>
+				<a href="#x" class="col-0 pad bg-n let" data-icon="user/50/50"></a>
 				<div>
 					Media object
 					<br>
 					<time class="text-n" datetime="1970-01-01">January 1970</time>
 					<br>
-					<a href="#media" class="-btn -inv">Link</a>
+					<a href="#x" class="">Link</a>
 				</div>
 			</div>
 		</div>

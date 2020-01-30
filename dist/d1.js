@@ -1,4 +1,4 @@
-/*! d1-web v1.0.7 */
+/*! d1-web v1.0.8 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -477,7 +477,7 @@ module.exports = new function () {
 
     if (modal) {
       //let f1 = app.q('input, a:not(.' + app.opt.cClose + ')', modal);
-      var f1 = app.q('input, a:not([href="' + app.opt.hClose + '"])', modal);
+      var f1 = app.q('input, a.btn, a:not([href="' + app.opt.hClose + '"])', modal);
       var f = app.q(':focus', modal);
 
       if (f1 && !f && (!n || !modal.contains(n))) {
@@ -2296,7 +2296,8 @@ module.exports = new function () {
     var d = app.q(n.hash);
 
     if (d) {
-      d.value = app.attr(n, 'data-value'); //toggle.esc();//todo: is it needed?
+      d.value = app.attr(n, 'data-value');
+      toggle.unpop(d, true); //toggle.after(); //generally not needed
     }
   };
 
@@ -2807,7 +2808,8 @@ module.exports = new function () {
     cStart: 'shade',
     qTopbar: '.topbar.toggle',
     //.topbar.let
-    qEnable: '.topbar, .drawer' //qTopbarFixed: '.topbar:not(.let)'
+    qEnable: '.topbar' // '.topbar, .drawer'
+    //qTopbarFixed: '.topbar:not(.let)'
 
   };
 
@@ -2863,10 +2865,10 @@ module.exports = new function () {
     if (this.y !== null
     /* && !h*/
     ) {
-        app.e(this.opt.qTopbar, function (n) {
+        if (this.opt.qTopbar) app.e(this.opt.qTopbar, function (n) {
           return _this2.decorate(n, window.scrollY, dy);
         });
-        app.e(this.opt.qHideOnScroll, function (n) {
+        if (this.opt.qHideOnScroll) app.e(this.opt.qHideOnScroll, function (n) {
           return toggle.toggle(n, false);
         });
       }
@@ -2877,7 +2879,7 @@ module.exports = new function () {
   };
 
   this.decorate = function (n, y, dy) {
-    n.classList[dy > 0 ? 'add' : 'remove'](app.opt.cOff);
+    n.classList[dy > 0 && y > n.offsetHeight ? 'add' : 'remove'](app.opt.cOff);
     n.classList[y && dy <= 0 ? 'add' : 'remove'](this.opt.cStart);
   };
   /*
@@ -3538,8 +3540,12 @@ module.exports = new function () {
     if (!ok && e) {
       e.preventDefault();
       e.stopPropagation();
-      var f = app.q(':invalid', n);
-      if (f) f.focus();
+      var f = app.q('[name]:invalid:not(.hide):not(.off), [name]:invalid~.subinput', n);
+
+      if (f) {
+        app.dbg(['focus validate', f]);
+        f.focus();
+      }
     }
 
     if (this.isLive(n)) {

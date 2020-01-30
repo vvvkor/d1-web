@@ -38,7 +38,8 @@ module.exports = new(function () {
     let d = app.q(n.hash);
     if (d) {
       d.value = app.attr(n, 'data-value');
-      //toggle.esc();//todo: is it needed?
+      toggle.unpop(d, true);
+      //toggle.after(); //generally not needed
     }
   }
 

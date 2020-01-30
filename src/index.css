@@ -56,7 +56,7 @@ x .unpop
 - .not-, .or, .or-
 
 # todo
-css restructure
+css restructure (maybe)
 - common modifiers
 - by-component modifiers (make list of specific usage of common modifiers)
 - js modifiers
@@ -65,8 +65,8 @@ css restructure
 
 :root{
 --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
---font-cap: var(--font);
---font-mono: monospace;
+--font-cap: var(--font); /*"PT Serif", serif;*/
+--font-mono: /*"PT Mono",*/ monospace;
 --font-print: serif;
 --text: #000;
 --bg: #fff; /*#f6f6f0;*/
@@ -182,7 +182,7 @@ body{font:120%/1.5 sans-serif;font-family:var(--font);}
 body,.invert{color:var(--text);background-color:var(--bg);}
 main{display:block;}/*ie*/
 ul,ol,dl,blockquote,pre,hr,p,figure{margin:var(--gap-n) 0;}
-h1,h2,h3,h4,h5,h6{margin:3rem 0 1.5rem 0;line-height:1.2;font-family:var(--font-cap);}
+h1,h2,h3,h4,h5,h6{margin:3rem 0 1.5rem 0;line-height:1.2;font-family:var(--font-cap);letter-spacing:.03em;}
 	h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]{padding-right:3em;/*?*/}
 	h1+h2, h2+h3, h3+h4, h4+h5, h5+h6{margin-top:2rem;}
 	h1.mar,h2.mar,h3.mar{margin:calc(var(--gap) * 1rem) 0;}
@@ -403,6 +403,10 @@ mark{background-color:var(--bg-warning);}
 
 /* media */
 
+@media (min-height: 600px){
+	.dlg section{max-height:50vh;overflow:auto;}
+}
+
 @media (max-width: 899px){
 	/* mobile */
 	body{font-size:medium;}
@@ -461,7 +465,7 @@ mark{background-color:var(--bg-warning);}
 		[type="checkbox"]:invalid+span, [type="radio"]:invalid+span{color:var(--text-danger);}
 		[name]:invalid:focus, [name]:invalid~.subinput:focus{box-shadow:0 0 0 .15em var(--focus-danger);}
 		/*form:not(:focus-within) input~.text-e, form:focus-within input:valid~.text-e{display:none;}*/
-		:valid~.text-e, :invalid~.text-y, /*.js-unhint :valid~.text-y,*/ .js-unhint :invalid~.text-e, .js-unhint:invalid~.text-e{display:none;}
+		:valid:not(.subinput)~.text-e, :invalid~.text-y, /*.js-unhint :valid~.text-y,*/ .js-unhint :invalid~.text-e, .js-unhint:invalid~.text-e{display:none;}
 	input[type="range"], input[type="color"]{vertical-align:middle;padding:unset;}
 		input[type="range"]{border:initial;}
 

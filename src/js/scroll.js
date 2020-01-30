@@ -17,7 +17,7 @@ module.exports = new(function () {
     qHideOnScroll: '', // '.drawer[id]'
     cStart: 'shade',
     qTopbar: '.topbar.toggle', //.topbar.let
-    qEnable: '.topbar, .drawer'
+    qEnable: '.topbar' // '.topbar, .drawer'
     //qTopbarFixed: '.topbar:not(.let)'
   };
   
@@ -54,8 +54,8 @@ module.exports = new(function () {
     let dy = window.scrollY ===null ? null : window.scrollY - this.y;
     app.dbg(['scroll', window.scrollY, dy]); // ,mode,h,this.hashed
     if(this.y!==null/* && !h*/){
-      app.e(this.opt.qTopbar, n => this.decorate(n, window.scrollY, dy));
-      app.e(this.opt.qHideOnScroll, n => toggle.toggle(n, false));
+      if(this.opt.qTopbar) app.e(this.opt.qTopbar, n => this.decorate(n, window.scrollY, dy));
+      if(this.opt.qHideOnScroll) app.e(this.opt.qHideOnScroll, n => toggle.toggle(n, false));
     }
     this.y = window.scrollY; // forces reflow
     //if(this.hashed) this.fixScroll();
@@ -63,8 +63,8 @@ module.exports = new(function () {
   }
   
   this.decorate = function(n, y, dy){
-    n.classList[dy>0 ? 'add' : 'remove'](app.opt.cOff)
-    n.classList[y && dy<=0 ? 'add' : 'remove'](this.opt.cStart)
+    n.classList[dy > 0 && y > n.offsetHeight ? 'add' : 'remove'](app.opt.cOff)
+    n.classList[y && dy <= 0 ? 'add' : 'remove'](this.opt.cStart)
   }
 
   /*

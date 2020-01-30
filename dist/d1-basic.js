@@ -1,4 +1,4 @@
-/*! d1-web v1.0.7 */
+/*! d1-web v1.0.8 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -479,7 +479,7 @@ module.exports = new function () {
 
     if (modal) {
       //let f1 = app.q('input, a:not(.' + app.opt.cClose + ')', modal);
-      var f1 = app.q('input, a:not([href="' + app.opt.hClose + '"])', modal);
+      var f1 = app.q('input, a.btn, a:not([href="' + app.opt.hClose + '"])', modal);
       var f = app.q(':focus', modal);
 
       if (f1 && !f && (!n || !modal.contains(n))) {

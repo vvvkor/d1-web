@@ -1,4 +1,4 @@
-/*! d1-web v1.0.7 */
+/*! d1-web v1.0.8 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -160,6 +160,7 @@ h1, h2, h3, h4, h5, h6 {
     line-height: 1.2;
     font-family: "PT Sans", Roboto, "Segoe UI", sans-serif;
     font-family: var(--font-cap);
+    letter-spacing: .03em;
 }
 
 h1[id], h2[id], h3[id], h4[id], h5[id], h6[id] {
@@ -772,6 +773,13 @@ mark {
     margin-left: auto;
 }
 
+@media (min-height: 600px) {
+    .dlg section {
+        max-height: 50vh;
+        overflow: auto;
+    }
+}
+
 @media (max-width: 899px) {
     body {
         font-size: medium;
@@ -982,7 +990,7 @@ mark {
         box-shadow: 0 0 0 .15em var(--focus-danger);
     }
 
-    :valid~.text-e, :invalid~.text-y, .js-unhint :invalid~.text-e,
+    :valid:not(.subinput)~.text-e, :invalid~.text-y, .js-unhint :invalid~.text-e,
     .js-unhint:invalid~.text-e {
         display: none;
     }

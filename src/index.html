@@ -34,12 +34,14 @@
 	<style>
 		/* Roboto, Open Sans, Georgia, PT Sans, PT Serif, PT Mono */
 		@import url('https://fonts.googleapis.com/css?family=PT+Sans&display=swap');
+		@import url('https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap');
+		/*
 		@import url('https://fonts.googleapis.com/css?family=PT+Serif&display=swap');
 		@import url('https://fonts.googleapis.com/css?family=PT+Mono&display=swap');
-		@import url('https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap');
+		*/
 	</style>
 </head>
-<body class="-bg" data-d1='{"hOk":"#yes","debug":true,"disable":["-theme","-valid","-icons"],"plug":{"toggle":{"keepHash":true},"gallery":{"idPrefix":"image-"},"theme":{"fonts":["sans-serif","serif","monospace","PT Sans","PT Serif","PT Mono","Roboto Slab"]},"-scroll":{"qHideOnScroll":".drawer[id]"},"-icons":{"pSvg":"icon-"}}}'>
+<body class="-bg" data-d1='{"hOk":"#yes","debug":true,"disable":["-theme","-valid","-icons"],"plug":{"toggle":{"keepHash":true},"gallery":{"idPrefix":"image-"},"theme":{"fonts":["sans-serif","serif","monospace","PT Sans","Roboto Slab"]},"-scroll":{"qHideOnScroll":".drawer[id]"},"-icons":{"pSvg":"icon-"}}}'>
 <div
   class="topbar toggle shade  row let center fit hide-print"
   id="topline"
@@ -56,8 +58,8 @@
 
 <div 
   class="stick pad target-mobile hide-print"
-  data-class-mobile="drawer toggle-mobile off pad hide-print"
-  data-class-desktop="stick pad hide-print"
+  data-class-mobile="drawer toggle-mobile off pad hide-print scroller"
+  data-class-desktop="stick pad hide-print scroller"
   id="menu"
 >
 	<div class="hide-desktop pad">
@@ -1447,43 +1449,43 @@ Toggles on resize.
 <h4 id="filter-and">"AND" filter</h4>
 
 <div class="code" id="demo-filter">
-<a href="#x" class="pad hover" data-set="not-yellow" data-nodes="#demo-filter article:not(.bg-w)">yellow</a>
-<a href="#x" class="pad hover" data-set="not-green" data-nodes="#demo-filter article:not(.bg-y)">green</a>
-<a href="#x" class="pad hover" data-set="not-shade" data-nodes="#demo-filter article:not(.shade)">shadow</a>
-<a href="#x" class="pad hover" data-set="not-btn" data-nodes="#demo-filter article:not(.btn)">inverted</a>
+<a href="#x" class="pad hover" data-set="not-yellow" data-nodes="#demo-filter .row>div:not(.bg-w)">yellow</a>
+<a href="#x" class="pad hover" data-set="not-green"  data-nodes="#demo-filter .row>div:not(.bg-y)">green</a>
+<a href="#x" class="pad hover" data-set="not-shade"  data-nodes="#demo-filter .row>div:not(.shade)">shadow</a>
+<a href="#x" class="pad hover" data-set="not-btn"    data-nodes="#demo-filter .row>div:not(.btn)">inverted</a>
 <hr>
 <div class="row mar let">
-	<article class="pad mar bg-w">A</article>
-	<article class="pad mar bg-y">B</article>
-	<article class="pad mar bg-w shade">C</article>
-	<article class="pad mar bg-y shade">D</article>
-	<article class="pad mar bg-w btn">E</article>
-	<article class="pad mar bg-y btn">F</article>
-	<article class="pad mar bg-w btn shade">G</article>
-	<article class="pad mar bg-y btn shade">H</article>
+	<div class="pad mar bg-w">A</div>
+	<div class="pad mar bg-y">B</div>
+	<div class="pad mar bg-w shade">C</div>
+	<div class="pad mar bg-y shade">D</div>
+	<div class="pad mar bg-w btn">E</div>
+	<div class="pad mar bg-y btn">F</div>
+	<div class="pad mar bg-w btn shade">G</div>
+	<div class="pad mar bg-y btn shade">H</div>
 </div>
 </div>
 
-<h4 id="filter-and">"OR" filter</h4>
+<h4 id="filter-or">"OR" filter</h4>
 
 <div class="code" id="demo-filter-or">
-<a href="#x" class="act pad hover" data-set="or-color-red" data-nodes="#demo-filter-or article.bg-e">red</a>
-<a href="#x" class="pad hover" data-set="or-color-yellow" data-nodes="#demo-filter-or article.bg-w">yellow</a>
-<a href="#x" class="pad hover" data-set="or-color-green" data-nodes="#demo-filter-or article.bg-y">green</a>
-<a href="#x" class="act pad hover" data-set="or-style-plain" data-nodes="#demo-filter-or article.plain">plain</a>
-<a href="#x" class="pad hover" data-set="or-style-shade" data-nodes="#demo-filter-or article.shade">shadow</a>
-<a href="#x" class="pad hover" data-set="or-style-btn" data-nodes="#demo-filter-or article.btn">inverted</a>
+<a href="#x" class="act pad hover" data-set="or-color-red" data-nodes="#demo-filter-or .row>div.bg-e">red</a>
+<a href="#x" class="pad hover" data-set="or-color-yellow" data-nodes="#demo-filter-or .row>div.bg-w">yellow</a>
+<a href="#x" class="pad hover" data-set="or-color-green" data-nodes="#demo-filter-or .row>div.bg-y">green</a>
+<a href="#x" class="act pad hover" data-set="or-style-plain" data-nodes="#demo-filter-or .row>div.plain">plain</a>
+<a href="#x" class="pad hover" data-set="or-style-shade" data-nodes="#demo-filter-or .row>div.shade">shadow</a>
+<a href="#x" class="pad hover" data-set="or-style-btn" data-nodes="#demo-filter-or .row>div.btn">inverted</a>
 <hr>
 <div class="row mar let">
-	<article class="or pad mar bg-e plain">A</article>
-	<article class="or pad mar bg-w plain">B</article>
-	<article class="or pad mar bg-y plain">C</article>
-	<article class="or pad mar bg-e shade">D</article>
-	<article class="or pad mar bg-w shade">E</article>
-	<article class="or pad mar bg-y shade">F</article>
-	<article class="or pad mar bg-e btn">G</article>
-	<article class="or pad mar bg-w btn">H</article>
-	<article class="or pad mar bg-y btn">I</article>
+	<div class="or pad mar bg-e plain">A</div>
+	<div class="or pad mar bg-w plain">B</div>
+	<div class="or pad mar bg-y plain">C</div>
+	<div class="or pad mar bg-e shade">D</div>
+	<div class="or pad mar bg-w shade">E</div>
+	<div class="or pad mar bg-y shade">F</div>
+	<div class="or pad mar bg-e btn">G</div>
+	<div class="or pad mar bg-w btn">H</div>
+	<div class="or pad mar bg-y btn">I</div>
 </div>
 </div>
 
@@ -1537,15 +1539,15 @@ Toggles on resize.
 	
 	<b>Items</b>
 	<div class="row mar let">
-		<article data-color="red"    data-style="plain" class="item pad mar bg-e plain">A</article>
-		<article data-color="yellow" data-style="plain" class="item pad mar bg-w plain">B</article>
-		<article data-color="green"  data-style="plain" class="item pad mar bg-y plain">C</article>
-		<article data-color="red"    data-style="shade" class="item pad mar bg-e shade">D</article>
-		<article data-color="yellow" data-style="shade" class="item pad mar bg-w shade">E</article>
-		<article data-color="green"  data-style="shade" class="item pad mar bg-y shade">F</article>
-		<article data-color="red"    data-style="btn"   class="item pad mar bg-e btn">G</article>
-		<article data-color="yellow" data-style="btn"   class="item pad mar bg-w btn">H</article>
-		<article data-color="green"  data-style="btn"   class="item pad mar bg-y btn">I</article>
+		<div data-color="red"    data-style="plain" class="item pad mar bg-e plain">A</div>
+		<div data-color="yellow" data-style="plain" class="item pad mar bg-w plain">B</div>
+		<div data-color="green"  data-style="plain" class="item pad mar bg-y plain">C</div>
+		<div data-color="red"    data-style="shade" class="item pad mar bg-e shade">D</div>
+		<div data-color="yellow" data-style="shade" class="item pad mar bg-w shade">E</div>
+		<div data-color="green"  data-style="shade" class="item pad mar bg-y shade">F</div>
+		<div data-color="red"    data-style="btn"   class="item pad mar bg-e btn">G</div>
+		<div data-color="yellow" data-style="btn"   class="item pad mar bg-w btn">H</div>
+		<div data-color="green"  data-style="btn"   class="item pad mar bg-y btn">I</div>
 	</div>
 </div>
 </div>
@@ -1904,7 +1906,7 @@ let double = function(x){
 
 <div class="code">
 <div class="item">
-	<img class="fit" src="https://i.picsum.photos/id/844/1000/400.jpg">
+	<img class="fit" src="https://i.picsum.photos/id/844/1000/400.jpg" alt="Green">
 	<div class="over hover invert bg-w" id="over1"></div>
 	<div class="over pad invert row center c" id="over2">
 		<div>
@@ -2042,17 +2044,32 @@ most important:
 <tr><th>button, a.btn<td><a href="#colors-buttons">Button</a><td><a href="#form-table">form</a> submit button a span<td>.bg-x .fit <i>[data-target]</i>
 <tr><th>.flip<td>Responsive<td>.row .nav table<td>
 <tr><th>.hide<td>Visibility by media<td>div<td>.hide-mobile .hide-desktop .hide-print .hide-screen .hide-js .hide-nojs
-<tr><th>.target<td><a href="#target">Toggle</a><td>div<td>.toggle .off .mem <i>.act</i>
-<tr><th>.pop<td><a href="#popup">Popup</a><td><td>.pop>.shift
+<tr><th>.target<td><a href="#target">Toggle</a><td>div<td>.target-mobile .target-desktop .toggle .off .mem <i>.act</i>
+<tr><th>.pop<td><a href="#popup">Popup</a><td><td>.pop>.shift, [data-tip]
 <tr><th>.nav<td><a href="#nav">Navigation</a><td>ul<td>.flip .hover .let .bg .center .nav.tabs.mem<i>.act .shift</i>
-<tr><th>.tabs<td><a href="#tabs">Tabs</a><td>ul.nav<td>
+<tr><th>.tabs<td><a href="#tabs">Tabs</a><td>ul.nav.tabs.mem<td>
 <tr><th>.dlg<td><a href="#dlg">Modal</a><td>.close<td>.dlg.c.let .dlg.full.center
 <tr><th>.gal<td><a href="#gallery">Gallery</a><td>a .close<td><i>[data-info]</i>
 <tr><th>.drawer<td><a href="#drawer">Drawer</a><td>div a.close<td>.shift
 <tr><th>.topbar<td><a href="#topbar">Top bar</a><td><td>.toggle
-<tr><th>.let<td>Specific modifications to components<td>.row, .nav, .dlg, .topbar, table<td>
+<tr><th>.let<td>Specific modifications to components<td>
+	<span title="Allow wrapping">.row</span><br>
+	<span title="Row separators">.table</span><br>
+	<span title="Vertical">.nav</span><br>
+	<span title="Wider">.dlg</span>
+	<td>
+<tr><th>.shift<td>Specific modifications to components<td>
+	<span title="Shift item to the right">.row &gt; *</span><br>
+	<span title="Shift item to the right">.nav &gt; li</span><br>
+	<span title="Full width">table</span><br>
+	<span title="Pop to the left">.pop</span><br>
+	<span title="Appear on the right side">.drawer</span><br>
+	<span title="Add left margin">*</span>
+	<td>
 <!--tr><th>.switch<td><a href="#toggle-radio">Togglable (radio)</a><td>label div<td>.pop .tabs -->
-<tr><th>.icon<td>Small image<td>img svg a button<td>
+<tr><th>.item<td>Relative position<td>*<td>.over .close
+<tr><th>.icon<td>Small image<td>img svg a button<td>.is-on .is-off
+<tr><th>.bar<td>Progress bar<td>div<td>.text-x
 <tr><th>.fix<td>Fixed block<td><td>.r .l
 <tr><th>.text-<td><a href="#colors">Text color</a><td>* .invert<td>.text-e .text-w .text-i .text-y .text-n
 <tr><th>.bg<td><a href="#colors">Background color</a><td>* .invert<td>.bg-e .bg-w .bg-i .bg-y .bg-n .yel
@@ -2066,6 +2083,18 @@ most important:
 <tr><th>.rad<td>Border radius<td>*<td>
 <tr><th>.shade<td>Add shadow<td>*<td>
 <tr><th>.nobr<td>No wrapping<td>*<td>
+<tr><th>.scroller<td>Custom scrollbar<td>html, body, *<td>
+<tr><th>.js<td>JavaScript is on<td>body<td>
+	<span title="Hide depending on JavaScript status">.hide-js, .hide-nojs</span><br>
+	<span title="Toggle always / on mobile / on desktop">.toggle, .toggle-mobile, .toggle-desktop</span><br>
+	<span title="Toggled off">.off</span><br>
+	<span title="Remember toggle state (.target, .tabs)">.mem</span><br>
+	<span title="Generated input (lookup, wysiwyg)">.subinput</span><br>
+	<span title="Tools after input (lookup, calendar)">.input-tools</span><br>
+	<span title="Disable default validation tooltips">form.js-unhint</span><br>
+	<span title="Validate while typing (dimmed submit buttons)">form.js-live-val</span><br>
+	<span title="Generate gallery">.gallery &gt; a.pic</span><br>
+	<span title="Hide by filter (use with [data-set])">.not-x, .or, .or-x</span>
 </tbody>
 </table>
 </div>
@@ -2109,6 +2138,9 @@ most important:
 <li><code>.hover</code> &mdash; highlight link or table row on hover
 <li><code>.icon</code> &mdash; small image
 <li><code>.invert</code> &mdash; invert colors
+<li><code>.is-off</code> &mdash; hidden inside active link
+<li><code>.is-on</code> &mdash; hidden inside inactive link
+<li><code>.item</code> &mdash; relative position
 <li><code>.l</code> &mdash; align content to the left 
 <li><code>.let</code> &mdash; specific modifications to components
 <li><code>.mar</code> &mdash; add vertical margins
@@ -2116,6 +2148,7 @@ most important:
 <li><code>.nav</code> &mdash; horizontal dropdown navigation
 <li><code>.nobr</code> &mdash; prevent automatic text wrapping
 <li><code>.off</code> &mdash; hidden with JavaScript
+<li><code>.over</code> &mdash; overlay
 <li><code>.pad</code> &mdash; add padding
 <li><code>.pop</code> &mdash; popup component wrapper
 <li><code>.r</code> &mdash; align content to the right
