@@ -182,7 +182,7 @@ body{font:120%/1.5 sans-serif;font-family:var(--font);}
 body,.invert{color:var(--text);background-color:var(--bg);}
 main{display:block;}/*ie*/
 ul,ol,dl,blockquote,pre,hr,p,figure{margin:var(--gap-n) 0;}
-h1,h2,h3,h4,h5,h6{margin:3rem 0 1.5rem 0;line-height:1.2;font-family:var(--font-cap);letter-spacing:.03em;}
+h1,h2,h3,h4,h5,h6{margin:3rem 0 1.5rem 0;line-height:1.2;font-family:var(--font-cap);/*letter-spacing:.03em;*/}
 	h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]{padding-right:3em;/*?*/}
 	h1+h2, h2+h3, h3+h4, h4+h5, h5+h6{margin-top:2rem;}
 	h1.mar,h2.mar,h3.mar{margin:calc(var(--gap) * 1rem) 0;}
