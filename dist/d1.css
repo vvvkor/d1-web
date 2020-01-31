@@ -1,4 +1,4 @@
-/*! d1-web v1.0.12 */
+/*! d1-web v1.1.0 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -1121,12 +1121,17 @@ mark {
     }
 }
 
-.pop>div, .nav ul, .dlg, .drawer, .stick, .topbar, .back {
+.pop>div, .nav ul, .dlg, .drawer {
     box-shadow: 0 .2em .8em rgba(0, 0, 0, .3);
     box-shadow: var(--shade);
     background-color: #fff;
     background-color: var(--bg);
     text-align: left;
+}
+
+.stick, .topbar, .back {
+    background-color: #fff;
+    background-color: var(--bg);
 }
 
 .tabs li {
