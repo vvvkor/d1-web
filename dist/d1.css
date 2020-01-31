@@ -1,4 +1,4 @@
-/*! d1-web v1.0.11 */
+/*! d1-web v1.0.12 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -15,33 +15,29 @@
     --focus: rgba(0, 0, 0, .1);
     --focus-danger: rgba(255, 100, 100, .3);
     --hover: #07f;
-    --bg-btn: var(--link);
-    --text-btn: var(--bg);
     --rad: .2;
     --gap: 1;
     --gap-rate: .5;
     --topbar: 3.2rem;
-    --text-danger: #c00;
-    --text-warning: #c70;
-    --text-info: #07a;
-    --text-success: #181;
-    --text-lite: #999;
-    --text-nav: #03b;
-    --text-vis: #80b;
-    --bg-danger: #fcc;
-    --bg-warning: #ffe699;
-    --bg-info: #bef;
-    --bg-success: #cec;
-    --bg-lite: #eee;
-    --bg-nav: #cdf;
-    --bg-vis: #ecf;
-    --btn-danger: #d11;
-    --btn-warning: #e70;
-    --btn-info: #08a;
-    --btn-success: #181;
-    --btn-lite: #888;
-    --btn-nav: #04b;
-    --btn-vis: #90b;
+    --e: #c00;
+    --w: #d70;
+    --y: #181;
+    --i: #08a;
+    --n: #999;
+    --a: #04b;
+    --v: #90b;
+    --ee: #fcc;
+    --ww: #ffe699;
+    --yy: #cec;
+    --ii: #bef;
+    --nn: #eee;
+    --aa: #cdf;
+    --vv: #ecf;
+}
+
+:root, .invert {
+    --bg-btn: var(--link);
+    --text-btn: var(--bg);
     --link: var(--text-nav);
     --visited: var(--text-vis);
     --radius: calc(var(--rad)*1em);
@@ -52,6 +48,27 @@
     --gaps-n: calc(var(--gap-n)*var(--gap-rate)) var(--gap-n);
     --gaps-s: calc(var(--gap-s)*var(--gap-rate)) var(--gap-s);
     --gaps-l: calc(var(--gap-l)*var(--gap-rate)) var(--gap-l);
+    --text-danger: var(--e);
+    --text-warning: var(--w);
+    --text-success: var(--y);
+    --text-info: var(--i);
+    --text-lite: var(--n);
+    --text-nav: var(--a);
+    --text-vis: var(--v);
+    --bg-danger: var(--ee);
+    --bg-warning: var(--ww);
+    --bg-success: var(--yy);
+    --bg-info: var(--ii);
+    --bg-lite: var(--nn);
+    --bg-nav: var(--aa);
+    --bg-vis: var(--vv);
+    --btn-danger: var(--e);
+    --btn-warning: var(--w);
+    --btn-success: var(--y);
+    --btn-info: var(--i);
+    --btn-lite: var(--n);
+    --btn-nav: var(--a);
+    --btn-vis: var(--v);
 }
 
 .invert {
@@ -63,22 +80,29 @@
     --focus: rgba(255, 255, 255, .4);
     --focus-danger: rgba(220, 50, 50, 1);
     --hover: #ff7;
+    --ee: #c00;
+    --ww: #d70;
+    --yy: #181;
+    --ii: #08a;
+    --nn: #999;
+    --aa: #970;
+    --vv: #970;
+    --e: #fcc;
+    --w: #ffe699;
+    --y: #cec;
+    --i: #bef;
+    --n: #eee;
+    --a: #ec6;
+    --v: #ec6;
     --bg-btn: #36e;
     --text-btn: #fff;
-    --text-danger: #faa;
-    --text-warning: #fb6;
-    --text-info: #bdf;
-    --text-success: #beb;
-    --text-lite: #bbb;
-    --text-nav: #ec6;
-    --text-vis: #ec6;
-    --bg-danger: #d00;
-    --bg-warning: #c60;
-    --bg-info: #07a;
-    --bg-success: #292;
-    --bg-lite: #777;
-    --link: var(--text-nav);
-    --visited: var(--text-vis);
+    --btn-danger: var(--ee);
+    --btn-warning: var(--ww);
+    --btn-success: var(--yy);
+    --btn-info: var(--ii);
+    --btn-lite: var(--nn);
+    --btn-nav: var(--aa);
+    --btn-vis: var(--vv);
 }
 
 button, input, select, textarea {
@@ -151,7 +175,6 @@ main {
 }
 
 ul, ol, dl, blockquote, pre, hr, p, figure {
-    margin: 1em 0;
     margin: var(--gap-n) 0;
 }
 
@@ -160,10 +183,6 @@ h1, h2, h3, h4, h5, h6 {
     line-height: 1.2;
     font-family: "PT Sans", Roboto, "Segoe UI", sans-serif;
     font-family: var(--font-cap);
-}
-
-h1[id], h2[id], h3[id], h4[id], h5[id], h6[id] {
-    padding-right: 3em;
 }
 
 h1+h2, h2+h3, h3+h4, h4+h5, h5+h6 {
@@ -204,7 +223,6 @@ h6 {
 }
 
 blockquote, pre, fieldset {
-    padding: .5em 1em;
     padding: var(--gaps-n);
 }
 
@@ -217,12 +235,10 @@ pre, code {
 pre {
     overflow: auto;
     max-height: 80vh;
-    padding: 1em;
     padding: var(--gap-n);
 }
 
 code {
-    padding: 0 .2em;
     padding: 0 var(--gap-xs);
 }
 
@@ -235,17 +251,14 @@ abbr {
 }
 
 a {
-    color: #03b;
     color: var(--link);
 }
 
 :visited {
-    color: #80b;
     color: var(--visited);
 }
 
 .nav a, a[href^="#"] {
-    color: #03b;
     color: var(--link);
 }
 
@@ -292,7 +305,6 @@ svg {
 }
 
 .icon:not(:last-child) {
-    margin-right: .5em;
     margin-right: var(--gap-s);
 }
 
@@ -301,12 +313,10 @@ ul {
 }
 
 ul, ol {
-    padding: 0 0 0 1.5em;
     padding: 0 0 0 calc(var(--gap-n)*1.5);
 }
 
 li ul, li ol {
-    margin: .2em 0;
     margin: var(--gap-xs) 0;
 }
 
@@ -315,7 +325,6 @@ dt {
 }
 
 dt, dd {
-    margin-bottom: .5em;
     margin-bottom: var(--gap-s);
 }
 
@@ -324,7 +333,6 @@ table {
 }
 
 th, td {
-    padding: .25em .5em;
     padding: var(--gaps-s);
     vertical-align: top;
     background-clip: padding-box;
@@ -367,7 +375,6 @@ table.fit tr>* {
 }
 
 form>p, form>.row {
-    margin: .5em 0;
     margin: var(--gap-s) 0;
 }
 
@@ -386,15 +393,13 @@ form>p, form>.row {
 }
 
 .item:hover .over.hover, .over.let {
-    opacity: .7;
+    opacity: .5;
 }
 
 .bar {
     display: flex;
     overflow: hidden;
-    background-color: #eee;
     background-color: var(--bg-lite);
-    border-radius: .2em;
     border-radius: var(--radius);
     min-height: .3em;
 }
@@ -414,13 +419,10 @@ form>p, form>.row {
     position: absolute;
     bottom: 100%;
     left: 0;
-    background-color: #999;
     background-color: var(--text-lite);
     color: #fff;
     color: var(--bg);
-    padding: 0 .5em;
     padding: 0 var(--gap-s);
-    border-radius: .2em;
     border-radius: var(--radius);
     white-space: nowrap;
 }
@@ -473,11 +475,6 @@ form>p, form>.row {
     right: 0;
 }
 
-.close.l {
-    top: auto;
-    bottom: 0;
-}
-
 .fix {
     z-index: 5;
     position: fixed;
@@ -521,7 +518,6 @@ ul.nav, .nav ul {
 
 .nav li>:not(ul) {
     display: block;
-    padding: .5em 1em;
     padding: var(--gaps-n);
     height: 100%;
     box-sizing: border-box;
@@ -533,7 +529,7 @@ ul.nav, .nav ul {
 }
 
 .nav li>form {
-    padding: .3em 1em;
+    padding: calc(var(--gap-n)*0.5 - var(--gap-xs)) var(--gap-n);
     padding: calc(var(--gap-n)*var(--gap-rate) - var(--gap-xs)) var(--gap-n);
 }
 
@@ -541,7 +537,6 @@ ul.nav, .nav ul {
     position: static;
     display: inline-block;
     content: '\a0\a0\203a';
-    color: #999;
     color: var(--text-lite);
 }
 
@@ -556,8 +551,6 @@ ul.nav, .nav ul {
 }
 
 .nav ul, .pop>div {
-    background: #fff;
-    background: var(--bg);
     background-clip: padding-box;
 }
 
@@ -660,7 +653,6 @@ ul.nav, .nav ul {
     position: fixed;
     top: 0;
     color: #fff;
-    padding: 0 .5em;
     padding: 0 calc(var(--gap-n)/2);
 }
 
@@ -683,8 +675,6 @@ ul.nav, .nav ul {
     height: 3.2rem;
     height: var(--topbar);
     transition: top .2s;
-    background-color: #fff;
-    background-color: var(--bg);
 }
 
 .hide[class], [class*="not-"], .or:not([class*="or-"]), .gal>*, a.act>.is-off,
@@ -713,7 +703,7 @@ body:not(.js) .hide-nojs {
     }
 }
 
-.bg, blockquote, pre, code, thead tr, tfoot {
+.bg[class], blockquote, pre, code, thead tr, tfoot {
     background-color: rgba(0, 0, 0, .05);
     background-color: var(--bg-pane);
 }
@@ -723,7 +713,6 @@ pre code {
 }
 
 mark {
-    background-color: #ffe699;
     background-color: var(--bg-warning);
 }
 
@@ -739,7 +728,6 @@ mark {
 }
 
 .row:not(.fit)>*:not(:last-child):not(.center) {
-    margin-right: 1em;
     margin-right: var(--gap-n);
 }
 
@@ -771,6 +759,16 @@ mark {
     margin-left: auto;
 }
 
+.row.mar {
+    margin-bottom: 0;
+}
+
+/* ! will not collapse with following element*/
+
+.row.mar>* {
+    margin-bottom: var(--gap-n);
+}
+
 @media (min-height: 600px) {
     .dlg section {
         max-height: 50vh;
@@ -791,18 +789,12 @@ mark {
         margin-right: 0;
     }
 
-    .row.flip.mar[class]>*+*:not(.mar) {
-        margin-top: .2em;
-        margin-top: var(--gap-xs);
-    }
-
     table.flip tbody, table.flip tr, table.flip tr>* {
         display: block;
         text-align: left;
     }
 
     table.flip tr {
-        margin-bottom: 1em;
         margin-bottom: var(--gap-n);
         border: thin solid rgba(0, 0, 0, .16);
         border: var(--border);
@@ -810,7 +802,6 @@ mark {
     }
 
     form table.flip tr {
-        margin-bottom: .5em;
         margin-bottom: var(--gap-s);
         border: none;
     }
@@ -844,7 +835,6 @@ mark {
     }
 
     fieldset table:not(.bord):not(.let) td:first-child:nth-last-child(2):not([colspan]) {
-        width: 10.5em;
         width: calc(12em - var(--gap-n) - var(--gap-s));
     }
 
@@ -853,7 +843,6 @@ mark {
     }
 
     .dlg.pad {
-        padding: 1em 2em;
         padding: var(--gaps-l);
     }
 
@@ -887,11 +876,14 @@ mark {
         margin-top: var(--topbar);
     }
 
-    .topbar~* h1[id], .topbar~* h2[id], .topbar~* h3[id], .topbar~* h4[id],
-    .topbar~* h5[id], .topbar~* h6[id] {
-        margin-top: 0;
-        padding-top: 3.7rem;
-        padding-top: calc(.5rem + var(--topbar));
+    .topbar~* h1[id]:before, .topbar~* h2[id]:before, .topbar~* h3[id]:before,
+    .topbar~* h4[id]:before, .topbar~* h5[id]:before, .topbar~* h5[id]:before {
+        display: block;
+        content: "";
+        height: 3.3rem;
+        height: calc(.1rem + var(--topbar));
+        margin-top: -3.3rem;
+        margin-top: calc(-0.1rem - var(--topbar));
     }
 
     .stick {
@@ -920,7 +912,6 @@ mark {
     }
 
     input, button, select, textarea {
-        padding: .2em;
         padding: var(--gap-xs);
         line-height: normal;
     }
@@ -930,11 +921,8 @@ mark {
     }
 
     a.btn, button[type], input[type="submit"] {
-        padding: .5em 1em;
         padding: var(--gaps-n);
-        border-radius: .2em;
         border-radius: var(--radius);
-        margin: .2em 0;
         margin: var(--gap-xs) 0;
         border-color: transparent;
     }
@@ -944,15 +932,12 @@ mark {
     }
 
     form>a.btn, form>button, form>[type="submit"], form>a>button {
-        padding: .2em .5em;
         padding: var(--gap-xs) var(--gap-s);
         margin: 0;
     }
 
     .btn, a.btn.fit, button.fit, [type="submit"].fit {
-        padding: 0 .5em;
         padding: 0 var(--gap-s);
-        border-radius: .2em;
         border-radius: var(--radius);
     }
 
@@ -969,17 +954,14 @@ mark {
     }
 
     input[readonly] {
-        background-color: #eee;
         background-color: var(--bg-lite);
     }
 
     [name]:invalid, [name]:invalid~.subinput {
-        border-color: #c00;
         border-color: var(--text-danger);
     }
 
     [type="checkbox"]:invalid+span, [type="radio"]:invalid+span {
-        color: #c00;
         color: var(--text-danger);
     }
 
@@ -1003,14 +985,11 @@ mark {
     }
 
     .btn[class], button, [type="submit"] {
-        background-color: #03b;
         background-color: var(--bg-btn);
-        color: #fff;
         color: var(--text-btn);
     }
 
     .btn .icon, button .icon {
-        color: #fff;
         color: var(--text-btn);
     }
 
@@ -1020,7 +999,6 @@ mark {
     }
 
     .icon {
-        color: #999;
         color: var(--text-lite);
     }
 
@@ -1029,77 +1007,62 @@ mark {
     }
 
     .text-n[class] {
-        color: #999;
         color: var(--text-lite);
     }
 
     .text-i[class] {
-        color: #07a;
         color: var(--text-info);
     }
 
     .text-y[class] {
-        color: #181;
         color: var(--text-success);
     }
 
     .text-w[class] {
-        color: #c70;
         color: var(--text-warning);
     }
 
     .text-e[class] {
-        color: #c00;
         color: var(--text-danger);
     }
 
     .bg-n[class] {
-        background-color: #eee;
         background-color: var(--bg-lite);
     }
 
     .bg-i[class] {
-        background-color: #bef;
         background-color: var(--bg-info);
     }
 
     .bg-y[class] {
-        background-color: #cec;
         background-color: var(--bg-success);
     }
 
     .bg-w[class] {
-        background-color: #ffe699;
         background-color: var(--bg-warning);
     }
 
     .bg-e[class] {
-        background-color: #fcc;
         background-color: var(--bg-danger);
     }
 
     .btn.bg-n, button.bg-n[class], [type="submit"].bg-n {
-        background-color: #888;
         background-color: var(--btn-lite);
     }
 
     .btn.bg-i, button.bg-i[class], [type="submit"].bg-i {
-        background-color: #08a;
         background-color: var(--btn-info);
     }
 
     .btn.bg-y, button.bg-y[class], [type="submit"].bg-y {
-        background-color: #181;
         background-color: var(--btn-success);
     }
 
     .btn.bg-w, button.bg-w[class], [type="submit"].bg-w {
-        background-color: #e70;
         background-color: var(--btn-warning);
     }
 
     .btn.bg-e, button.bg-e[class], [type="submit"].bg-e {
-        background-color: #d11;
         background-color: var(--btn-danger);
     }
 
@@ -1154,12 +1117,11 @@ mark {
     button, [type="submit"], a.btn {
         border: thin solid rgba(0, 0, 0, .16);
         border: var(--border);
-        padding: .25em .5em;
         padding: var(--gaps-s);
     }
 }
 
-.pop>div, .nav ul, .dlg, .drawer {
+.pop>div, .nav ul, .dlg, .drawer, .stick, .topbar, .back {
     box-shadow: 0 .2em .8em rgba(0, 0, 0, .3);
     box-shadow: var(--shade);
     background-color: #fff;
@@ -1168,7 +1130,6 @@ mark {
 }
 
 .tabs li {
-    margin-right: .25em;
     margin-right: calc(var(--gap-n)/4);
 }
 
@@ -1181,12 +1142,10 @@ mark {
 }
 
 .dlg.rad {
-    border-radius: 500.2em;
     border-radius: calc(500em + var(--radius));
 }
 
 .tabs.rad a {
-    border-radius: .2em .2em 0 0;
     border-radius: var(--radius) var(--radius) 0 0;
 }
 
@@ -1218,17 +1177,14 @@ img.fit {
 }
 
 .mar {
-    margin: 1em 0;
     margin: var(--gap-n) 0;
 }
 
 form .mar {
-    margin: .5em 0;
     margin: var(--gap-s) 0;
 }
 
 .pad {
-    padding: .5em 1em;
     padding: var(--gaps-n);
 }
 
@@ -1238,7 +1194,6 @@ form .mar {
 }
 
 .rad {
-    border-radius: .2em;
     border-radius: var(--radius);
 }
 

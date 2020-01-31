@@ -1,4 +1,4 @@
-/*! d1-web v1.0.11 */
+/*! d1-web v1.0.12 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -2845,11 +2845,15 @@ module.exports = new function () {
   this.onHash = function (e) {
     //to hide topbar on hash change
     // fires before onscroll, but page is already scrolled
-    app.dbg(['scroll hash', location.hash, e]);
+    app.dbg(['scroll hash', location.hash, e, document.body.scrollHeight]);
 
     if (e && location.hash && app.q(location.hash)) {
-      this.y = window.scrollY - 10; //this.y = 1;
+      this.y = document.body.scrollHeight + 10; // show topbar on hash
+      //this.y = window.scrollY - 10; // show/hide topbar on hash up/down
+      //this.y = 1; // hide topbar on hash
       //this.hashed = true;
+
+      this.onScroll();
     }
   };
 
@@ -3434,11 +3438,20 @@ module.exports = new function () {
   };
 
   this.addTopLink = function (n) {
-    n.style.position = 'relative';
+    var d = app.ins('div', '', {});
+
+    while (n.firstChild) {
+      d.appendChild(n.firstChild);
+    }
+
+    n.appendChild(d);
+    d.style.position = 'relative';
+    d.style.paddingRight = '2em';
     var a = app.ins('a', app.i('up', '&uarr;'), {
       href: '#',
-      className: 'small close l text-n hide-print'
-    }, n);
+      className: 'small close text-n hide-print'
+    }, d); //n.style.position = 'relative';
+    //let a = app.ins('a', app.i('up', '&uarr;'), {href:'#', className: 'small close text-n hide-print'}, n);
   };
 
   this.onResize = function () {

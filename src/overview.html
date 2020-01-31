@@ -36,7 +36,7 @@
 		*/
 	</style>
   </head>
-  <body id="body" class="js-theme" data-d1='{"debug":true,"plug":{"toggle":{"keepHash":true},"theme":{"fonts":["sans-serif","serif","monospace","PT Sans","Roboto Slab"]}}}'>
+  <body id="body" class="js-theme" data-d1='{"debug":false,"plug":{"toggle":{"keepHash":true},"theme":{"fonts":["sans-serif","serif","monospace","PT Sans","Roboto Slab"]}}}'>
 
 
 <div class="topbar toggle shade  row let" id="topbar">
@@ -51,7 +51,7 @@
 	  <div class="hide-desktop"><a href="#nav" class="pad hover" title="Menu" data-ico="menu">&equiv;</a></div>
 	  <ul class="nav flip hover target-mobile" id="nav">
 		<li><a href="?"><b>d1</b> <small class="text-n">v0.0.0</small></a></li>
-		<li><a href="index.html" class="bg-w text-w" data-icon="text">Docs</a>
+		<li><a href="index.html" class="bg-y text-y" data-icon="text">Docs</a>
 		<li>
 			<a>Parent</a>
 			<ul>
@@ -96,7 +96,7 @@
 			<label><input type="checkbox" data-nodes="#topbar" data-set="topbar toggle shade  row let center fit" data-unset="hide"> Topbar</label><br>
 			<label><input type="checkbox" data-nodes="body" data-set="invert"> Invert</label><br>
 			<label><input type="checkbox" data-nodes="html" data-set="scroller" > Custom scroll</label>
-			<b class="text-w" title="Works on Webkit and Firefox" data-ico="warning"></b>
+			<b class="text-w" title="Supported in WebKit and Firefox" data-ico="warning"></b>
 			</p>
 		</div>
 		<div class="pad mar shade">
@@ -201,7 +201,7 @@
 				<div id="tab1">
 					<div class="item">
 						<img class="fit" src="https://i.picsum.photos/id/844/900/200.jpg" height="200" alt="Green">
-						<div class="over invert bg-w hover"></div>
+						<div class="over invert back -bg-w hover"></div>
 						<div class="over pad row center c invert">
 							<div>
 								<h3 class="mar">Overlay</h3>
@@ -244,7 +244,6 @@
 		</div>
 	
 		<h1 class="mar">Overview</h1>
-		<hr>
 		
 		<p class="pad bg-e text-e" data-icon="ban///icon text-e">Alert</p>
 		<p class="pad bg-w text-w" data-icon="warning///icon text-w">Warning</p>
@@ -417,7 +416,7 @@ let double = function (x) {
 		</div>
 		
 		<div class="dlg let rad" id="form-table">
-			<div class="bg-n -stick">
+			<div class="bg -stick">
 				<a href="#cancel" class="close pad" data-ico="close">&times;</a>
 				<h3 class="fit pad">Responsive table form with custom validation messages</h3>
 			</div>

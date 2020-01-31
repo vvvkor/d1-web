@@ -41,11 +41,13 @@ module.exports = new(function () {
   this.onHash = function(e){
     //to hide topbar on hash change
     // fires before onscroll, but page is already scrolled
-    app.dbg(['scroll hash', location.hash,e]);
+    app.dbg(['scroll hash', location.hash, e, document.body.scrollHeight]);
     if(e && location.hash && app.q(location.hash)){
-      this.y = window.scrollY - 10;
-      //this.y = 1;
+      this.y = document.body.scrollHeight + 10; // show topbar on hash
+      //this.y = window.scrollY - 10; // show/hide topbar on hash up/down
+      //this.y = 1; // hide topbar on hash
       //this.hashed = true;
+      this.onScroll();
     }
   }
   
