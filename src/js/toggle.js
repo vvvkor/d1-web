@@ -224,7 +224,7 @@ module.exports = new(function () {
   }
 
   this.restoreVisibility = function(n){
-    if(n.classList.contains(this.opt.cMem)){
+    if(n && n.classList && n.classList.contains(this.opt.cMem)){
       let v = localStorage.getItem('vis#'+n.id);
       if(v) this.toggle(n, v>0, -1);
     }

@@ -1,3 +1,9 @@
+if (!Element.prototype.matches) { //ie 9+
+  Element.prototype.matches 
+    = Element.prototype.msMatchesSelector ||
+      Element.prototype.webkitMatchesSelector;
+}
+
 let app = require('./js/app.js');
 
 [

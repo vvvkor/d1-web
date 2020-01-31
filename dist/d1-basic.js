@@ -1,4 +1,4 @@
-/*! d1-web v1.1.0 */
+/*! d1-web v1.1.1 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -655,7 +655,7 @@ module.exports = new function () {
   };
 
   this.restoreVisibility = function (n) {
-    if (n.classList.contains(this.opt.cMem)) {
+    if (n && n.classList && n.classList.contains(this.opt.cMem)) {
       var v = localStorage.getItem('vis#' + n.id);
       if (v) this.toggle(n, v > 0, -1);
     }
@@ -891,6 +891,11 @@ module.exports = new function () {
 
 /***/ 23:
 /***/ (function(module, exports, __webpack_require__) {
+
+if (!Element.prototype.matches) {
+  //ie 9+
+  Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
+}
 
 var app = __webpack_require__(0); //['toggle', 'dialog', 'gallery']
 //  .forEach(p => app.plug(require('./js/'+p+'.js')));

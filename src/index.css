@@ -373,7 +373,7 @@ ul.nav, .nav ul{list-style:none;padding:0;margin:0;}
 .gal>*,
 a.act>.is-off, a:not(.act)>.is-on,
 /* css */ /* js may add id, should add .toggle(-mobile), should remove .target(-mobile) */
-.target:not(:target)/*:not(.toggle)*/, /* .target[id] */
+.target:not(:target),/*:not(.toggle)*/ /* .target[id] */
 .tabs+div>div:not(:target):not(:last-child):not(.toggle), /* .tabs+div>[id] */
       .tabs+div>div:target:not(.toggle)~*, /* tabs undup*/
 	  .dlg:not(:target):not(.toggle), /* .dlg[id] */
