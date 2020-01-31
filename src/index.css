@@ -101,7 +101,7 @@ css restructure (maybe)
 }
 
 /* derivative */
-:root, .invert{
+:root/*, .invert*/{
 --bg-btn: var(--link);
 --text-btn: var(--bg);
 --link: var(--text-nav);
