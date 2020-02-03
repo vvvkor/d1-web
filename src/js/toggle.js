@@ -118,7 +118,7 @@ module.exports = new(function () {
 
   this.onClick = function(e){
     let n = e.target;
-    let a = app.closest(n, 'a');
+    let a = n.closest('a');
     let d = (a && a.matches('a[href^="#"]')) ? app.q(a.hash) : null;
 
     if(a && a.hash===app.opt.hClose) app.fire('esc', e);
@@ -182,14 +182,14 @@ module.exports = new(function () {
     if(app.vis(d)){
       if(d.matches(this.opt.qDlg)) app.e(this.opt.qDlg, n => n==d ? null : this.toggle(n, false, 1)); //hide other dialogs
       else if(d.matches(this.opt.qTab)) app.e(d.parentNode.children, n => n==d ? null : this.toggle(n, false, 1)); //hide sibling tabs
-      else if(d.matches(this.opt.qAcc)) app.e(app.qq(this.opt.qAcc, app.closest(d, this.opt.qAccRoot)), n => n.contains(d) ? null : this.toggle(n, false, 1)); //hide other ul
+      else if(d.matches(this.opt.qAcc)) app.e(app.qq(this.opt.qAcc, d.closest(this.opt.qAccRoot)), n => n.contains(d) ? null : this.toggle(n, false, 1)); //hide other ul
     }
   }
 
   this.unpop = function(x, seq){
     let keep = [x];
     keep.push(this.shown);
-    let a = x ? app.closest(x, 'a') : null;
+    let a = x ? x.closest('a') : null;
     if(a && a.hash){
       //if(a.hash==app.opt.hClose) keep = []; //to close all, even container
       //else

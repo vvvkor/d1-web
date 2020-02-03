@@ -19,7 +19,7 @@ module.exports = new(function () {
 
   this.onClick = function(e){
     let n = e.target;
-    let a = app.closest(n, 'a[href^="#"][data-value]');
+    let a = n.closest('a[href^="#"][data-value]');
     if(a){
       e.preventDefault();
       this.setValue(a);

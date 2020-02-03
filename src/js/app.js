@@ -95,14 +95,6 @@ module.exports = new (function(){
     return ++this.sequence;
   }
 
-  this.closest = function(n, q){ //including self
-    if(!n) return n;
-    //return n.parentNode.closest(q); //-ie
-    do{
-      if (n.matches && n.matches(q)) return n;
-    } while (n = n.parentNode);
-  }
-
   this.a = function(c){
     return c ? Array.prototype.slice.call(c) : c;
   }
@@ -214,10 +206,13 @@ module.exports = new (function(){
 
   this.makeUrl = function(a, args){
     if(!a.tagName) a = this.ins('a', '', {href: a});
+    console.log('make ',a.href);
     let g = this.get(a);
     Object.keys(args).forEach(k => g[k] = args[k]);
     let q = Object.keys(g).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(g[k])).join('&');
-    return a.protocol + '//' + a.host + a.pathname+(q ? '?' + q : '') + a.hash;
+    return a.host
+      ? a.protocol + '//' + a.host + a.pathname+(q ? '?' + q : '') + a.hash
+      : a.href.replace(/[\?#].*$/, '') + (q ? '?' + q : '') + a.hash; //ie
   }
 
 })();

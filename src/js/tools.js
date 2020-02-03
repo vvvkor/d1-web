@@ -32,7 +32,7 @@ module.exports = new(function () {
 
   this.onClick = function(e){
     let n = e.target;
-    let a = app.closest(n, this.opt.qSetClick);
+    let a = n.closest(this.opt.qSetClick);
     if(a) this.toggleClass(n, e)
   }
 

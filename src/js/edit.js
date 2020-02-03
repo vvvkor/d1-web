@@ -102,7 +102,7 @@ module.exports = new(function () {
       n.style.width = '100%';
       this.setStyle(n);
       this.setStyle(z);
-      let l = app.closest(n, 'label') || n;
+      //let l = n.closest('label') || n;
       app.b([z], 'blur', e => this.up(0, e.target));
       app.b([z], 'input', e => this.up(0, e.target));//for validation
       //app.b([n], 'input', e => this.adjust(e.target));

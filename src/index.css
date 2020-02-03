@@ -84,24 +84,27 @@ css restructure (maybe)
 --topbar: 3.2rem; /*60px;*/ /*3.2rem;*/ /* px are to be used probably, othewise sticky drawer will have blurred text */
 
 /* status */
---e:  #c00;
---w:  #d70;
---y:  #181;
---i:  #08a;
---n:  #999;
---a:  #04b;
---v:  #90b;
---ee: #fcc;
---ww: #ffe699;
---yy: #cec;
---ii: #bef;
---nn: #eee;
---aa: #cdf;
---vv: #ecf;
-}
+--text-danger:  #c00;
+--text-warning: #d70;
+--text-success: #181;
+--text-info:    #08a;
+--text-lite:    #999;
+--text-nav:     #04b;
+--text-vis:     #90b;
+--bg-danger:    #fcc;
+--bg-warning:   #ffe699;
+--bg-success:   #cec;
+--bg-info:      #bef;
+--bg-lite:      #eee;
+--bg-nav:       #cdf;
+--bg-vis:       #ecf;
+--btn-danger:  var(--text-danger);
+--btn-warning: var(--text-warning);
+--btn-success: var(--text-success);
+--btn-info:    var(--text-info);
+--btn-lite:    var(--text-lite);
 
 /* derivative */
-:root/*, .invert*/{
 --bg-btn: var(--link);
 --text-btn: var(--bg);
 --link: var(--text-nav);
@@ -115,27 +118,6 @@ css restructure (maybe)
 --gaps-s: calc(var(--gap-s) * var(--gap-rate)) var(--gap-s);
 --gaps-l: calc(var(--gap-l) * var(--gap-rate)) var(--gap-l);
 
---text-danger:  var(--e);
---text-warning: var(--w);
---text-success: var(--y);
---text-info:    var(--i);
---text-lite:    var(--n);
---text-nav:     var(--a);
---text-vis:     var(--v);
---bg-danger:    var(--ee);
---bg-warning:   var(--ww);
---bg-success:   var(--yy);
---bg-info:      var(--ii);
---bg-lite:      var(--nn);
---bg-nav:       var(--aa);
---bg-vis:       var(--vv);
---btn-danger:   var(--e);
---btn-warning:  var(--w);
---btn-success:  var(--y);
---btn-info:     var(--i);
---btn-lite:     var(--n);
---btn-nav:      var(--a);
---btn-vis:      var(--v);
 }
 
 .invert{
@@ -150,31 +132,32 @@ css restructure (maybe)
 --focus-danger: rgba(220,50,50,1);
 --hover: #ff7;
 
-/* status */
---ee:  #c00;
---ww:  #d70;
---yy:  #181;
---ii:  #08a;
---nn:  #999;
---aa:  #970;/*#04b;*/
---vv:  #970;/*#90b;*/
---e: #fcc;
---w: #ffe699;
---y: #cec;
---i: #bef;
---n: #eee;
---a: #ec6;/*#cdf;*/
---v: #ec6;/*#ecf;*/
 /* keep inverted buttons */
 --bg-btn: #36e;
 --text-btn: #fff;
---btn-danger:   var(--ee);
---btn-warning:  var(--ww);
---btn-success:  var(--yy);
---btn-info:     var(--ii);
---btn-lite:     var(--nn);
---btn-nav:      var(--aa);
---btn-vis:      var(--vv);
+--link: #ec6;
+--visited: #ec6;
+
+/* status */
+--text-danger:  #fcc;
+--text-warning: #ffe699;
+--text-success: #cec;
+--text-info:    #bef;
+--text-lite:    #eee;
+--text-nav:     #ec6;/*#cdf;*/
+--text-vis:     #ec6;/*#ecf;*/
+--bg-danger:    #c00;
+--bg-warning:   #d70;
+--bg-success:   #181;
+--bg-info:      #08a;
+--bg-lite:      #999;
+--bg-nav:       #970;/*#04b;*/
+--bg-vis:       #970;/*#90b;*/
+--btn-danger:  var(--bg-danger);
+--btn-warning: var(--bg-warning);
+--btn-success: var(--bg-success);
+--btn-info:    var(--bg-info);
+--btn-lite:    var(--bg-lite);
 }
 
 /* reset*/
@@ -210,7 +193,7 @@ body{font:120%/1.5 sans-serif;font-family:var(--font);}
 body,.invert{color:var(--text);background-color:var(--bg);}
 main{display:block;}/*ie*/
 ul,ol,dl,blockquote,pre,hr,p,figure{margin:var(--gap-n) 0;}
-h1,h2,h3,h4,h5,h6{margin:3rem 0 1.5rem 0;line-height:1.2;font-family:var(--font-cap);/*letter-spacing:.03em;*/}
+h1,h2,h3,h4,h5,h6{margin:3rem 0 1.5rem 0;line-height:1.3;font-family:var(--font-cap);/*letter-spacing:.03em;*/}
 	h1+h2, h2+h3, h3+h4, h4+h5, h5+h6{margin-top:2rem;}
 	h1.mar,h2.mar,h3.mar{margin:calc(var(--gap) * 1rem) 0;}
 	.nobr{white-space:nowrap;}
@@ -427,8 +410,8 @@ mark{background-color:var(--bg-warning);}
 	.row.center{align-items:center;}
 	.shift{margin-left:auto;} /* .nav>li.shift, .row>*.shift */
 
-.row.mar{margin-bottom:0;} /* ! will not collapse with following element*/
-.row.mar>*{margin-bottom:var(--gap-n);}
+.row.let.mar{margin-bottom:0;} /* ! will not collapse with following element*/
+.row.let.mar>*{margin-bottom:var(--gap-n);}
 
 /* media */
 
@@ -444,6 +427,7 @@ mark{background-color:var(--bg-warning);}
 		/*.row.flip.mar[class]>*+*:not(.mar){margin-top:var(--gap-xs);}*/
 	table.flip tbody, table.flip tr, table.flip tr>*{display:block;text-align:left;}
 	table.flip tr{margin-bottom:var(--gap-n);border:var(--border);border-width:medium;}
+	table.flip.let tr>*{border-bottom:var(--border);}
 		form table.flip tr{margin-bottom:var(--gap-s);border:none;}
 		form table.flip tr>*{padding:0;}
 	.nav.flip ul{left:3em;top:90%;}
@@ -472,7 +456,7 @@ mark{background-color:var(--bg-warning);}
 	/* option 1. covers previous if position is relative */
 	.topbar~* h1[id]:before, .topbar~* h2[id]:before, .topbar~* h3[id]:before,
 	.topbar~* h4[id]:before, .topbar~* h5[id]:before, .topbar~* h5[id]:before
-		{display:block;content:"";height:calc(/*.5rem + */.1rem + var(--topbar));margin-top:calc(-.1rem - var(--topbar));}/*?*/
+		{display:block;content:"";height:calc(.5rem + var(--topbar));margin-top:calc(-.5rem - var(--topbar));}/*?*/
 	/* option 2. extra padding instead of collapsible margin */
 	/*.topbar~* h1[id], .topbar~* h2[id], .topbar~* h3[id], .topbar~* h4[id], .topbar~* h5[id], .topbar~* h6[id]{margin-top:0;padding-top:calc(.5rem + var(--topbar));}/*?*/
 	.stick{z-index:3;position:sticky;top:0;max-height:100vh;align-self:flex-start;/*stretch*/overflow:auto;box-sizing:border-box;}

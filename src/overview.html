@@ -9,7 +9,8 @@
 	<link href="https://cdn.jsdelivr.net/npm/d1-web@0.0.0/dist/d1.min.css" rel="stylesheet">
 	<script src="https://cdn.jsdelivr.net/npm/d1-web@0.0.0/dist/d1.min.js"></script>
 	<!-- local-npm-src REMOVE-->
-	<link href="../src/index.css" rel="stylesheet">
+	<!--link href="../src/index.css" rel="stylesheet"-->
+	<link href="../dist/d1.min.css" rel="stylesheet">
 	<script src="../dist/d1.min.js"></script>
 	<!-- -->
 	<script>
@@ -48,16 +49,19 @@
 <div>
   <!-- menu -->
   <header class="bg">
-	  <div class="hide-desktop"><a href="#nav" class="pad hover" title="Menu" data-ico="menu">&equiv;</a></div>
+	  <div class="hide-desktop">
+		<a href="#nav" class="pad hover" title="Menu" data-ico="menu">&equiv;</a>
+		<a href="?" class="pad"><b>d1</b> <span class="text-n">v0.0.0</span></a>
+	</div>
 	  <ul class="nav flip hover target-mobile" id="nav">
-		<li><a href="?"><b>d1</b> <small class="text-n">v0.0.0</small></a></li>
-		<li><a href="index.html" class="bg-y text-y" data-icon="text">Docs</a>
+		<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v0.0.0</span></a></li>
+		<li><a href="index.html" data-icon="text">Docs</a>
 		<li>
 			<a>Parent</a>
 			<ul>
 				<li><a><span>Subitem<small class="text-n"><br>info</small></span></a>
 					<ul>
-						<li><a href="#n2">Deep</a></li>
+						<li><a href="#n2" class="bg-y text-y">Deep</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -94,9 +98,11 @@
 			<h3 class="mar">Page setup <b class="small btn bg-e hide-js" title="Requires Javascript">JS</b></h3>
 			<p>
 			<label><input type="checkbox" data-nodes="#topbar" data-set="topbar toggle shade  row let center fit" data-unset="hide"> Topbar</label><br>
-			<label><input type="checkbox" data-nodes="body" data-set="invert"> Invert</label><br>
+			<label><input type="checkbox" data-nodes="body" data-set="invert"> Invert</label>
+				<span class="text-i" title="Not supported in IE and Edge 15-" data-ico="info"></span>
+				<br>
 			<label><input type="checkbox" data-nodes="html" data-set="scroller" > Custom scroll</label>
-			<b class="text-w" title="Supported in WebKit and Firefox" data-ico="warning"></b>
+				<span class="text-i" title="Supported in WebKit and Firefox" data-ico="info"></span>
 			</p>
 		</div>
 		<div class="pad mar shade">
@@ -127,12 +133,13 @@
 				</div>
 				<li><a href="#modal">Modal</a>
 				<li><a href="#full">Full</a>
-				<li><a href="#gal1">Gallery</a>
-				<li><span class="gallery">
+				<li><span class="gallery">Gallery
 					<a href="https://picsum.photos/id/360/1000/700.jpg" class="pic" title="Red">#1</a>
 					<a href="https://picsum.photos/id/844/1000/700.jpg" class="pic" title="Green">#2</a>
 					<a href="https://picsum.photos/id/830/1000/700.jpg" class="pic" title="Blue">#3</a>
-				</span>
+					</span>
+				<li><a href="#gal1">Pure CSS Gallery</a>
+					<span class="text-i" title="Not supported in IE and Edge 15-" data-ico="info"></span>
 				<li><a href="#menu">Drawer & tree</a>
 				<!--li><a href="#x" data-nodes="#topbar" data-set="topbar toggle shade  row let center fit" data-unset="hide">Topbar</a>
 					<b class="small btn bg-e hide-js" title="Requires Javascript">JS</b-->
@@ -489,9 +496,11 @@ let double = function (x) {
 					<tr>
 						<td><label for="dt">Date</label>
 						<td><input type="date" name="dt" id="dt" class="calendar" required>
+						<div class="mar small text-e">Input the date</div>
 					<tr>
 						<td><label for="dtl">Datetime</label>
 						<td><input type="datetime-local" name="dtl" id="dtl" class="calendar" required>
+						<div class="mar small text-e">Input the date and time</div>
 					<tr>
 						<td><label for="num">Number</label>
 						<td><input type="number" name="num" id="num" required min="1" max="10" step="0.1" data-info="some info" data-hint="Enter number between %min% and %max%, step %step% (%data-info%).">
@@ -789,8 +798,9 @@ let double = function (x) {
 			Inverted text
 			<a href="#x">link</a>
 			<span class="bg-e text-e">colors</span>
+			<span class="text-i" title="Not supported in IE and Edge 15-" data-ico="info"></span>
 		</div>
-		<div class="full center c bg-w mar shade">
+		<div class="full center c bg-w mar pad shade">
 			<div class="l">
 			Full height
 			<hr>

@@ -82,7 +82,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -196,15 +196,6 @@ module.exports = new function () {
 
   this.seq = function () {
     return ++this.sequence;
-  };
-
-  this.closest = function (n, q) {
-    //including self
-    if (!n) return n; //return n.parentNode.closest(q); //-ie
-
-    do {
-      if (n.matches && n.matches(q)) return n;
-    } while (n = n.parentNode);
   };
 
   this.a = function (c) {
@@ -326,6 +317,7 @@ module.exports = new function () {
     if (!a.tagName) a = this.ins('a', '', {
       href: a
     });
+    console.log('make ', a.href);
     var g = this.get(a);
     Object.keys(args).forEach(function (k) {
       return g[k] = args[k];
@@ -333,7 +325,7 @@ module.exports = new function () {
     var q = Object.keys(g).map(function (k) {
       return encodeURIComponent(k) + '=' + encodeURIComponent(g[k]);
     }).join('&');
-    return a.protocol + '//' + a.host + a.pathname + (q ? '?' + q : '') + a.hash;
+    return a.host ? a.protocol + '//' + a.host + a.pathname + (q ? '?' + q : '') + a.hash : a.href.replace(/[\?#].*$/, '') + (q ? '?' + q : '') + a.hash; //ie
   };
 }();
 /*
@@ -522,7 +514,7 @@ module.exports = new function () {
 
   this.onClick = function (e) {
     var n = e.target;
-    var a = app.closest(n, 'a');
+    var a = n.closest('a');
     var d = a && a.matches('a[href^="#"]') ? app.q(a.hash) : null;
     if (a && a.hash === app.opt.hClose) app.fire('esc', e);else if (d && d.matches(this.opt.qTgl)) {
       e.preventDefault();
@@ -596,7 +588,7 @@ module.exports = new function () {
       else if (d.matches(this.opt.qTab)) app.e(d.parentNode.children, function (n) {
           return n == d ? null : _this2.toggle(n, false, 1);
         }); //hide sibling tabs
-        else if (d.matches(this.opt.qAcc)) app.e(app.qq(this.opt.qAcc, app.closest(d, this.opt.qAccRoot)), function (n) {
+        else if (d.matches(this.opt.qAcc)) app.e(app.qq(this.opt.qAcc, d.closest(this.opt.qAccRoot)), function (n) {
             return n.contains(d) ? null : _this2.toggle(n, false, 1);
           }); //hide other ul
     }
@@ -607,7 +599,7 @@ module.exports = new function () {
 
     var keep = [x];
     keep.push(this.shown);
-    var a = x ? app.closest(x, 'a') : null;
+    var a = x ? x.closest('a') : null;
 
     if (a && a.hash) {
       //if(a.hash==app.opt.hClose) keep = []; //to close all, even container
@@ -705,6 +697,27 @@ module.exports = new function () {
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports) {
+
+if (!Element.prototype.matches) {
+  Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
+}
+
+if (!Element.prototype.closest) {
+  Element.prototype.closest = function (s) {
+    var el = this;
+
+    do {
+      if (el.matches(s)) return el;
+      el = el.parentElement || el.parentNode;
+    } while (el !== null && el.nodeType === 1);
+
+    return null;
+  };
+}
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! dialog - replacement of standard Javascript dialogs: alert, confirm, prompt */
@@ -739,7 +752,7 @@ module.exports = new function () {
   };
 
   this.onClick = function (e) {
-    var as = app.closest(e.target, 'a, input, button');
+    var as = e.target.closest('a, input, button');
 
     if (as && as.matches(this.opt.qAlert + ',' + this.opt.qDialog)) {
       //d = this.dialog(e, a, (m, v) => !console.log(v) && toggle.unpop()); //custom callback
@@ -885,7 +898,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! gallery - image gallery */
@@ -1014,7 +1027,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! fetch - asynchronous requests */
@@ -1022,7 +1035,7 @@ var app = __webpack_require__(0);
 
 var toggle = __webpack_require__(1);
 
-var dialog = __webpack_require__(2);
+var dialog = __webpack_require__(3);
 
 module.exports = new function () {
   "use strict";
@@ -1039,7 +1052,7 @@ module.exports = new function () {
   };
 
   this.onClick = function (e) {
-    var a = app.closest(e.target, 'a[data-target]');
+    var a = e.target.closest('a[data-target]');
 
     if (a) {
       e.preventDefault();
@@ -1071,7 +1084,7 @@ module.exports = new function () {
     if (req.status == '200') {
       if (d) {
         d.innerHTML = req.responseText;
-        var dlg = app.closest(d, '.dlg[id]');
+        var dlg = d.closest('.dlg[id]');
         if (dlg) toggle.toggle(dlg, true);
       } else {
         dialog.initDlg(null, app.attr(n, dialog.opt.aHead), req.responseText);
@@ -1083,7 +1096,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports) {
 
 /*! iconset - svg paths for building icons */
@@ -1147,9 +1160,9 @@ module.exports = {
   phone: [13, 'M3 1l2 3-1.2 1.2 4 4 1.2-1.2 3 2c-3 6 -15 -6 -9-9z'],
   mail: [14, 'M1 2.5h12v9h-12zm1 1v1l5 5 5 -5v-1z'],
   chat: [12, 'M6 1.2a5 4 0 1 0 .01 0zm0 1a4 3 0 1 1-.01 0zm-3.8 5.5l-1 3 4-2z'],
-  send: [7, 'M1 3l5-2-2 5-1-2zm0 3c1.5 -3 3 -1.5 0 0z'],
+  send: [12, 'M1 2l10 4-10 4 1.5-3.6 6-.4-6-.4z'],
   bookmark: [8, 'M4 5l-2 2v-6h4v6z'],
-  star: [34, 'M17 3 l4 10 10 0-8 7 3 11-9-7-9 7 3-11-8-7 10,0z'],
+  star: [32, 'M16 2 l9 28-23-18 28 0-23 18z'],
   heart: [6, 'M3 2c2-2 4 1 0 3c-4-2-2-5 0-3z'],
   tag: [9, 'M1 5.2l4-4h3v3l-4 4zm6-3.1a.6 .6 0 1 0 .01 .01z'],
   expand: [10, 'M1 1h3v1h-2v2h-1zm5 0h3v3h-1v-2h-2zm2 5h1v3h-3v-1h2zm-7 0h1v2h2v1h-3z'],
@@ -1172,18 +1185,15 @@ module.exports = {
 };
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
-if (!Element.prototype.matches) {
-  //ie 9+
-  Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
-}
+__webpack_require__(2);
 
 var app = __webpack_require__(0);
 
 ['code', 'icons', 'toggle', 'dialog', 'gallery', 'tablex', 'scroll', 'calendar', 'lookup', 'edit', 'valid', 'tools', 'form', 'items', 'filter', 'fliptable', 'fetch', 'theme'].forEach(function (p) {
-  return app.plug(__webpack_require__(7)("./" + p + ".js"));
+  return app.plug(__webpack_require__(8)("./" + p + ".js"));
 }); //let opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}};
 
 app.b([document], 'DOMContentLoaded', function (e) {
@@ -1193,31 +1203,32 @@ if (true) module.exports = app;
 if (window) window.d1 = app;
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
 	"./app.js": 0,
-	"./calendar.js": 8,
-	"./code.js": 9,
-	"./dialog.js": 2,
-	"./edit.js": 10,
-	"./example.js": 11,
-	"./fetch.js": 4,
-	"./filter.js": 12,
-	"./fliptable.js": 13,
-	"./form.js": 14,
-	"./gallery.js": 3,
-	"./icons.js": 15,
-	"./iconset.js": 5,
-	"./items.js": 16,
-	"./lookup.js": 17,
-	"./scroll.js": 18,
-	"./tablex.js": 19,
-	"./theme.js": 20,
+	"./calendar.js": 9,
+	"./code.js": 10,
+	"./dialog.js": 3,
+	"./edit.js": 11,
+	"./example.js": 12,
+	"./fetch.js": 5,
+	"./filter.js": 13,
+	"./fliptable.js": 14,
+	"./form.js": 15,
+	"./gallery.js": 4,
+	"./icons.js": 16,
+	"./iconset.js": 6,
+	"./items.js": 17,
+	"./lookup.js": 18,
+	"./polyfill.js": 2,
+	"./scroll.js": 19,
+	"./tablex.js": 20,
+	"./theme.js": 21,
 	"./toggle.js": 1,
-	"./tools.js": 21,
-	"./valid.js": 22
+	"./tools.js": 22,
+	"./valid.js": 23
 };
 
 
@@ -1238,10 +1249,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 7;
+webpackContext.id = 8;
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
@@ -1612,7 +1623,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! code - source code sample */
@@ -1672,8 +1683,12 @@ module.exports = new function () {
   };
 
   this.updateCode = function (e) {
-    var p = app.closest(e.n ? e.n : app.q(e.q), this.opt.qCode);
-    if (p) this.showCode(p);
+    var n = e.n ? e.n : app.q(e.q);
+
+    if (n) {
+      var p = n.closest(this.opt.qCode);
+      if (p) this.showCode(p);
+    }
   };
 
   this.showCode = function (src) {
@@ -1738,7 +1753,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! edit - wysiwyg text editor */
@@ -1890,9 +1905,9 @@ module.exports = new function () {
 
         _this2.setStyle(n);
 
-        _this2.setStyle(z);
+        _this2.setStyle(z); //let l = n.closest('label') || n;
 
-        var l = app.closest(n, 'label') || n;
+
         app.b([z], 'blur', function (e) {
           return _this2.up(0, e.target);
         });
@@ -2013,7 +2028,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! example - plugin template */
@@ -2037,7 +2052,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! filter - filter items */
@@ -2080,7 +2095,7 @@ module.exports = new function () {
   };
 
   this.applyControl = function (n) {
-    var f = app.closest(n, this.opt.qFilter);
+    var f = n.closest(this.opt.qFilter);
     var x = app.attr(n, this.opt.aFilter).split(/=/, 2);
 
     if (f) {
@@ -2197,7 +2212,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! fliptable - responsive table */
@@ -2215,7 +2230,7 @@ module.exports = new function () {
     var _this = this;
 
     app.e(this.opt.qFlipTable, function (n) {
-      return app.closest(n, 'form') ? null : _this.prepareFlipTable(n);
+      return n.closest('form') ? null : _this.prepareFlipTable(n);
     });
   };
 
@@ -2254,7 +2269,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! form - utilities for form inputs */
@@ -2281,7 +2296,7 @@ module.exports = new function () {
 
   this.onClick = function (e) {
     var n = e.target;
-    var a = app.closest(n, 'a[href^="#"][data-value]');
+    var a = n.closest('a[href^="#"][data-value]');
 
     if (a) {
       e.preventDefault();
@@ -2321,13 +2336,13 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! icons - include svg icons */
 var app = __webpack_require__(0);
 
-var iconset = __webpack_require__(5);
+var iconset = __webpack_require__(6);
 
 module.exports = new function () {
   "use strict";
@@ -2418,7 +2433,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! items - copy, hide, delete items */
@@ -2443,11 +2458,11 @@ module.exports = new function () {
   };
 
   this.onClick = function (e) {
-    var n = app.closest(e.target, 'a[href^="#"]');
+    var n = e.target.closest('a[href^="#"]');
 
     if (n && n.hash) {
       var q = app.attr(n, this.opt.aItem);
-      var d = q ? app.q(q) : app.closest(e.target, this.opt.qItem);
+      var d = q ? app.q(q) : e.target.closest(this.opt.qItem);
 
       if (d) {
         var cont = d.parentNode;
@@ -2500,7 +2515,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! lookup - autocomplete lookups with data from XHTTP request */
@@ -2508,7 +2523,7 @@ var app = __webpack_require__(0);
 
 var toggle = __webpack_require__(1);
 
-var fetch = __webpack_require__(4);
+var fetch = __webpack_require__(5);
 
 module.exports = new function () {
   "use strict";
@@ -2792,7 +2807,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! scroll - scrolling behaviours (topbar, drawer) */
@@ -2907,7 +2922,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! tablex - filter and sort HTML table */
@@ -3212,7 +3227,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! theme - live theme configurator */
@@ -3292,7 +3307,13 @@ module.exports = new function () {
 
   this.unstyle = function (e) {
     e.preventDefault();
-    document.documentElement.style = ''; //document.body.style = '';
+    var s = document.documentElement.style;
+
+    for (var i = s.length; i--;) {
+      s.removeProperty(s[i]);
+    } //document.documentElement.style = '';
+    ////document.body.style = '';
+
 
     localStorage.removeItem('theme-html'); //localStorage.removeItem('theme-body');
   };
@@ -3329,7 +3350,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! tools - miscellaneous utilities */
@@ -3378,7 +3399,7 @@ module.exports = new function () {
 
   this.onClick = function (e) {
     var n = e.target;
-    var a = app.closest(n, this.opt.qSetClick);
+    var a = n.closest(this.opt.qSetClick);
     if (a) this.toggleClass(n, e);
   };
 
@@ -3470,7 +3491,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! valid - custom form validation messages */

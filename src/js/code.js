@@ -54,8 +54,11 @@ module.exports = new(function () {
   }
 
   this.updateCode = function(e){
-    let p = app.closest(e.n ? e.n : app.q(e.q), this.opt.qCode);
-    if(p) this.showCode(p);
+    let n = e.n ? e.n : app.q(e.q);
+    if(n){
+      let p = n.closest(this.opt.qCode);
+      if(p) this.showCode(p);
+    }
   }
   
   this.showCode = function(src){

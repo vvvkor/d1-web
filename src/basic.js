@@ -1,8 +1,4 @@
-if (!Element.prototype.matches) { //ie 9+
-  Element.prototype.matches 
-    = Element.prototype.msMatchesSelector ||
-      Element.prototype.webkitMatchesSelector;
-}
+require('./js/polyfill.js');
 
 let app = require('./js/app.js');
 

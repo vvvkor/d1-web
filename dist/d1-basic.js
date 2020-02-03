@@ -82,7 +82,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 23);
+/******/ 	return __webpack_require__(__webpack_require__.s = 24);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -197,15 +197,6 @@ module.exports = new function () {
 
   this.seq = function () {
     return ++this.sequence;
-  };
-
-  this.closest = function (n, q) {
-    //including self
-    if (!n) return n; //return n.parentNode.closest(q); //-ie
-
-    do {
-      if (n.matches && n.matches(q)) return n;
-    } while (n = n.parentNode);
   };
 
   this.a = function (c) {
@@ -327,6 +318,7 @@ module.exports = new function () {
     if (!a.tagName) a = this.ins('a', '', {
       href: a
     });
+    console.log('make ', a.href);
     var g = this.get(a);
     Object.keys(args).forEach(function (k) {
       return g[k] = args[k];
@@ -334,7 +326,7 @@ module.exports = new function () {
     var q = Object.keys(g).map(function (k) {
       return encodeURIComponent(k) + '=' + encodeURIComponent(g[k]);
     }).join('&');
-    return a.protocol + '//' + a.host + a.pathname + (q ? '?' + q : '') + a.hash;
+    return a.host ? a.protocol + '//' + a.host + a.pathname + (q ? '?' + q : '') + a.hash : a.href.replace(/[\?#].*$/, '') + (q ? '?' + q : '') + a.hash; //ie
   };
 }();
 /*
@@ -524,7 +516,7 @@ module.exports = new function () {
 
   this.onClick = function (e) {
     var n = e.target;
-    var a = app.closest(n, 'a');
+    var a = n.closest('a');
     var d = a && a.matches('a[href^="#"]') ? app.q(a.hash) : null;
     if (a && a.hash === app.opt.hClose) app.fire('esc', e);else if (d && d.matches(this.opt.qTgl)) {
       e.preventDefault();
@@ -598,7 +590,7 @@ module.exports = new function () {
       else if (d.matches(this.opt.qTab)) app.e(d.parentNode.children, function (n) {
           return n == d ? null : _this2.toggle(n, false, 1);
         }); //hide sibling tabs
-        else if (d.matches(this.opt.qAcc)) app.e(app.qq(this.opt.qAcc, app.closest(d, this.opt.qAccRoot)), function (n) {
+        else if (d.matches(this.opt.qAcc)) app.e(app.qq(this.opt.qAcc, d.closest(this.opt.qAccRoot)), function (n) {
             return n.contains(d) ? null : _this2.toggle(n, false, 1);
           }); //hide other ul
     }
@@ -609,7 +601,7 @@ module.exports = new function () {
 
     var keep = [x];
     keep.push(this.shown);
-    var a = x ? app.closest(x, 'a') : null;
+    var a = x ? x.closest('a') : null;
 
     if (a && a.hash) {
       //if(a.hash==app.opt.hClose) keep = []; //to close all, even container
@@ -708,6 +700,49 @@ module.exports = new function () {
 /***/ }),
 
 /***/ 2:
+/***/ (function(module, exports) {
+
+if (!Element.prototype.matches) {
+  Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
+}
+
+if (!Element.prototype.closest) {
+  Element.prototype.closest = function (s) {
+    var el = this;
+
+    do {
+      if (el.matches(s)) return el;
+      el = el.parentElement || el.parentNode;
+    } while (el !== null && el.nodeType === 1);
+
+    return null;
+  };
+}
+
+/***/ }),
+
+/***/ 24:
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(2);
+
+var app = __webpack_require__(0); //['toggle', 'dialog', 'gallery']
+//  .forEach(p => app.plug(require('./js/'+p+'.js')));
+
+
+app.plug(__webpack_require__(1));
+app.plug(__webpack_require__(3));
+app.plug(__webpack_require__(4)); //let opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}};
+
+app.b([document], 'DOMContentLoaded', function (e) {
+  return app.init();
+});
+if (true) module.exports = app;
+if (window) window.d1 = app;
+
+/***/ }),
+
+/***/ 3:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! dialog - replacement of standard Javascript dialogs: alert, confirm, prompt */
@@ -742,7 +777,7 @@ module.exports = new function () {
   };
 
   this.onClick = function (e) {
-    var as = app.closest(e.target, 'a, input, button');
+    var as = e.target.closest('a, input, button');
 
     if (as && as.matches(this.opt.qAlert + ',' + this.opt.qDialog)) {
       //d = this.dialog(e, a, (m, v) => !console.log(v) && toggle.unpop()); //custom callback
@@ -889,31 +924,7 @@ module.exports = new function () {
 
 /***/ }),
 
-/***/ 23:
-/***/ (function(module, exports, __webpack_require__) {
-
-if (!Element.prototype.matches) {
-  //ie 9+
-  Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
-}
-
-var app = __webpack_require__(0); //['toggle', 'dialog', 'gallery']
-//  .forEach(p => app.plug(require('./js/'+p+'.js')));
-
-
-app.plug(__webpack_require__(1));
-app.plug(__webpack_require__(2));
-app.plug(__webpack_require__(3)); //let opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}};
-
-app.b([document], 'DOMContentLoaded', function (e) {
-  return app.init();
-});
-if (true) module.exports = app;
-if (window) window.d1 = app;
-
-/***/ }),
-
-/***/ 3:
+/***/ 4:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! gallery - image gallery */

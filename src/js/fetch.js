@@ -18,7 +18,7 @@ module.exports = new(function () {
   }
 
   this.onClick = function(e){
-    let a = app.closest(e.target, 'a[data-target]');
+    let a = e.target.closest('a[data-target]');
     if(a){
       e.preventDefault();
       this.fetchBy(a);
@@ -42,7 +42,7 @@ module.exports = new(function () {
     if (req.status == '200') {
       if (d) {
         d.innerHTML = req.responseText;
-        let dlg = app.closest(d, '.dlg[id]');
+        let dlg = d.closest('.dlg[id]');
         if (dlg) toggle.toggle(dlg, true);
       }
       else {

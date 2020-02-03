@@ -19,23 +19,25 @@
     --gap: 1;
     --gap-rate: .5;
     --topbar: 3.2rem;
-    --e: #c00;
-    --w: #d70;
-    --y: #181;
-    --i: #08a;
-    --n: #999;
-    --a: #04b;
-    --v: #90b;
-    --ee: #fcc;
-    --ww: #ffe699;
-    --yy: #cec;
-    --ii: #bef;
-    --nn: #eee;
-    --aa: #cdf;
-    --vv: #ecf;
-}
-
-:root {
+    --text-danger: #c00;
+    --text-warning: #d70;
+    --text-success: #181;
+    --text-info: #08a;
+    --text-lite: #999;
+    --text-nav: #04b;
+    --text-vis: #90b;
+    --bg-danger: #fcc;
+    --bg-warning: #ffe699;
+    --bg-success: #cec;
+    --bg-info: #bef;
+    --bg-lite: #eee;
+    --bg-nav: #cdf;
+    --bg-vis: #ecf;
+    --btn-danger: var(--text-danger);
+    --btn-warning: var(--text-warning);
+    --btn-success: var(--text-success);
+    --btn-info: var(--text-info);
+    --btn-lite: var(--text-lite);
     --bg-btn: var(--link);
     --text-btn: var(--bg);
     --link: var(--text-nav);
@@ -48,27 +50,6 @@
     --gaps-n: calc(var(--gap-n)*var(--gap-rate)) var(--gap-n);
     --gaps-s: calc(var(--gap-s)*var(--gap-rate)) var(--gap-s);
     --gaps-l: calc(var(--gap-l)*var(--gap-rate)) var(--gap-l);
-    --text-danger: var(--e);
-    --text-warning: var(--w);
-    --text-success: var(--y);
-    --text-info: var(--i);
-    --text-lite: var(--n);
-    --text-nav: var(--a);
-    --text-vis: var(--v);
-    --bg-danger: var(--ee);
-    --bg-warning: var(--ww);
-    --bg-success: var(--yy);
-    --bg-info: var(--ii);
-    --bg-lite: var(--nn);
-    --bg-nav: var(--aa);
-    --bg-vis: var(--vv);
-    --btn-danger: var(--e);
-    --btn-warning: var(--w);
-    --btn-success: var(--y);
-    --btn-info: var(--i);
-    --btn-lite: var(--n);
-    --btn-nav: var(--a);
-    --btn-vis: var(--v);
 }
 
 .invert {
@@ -80,29 +61,29 @@
     --focus: rgba(255, 255, 255, .4);
     --focus-danger: rgba(220, 50, 50, 1);
     --hover: #ff7;
-    --ee: #c00;
-    --ww: #d70;
-    --yy: #181;
-    --ii: #08a;
-    --nn: #999;
-    --aa: #970;
-    --vv: #970;
-    --e: #fcc;
-    --w: #ffe699;
-    --y: #cec;
-    --i: #bef;
-    --n: #eee;
-    --a: #ec6;
-    --v: #ec6;
     --bg-btn: #36e;
     --text-btn: #fff;
-    --btn-danger: var(--ee);
-    --btn-warning: var(--ww);
-    --btn-success: var(--yy);
-    --btn-info: var(--ii);
-    --btn-lite: var(--nn);
-    --btn-nav: var(--aa);
-    --btn-vis: var(--vv);
+    --link: #ec6;
+    --visited: #ec6;
+    --text-danger: #fcc;
+    --text-warning: #ffe699;
+    --text-success: #cec;
+    --text-info: #bef;
+    --text-lite: #eee;
+    --text-nav: #ec6;
+    --text-vis: #ec6;
+    --bg-danger: #c00;
+    --bg-warning: #d70;
+    --bg-success: #181;
+    --bg-info: #08a;
+    --bg-lite: #999;
+    --bg-nav: #970;
+    --bg-vis: #970;
+    --btn-danger: var(--bg-danger);
+    --btn-warning: var(--bg-warning);
+    --btn-success: var(--bg-success);
+    --btn-info: var(--bg-info);
+    --btn-lite: var(--bg-lite);
 }
 
 button, input, select, textarea {
@@ -181,7 +162,7 @@ ul, ol, dl, blockquote, pre, hr, p, figure {
 
 h1, h2, h3, h4, h5, h6 {
     margin: 3rem 0 1.5rem 0;
-    line-height: 1.2;
+    line-height: 1.3;
     font-family: "PT Sans", Roboto, "Segoe UI", sans-serif;
     font-family: var(--font-cap);
 }
@@ -782,13 +763,13 @@ mark {
     margin-left: auto;
 }
 
-.row.mar {
+.row.let.mar {
     margin-bottom: 0;
 }
 
 /* ! will not collapse with following element*/
 
-.row.mar>* {
+.row.let.mar>* {
     margin-bottom: 1em;
     margin-bottom: var(--gap-n);
 }
@@ -824,6 +805,11 @@ mark {
         border: thin solid rgba(0, 0, 0, .16);
         border: var(--border);
         border-width: medium;
+    }
+
+    table.flip.let tr>* {
+        border-bottom: thin solid rgba(0, 0, 0, .16);
+        border-bottom: var(--border);
     }
 
     form table.flip tr {
@@ -908,10 +894,10 @@ mark {
     .topbar~* h4[id]:before, .topbar~* h5[id]:before, .topbar~* h5[id]:before {
         display: block;
         content: "";
-        height: 3.3rem;
-        height: calc(.1rem + var(--topbar));
-        margin-top: -3.3rem;
-        margin-top: calc(-0.1rem - var(--topbar));
+        height: 3.7rem;
+        height: calc(.5rem + var(--topbar));
+        margin-top: -3.7rem;
+        margin-top: calc(-0.5rem - var(--topbar));
     }
 
     .stick {

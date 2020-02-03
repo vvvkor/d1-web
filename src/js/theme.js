@@ -61,8 +61,10 @@ module.exports = new(function () {
   
   this.unstyle = function(e){
     e.preventDefault();
-    document.documentElement.style = '';
-    //document.body.style = '';
+    let s = document.documentElement.style;
+    for(var i = s.length; i--;) s.removeProperty(s[i]);
+    //document.documentElement.style = '';
+    ////document.body.style = '';
     localStorage.removeItem('theme-html');
     //localStorage.removeItem('theme-body');
   }

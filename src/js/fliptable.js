@@ -13,7 +13,7 @@ module.exports = new(function () {
   };
 
   this.init = function () {
-    app.e(this.opt.qFlipTable, n => app.closest(n, 'form') ? null : this.prepareFlipTable(n)); 
+    app.e(this.opt.qFlipTable, n => n.closest('form') ? null : this.prepareFlipTable(n)); 
   }
 
   this.prepareFlipTable = function(t){

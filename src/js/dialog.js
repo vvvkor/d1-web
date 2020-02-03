@@ -29,7 +29,7 @@ module.exports = new(function () {
   }
   
   this.onClick = function(e){
-    let as = app.closest(e.target, 'a, input, button');
+    let as = e.target.closest('a, input, button');
     if(as && as.matches(this.opt.qAlert+','+this.opt.qDialog)){
       //d = this.dialog(e, a, (m, v) => !console.log(v) && toggle.unpop()); //custom callback
       e.preventDefault();

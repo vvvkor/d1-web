@@ -18,10 +18,10 @@ module.exports = new(function () {
   }
 
   this.onClick = function(e){
-    let n = app.closest(e.target, 'a[href^="#"]');
+    let n = e.target.closest('a[href^="#"]');
     if(n && n.hash){
       let q = app.attr(n, this.opt.aItem);
-      let d = q ? app.q(q) : app.closest(e.target, this.opt.qItem);
+      let d = q ? app.q(q) : e.target.closest(this.opt.qItem);
       if(d){
         let cont = d.parentNode;
         if(this.process(d, n.hash.substr(1)), !!q){

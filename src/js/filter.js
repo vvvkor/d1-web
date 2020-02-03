@@ -29,7 +29,7 @@ module.exports = new(function () {
   }
   
   this.applyControl = function(n){
-    let f = app.closest(n, this.opt.qFilter);
+    let f = n.closest(this.opt.qFilter);
     let x = app.attr(n, this.opt.aFilter).split(/=/, 2);
     if(f){
       if(x[0]){
