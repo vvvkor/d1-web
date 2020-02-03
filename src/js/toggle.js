@@ -15,7 +15,7 @@ module.exports = new(function () {
   this.opt = {
     keepHash: 1,
     mediaSuffixes: ['-mobile', '-desktop'],
-    dlgUnscroll: false,
+    dlgUnscroll: true,
 
     //qTgl: '.toggle[id]',
     

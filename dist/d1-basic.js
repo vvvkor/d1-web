@@ -1,4 +1,4 @@
-/*! d1-web v1.2.0 */
+/*! d1-web v1.2.2 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -353,7 +353,7 @@ module.exports = new function () {
   this.opt = {
     keepHash: 1,
     mediaSuffixes: ['-mobile', '-desktop'],
-    dlgUnscroll: false,
+    dlgUnscroll: true,
     //qTgl: '.toggle[id]',
     qTrg: '[id].target',
     qPop: '.pop>div[id]',

@@ -1,4 +1,4 @@
-/*! d1-web v1.2.0 */
+/*! d1-web v1.2.2 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -1292,7 +1292,7 @@ form .mar {
     scrollbar-color: #ccc #eee;
 }
 
-.trans .nav ul.toggle, .trans  .pop>.toggle, .trans .dlg.toggle {
+.trans .nav li:not(.shift)>ul.toggle, .trans  .pop>.toggle, .trans .dlg.toggle {
     display: block !important;
     transition: .2s opacity;
 }
@@ -1301,6 +1301,10 @@ form .mar {
     opacity: 0;
     z-index: -1;
     transition-duration: .1s;
+}
+
+.trans .dlg.full.center.toggle {
+    display: flex !important;
 }
 
 .trans .dlg {
