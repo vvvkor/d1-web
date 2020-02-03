@@ -140,7 +140,7 @@ module.exports = new(function () {
   this.validate = function(n, re){
     n.setCustomValidity((re || n.value=='') ? '' : this.errLimits(n));
     n.checkValidity();
-    n.reportValidity();
+    if(n.reportValidity) n.reportValidity();
   }
   
   this.build = function(n, x){

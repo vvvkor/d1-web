@@ -1,4 +1,4 @@
-/*! d1-web v1.1.2 */
+/*! d1-web v1.2.0 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -351,6 +351,7 @@ module.exports = new function () {
   this.opt = {
     keepHash: 1,
     mediaSuffixes: ['-mobile', '-desktop'],
+    dlgUnscroll: false,
     //qTgl: '.toggle[id]',
     qTrg: '[id].target',
     qPop: '.pop>div[id]',
@@ -462,8 +463,12 @@ module.exports = new function () {
     var bar = window.innerWidth - document.documentElement.clientWidth; //scroll bar width
 
     var s = document.body.style;
-    s.overflow = modal ? 'hidden' : '';
-    if (!(modal && s.paddingRight)) s.paddingRight = modal ? '' + bar + 'px' : ''; // avoid width reflow
+
+    if (this.opt.dlgUnscroll) {
+      //hide scroll
+      s.overflow = modal ? 'hidden' : '';
+      if (!(modal && s.paddingRight)) s.paddingRight = modal ? '' + bar + 'px' : ''; // avoid width reflow
+    }
 
     app.dbg(['after', n, modal, s.paddingRight]);
 
@@ -819,7 +824,7 @@ module.exports = new function () {
     var _this3 = this;
 
     if (n.form && !n.form.checkValidity()) {
-      n.form.reportValidity();
+      if (n.form.reportValidity) n.form.reportValidity();
       return;
     }
 
@@ -866,7 +871,7 @@ module.exports = new function () {
             if (i) i.value = v;
           }
 
-          if (n.form.reportValidity()) {
+          if (n.form.reportValidity ? n.form.reportValidity() : n.form.checkValidity()) {
             app.q('[type="hidden"][name="' + n.name + '"]', n.form) || app.ins('input', '', {
               type: 'hidden',
               name: n.name,
@@ -1449,7 +1454,7 @@ module.exports = new function () {
   this.validate = function (n, re) {
     n.setCustomValidity(re || n.value == '' ? '' : this.errLimits(n));
     n.checkValidity();
-    n.reportValidity();
+    if (n.reportValidity) n.reportValidity();
   };
 
   this.build = function (n, x) {
@@ -2782,15 +2787,27 @@ module.exports = new function () {
   };
 
   this.setOptions = function (n, a) {
-    app.clr(n);
-    var z = app.attr(n, 'data-placeholder') || '';
-    if (!a || a.length == 0 || z) app.ins('option', z || '-', {
-      value: ''
-    }, n);
-    if (a) for (var i = 0; i < a.length; i++) {
-      app.ins('option', a[i].nm, {
-        value: a[i].id
+    if (n.list) {
+      if (n.list) {
+        app.clr(n.list);
+        n.value = '';
+        if (a) a.forEach(function (v) {
+          return app.ins('option', '', {
+            value: v.nm
+          }, n.list);
+        });
+      }
+    } else {
+      app.clr(n);
+      var z = app.attr(n, 'data-placeholder') || '';
+      if (!a || a.length == 0 || z) app.ins('option', z || '-', {
+        value: ''
       }, n);
+      if (a) a.forEach(function (v) {
+        return app.ins('option', v.nm, {
+          value: v.id
+        }, n);
+      });
     }
   };
 

@@ -81,7 +81,7 @@ css restructure (maybe)
 --rad: .2; /* em */
 --gap: 1; /* em */
 --gap-rate: .5;
---topbar: 3.2rem; /*60px;*/ /*3.2rem;*/ /* px are to be used probably, othewise sticky drawer will have blurred text */
+--topbar: 2.5rem; /*60px;*/ /*3.2rem;*/ /* px are to be used probably, othewise sticky drawer will have blurred text */
 
 /* status */
 --text-danger:  #c00;
@@ -286,8 +286,8 @@ form>p, form>.row{margin:var(--gap-s) 0;}
 	/* simple */
 	/*[data-tip]:not(:hover):after{display:none;}*/
 	/* animate */
-	[data-tip]:after{display:block;opacity:0;z-index:-1;transition:opacity 1s;}
-	[data-tip]:hover:after{opacity:1;z-index:2;}
+	[data-tip]:after{display:block;opacity:0;z-index:-1;}
+	[data-tip]:hover:after{opacity:1;z-index:2;transition:opacity .3s 1s;}
 /* tip as popup */
 .pop>.btn:not(.toggle){top:auto;bottom:100%;white-space:nowrap;min-width:0;}
 .pop>.btn.shift:not(.toggle){right:auto;left:50%;transform:translate(-50%,0);}
@@ -345,7 +345,7 @@ ul.nav, .nav ul{list-style:none;padding:0;margin:0;}
 	.gal a[data-caption]:after{content:attr(data-caption);left:0;display:block;}
 	.gal a:not([id]){right:0;}
 /* topbar */
-.topbar{z-index:70;position:fixed;top:0;left:0;width:100%;height:var(--topbar);transition:top .2s;/*align-items:center;*/}
+.topbar{z-index:70;position:fixed;top:0;left:0;width:100%;min-height:var(--topbar);transition:top .2s;/*align-items:center;*/}
 
 
 /* hide */
@@ -560,3 +560,16 @@ mark{background-color:var(--bg-warning);}
 .scroller::-webkit-scrollbar{width:.5em;background:#eee;}
 .scroller::-webkit-scrollbar-thumb{background:#ccc;}
 .scroller{scrollbar-width:thin;scrollbar-color:#ccc #eee;}
+
+/* transitions */
+/*
+- transitions: add(.fade); setTimeout(add(.off))
+  + fixed (drawer, top): position
+  + absolute (nav, pop, tip): opacity, index-z:-1
+  ~ full (dlg, gal): .fade(opacity, scale?) -> .off
+  - static (target, tabs, tree): .fade(height, opaicty?) -> .off
+*/
+.trans .nav ul.toggle, .trans  .pop>.toggle, .trans .dlg.toggle{display:block !important;transition:.2s opacity;}
+.trans .nav ul.toggle.off, .trans .pop>.toggle.off, .trans .dlg.off{opacity:0;z-index:-1;transition-duration:.1s;}
+.trans .dlg{transition-property:opacity,transform;transform:translate(-50%, -50%);}
+.trans .dlg.off{transition:none;transform:translate(-50%, -50%) scale(.9);}

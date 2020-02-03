@@ -208,11 +208,20 @@ module.exports = new(function () {
     this.store(n, u, d);
   }
 
-  this.setOptions = function(n,a){
-    app.clr(n);
-    let z = app.attr(n, 'data-placeholder') || '';
-    if(!a || a.length==0 || z) app.ins('option',z||'-',{value:''},n);
-    if(a) for(let i=0;i<a.length;i++) app.ins('option',a[i].nm,{value:a[i].id},n);
+  this.setOptions = function(n, a){
+    if(n.list){
+      if(n.list){
+        app.clr(n.list);
+        n.value = '';
+        if(a) a.forEach(v => app.ins('option', '', {value: v.nm}, n.list));
+      }
+    }
+    else{
+      app.clr(n);
+      let z = app.attr(n, 'data-placeholder') || '';
+      if(!a || a.length==0 || z) app.ins('option', z || '-', {value: ''}, n);
+      if(a) a.forEach(v => app.ins('option', v.nm, {value: v.id}, n));
+    }
   }
   
   this.store = function(n,u,d){

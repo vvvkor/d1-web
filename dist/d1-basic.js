@@ -1,4 +1,4 @@
-/*! d1-web v1.1.2 */
+/*! d1-web v1.2.0 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -353,6 +353,7 @@ module.exports = new function () {
   this.opt = {
     keepHash: 1,
     mediaSuffixes: ['-mobile', '-desktop'],
+    dlgUnscroll: false,
     //qTgl: '.toggle[id]',
     qTrg: '[id].target',
     qPop: '.pop>div[id]',
@@ -464,8 +465,12 @@ module.exports = new function () {
     var bar = window.innerWidth - document.documentElement.clientWidth; //scroll bar width
 
     var s = document.body.style;
-    s.overflow = modal ? 'hidden' : '';
-    if (!(modal && s.paddingRight)) s.paddingRight = modal ? '' + bar + 'px' : ''; // avoid width reflow
+
+    if (this.opt.dlgUnscroll) {
+      //hide scroll
+      s.overflow = modal ? 'hidden' : '';
+      if (!(modal && s.paddingRight)) s.paddingRight = modal ? '' + bar + 'px' : ''; // avoid width reflow
+    }
 
     app.dbg(['after', n, modal, s.paddingRight]);
 
@@ -844,7 +849,7 @@ module.exports = new function () {
     var _this3 = this;
 
     if (n.form && !n.form.checkValidity()) {
-      n.form.reportValidity();
+      if (n.form.reportValidity) n.form.reportValidity();
       return;
     }
 
@@ -891,7 +896,7 @@ module.exports = new function () {
             if (i) i.value = v;
           }
 
-          if (n.form.reportValidity()) {
+          if (n.form.reportValidity ? n.form.reportValidity() : n.form.checkValidity()) {
             app.q('[type="hidden"][name="' + n.name + '"]', n.form) || app.ins('input', '', {
               type: 'hidden',
               name: n.name,

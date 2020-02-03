@@ -65,7 +65,7 @@ module.exports = new(function () {
   
   this.dialog = function(n, f){
     if (n.form && !n.form.checkValidity()){
-      n.form.reportValidity();
+      if(n.form.reportValidity) n.form.reportValidity();
       return;
     }
     let h = app.attr(n, this.opt.aHead).replace(/%([\w\-]+)%/g, (m, a) => n.getAttribute(a));
@@ -101,7 +101,7 @@ module.exports = new(function () {
         let i = n.form.elements[p] || app.ins('input', '', {type: 'hidden', name: p}, n.form);
         if(i) i.value = v;
       }
-      if(n.form.reportValidity()){
+      if(n.form.reportValidity ? n.form.reportValidity() : n.form.checkValidity()){
         app.q('[type="hidden"][name="'+ n.name +'"]', n.form) || app.ins('input', '', {type: 'hidden', name: n.name, value: n.value}, n.form);
         n.form.elements[this.opt.aConfirm] || app.ins('input', '', {type: 'hidden', name: this.opt.aConfirm, value: 1}, n.form);
         n.form.submit();

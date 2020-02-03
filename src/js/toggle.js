@@ -15,6 +15,7 @@ module.exports = new(function () {
   this.opt = {
     keepHash: 1,
     mediaSuffixes: ['-mobile', '-desktop'],
+    dlgUnscroll: false,
 
     //qTgl: '.toggle[id]',
     
@@ -70,8 +71,10 @@ module.exports = new(function () {
     let modal = app.q(this.opt.qDlg+':not(.'+app.opt.cOff+'), '+this.opt.qGal+'[id="' + location.hash.substr(1) + '"]');
     let bar = window.innerWidth - document.documentElement.clientWidth; //scroll bar width
     let s = document.body.style;
-    s.overflow = modal ? 'hidden' : '';
-    if(!(modal && s.paddingRight)) s.paddingRight = modal ? '' + bar + 'px' : ''; // avoid width reflow
+    if(this.opt.dlgUnscroll){//hide scroll
+      s.overflow = modal ? 'hidden' : '';
+      if(!(modal && s.paddingRight)) s.paddingRight = modal ? '' + bar + 'px' : ''; // avoid width reflow
+    }
     app.dbg(['after', n, modal, s.paddingRight]);
     if(modal){
       //let f1 = app.q('input, a:not(.' + app.opt.cClose + ')', modal);

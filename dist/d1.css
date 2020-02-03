@@ -1,4 +1,4 @@
-/*! d1-web v1.1.2 */
+/*! d1-web v1.2.0 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -18,7 +18,7 @@
     --rad: .2;
     --gap: 1;
     --gap-rate: .5;
-    --topbar: 3.2rem;
+    --topbar: 2.5rem;
     --text-danger: #c00;
     --text-warning: #d70;
     --text-success: #181;
@@ -435,12 +435,12 @@ form>p, form>.row {
     display: block;
     opacity: 0;
     z-index: -1;
-    transition: opacity 1s;
 }
 
 [data-tip]:hover:after {
     opacity: 1;
     z-index: 2;
+    transition: opacity .3s 1s;
 }
 
 .pop>.btn:not(.toggle) {
@@ -674,8 +674,8 @@ ul.nav, .nav ul {
     top: 0;
     left: 0;
     width: 100%;
-    height: 3.2rem;
-    height: var(--topbar);
+    min-height: 2.5rem;
+    min-height: var(--topbar);
     transition: top .2s;
 }
 
@@ -881,12 +881,12 @@ mark {
     }
 
     .topbar.off {
-        top: -3.3rem;
+        top: -2.6rem;
         top: calc(-0.1rem - var(--topbar));
     }
 
     .topbar+* {
-        margin-top: 3.2rem;
+        margin-top: 2.5rem;
         margin-top: var(--topbar);
     }
 
@@ -894,9 +894,9 @@ mark {
     .topbar~* h4[id]:before, .topbar~* h5[id]:before, .topbar~* h5[id]:before {
         display: block;
         content: "";
-        height: 3.7rem;
+        height: 3rem;
         height: calc(.5rem + var(--topbar));
-        margin-top: -3.7rem;
+        margin-top: -3rem;
         margin-top: calc(-0.5rem - var(--topbar));
     }
 
@@ -911,9 +911,9 @@ mark {
     }
 
     .topbar~* .stick {
-        top: 3.2rem;
+        top: 2.5rem;
         top: var(--topbar);
-        max-height: calc(100vh - 3.2rem);
+        max-height: calc(100vh - 2.5rem);
         max-height: calc(100vh - var(--topbar));
     }
 
@@ -1290,4 +1290,25 @@ form .mar {
 .scroller {
     scrollbar-width: thin;
     scrollbar-color: #ccc #eee;
+}
+
+.trans .nav ul.toggle, .trans  .pop>.toggle, .trans .dlg.toggle {
+    display: block !important;
+    transition: .2s opacity;
+}
+
+.trans .nav ul.toggle.off, .trans .pop>.toggle.off, .trans .dlg.off {
+    opacity: 0;
+    z-index: -1;
+    transition-duration: .1s;
+}
+
+.trans .dlg {
+    transition-property: opacity, transform;
+    transform: translate(-50%, -50%);
+}
+
+.trans .dlg.off {
+    transition: none;
+    transform: translate(-50%, -50%) scale(.9);
 }
