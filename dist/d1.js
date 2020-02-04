@@ -1,4 +1,4 @@
-/*! d1-web v1.2.4 */
+/*! d1-web v1.2.5 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -757,6 +757,9 @@ module.exports = new function () {
   this.init = function () {
     var _this = this;
 
+    if (!this.dlg) this.dlg = app.ins('div', '', {
+      className: app.opt.cToggle + ' ' + app.opt.cOff + ' ' + this.opt.ccDlg
+    }, document.body);
     app.listen('click', function (e) {
       return _this.onClick(e);
     });
@@ -775,9 +778,7 @@ module.exports = new function () {
   this.initDlg = function (n, h, t, f, def, rev) {
     var _this2 = this;
 
-    if (!this.dlg) this.dlg = app.ins('div', '', {
-      className: app.opt.cToggle + ' ' + app.opt.cOff + ' ' + this.opt.ccDlg
-    }, document.body);
+    //if(!this.dlg) this.dlg = app.ins('div', '', {className: app.opt.cToggle + ' ' + app.opt.cOff + ' ' + this.opt.ccDlg}, document.body);
     var d = this.dlg;
     app.clr(d);
     var hh = app.ins('div', '', {

@@ -25,6 +25,7 @@ module.exports = new(function () {
   };
   
   this.init = function () {
+    if(!this.dlg) this.dlg = app.ins('div', '', {className: app.opt.cToggle + ' ' + app.opt.cOff + ' ' + this.opt.ccDlg}, document.body);
     app.listen('click', e => this.onClick(e));
   }
   
@@ -38,7 +39,7 @@ module.exports = new(function () {
   }
 
   this.initDlg = function(n, h, t, f, def, rev){
-    if(!this.dlg) this.dlg = app.ins('div', '', {className: app.opt.cToggle + ' ' + app.opt.cOff + ' ' + this.opt.ccDlg}, document.body);
+    //if(!this.dlg) this.dlg = app.ins('div', '', {className: app.opt.cToggle + ' ' + app.opt.cOff + ' ' + this.opt.ccDlg}, document.body);
     let d = this.dlg;
     app.clr(d);
     let hh = app.ins('div', '', {className: 'row bg'}, d);
