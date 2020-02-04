@@ -6,24 +6,24 @@
     <meta name="viewport" 
       content="width=device-width, initial-scale=1">
 	<!-- CDN -->
-	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.2.2/dist/d1.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.2.2/dist/d1.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.2.3/dist/d1.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.2.3/dist/d1.min.js"></script>
 	<!-- local-npm-src ->
 	<link href="../src/index.css" rel="stylesheet">
 	<!--link href="../dist/d1.min.css" rel="stylesheet"-->
 	<script src="../dist/d1.min.js"></script>
 	<!-- -->
 	<script>
-		console.log('d1=', d1);
+		console.log('d1 = ', d1);
 		d1.b([document], 'DOMContentLoaded', function(n){
-			let d = d1.q('#demo-all-icons');
+			var d = d1.q('#demo-all-icons');
 			if(d && d1.plugins.icons){
-				let i = 0;
-				Object.keys(d1.plugins.icons.icons).forEach(function(k){
-					let dd = d1.ins('a', k, {title: ++i, className: 'pad hover'}, d);
-					dd.style.width = '6em';
-					d1.plugins.icons.addIcon(k, dd, 0);
-				});
+				var icons = Object.keys(d1.plugins.icons.icons);
+				for(i=0; i<icons.length; i++){
+					var dd = d1.ins('a', icons[i], {title: i+1, className: 'pad hover'}, d);
+					dd.style.width = '6.4em';
+					d1.plugins.icons.addIcon(icons[i], dd, 0);
+				}
 			}
 		});
 	</script>
@@ -51,10 +51,10 @@
   <header class="bg -bg-n -topbar -toggle">
 	  <div class="hide-desktop">
 		<a href="#nav" class="pad hover" title="Menu" data-ico="menu">&equiv;</a>
-		<a href="?" class="pad"><b>d1</b> <span class="text-n">v1.2.2</span></a>
+		<a href="?" class="pad"><b>d1</b> <span class="text-n">v1.2.3</span></a>
 	</div>
 	  <ul class="nav flip hover target-mobile" id="nav">
-		<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v1.2.2</span></a></li>
+		<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v1.2.3</span></a></li>
 		<li><a href="index.html" data-icon="text">Docs</a>
 		<li>
 			<a>Parent</a>
@@ -99,10 +99,10 @@
 			<p>
 			<label><input type="checkbox" data-nodes="#topbar" data-set="topbar toggle shade  row let center fit" data-unset="hide"> Topbar</label><br>
 			<label><input type="checkbox" data-nodes="body" data-set="invert"> Invert</label>
-				<span class="text-i" title="Not supported in IE and Edge 15-" data-ico="info"></span>
+				<span class="text-i" title="Not supported in IE and Edge 15-" data-tip data-ico="info"></span>
 				<br>
 			<label><input type="checkbox" data-nodes="html" data-set="scroller" > Custom scroll</label>
-				<span class="text-i" title="Supported in WebKit and Firefox" data-ico="info"></span>
+				<span class="text-i" title="Supported in WebKit and Firefox" data-tip data-ico="info"></span>
 			</p>
 		</div>
 		<div class="pad mar shade">
@@ -139,7 +139,7 @@
 					<a href="https://picsum.photos/id/830/1000/700.jpg" class="pic" title="Blue">#3</a>
 					</span>
 				<li><a href="#gal1">Pure CSS Gallery</a>
-					<span class="text-i" title="Not supported in IE and Edge 15-" data-ico="info"></span>
+					<span class="text-i" title="Not supported in IE and Edge 15-" data-tip data-ico="info"></span>
 				<li><a href="#menu">Drawer & tree</a>
 				<!--li><a href="#x" data-nodes="#topbar" data-set="topbar toggle shade  row let center fit" data-unset="hide">Topbar</a>
 					<b class="small btn bg-e hide-js" title="Requires Javascript">JS</b-->
@@ -712,7 +712,7 @@ let double = function (x) {
 				<li><a href="data.json" data-target="#dlg-inner">To dialog</a>
 				<li><a href="data.json" data-target="#xxx" data-head="Fetched data">To generated dialog</a>
 			</ul>
-			<pre class="bg-i fit pad" id="preview">[preview area]</pre>
+			<pre class="bg-i fit pad"><div id="preview">[preview area]</div></pre>
 		</div>
 		<div id="preview-dlg" class="dlg pad"><a class="close pad" href="#cancel" data-ico="close">×</a><p class="pad" id="dlg-inner">(preview)</p></div>
 		

@@ -1,4 +1,4 @@
-/*! d1-web v1.2.2 */
+/*! d1-web v1.2.3 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -372,6 +372,7 @@ module.exports = new function () {
     qSubMem: '.tabs.mem+div>div[id], ul.mem:not(.nav) ul',
     //qMedia: '[id].target-mobile, [id].target-desktop',
     qDrawer: '.drawer[id]:not(.shift)',
+    qTip: '[data-tip=""][title]',
     cMem: 'mem',
     cTarget: 'target' //cToggle: 'toggle',
 
@@ -455,6 +456,11 @@ module.exports = new function () {
     app.e('.' + app.opt.cToggle + '[id]', function (n) {
       return _this.hiliteLinks(n);
     }); //init links state
+
+    app.e(this.opt.qTip, function (n) {
+      n.setAttribute('data-tip', n.title);
+      n.title = '';
+    }); //init tooltips
   };
 
   this.after = function (n) {

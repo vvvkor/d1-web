@@ -287,7 +287,7 @@ form>p, form>.row{margin:var(--gap-s) 0;}
 	/*[data-tip]:not(:hover):after{display:none;}*/
 	/* animate */
 	[data-tip]:after{display:block;opacity:0;z-index:-1;}
-	[data-tip]:hover:after{opacity:1;z-index:2;transition:opacity .3s 1s;}
+	[data-tip]:hover:after{opacity:1;z-index:2;transition:opacity .3s .3s;}
 /* tip as popup */
 .pop>.btn:not(.toggle){top:auto;bottom:100%;white-space:nowrap;min-width:0;}
 .pop>.btn.shift:not(.toggle){right:auto;left:50%;transform:translate(-50%,0);}
@@ -569,12 +569,11 @@ mark{background-color:var(--bg-warning);}
   ~ full (dlg, gal): .fade(opacity, scale?) -> .off
   - static (target, tabs, tree): .fade(height, opaicty?) -> .off
 */
-.trans .nav li:not(.shift)>ul.toggle, .trans  .pop>.toggle, .trans .dlg.toggle{display:block !important;transition:.2s opacity;}
-.trans .nav ul.toggle.off, .trans .pop>.toggle.off, .trans .dlg.off{opacity:0;z-index:-1;transition-duration:.1s;}
-.trans .dlg.full.center.toggle{display:flex !important;}
-.trans .dlg{transition-property:opacity,transform;transform:translate(-50%, -50%);}
-.trans .dlg.off{transition:none;transform:translate(-50%, -50%) scale(.9);}
+.trans .nav li:not(.shift)>ul.toggle, .trans  .pop>.toggle{display:block !important;transition:.2s opacity;}
+.trans .nav ul.toggle.off, .trans .pop>.toggle.off{opacity:0;z-index:-1;transition-duration:.1s;}
+.trans .dlg.toggle:not(.off){transition-duration:.2s;transition-property:opacity,transform;opacity:1;transform:translate(-50%, -50%);}
+.trans .dlg.toggle.off{display:block !important;opacity:0;z-index:-1;transform:translate(-50%, -50%) scale(.8);}
 /*
-.trans .dlg.toggle:not(.off){transition-duration:1s;transition-property:opacity,transform;opacity:1;transform:translate(-50%, -50%);}
-.trans .dlg.toggle.off{opacity:0;z-index:-1;transform:translate(-50%, -50%) scale(.9);}
+.trans .dlg:target{transition-duration:1s;transition-property:opacity,transform;opacity:1;transform:translate(-50%, -50%);}
+.trans .dlg:not(:target){display:block !important;opacity:0;z-index:-1;transform:translate(-50%, -50%) scale(.9);}
 */

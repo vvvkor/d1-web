@@ -14,8 +14,22 @@
 	<!-- -->
 	
 	<script>
-		console.log('d1=', d1);
+		console.log('d1 = ', d1);
 		//d1.b([document], 'DOMContentLoaded', d1.e.bind(d1, 'code', n => n.classList.add('bg-w')));
+		
+		d1.b([document], 'DOMContentLoaded', function(n){
+			var d = d1.q('#demo-all-icons');
+			if(d && d1.plugins.icons){
+				var i, icons = Object.keys(d1.plugins.icons.icons);
+				for(i=0; i<icons.length; i++){
+					var dd = d1.ins('a', icons[i], {title: 1+i, className: 'pad hover'}, d);
+					dd.style.width = '6.4em';
+					dd.style.margin = '.1em';
+					d1.plugins.icons.addIcon(icons[i], dd, 0);
+				}
+			}
+		});
+		/*
 		d1.b([document], 'DOMContentLoaded', function(n){
 			let d = d1.q('#demo-all-icons');
 			if(d && d1.plugins.icons){
@@ -30,6 +44,7 @@
 			}
 			d1.e('#options-all-icons [' + d1.plugins.tools.opt.aSet + ']', n => d1.plugins.tools.toggleClass(n)); 
 		});
+		*/
 	</script>
 	<style>
 		/* Roboto, Open Sans, Georgia, PT Sans, PT Serif, PT Mono */
