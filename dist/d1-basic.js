@@ -1,4 +1,4 @@
-/*! d1-web v1.2.5 */
+/*! d1-web v1.2.6 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -372,7 +372,7 @@ module.exports = new function () {
     qSubMem: '.tabs.mem+div>div[id], ul.mem:not(.nav) ul',
     //qMedia: '[id].target-mobile, [id].target-desktop',
     qDrawer: '.drawer[id]:not(.shift)',
-    qTip: '[data-tip=""][title]',
+    qTip: '[data-tip=""][title], .tip[title]',
     cMem: 'mem',
     cTarget: 'target' //cToggle: 'toggle',
 

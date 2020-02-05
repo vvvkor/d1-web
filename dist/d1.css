@@ -1,4 +1,4 @@
-/*! d1-web v1.2.5 */
+/*! d1-web v1.2.6 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -408,6 +408,7 @@ form>p, form>.row {
 
 [data-tip] {
     position: relative;
+    display: inline-block;
 }
 
 [data-tip]:after {
@@ -424,23 +425,21 @@ form>p, form>.row {
     border-radius: .2em;
     border-radius: var(--radius);
     white-space: nowrap;
+    z-index: 4;
 }
 
 [data-tip].shift:after {
+    left: auto;
+    right: 0;
+}
+
+[data-tip].c:after {
     left: 50%;
     transform: translate(-50%, 0);
 }
 
-[data-tip]:after {
-    display: block;
-    opacity: 0;
-    z-index: -1;
-}
-
-[data-tip]:hover:after {
-    opacity: 1;
-    z-index: 2;
-    transition: opacity .3s .3s;
+[data-tip]:not(:hover):after {
+    display: none;
 }
 
 .pop>.btn:not(.toggle) {
@@ -450,7 +449,7 @@ form>p, form>.row {
     min-width: 0;
 }
 
-.pop>.btn.shift:not(.toggle) {
+.pop>.btn.c:not(.toggle) {
     right: auto;
     left: 50%;
     transform: translate(-50%, 0);
@@ -860,8 +859,7 @@ mark {
         padding: var(--gaps-l);
     }
 
-    .nav:not(.let)>li.shift>ul:not(.toggle),
-    .nav:not(.let)>li.shift~li>ul:not(.toggle), .pop>div.shift:not(.toggle) {
+    .nav:not(.let)>li.shift>ul, .nav:not(.let)>li.shift~li>ul, .pop>div.shift {
         left: auto;
         right: 0;
     }
@@ -1292,27 +1290,35 @@ form .mar {
     scrollbar-color: #ccc #eee;
 }
 
-.trans .nav li:not(.shift)>ul.toggle, .trans  .pop>.toggle {
-    display: block !important;
-    transition: .2s opacity;
-}
+@media (min-width: 900px) {
+    .trans .nav li:not(.shift)>ul.toggle, .trans .pop>.toggle,
+    .trans [data-tip]:after {
+        display: block !important;
+        transition: .2s opacity;
+    }
 
-.trans .nav ul.toggle.off, .trans .pop>.toggle.off {
-    opacity: 0;
-    z-index: -1;
-    transition-duration: .1s;
-}
+    .trans .nav ul.toggle.off, .trans .pop>.toggle.off,
+    .trans [data-tip]:not(:hover):after {
+        opacity: 0;
+        z-index: -1;
+        transition-duration: .1s;
+    }
 
-.trans .dlg.toggle:not(.off) {
-    transition-duration: .2s;
-    transition-property: opacity, transform;
-    opacity: 1;
-    transform: translate(-50%, -50%);
-}
+    .trans [data-tip]:hover:after {
+        transition: opacity .3s .3s;
+    }
 
-.trans .dlg.toggle.off {
-    display: block !important;
-    opacity: 0;
-    z-index: -1;
-    transform: translate(-50%, -50%) scale(.8);
+    .trans .dlg.toggle:not(.off) {
+        transition-duration: .2s;
+        transition-property: opacity, transform;
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+
+    .trans .dlg.toggle.off {
+        display: block !important;
+        opacity: 0;
+        z-index: -1;
+        transform: translate(-50%, -50%) scale(.8);
+    }
 }

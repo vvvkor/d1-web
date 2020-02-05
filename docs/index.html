@@ -6,8 +6,8 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 
 	<!-- CDN -->
-	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.2.5/dist/d1.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.2.5/dist/d1.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.2.6/dist/d1.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.2.6/dist/d1.min.js"></script>
 	<!-- local-npm-src ->
 	<link href="../src/index.css" rel="stylesheet">
 	<script src="../dist/d1.min.js"></script>
@@ -65,7 +65,7 @@
 	<a href="#top" class="pad -let"><b>d1</b></a>
 	<code class="pad nobr">npm i d1-web</code>
 	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1-web" title="GitHub" class="pad -let">GitHub</a>
-	<a class="shift pad text-n">v1.2.5</a>
+	<a class="shift pad text-n">v1.2.6</a>
 	<a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="pad -let" data-ico="download" title="Download">Download</a>
 </div>
 
@@ -166,7 +166,7 @@
 
 <div class="col-3 pad" id="top1">
 	
- <div class="read pad" data-class-mobile="pad" data-class-desktop="read pad" id="top2">
+ <div class="read pad" data-class-mobile="-pad" data-class-desktop="read pad" id="top2">
 <h1 id="top">d1 <span class="text-n">front-end framework</span></h1>
 
 <hr>
@@ -538,7 +538,7 @@ By default, <code>table</code> is styled with border, unless it is a direct desc
 <p>Turn rows into cards on small screen <code>table.flip</code>.
 
 <div class="code">
-<table class="flip bord">
+<table class="flip let -bord">
 	<caption>Web languages</caption>
 	<thead>
 		<tr><th>Language</th><th>Type</th><th>Year</th></tr>
@@ -560,6 +560,7 @@ By default, <code>table</code> is styled with border, unless it is a direct desc
 	<input name="q" value="" type="search" id="srch" placeholder="filter table" autocomplete="off">
 	<span id="rep"></span>
 </p>
+<div class="roll">
 <table class="sort bord" data-filter="#srch" data-filter-report="#rep" data-filter-cols="0 2 4" data-case>
 	<thead>
 	<tr><th>String<th>Number<th>Bytes<th>Interval<th>Date
@@ -573,6 +574,7 @@ By default, <code>table</code> is styled with border, unless it is a direct desc
 	<tr><th>Totals<th>17.1<th>1.003 MB<th>1y 5m 9h<th>-
 	</tfoot>
 </table>
+</div>
 </div>
 
 
@@ -806,7 +808,7 @@ Table will become stacked on small screen.
 
 <div class="code">
 	<form action="?" method="get">
-	<table>
+	<table class="flip">
 	<tr><td>Text<td><input name="txt" type="text">
 	<tr><td>Date<td><input name="dt" class="calendar" type="date">
 	<tr><td>Datetime<td><input name="dtm" class="calendar datetime" type="datetime-local" data-def="2001-02-03T04:05:06" min="2001-02-02T10:00" max="2001-02-15T20:00" data-modal="1">
@@ -1471,14 +1473,14 @@ Toggles on resize.
 <a href="#x" class="pad hover" data-set="not-btn"    data-nodes="#demo-filter .row>div:not(.btn)">inverted</a>
 <hr>
 <div class="row mar let">
-	<div class="pad mar bg-w">A</div>
-	<div class="pad mar bg-y">B</div>
-	<div class="pad mar bg-w shade">C</div>
-	<div class="pad mar bg-y shade">D</div>
-	<div class="pad mar bg-w btn">E</div>
-	<div class="pad mar bg-y btn">F</div>
-	<div class="pad mar bg-w btn shade">G</div>
-	<div class="pad mar bg-y btn shade">H</div>
+	<div class="pad bg-w">A</div>
+	<div class="pad bg-y">B</div>
+	<div class="pad bg-w shade">C</div>
+	<div class="pad bg-y shade">D</div>
+	<div class="pad bg-w btn">E</div>
+	<div class="pad bg-y btn">F</div>
+	<div class="pad bg-w btn shade">G</div>
+	<div class="pad bg-y btn shade">H</div>
 </div>
 </div>
 
@@ -1493,15 +1495,15 @@ Toggles on resize.
 <a href="#x" class="pad hover" data-set="or-style-btn" data-nodes="#demo-filter-or .row>div.btn">inverted</a>
 <hr>
 <div class="row mar let">
-	<div class="or pad mar bg-e plain">A</div>
-	<div class="or pad mar bg-w plain">B</div>
-	<div class="or pad mar bg-y plain">C</div>
-	<div class="or pad mar bg-e shade">D</div>
-	<div class="or pad mar bg-w shade">E</div>
-	<div class="or pad mar bg-y shade">F</div>
-	<div class="or pad mar bg-e btn">G</div>
-	<div class="or pad mar bg-w btn">H</div>
-	<div class="or pad mar bg-y btn">I</div>
+	<div class="or pad bg-e plain">A</div>
+	<div class="or pad bg-w plain">B</div>
+	<div class="or pad bg-y plain">C</div>
+	<div class="or pad bg-e shade">D</div>
+	<div class="or pad bg-w shade">E</div>
+	<div class="or pad bg-y shade">F</div>
+	<div class="or pad bg-e btn">G</div>
+	<div class="or pad bg-w btn">H</div>
+	<div class="or pad bg-y btn">I</div>
 </div>
 </div>
 
@@ -1555,15 +1557,15 @@ Toggles on resize.
 	
 	<b>Items</b>
 	<div class="row mar let">
-		<div data-color="red"    data-style="plain" class="item pad mar bg-e plain">A</div>
-		<div data-color="yellow" data-style="plain" class="item pad mar bg-w plain">B</div>
-		<div data-color="green"  data-style="plain" class="item pad mar bg-y plain">C</div>
-		<div data-color="red"    data-style="shade" class="item pad mar bg-e shade">D</div>
-		<div data-color="yellow" data-style="shade" class="item pad mar bg-w shade">E</div>
-		<div data-color="green"  data-style="shade" class="item pad mar bg-y shade">F</div>
-		<div data-color="red"    data-style="btn"   class="item pad mar bg-e btn">G</div>
-		<div data-color="yellow" data-style="btn"   class="item pad mar bg-w btn">H</div>
-		<div data-color="green"  data-style="btn"   class="item pad mar bg-y btn">I</div>
+		<div data-color="red"    data-style="plain" class="item pad bg-e plain">A</div>
+		<div data-color="yellow" data-style="plain" class="item pad bg-w plain">B</div>
+		<div data-color="green"  data-style="plain" class="item pad bg-y plain">C</div>
+		<div data-color="red"    data-style="shade" class="item pad bg-e shade">D</div>
+		<div data-color="yellow" data-style="shade" class="item pad bg-w shade">E</div>
+		<div data-color="green"  data-style="shade" class="item pad bg-y shade">F</div>
+		<div data-color="red"    data-style="btn"   class="item pad bg-e btn">G</div>
+		<div data-color="yellow" data-style="btn"   class="item pad bg-w btn">H</div>
+		<div data-color="green"  data-style="btn"   class="item pad bg-y btn">I</div>
 	</div>
 </div>
 </div>
@@ -1645,8 +1647,8 @@ If link needs to be outside of the item, point at item with query selector in li
 <h3 id="icons">Icons</h3>
 <!--opts-icon-->
 <p>
-Add icon before element's content <code>[data-icon]</code>.<br>
-Replace element's content with icon <code>[data-ico]</code> Provide <code>[title]</code> for accessibility.
+Add icon before element's content <code>[data-icon]</code> or <code>.icon-xxx</code>.<br>
+Replace element's content with icon <code>[data-ico]</code> or <code>.ico-xxx</code>. Provide <code>[title]</code> for accessibility.
 
 <div class="code">
 	<a title="Menu"   href="#x" data-ico="menu" class="pad rad hover">&equiv;</a>
@@ -1682,7 +1684,7 @@ Replace element's content with icon <code>[data-ico]</code> Provide <code>[title
 In your document, provide SVG <code>symbol</code> with <code>[id]</code> containing prefixed icon name.
 It will override the icon with the same name, if such exists in iconset.
 <p>
-To explicitly set width, height and class of inserted icon (original or custom), provide values like this: <code>data-icon="sun/128/64/bg-w text-w"</code>.
+To explicitly set width, height and class of inserted icon (original or custom), provide values like this: <code>data-icon="sun/128/64/bg-w text-w"</code> or <code>class="icon-sun_128_64_bg-w_text-w"</code>.
 </p>
 
 
@@ -1984,14 +1986,18 @@ let double = function(x){
 <h3 id="tips">Tooltips</h3>
 
 <table class="let mar opts-over">
-	<tr><td><input name="tip-shift" type="checkbox" data-nodes="#demo-tips [data-tip], #demo-tips .pop>.btn" data-set="shift" checked><td><code>.shift</code><td>Centrify
+	<tr><td><input name="tip-pos" type="radio" data-nodes="#demo-tips [data-tip], x#demo-tips .pop>.btn" data-set="" checked><td><td>Default
+	<tr><td><input name="tip-pos" type="radio" data-nodes="#demo-tips [data-tip], x#demo-tips .pop>.btn" data-set="c"><td><code>.c</code><td>Centered
+	<tr><td><input name="tip-pos" type="radio" data-nodes="#demo-tips [data-tip], x#demo-tips .pop>.btn" data-set="shift"><td><code>.shift</code><td>Leftwise
 	<tr><td><input name="tip-bg" type="checkbox" data-nodes="#demo-tips .pop>.btn" data-set="bg-e" checked><td><code>.bg-e</code><td>Danger popup tooltip
 </table>
 
 <div class="code" id="demo-tips">
 <div>
 	Text
-	<a href="#x" class="shift" data-tip="This is a tooltip">tooltip</a>
+	<a href="#x" class="" data-tip="This is a tooltip">tooltip</a>
+	text
+	<a href="#x" class="tip" title="JavaScript: title to tooltip">js-tooltip</a>
 	text
 	<div class="pop">
 		<a href="#x">popup-tooltip</a>
@@ -2061,7 +2067,7 @@ most important:
 <tr><th>.flip<td>Responsive<td>.row .nav table<td>
 <tr><th>.hide<td>Visibility by media<td>div<td>.hide-mobile .hide-desktop .hide-print .hide-screen .hide-js .hide-nojs
 <tr><th>.target<td><a href="#target">Toggle</a><td>div<td>.target-mobile .target-desktop .toggle .off .mem <i>.act</i>
-<tr><th>.pop<td><a href="#popup">Popup</a><td><td>.pop>.shift, [data-tip]
+<tr><th>.pop<td><a href="#popup">Popup</a><td><td>.pop>.shift, .pop>.btn
 <tr><th>.nav<td><a href="#nav">Navigation</a><td>ul<td>.flip .hover .let .bg .center .nav.tabs.mem<i>.act .shift</i>
 <tr><th>.tabs<td><a href="#tabs">Tabs</a><td>ul.nav.tabs.mem<td>
 <tr><th>.dlg<td><a href="#dlg">Modal</a><td>.close<td>.dlg.c.let .dlg.full.center
@@ -2069,19 +2075,20 @@ most important:
 <tr><th>.drawer<td><a href="#drawer">Drawer</a><td>div a.close<td>.shift
 <tr><th>.topbar<td><a href="#topbar">Top bar</a><td><td>.toggle
 <tr><th>.let<td>Specific modifications to components<td>
-	<span title="Allow wrapping">.row</span><br>
-	<span title="Row separators">.table</span><br>
-	<span title="Vertical">.nav</span><br>
-	<span title="Wider">.dlg</span><br>
-	<span title="Semi-transparent">.let</span>
+	<span class="tip shift" title="Allow wrapping">.row</span><br>
+	<span class="tip shift" title="Row separators">.table</span><br>
+	<span class="tip shift" title="Vertical">.nav</span><br>
+	<span class="tip shift" title="Wider">.dlg</span><br>
+	<span class="tip shift" title="Semi-transparent">.over</span>
 	<td>
 <tr><th>.shift<td>Something about right side positioning<td>
-	<span title="Shift item to the right">.row &gt; *</span><br>
-	<span title="Shift item to the right">.nav &gt; li</span><br>
-	<span title="Full width">table</span><br>
-	<span title="Pop to the left">.pop</span><br>
-	<span title="Appear on the right side">.drawer</span><br>
-	<span title="Add left margin">*</span>
+	<span class="tip shift" title="Shift item to the right">.row &gt; *</span><br>
+	<span class="tip shift" title="Shift item to the right">.nav &gt; li</span><br>
+	<span class="tip shift" title="Full width">table</span><br>
+	<span class="tip shift" title="Pop to the left">.pop</span><br>
+	<span class="tip shift" title="Pop to the left">[data-tip]</span><br>
+	<span class="tip shift" title="Appear on the right side">.drawer</span><br>
+	<span class="tip shift" title="Add left margin">*</span>
 	<td>
 <!--tr><th>.switch<td><a href="#toggle-radio">Togglable (radio)</a><td>label div<td>.pop .tabs -->
 <tr><th>.item<td>Relative position<td>*<td>.over.let .close .filter
@@ -2090,7 +2097,7 @@ most important:
 <tr><th>.fix<td>Fixed block<td><td>.r .l
 <tr><th>.text-<td><a href="#colors">Text color</a><td>* .invert<td>.text-e .text-w .text-i .text-y .text-n
 <tr><th>.bg<td><a href="#colors">Background color</a><td>* .invert<td>.back .bg-e .bg-w .bg-i .bg-y .bg-n .yel
-<tr><th>.r .c .l<td>Align<td>*<td>
+<tr><th>.r .c .l<td>Align<td>*, [data-tip]<td>
 <tr><th>.center<td>Centrify<td>* .row .nav .full<td>
 <tr><th>.small<td>Small font<td>*<td>
 <tr><th>.fit<td>Remove formatting<td>*<td>.mar .pad .bord .rad .shade
@@ -2102,19 +2109,22 @@ most important:
 <tr><th>.nobr<td>No wrapping<td>*<td>
 <tr><th>.scroller<td>Custom scrollbar<td>html, body, *<td>
 <tr><th>.js<td>JavaScript is on<td>body<td>
-	<span title="Hide depending on JavaScript status">.hide-js, .hide-nojs</span><br>
-	<span title="Toggle always / on mobile / on desktop">.toggle, .toggle-mobile, .toggle-desktop</span><br>
-	<span title="Toggled off">.off</span><br>
-	<span title="Remember toggle state (.target, .tabs)">.mem</span><br>
-	<span title="Generated input (lookup, wysiwyg)">.subinput</span><br>
-	<span title="Tools after input (lookup, calendar)">.input-tools</span><br>
-	<span title="Disable default validation tooltips">form.js-unhint</span><br>
-	<span title="Validate while typing (dimmed submit buttons)">form.js-live-val</span><br>
-	<span title="Generate gallery">.gallery &gt; a.pic</span><br>
-	<span title="Container for filtered items">.filter</span><br>
-	<span title="Hide by filter (use with [data-set])">.not-x, .or, .or-x</span><br>
-	<span title="Enable theme customizer">body.js-theme</span>
-	<span title="Enable transitions (nav, popup, dialog)">body.trans</span>
+	<span class="tip shift" title="Hide depending on JavaScript status">.hide-js, .hide-nojs</span><br>
+	<span class="tip shift" title="Toggle always / on mobile / on desktop">.toggle, .toggle-mobile, .toggle-desktop</span><br>
+	<span class="tip shift" title="Toggled off">.off</span><br>
+	<span class="tip shift" title="Remember toggle state (.target, .tabs)">.mem</span><br>
+	<span class="tip shift" title="Generated input (lookup, wysiwyg)">.subinput</span><br>
+	<span class="tip shift" title="Tools after input (lookup, calendar)">.input-tools</span><br>
+	<span class="tip shift" title="Disable default validation tooltips">form.js-unhint</span><br>
+	<span class="tip shift" title="Validate while typing (dimmed submit buttons)">form.js-live-val</span><br>
+	<span class="tip shift" title="Generate gallery">.gallery &gt; a.pic</span><br>
+	<span class="tip shift" title="Container for filtered items">.filter</span><br>
+	<span class="tip shift" title="Add icon before text">.icon-x, [data-icon]</span><br>
+	<span class="tip shift" title="Replace text with icon">.ico-x, [data-ico]</span><br>
+	<span class="tip shift" title="Make tooltip from title">.tip</span><br>
+	<span class="tip shift" title="Hide by filter (use with [data-set])">.not-x, .or, .or-x</span><br>
+	<span class="tip shift" title="Enable theme customizer">body.js-theme</span><br>
+	<span class="tip shift" title="Enable transitions (nav, popup, dialog)">body.trans</span>
 </tbody>
 </table>
 </div>

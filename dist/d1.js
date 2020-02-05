@@ -1,4 +1,4 @@
-/*! d1-web v1.2.5 */
+/*! d1-web v1.2.6 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -370,7 +370,7 @@ module.exports = new function () {
     qSubMem: '.tabs.mem+div>div[id], ul.mem:not(.nav) ul',
     //qMedia: '[id].target-mobile, [id].target-desktop',
     qDrawer: '.drawer[id]:not(.shift)',
-    qTip: '[data-tip=""][title]',
+    qTip: '[data-tip=""][title], .tip[title]',
     cMem: 'mem',
     cTarget: 'target' //cToggle: 'toggle',
 
@@ -1193,7 +1193,8 @@ module.exports = {
   pause: [9, 'M2 2h2v5h-2zm3 0h2v5h-2z'],
   stop: [9, 'M2 2h5v5h-5z'],
   rec: [10, 'M5 2a3 3 0 1 0 .01 0z'],
-  layer: [14, 'M1 4l6-3 6 3-6 3zm0 3l2-1 4 2 4-2 2 1-6 3zm0 3l2-1 4 2 4-2 2 1-6 3z']
+  layer: [14, 'M1 4l6-3 6 3-6 3zm0 3l2-1 4 2 4-2 2 1-6 3zm0 3l2-1 4 2 4-2 2 1-6 3z'],
+  none: [1, 'M1 1z']
 };
 
 /***/ }),
@@ -2365,8 +2366,10 @@ module.exports = new function () {
     iconSize: 24,
     pSvg: 'icon-',
     // id prefix to search on page; set false to skip search
-    aReplace: 'data-ico',
-    aAdd: 'data-icon'
+    //aReplace: 'data-ico',
+    //aAdd: 'data-icon',
+    qIcon: '[data-ico], [data-icon], [class*="ico-"], [class*="icon-"]',
+    qIconReplace: '[data-ico], [class*="ico-"]'
   };
   this.parsed = {};
   this.icons = iconset;
@@ -2374,12 +2377,25 @@ module.exports = new function () {
   this.init = function () {
     var _this = this;
 
-    app.e('[' + this.opt.aReplace + ']', function (n) {
-      return _this.addIcon(app.attr(n, _this.opt.aReplace), n, true);
+    //app.e('[' + this.opt.aReplace + ']',  n => this.addIcon(app.attr(n, this.opt.aReplace), n, true));
+    //app.e('[' + this.opt.aAdd + ']', n => this.addIcon(app.attr(n, this.opt.aAdd), n));
+    app.e(this.opt.qIcon, function (n) {
+      return _this.iconize(n);
     });
-    app.e('[' + this.opt.aAdd + ']', function (n) {
-      return _this.addIcon(app.attr(n, _this.opt.aAdd), n);
-    });
+  };
+
+  this.iconize = function (n) {
+    var m,
+        i = app.attr(n, 'data-ico') || app.attr(n, 'data-icon');
+
+    if (!i) {
+      m = n.className.match(/\bicon?-([\w\-_]+)/);
+      if (m) i = m[1];
+    }
+
+    var clr = n.matches(this.opt.qIconReplace);
+    this.addIcon(i, n, clr);
+    if (m) n.classList.remove(m[0]);
   };
 
   this.addIcon = function (i, n, clr) {
@@ -2399,7 +2415,7 @@ module.exports = new function () {
   };
 
   this.i = function (ico, alt) {
-    var a = ico.split(/\//);
+    var a = ico.split(/[\/_]/);
     ico = a[0];
 
     if (this.parsed[ico] === undefined) {
@@ -2439,7 +2455,7 @@ module.exports = new function () {
   this.prepareSvg = function (n, a) {
     if (a[0]) n.setAttribute('width', a[0]);
     if (a[1]) n.setAttribute('height', a[1]);
-    if (a.length > 0) n.setAttribute('class', a[2] || '');
+    if (a.length > 0) n.setAttribute('class', a.slice(2).join(' ') || '');
     return n;
   };
 }();
