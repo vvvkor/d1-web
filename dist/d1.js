@@ -1,4 +1,4 @@
-/*! d1-web v1.2.6 */
+/*! d1-web v1.2.7 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -748,6 +748,7 @@ module.exports = new function () {
     customDialog: 1,
     aConfirm: '_confirm',
     aHead: 'data-head',
+    aPic: 'data-pic',
     aPrompt: 'data-prompt',
     cBtn: 'btn pad',
     qAlert: 'a.alert',
@@ -775,7 +776,7 @@ module.exports = new function () {
     }
   };
 
-  this.initDlg = function (n, h, t, f, def, rev) {
+  this.initDlg = function (n, h, t, icon, f, def, rev) {
     var _this2 = this;
 
     //if(!this.dlg) this.dlg = app.ins('div', '', {className: app.opt.cToggle + ' ' + app.opt.cOff + ' ' + this.opt.ccDlg}, document.body);
@@ -784,9 +785,17 @@ module.exports = new function () {
     var hh = app.ins('div', '', {
       className: 'row bg'
     }, d);
-    app.ins('h3', h || '', {
+    var hhh = app.ins('h3', ' ' + (h || ''), {
       className: 'fit pad'
     }, hh);
+
+    if (icon) {
+      var m = icon.match(/(\S+)(\s(.*))?/);
+      if (m) hhh.insertBefore(app.ins('span', app.i(m[1]), {
+        className: m[3] || ''
+      }), hhh.firstChild);
+    }
+
     app.x(hh, 0, 'pad hover col-0');
     var b = app.ins('div', '', {
       className: 'pad'
@@ -838,6 +847,7 @@ module.exports = new function () {
     var h = app.attr(n, this.opt.aHead).replace(/%([\w\-]+)%/g, function (m, a) {
       return n.getAttribute(a);
     });
+    var icon = app.attr(n, this.opt.aPic);
     var p = app.attr(n, this.opt.aPrompt);
     var t = app.attr(n, app.opt.aCaption, n.title || p || '!').replace(/%([\w\-]+)%/g, function (m, a) {
       return n.getAttribute(a);
@@ -851,7 +861,7 @@ module.exports = new function () {
     var def = p ? src ? src.value : app.get(n, p) : null;
 
     if (this.opt.customDialog) {
-      this.initDlg(n, h, t, al ? null : function (w) {
+      this.initDlg(n, h, t, icon, al ? null : function (w) {
         return _this3.onAnswer(n, f, p, w);
       }, def, rev);
     } else {

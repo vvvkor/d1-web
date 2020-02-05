@@ -18,6 +18,7 @@ module.exports = new(function () {
     customDialog: 1,
     aConfirm: '_confirm',
     aHead: 'data-head',
+    aPic: 'data-pic',
     aPrompt: 'data-prompt',
     cBtn: 'btn pad',
     qAlert: 'a.alert',
@@ -38,12 +39,16 @@ module.exports = new(function () {
     }
   }
 
-  this.initDlg = function(n, h, t, f, def, rev){
+  this.initDlg = function(n, h, t, icon, f, def, rev){
     //if(!this.dlg) this.dlg = app.ins('div', '', {className: app.opt.cToggle + ' ' + app.opt.cOff + ' ' + this.opt.ccDlg}, document.body);
     let d = this.dlg;
     app.clr(d);
     let hh = app.ins('div', '', {className: 'row bg'}, d);
-    app.ins('h3', h || '', {className: 'fit pad'}, hh);
+    let hhh = app.ins('h3', ' ' + (h || ''), {className: 'fit pad'}, hh);
+    if(icon){
+      let m = icon.match(/(\S+)(\s(.*))?/);
+      if(m) hhh.insertBefore(app.ins('span', app.i(m[1]), {className: m[3] || ''}), hhh.firstChild);
+    }
     app.x(hh, 0, 'pad hover col-0');
     let b = app.ins('div', '', {className: 'pad'}, d);
     if(t) app.ins('div', t, {}, b);
@@ -70,6 +75,7 @@ module.exports = new(function () {
       return;
     }
     let h = app.attr(n, this.opt.aHead).replace(/%([\w\-]+)%/g, (m, a) => n.getAttribute(a));
+    let icon = app.attr(n, this.opt.aPic);
     let p = app.attr(n, this.opt.aPrompt);
     let t = app.attr(n, app.opt.aCaption, n.title || p || '!').replace(/%([\w\-]+)%/g, (m, a) => n.getAttribute(a));
     let rev = app.attr(n, 'data-reverse');
@@ -80,7 +86,7 @@ module.exports = new(function () {
     let al = n.matches(this.opt.qAlert);
     let def = p ? (src ? src.value : app.get(n, p)) : null;
     if(this.opt.customDialog){
-      this.initDlg(n, h, t, al ? null : (w => this.onAnswer(n, f, p, w)), def, rev);
+      this.initDlg(n, h, t, icon, al ? null : (w => this.onAnswer(n, f, p, w)), def, rev);
     }
     else{
       if(al) v = alert(t);//undef

@@ -1274,14 +1274,14 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 	
 	<p>Replacement for standard Javascript dialogs.
 	<ul class="opts-dlg">
-		<li>Alert <code>.alert</code>
-		<li>Confirm <code>.dialog[title]</code>
-		<li>Prompt <code>.dialog[data-prompt][data-caption]</code>
+		<li>Alert <code>.alert[title][data-caption][data-head][data-pic]</code>
+		<li>Confirm <code>.dialog[title][data-caption][data-head][data-pic]</code>
+		<li>Prompt <code>.dialog[data-prompt][data-caption][data-head][data-pic]</code>
 	</ul>
 
 <div class="code">
 <p>
-	<a href="#done" class="alert" title="Hello!">Alert</a>,
+	<a href="#done" class="alert" title="Hello!" data-head="Info" data-pic="info text-i">Alert</a>,
 	<a href="?a=1&b=2" class="dialog" title="Continue?">Confirm link</a>,
 	<a href="?a=1&b=2" class="dialog" title="Continue new tab?" target="_blank">Confirm link to new tab</a>,
 	<a href="#calendar" class="dialog" title="Continue?">Confirm hash</a>,
