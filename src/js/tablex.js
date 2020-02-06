@@ -2,6 +2,12 @@
 
 // table.sort[data-filter] [data-filter-report][data-case][data-filter-cols]
 
+/*
+todo:
+- internally convert bytes, dates, intervals to numbers; store type
+- then sorting and counting totals will be simpler
+*/ 
+
 let app = require('./app.js');
 
 module.exports = new(function() {
@@ -11,7 +17,28 @@ module.exports = new(function() {
   this.name = 'tablex';
   this.lang = '';
   this.skipComma = 0;
-  
+  this.intervalUnits = {
+    msec: .001,
+    ms: .001,
+    s: 1,
+    mi: 60,
+    sec: 1,
+    min: 60,
+    h: 3600,
+    d: 86400,
+    w: 604800,
+    m: 2628000,
+    y: 31540000
+  };
+  this.szUnits = {
+    b: 1,
+    kb: 1024,
+    mb: 1048576,
+    gb: 1073741824,
+    tb: 1099511627776,
+    pb: 1125899906842624
+  };
+    
   this.opt = {
     aFilter: 'data-filter',
     cFilter: 'bg-w', // filter-on - non-empty filter field
@@ -22,6 +49,7 @@ module.exports = new(function() {
     cAsc:  'bg-y', // col-asc - !non-empty! - header of currently sorted column (ascending)
     cDesc: 'bg-w', // col-desc - header of currently sorted column (descending)
     qSort: 'table.sort',
+    dateFormat: 'd', //y=Y-m-d, d=d.m.Y, m=m/d Y
     wait: 200
   };
 
@@ -38,17 +66,18 @@ module.exports = new(function() {
     let i, j, start = 0;
     let tb = n.querySelector('tbody');
     let rh = n.querySelector('thead tr');
+    let rf = n.querySelector('tfoot tr');
     if (!rh) {
       rh = tb.rows[0];
       start = 1;
     }
     if (!rh || !tb || !tb.rows || tb.rows.length < 2) return;
-    let a = [];
-    let h = [];
+    let a = [], h = [], f = [];
     for (j = 0; j < rh.cells.length; j++) {
       h[j] = rh.cells[j];
       //if (this.opt.cSort && this.isSortable(rh.cells[j])) h[j].classList.add(this.opt.cSort);
     }
+    if(rf) for (j = 0; j < rf.cells.length; j++) f[j] = rf.cells[j];
     //let inp = app.ins('input','',{type:'search',size:4},rh.cells[0]);
     n.vCase = (n.getAttribute('data-case') !== null);
     let fq = n.getAttribute(this.opt.aFilter);
@@ -63,18 +92,22 @@ module.exports = new(function() {
     }
     for (i = start; i < tb.rows.length; i++) {
       let c = tb.rows[i].cells;
-      let row = [];
+      let row = [], vals = [];
       for (j = 0; j < c.length; j++){
         row[j] = this.val(c[j], n.vCase);
+        vals[j] = this.convert(row[j]);
         //c[j].setAttribute('data-cell', row[j]);
       }
       a.push({
-        d: row,
-        n: tb.rows[i]
-      }); //data,row_node
+        d: row, //string data
+        x: vals, //converted data [value, type]
+        n: tb.rows[i], //tr_node
+        v: true //visible
+      });
     }
     n.vData = a;
     n.vHead = h;
+    n.vFoot = f;
     if (n.classList.contains('sort')) {
       for (j = 0; j < h.length; j++)
         if (this.isSortable(h[j])) {
@@ -146,14 +179,47 @@ module.exports = new(function() {
       if(app.opt.cHide) n.vData[i].n.classList[hide ? 'add' : 'remove'](app.opt.cHide);
       else n.vData[i].n.style.display = hide ? 'none' : '';
       if(this.opt.cShow) n.vData[i].n.classList[hide ? 'remove' : 'add'](this.opt.cShow);
+      n.vData[i].v = !hide;
       if (!hide) cnt++;
     }
+    //update totals
+    if(n.vFoot.length>0){
+      n.vFoot.forEach(f => this.setTotals(n, f, cnt));
+    }
+    //update state
     if (n.vInp) {
       n.vInp.title = cnt + '/' + n.vData.length;
       let rep = n.getAttribute('data-filter-report');
       if (rep) rep = document.querySelector(rep);
       if (rep) rep.textContent = n.vInp.title;
     }
+  }
+  
+  this.setTotals = function(n, f, cnt){
+    app.e(app.qq('[data-total]', f), m => m.textContent = this.countTotal(n.vData, f, m, cnt));
+  }
+  
+  this.countTotal = function(d, f, m, cnt){
+    let j = f.cellIndex;
+    let a = app.attr(m, 'data-total');
+    let dec = parseInt(app.attr(m, 'data-dec', 2), 10);
+    let mode = app.attr(m, 'data-mode', 'n');
+    let r = 0;
+    if(!cnt) r = NaN;
+    else if(a == 'count' || a == 'cnt') r = cnt;
+    else if(a == 'sum' || a == 'avg'){
+      r = d.reduce((acc, cur) => acc + (cur.v ? this.numVal(cur.x[j]) : 0), 0) / (a == 'avg' ? cnt : 1);
+    }
+    // only for numbers
+    else if(a == 'min') r = d.reduce((acc, cur) => Math.min(acc, (cur.v ? this.numVal(cur.x[j]) : Infinity)), Infinity);
+    else if(a == 'max') r = d.reduce((acc, cur) => Math.max(acc, (cur.v ? this.numVal(cur.x[j]) : -Infinity)), -Infinity);
+    return isNaN(r) ? '-' : this.strVal(r, mode, dec);
+  }
+  
+  this.dec = function(x, d){
+    let m = Math.pow(10, d);
+    if(d) x = Math.round(x * m) / m;
+    return x;
   }
 
   this.matches = function(s, q, cs) {
@@ -183,8 +249,60 @@ module.exports = new(function() {
     if (this.opt.cAsc) h.classList[d > 0 ? 'add' : 'remove'](this.opt.cAsc);
     if (this.opt.cDesc) h.classList[d < 0 ? 'add' : 'remove'](this.opt.cDesc);
   }
+  
+  this.convert = function(v){
+    let r = this.dt(v);
+    if(!isNaN(r)) return [r, 'd'];
+    r = this.sz(v);
+    if(!isNaN(r)) return [r, 'b'];
+    r = this.interval(v);
+    if(!isNaN(r)) return [r, 'i'];
+    r = this.nr(v);
+    if(!isNaN(r)) return [r, 'n'];
+    return [v, 's'];
+  }
+  
+  this.numVal = function(x){
+    return (x[1] == 's') ? this.nr(x[0], 1) : x[0];
+  }
 
+  this.strVal = function(x, mode, dec){
+    if (mode == 's') return x;
+    else if(mode == 'n') return this.dec(x, dec);
+    else if(mode == 'b') return this.fmtSz(x, dec);
+    else if(mode == 'i') return this.fmtInterval(x, dec);
+    else if(mode == 'd') return this.fmtDt(new Date(x), dec);
+  }
+
+  this.fmtSz = function(x, dec){
+    return x;
+  }
+  
+  this.fmtInterval = function(x, dec){
+    return x;
+  }
+  
+  this.fmtDt = function(x, t, f){
+    let d = this.n(x.getDate());
+    let m = this.n(x.getMonth()+1);
+    let y = x.getFullYear();
+    if(!f) f = this.opt.dateFormat;
+    return (f=='m' ? m + '/' + d + ' ' + y : (f=='d' ? d + '.' + m + '.' + y : y + '-' + m + '-' + d))
+      + (t ? ' '+this.n(x.getHours())+':'+this.n(x.getMinutes())+':'+this.n(x.getSeconds()) : '');
+  }
+  
+  this.n = function(v, l){
+    return ('000'+v).substr(-(l || 2));
+  }
+  
   this.cmp = function(by, a, b) {
+    a = a.x[by][0];
+    b = b.x[by][0];
+    return a < b ? -1 : (a > b ? 1 : 0);
+  }
+  
+  /*
+  this.cmp_ = function(by, a, b) {
     a = a.d[by];
     b = b.d[by];
     //date?
@@ -218,13 +336,16 @@ module.exports = new(function() {
     //console.log('['+mode+'] A '+a+' = '+aa+' == '+(new Date(aa))+'; B '+b+' = '+bb+' == '+(new Date(bb)));
     return aa < bb ? -1 : (aa > bb ? 1 : 0);
   }
+  */
   
-  this.nr = function(s){
+  this.nr = function(s, nanToZero){
     //use Number instead of parseFloat for more strictness
     s = this.skipComma
       ? s.replace(/(\$|,|\s)/g, '')
       : s.replace(/(\$|\s)/g, '').replace(',', '.');
-    return parseFloat(s);
+    s = parseFloat(s);
+    if(isNaN(s) && nanToZero) s = 0;
+    return s;
   }
 
   this.dt = function(s) {
@@ -241,33 +362,14 @@ module.exports = new(function() {
   }
 
   this.interval = function(s) {
-    let x = {
-      msec: .001,
-      ms: .001,
-      s: 1,
-      mi: 60,
-      sec: 1,
-      min: 60,
-      h: 3600,
-      d: 86400,
-      w: 604800,
-      m: 2592000,
-      y: 31536000
-    };
+    let x = this.intervalUnits;
     let m = s.match(/^(\d+)\s*(y|m|w|d|h|min|mi|sec|s|ms|msec)$/i);
     if (m && x[m[2]]) return m[1] * x[m[2]];
     return NaN;
   }
 
   this.sz = function(s) {
-    let x = {
-      b: 1,
-      kb: 1024,
-      mb: 1048576,
-      gb: 1073741824,
-      tb: 1099511627776,
-      pb: 1125899906842624
-    };
+    let x = this.szUnits;
     let m = s.match(/^((\d*\.)?\d+)\s*(([kmgtp]i?)?b)$/i);
     if (m) {
       m[3] = m[3].replace(/ib$/i, 'b').toLowerCase();

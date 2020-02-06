@@ -115,7 +115,8 @@ module.exports = new function () {
   this.init = function (opt) {
     var _this = this;
 
-    //options
+    this.fire('beforeopt'); //options
+
     if (!opt) {
       opt = this.attr(document.body, 'data-d1');
       if (opt) opt = JSON.parse(opt);
@@ -139,6 +140,7 @@ module.exports = new function () {
     document.body.classList.add(this.opt.cJs); // prepare body: anti-hover, anti-target
 
     this.fire('after');
+    this.fire('afterinit');
   }; // event delegation
   // https://gomakethings.com/why-event-delegation-is-a-better-way-to-listen-for-events-in-vanilla-js/
 
@@ -169,9 +171,11 @@ module.exports = new function () {
     });
     this.dbg(['plugins', this.plugins]);
     Object.keys(this.plugins).forEach(function (k) {
-      if (opt && opt.plug && opt.plug[k]) _this2.setOpt(_this2.plugins[k], opt.plug[k]);
-
-      _this2.plugins[k].init();
+      return opt && opt.plug && opt.plug[k] ? _this2.setOpt(_this2.plugins[k], opt.plug[k]) : null;
+    });
+    this.fire('beforeinit');
+    Object.keys(this.plugins).forEach(function (k) {
+      return _this2.plugins[k].init();
     });
   }; //events
 
@@ -458,7 +462,7 @@ module.exports = new function () {
     }); //init links state
 
     app.e(this.opt.qTip, function (n) {
-      n.setAttribute('data-tip', n.title);
+      n.setAttribute('data-tip', n.title.replace(/\s\s+/g, '\n'));
       n.title = '';
     }); //init tooltips
   };

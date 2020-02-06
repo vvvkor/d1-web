@@ -114,7 +114,8 @@ module.exports = new function () {
   this.init = function (opt) {
     var _this = this;
 
-    //options
+    this.fire('beforeopt'); //options
+
     if (!opt) {
       opt = this.attr(document.body, 'data-d1');
       if (opt) opt = JSON.parse(opt);
@@ -138,6 +139,7 @@ module.exports = new function () {
     document.body.classList.add(this.opt.cJs); // prepare body: anti-hover, anti-target
 
     this.fire('after');
+    this.fire('afterinit');
   }; // event delegation
   // https://gomakethings.com/why-event-delegation-is-a-better-way-to-listen-for-events-in-vanilla-js/
 
@@ -168,9 +170,11 @@ module.exports = new function () {
     });
     this.dbg(['plugins', this.plugins]);
     Object.keys(this.plugins).forEach(function (k) {
-      if (opt && opt.plug && opt.plug[k]) _this2.setOpt(_this2.plugins[k], opt.plug[k]);
-
-      _this2.plugins[k].init();
+      return opt && opt.plug && opt.plug[k] ? _this2.setOpt(_this2.plugins[k], opt.plug[k]) : null;
+    });
+    this.fire('beforeinit');
+    Object.keys(this.plugins).forEach(function (k) {
+      return _this2.plugins[k].init();
     });
   }; //events
 
@@ -456,7 +460,7 @@ module.exports = new function () {
     }); //init links state
 
     app.e(this.opt.qTip, function (n) {
-      n.setAttribute('data-tip', n.title);
+      n.setAttribute('data-tip', n.title.replace(/\s\s+/g, '\n'));
       n.title = '';
     }); //init tooltips
   };
@@ -2977,6 +2981,12 @@ module.exports = new function () {
 
 /*! tablex - filter and sort HTML table */
 // table.sort[data-filter] [data-filter-report][data-case][data-filter-cols]
+
+/*
+todo:
+- internally convert bytes, dates, intervals to numbers; store type
+- then sorting and counting totals will be simpler
+*/
 var app = __webpack_require__(0);
 
 module.exports = new function () {
@@ -2985,6 +2995,27 @@ module.exports = new function () {
   this.name = 'tablex';
   this.lang = '';
   this.skipComma = 0;
+  this.intervalUnits = {
+    msec: .001,
+    ms: .001,
+    s: 1,
+    mi: 60,
+    sec: 1,
+    min: 60,
+    h: 3600,
+    d: 86400,
+    w: 604800,
+    m: 2628000,
+    y: 31540000
+  };
+  this.szUnits = {
+    b: 1,
+    kb: 1024,
+    mb: 1048576,
+    gb: 1073741824,
+    tb: 1099511627776,
+    pb: 1125899906842624
+  };
   this.opt = {
     aFilter: 'data-filter',
     cFilter: 'bg-w',
@@ -3001,6 +3032,8 @@ module.exports = new function () {
     cDesc: 'bg-w',
     // col-desc - header of currently sorted column (descending)
     qSort: 'table.sort',
+    dateFormat: 'd',
+    //y=Y-m-d, d=d.m.Y, m=m/d Y
     wait: 200
   };
 
@@ -3019,6 +3052,7 @@ module.exports = new function () {
         start = 0;
     var tb = n.querySelector('tbody');
     var rh = n.querySelector('thead tr');
+    var rf = n.querySelector('tfoot tr');
 
     if (!rh) {
       rh = tb.rows[0];
@@ -3026,13 +3060,17 @@ module.exports = new function () {
     }
 
     if (!rh || !tb || !tb.rows || tb.rows.length < 2) return;
-    var a = [];
-    var h = [];
+    var a = [],
+        h = [],
+        f = [];
 
     for (j = 0; j < rh.cells.length; j++) {
       h[j] = rh.cells[j]; //if (this.opt.cSort && this.isSortable(rh.cells[j])) h[j].classList.add(this.opt.cSort);
-    } //let inp = app.ins('input','',{type:'search',size:4},rh.cells[0]);
+    }
 
+    if (rf) for (j = 0; j < rf.cells.length; j++) {
+      f[j] = rf.cells[j];
+    } //let inp = app.ins('input','',{type:'search',size:4},rh.cells[0]);
 
     n.vCase = n.getAttribute('data-case') !== null;
     var fq = n.getAttribute(this.opt.aFilter);
@@ -3047,20 +3085,29 @@ module.exports = new function () {
 
     for (i = start; i < tb.rows.length; i++) {
       var c = tb.rows[i].cells;
-      var row = [];
+      var row = [],
+          vals = [];
 
       for (j = 0; j < c.length; j++) {
-        row[j] = this.val(c[j], n.vCase); //c[j].setAttribute('data-cell', row[j]);
+        row[j] = this.val(c[j], n.vCase);
+        vals[j] = this.convert(row[j]); //c[j].setAttribute('data-cell', row[j]);
       }
 
       a.push({
         d: row,
-        n: tb.rows[i]
-      }); //data,row_node
+        //string data
+        x: vals,
+        //converted data [value, type]
+        n: tb.rows[i],
+        //tr_node
+        v: true //visible
+
+      });
     }
 
     n.vData = a;
     n.vHead = h;
+    n.vFoot = f;
 
     if (n.classList.contains('sort')) {
       for (j = 0; j < h.length; j++) {
@@ -3103,6 +3150,8 @@ module.exports = new function () {
   };
 
   this.filter = function (n, q) {
+    var _this = this;
+
     var cnt = 0;
     var i, j, data, s, hide;
 
@@ -3132,8 +3181,17 @@ module.exports = new function () {
 
       if (app.opt.cHide) n.vData[i].n.classList[hide ? 'add' : 'remove'](app.opt.cHide);else n.vData[i].n.style.display = hide ? 'none' : '';
       if (this.opt.cShow) n.vData[i].n.classList[hide ? 'remove' : 'add'](this.opt.cShow);
+      n.vData[i].v = !hide;
       if (!hide) cnt++;
-    }
+    } //update totals
+
+
+    if (n.vFoot.length > 0) {
+      n.vFoot.forEach(function (f) {
+        return _this.setTotals(n, f, cnt);
+      });
+    } //update state
+
 
     if (n.vInp) {
       n.vInp.title = cnt + '/' + n.vData.length;
@@ -3141,6 +3199,41 @@ module.exports = new function () {
       if (rep) rep = document.querySelector(rep);
       if (rep) rep.textContent = n.vInp.title;
     }
+  };
+
+  this.setTotals = function (n, f, cnt) {
+    var _this2 = this;
+
+    app.e(app.qq('[data-total]', f), function (m) {
+      return m.textContent = _this2.countTotal(n.vData, f, m, cnt);
+    });
+  };
+
+  this.countTotal = function (d, f, m, cnt) {
+    var _this3 = this;
+
+    var j = f.cellIndex;
+    var a = app.attr(m, 'data-total');
+    var dec = parseInt(app.attr(m, 'data-dec', 2), 10);
+    var mode = app.attr(m, 'data-mode', 'n');
+    var r = 0;
+    if (!cnt) r = NaN;else if (a == 'count' || a == 'cnt') r = cnt;else if (a == 'sum' || a == 'avg') {
+      r = d.reduce(function (acc, cur) {
+        return acc + (cur.v ? _this3.numVal(cur.x[j]) : 0);
+      }, 0) / (a == 'avg' ? cnt : 1);
+    } // only for numbers
+    else if (a == 'min') r = d.reduce(function (acc, cur) {
+        return Math.min(acc, cur.v ? _this3.numVal(cur.x[j]) : Infinity);
+      }, Infinity);else if (a == 'max') r = d.reduce(function (acc, cur) {
+        return Math.max(acc, cur.v ? _this3.numVal(cur.x[j]) : -Infinity);
+      }, -Infinity);
+    return isNaN(r) ? '-' : this.strVal(r, mode, dec);
+  };
+
+  this.dec = function (x, d) {
+    var m = Math.pow(10, d);
+    if (d) x = Math.round(x * m) / m;
+    return x;
   };
 
   this.matches = function (s, q, cs) {
@@ -3175,50 +3268,95 @@ module.exports = new function () {
     if (this.opt.cDesc) h.classList[d < 0 ? 'add' : 'remove'](this.opt.cDesc);
   };
 
+  this.convert = function (v) {
+    var r = this.dt(v);
+    if (!isNaN(r)) return [r, 'd'];
+    r = this.sz(v);
+    if (!isNaN(r)) return [r, 'b'];
+    r = this.interval(v);
+    if (!isNaN(r)) return [r, 'i'];
+    r = this.nr(v);
+    if (!isNaN(r)) return [r, 'n'];
+    return [v, 's'];
+  };
+
+  this.numVal = function (x) {
+    return x[1] == 's' ? this.nr(x[0], 1) : x[0];
+  };
+
+  this.strVal = function (x, mode, dec) {
+    if (mode == 's') return x;else if (mode == 'n') return this.dec(x, dec);else if (mode == 'b') return this.fmtSz(x, dec);else if (mode == 'i') return this.fmtInterval(x, dec);else if (mode == 'd') return this.fmtDt(new Date(x), dec);
+  };
+
+  this.fmtSz = function (x, dec) {
+    return x;
+  };
+
+  this.fmtInterval = function (x, dec) {
+    return x;
+  };
+
+  this.fmtDt = function (x, t, f) {
+    var d = this.n(x.getDate());
+    var m = this.n(x.getMonth() + 1);
+    var y = x.getFullYear();
+    if (!f) f = this.opt.dateFormat;
+    return (f == 'm' ? m + '/' + d + ' ' + y : f == 'd' ? d + '.' + m + '.' + y : y + '-' + m + '-' + d) + (t ? ' ' + this.n(x.getHours()) + ':' + this.n(x.getMinutes()) + ':' + this.n(x.getSeconds()) : '');
+  };
+
+  this.n = function (v, l) {
+    return ('000' + v).substr(-(l || 2));
+  };
+
   this.cmp = function (by, a, b) {
+    a = a.x[by][0];
+    b = b.x[by][0];
+    return a < b ? -1 : a > b ? 1 : 0;
+  };
+  /*
+  this.cmp_ = function(by, a, b) {
     a = a.d[by];
-    b = b.d[by]; //date?
-
-    var mode = 'd';
-    var aa = this.dt(a);
-    var bb = this.dt(b);
-
+    b = b.d[by];
+    //date?
+    let mode = 'd';
+    let aa = this.dt(a);
+    let bb = this.dt(b);
     if (isNaN(aa) || isNaN(bb)) {
       //size?
       mode = 'b';
       aa = this.sz(a);
       bb = this.sz(b);
     }
-
     if (isNaN(aa) || isNaN(bb)) {
       //interval?
       mode = 'i';
       aa = this.interval(a);
       bb = this.interval(b);
     }
-
     if (isNaN(aa) || isNaN(bb)) {
       //number?
       mode = 'n';
       aa = this.nr(a);
       bb = this.nr(b);
     }
-
     if (isNaN(aa) || isNaN(bb)) {
       //string
       mode = 's';
       aa = a;
       bb = b;
-    } //console.log('['+mode+'] A '+a+' = '+aa+' == '+(new Date(aa))+'; B '+b+' = '+bb+' == '+(new Date(bb)));
+    }
+    //console.log('['+mode+'] A '+a+' = '+aa+' == '+(new Date(aa))+'; B '+b+' = '+bb+' == '+(new Date(bb)));
+    return aa < bb ? -1 : (aa > bb ? 1 : 0);
+  }
+  */
 
 
-    return aa < bb ? -1 : aa > bb ? 1 : 0;
-  };
-
-  this.nr = function (s) {
+  this.nr = function (s, nanToZero) {
     //use Number instead of parseFloat for more strictness
     s = this.skipComma ? s.replace(/(\$|,|\s)/g, '') : s.replace(/(\$|\s)/g, '').replace(',', '.');
-    return parseFloat(s);
+    s = parseFloat(s);
+    if (isNaN(s) && nanToZero) s = 0;
+    return s;
   };
 
   this.dt = function (s) {
@@ -3238,33 +3376,14 @@ module.exports = new function () {
   };
 
   this.interval = function (s) {
-    var x = {
-      msec: .001,
-      ms: .001,
-      s: 1,
-      mi: 60,
-      sec: 1,
-      min: 60,
-      h: 3600,
-      d: 86400,
-      w: 604800,
-      m: 2592000,
-      y: 31536000
-    };
+    var x = this.intervalUnits;
     var m = s.match(/^(\d+)\s*(y|m|w|d|h|min|mi|sec|s|ms|msec)$/i);
     if (m && x[m[2]]) return m[1] * x[m[2]];
     return NaN;
   };
 
   this.sz = function (s) {
-    var x = {
-      b: 1,
-      kb: 1024,
-      mb: 1048576,
-      gb: 1073741824,
-      tb: 1099511627776,
-      pb: 1125899906842624
-    };
+    var x = this.szUnits;
     var m = s.match(/^((\d*\.)?\d+)\s*(([kmgtp]i?)?b)$/i);
 
     if (m) {

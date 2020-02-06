@@ -64,7 +64,7 @@ module.exports = new(function () {
     app.e(this.opt.qTab + ':not(.'+app.opt.cOff+') ~ [id]:not(.'+app.opt.cOff+')', n => this.tgl(n, 0)); //undup tabs
     app.e(this.opt.qTab + ':first-child', n => app.a(n.parentNode.children).filter(m => app.vis(m)).length ? null : this.tgl(app.q(app.q('a[href^="#"]', n.parentNode.previousElementSibling).hash), 1));//inactive tabs: show first
     app.e('.' + app.opt.cToggle + '[id]', n => this.hiliteLinks(n));//init links state
-    app.e(this.opt.qTip, n => { n.setAttribute('data-tip', n.title); n.title = ''; });//init tooltips
+    app.e(this.opt.qTip, n => { n.setAttribute('data-tip', n.title.replace(/\s\s+/g, '\n')); n.title = ''; });//init tooltips
   }
 
   this.after = function(n){

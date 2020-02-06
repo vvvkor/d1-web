@@ -566,12 +566,24 @@ By default, <code>table</code> is styled with border, unless it is a direct desc
 	<tr><th>String<th>Number<th>Bytes<th>Interval<th>Date
 	</thead>
 	<tbody>
-		<tr><td>HTML</td><td>4</td><td>9 B</td><td>9d</td><td>1993-07-09</td></tr>
+		<tr><td>2HTML</td><td>4</td><td>9 B</td><td>9d</td><td>1993-07-09 08:05:01</td></tr>
 		<tr><td>JavaScript</td><td>10.1</td><td>1 MB</td><td>5m</td><td>12/4/1995</td></tr>
 		<tr><td>CSS</td><td>3</td><td>3 KB</td><td>1y</td><td>17.12.1996</td></tr>
 	</tbody>
 	<tfoot>
-	<tr><th>Totals<th>17.1<th>1.003 MB<th>1y 5m 9h<th>-
+	<tr>
+		<th>
+			Count: <span data-total="count"></span><br>
+			Sum: <span data-total="sum" data-dec="3"></span>
+		<th>
+			Sum: <span data-total="sum" data-dec="3"></span><br>
+			Avg: <span data-total="avg" data-dec="3"></span>
+		<th>Sum: <span data-total="sum" data-dec="3" data-mode="b"></span>
+		<th>Sum: <span data-total="sum" data-dec="3" data-mode="i"></span>
+		<th>
+			Avg: <span data-total="avg" data-mode="d" data-dec="0"></span><br>
+			Min: <span data-total="min" data-mode="d"></span><br>
+			Max: <span data-total="max" data-mode="d"></span>
 	</tfoot>
 </table>
 </div>

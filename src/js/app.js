@@ -25,6 +25,7 @@ module.exports = new (function(){
   };
 
   this.init = function(opt){
+    this.fire('beforeopt');
     //options
     if(!opt){
       opt = this.attr(document.body, 'data-d1');
@@ -43,6 +44,7 @@ module.exports = new (function(){
 
     document.body.classList.add(this.opt.cJs); // prepare body: anti-hover, anti-target
     this.fire('after');
+    this.fire('afterinit');
   }
 
   // event delegation
@@ -67,10 +69,9 @@ module.exports = new (function(){
   this.initPlugins = function(opt){
     if(this.opt.disable) this.opt.disable.forEach(p => delete this.plugins[p]);
     this.dbg(['plugins', this.plugins]);
-    Object.keys(this.plugins).forEach(k => {
-        if(opt && opt.plug && opt.plug[k]) this.setOpt(this.plugins[k], opt.plug[k]);
-        this.plugins[k].init();
-    });
+    Object.keys(this.plugins).forEach(k => (opt && opt.plug && opt.plug[k]) ? this.setOpt(this.plugins[k], opt.plug[k]) : null);
+    this.fire('beforeinit');
+    Object.keys(this.plugins).forEach(k => this.plugins[k].init());
   }
 
   //events
