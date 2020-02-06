@@ -599,27 +599,49 @@ let double = function (x) {
 		<!-- tablex -->
 		<p>
 			<input name="q" value="" type="search" id="table-filter" placeholder="Filter table" autocomplete="off">
-			<span id="filter-info"></span>
+			<span id="filter-info"></span> &nbsp;
+			<label><input type="checkbox" data-nodes="#tablex tfoot" data-set="" data-unset="hide"> totals</label>
 		</p>
-		<table class="flip let shift hover c2 r3 sort" data-filter="#table-filter" data-filter-report="#filter-info" data-filter-cols="0 2" data-case-x>
+		<div class="roll">
+		<table id="tablex" class="flip let shift hover c2 r3 sort" data-filter="#table-filter" data-filter-report="#filter-info" data-filter-cols="0 2" data-case-x>
 			<!--caption>Web languages</caption-->
 			<thead>
-				<tr><th>Language</th><th>Type</th><th>Year</th><th>Number</th></tr>
+				<tr><th>String<th>Number<th>Bytes<th>Interval<th>Date
 			</thead>
 			<tbody>
-				<tr><td>HTML</td><td>Markup</td><td>1993</td><td>4</td></tr>
-				<tr><td>JavaScript</td><td>Programming</td><td>1995</td><td>10.12345</td></tr>
-				<tr><td>CSS</td><td>Style</td><td>1996</td><td>3</td></tr>
+				<tr><td>HTML<td>4<td>900 B<td>300s<td>1993-07-09 08:05:01
+				<tr><td>JavaScript<td>10.12345<td>1 MB<td>3m<td>12/4/1995
+				<tr><td>CSS<td>3<td>350 KB<td>1y<td>17.12.1996 1:2:3
 			</tbody>
-			<tfoot>
-				<tr>
-					<th>Count: <span data-total="count"></span></th>
-					<th></th>
-					<th>Min: <span data-total="min"></span><br>Max: <span data-total="max"></span></th>
-					<th>Sum: <span data-total="sum" data-dec="3"></span><br>Avg: <span data-total="avg" data-dec="3"></span><br>Min: <span data-total="min"></span><br>Max: <span data-total="max"></span></th>
+			<tfoot class="hide">
+				<tr class="nobr"><th colspan="5"><span data-total="count"></span> items
+				<tr class="nobr">
+					<th>Sum
+					<th><span data-total="sum" data-dec="3"></span>
+					<th><span data-total="sum" data-dec="3" data-mode="b"></span>
+					<th><span data-total="sum" data-dec="3" data-mode="i"></span>
+					<th>
 				</tr>
+					<td>Avg
+					<td><span data-total="avg"></span>
+					<td><span data-total="avg" data-mode="b"></span>
+					<td><span data-total="avg" data-mode="i"></span>
+					<td><span data-total="avg" data-mode="d"></span>
+				</tr>
+					<td>Min
+					<td><span data-total="min"></span>
+					<td><span data-total="min" data-mode="b"></span>
+					<td><span data-total="min" data-mode="i"></span>
+					<td><span data-total="min" data-mode="d"></span>
+				</tr>
+					<td>Max
+					<td><span data-total="max"></span>
+					<td><span data-total="max" data-mode="b"></span>
+					<td><span data-total="max" data-mode="i"></span>
+					<td><span data-total="max" data-mode="d" data-dec="0"></span>
 			</tfoot>
 		</table>
+		</div>
 
 		<h2 class="" id="code-sample">Code sample and toggle class</h2>
 

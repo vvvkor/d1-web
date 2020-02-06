@@ -1,4 +1,4 @@
-/*! d1-web v1.2.7 */
+/*! d1-web v1.2.8 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -424,18 +424,8 @@ form>p, form>.row {
     padding: 0 var(--gap-s);
     border-radius: .2em;
     border-radius: var(--radius);
-    white-space: nowrap;
+    white-space: pre;
     z-index: 4;
-}
-
-[data-tip].shift:after {
-    left: auto;
-    right: 0;
-}
-
-[data-tip].c:after {
-    left: 50%;
-    transform: translate(-50%, 0);
 }
 
 [data-tip]:not(:hover):after {
@@ -826,8 +816,8 @@ mark {
         top: 90%;
     }
 
-    .nav:not(.let):not(.flip)>li.shift>ul:not(.toggle),
-    .nav:not(.let):not(.flip)>li.shift~li>ul:not(.toggle) {
+    .nav:not(.let):not(.flip)>li.shift>ul,
+    .nav:not(.let):not(.flip)>li.shift~li>ul {
         left: auto;
         right: 0;
     }
@@ -860,6 +850,16 @@ mark {
     }
 
     .nav:not(.let)>li.shift>ul, .nav:not(.let)>li.shift~li>ul, .pop>div.shift {
+        left: auto;
+        right: 0;
+    }
+
+    [data-tip].c:after {
+        left: 50%;
+        transform: translate(-50%, 0);
+    }
+
+    [data-tip].shift:after {
         left: auto;
         right: 0;
     }

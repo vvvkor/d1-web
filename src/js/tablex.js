@@ -2,12 +2,6 @@
 
 // table.sort[data-filter] [data-filter-report][data-case][data-filter-cols]
 
-/*
-todo:
-- internally convert bytes, dates, intervals to numbers; store type
-- then sorting and counting totals will be simpler
-*/ 
-
 let app = require('./app.js');
 
 module.exports = new(function() {
@@ -28,7 +22,7 @@ module.exports = new(function() {
     d: 86400,
     w: 604800,
     m: 2628000,
-    y: 31540000
+    y: 31536000 // 31556952 = average Gregorian year // 31536000 = common year (365 days)
   };
   this.szUnits = {
     b: 1,
@@ -66,18 +60,16 @@ module.exports = new(function() {
     let i, j, start = 0;
     let tb = n.querySelector('tbody');
     let rh = n.querySelector('thead tr');
-    let rf = n.querySelector('tfoot tr');
     if (!rh) {
       rh = tb.rows[0];
       start = 1;
     }
     if (!rh || !tb || !tb.rows || tb.rows.length < 2) return;
-    let a = [], h = [], f = [];
+    let a = [], h = [];
     for (j = 0; j < rh.cells.length; j++) {
       h[j] = rh.cells[j];
       //if (this.opt.cSort && this.isSortable(rh.cells[j])) h[j].classList.add(this.opt.cSort);
     }
-    if(rf) for (j = 0; j < rf.cells.length; j++) f[j] = rf.cells[j];
     //let inp = app.ins('input','',{type:'search',size:4},rh.cells[0]);
     n.vCase = (n.getAttribute('data-case') !== null);
     let fq = n.getAttribute(this.opt.aFilter);
@@ -107,7 +99,6 @@ module.exports = new(function() {
     }
     n.vData = a;
     n.vHead = h;
-    n.vFoot = f;
     if (n.classList.contains('sort')) {
       for (j = 0; j < h.length; j++)
         if (this.isSortable(h[j])) {
@@ -183,9 +174,7 @@ module.exports = new(function() {
       if (!hide) cnt++;
     }
     //update totals
-    if(n.vFoot.length>0){
-      n.vFoot.forEach(f => this.setTotals(n, f, cnt));
-    }
+    app.e(app.qq('tfoot [data-total]', n), m => m.textContent = this.countTotal(n.vData, m, cnt));
     //update state
     if (n.vInp) {
       n.vInp.title = cnt + '/' + n.vData.length;
@@ -195,18 +184,15 @@ module.exports = new(function() {
     }
   }
   
-  this.setTotals = function(n, f, cnt){
-    app.e(app.qq('[data-total]', f), m => m.textContent = this.countTotal(n.vData, f, m, cnt));
-  }
-  
-  this.countTotal = function(d, f, m, cnt){
+  this.countTotal = function(d, m, cnt){
+    let f = m.closest('th, td');
     let j = f.cellIndex;
     let a = app.attr(m, 'data-total');
     let dec = parseInt(app.attr(m, 'data-dec', 2), 10);
     let mode = app.attr(m, 'data-mode', 'n');
     let r = 0;
-    if(!cnt) r = NaN;
-    else if(a == 'count' || a == 'cnt') r = cnt;
+    if(a == 'count' || a == 'cnt') r = cnt;
+    else if(!cnt) r = NaN;
     else if(a == 'sum' || a == 'avg'){
       r = d.reduce((acc, cur) => acc + (cur.v ? this.numVal(cur.x[j]) : 0), 0) / (a == 'avg' ? cnt : 1);
     }
@@ -268,18 +254,30 @@ module.exports = new(function() {
 
   this.strVal = function(x, mode, dec){
     if (mode == 's') return x;
-    else if(mode == 'n') return this.dec(x, dec);
+    else if(mode == 'n') return x.toFixed(dec) * 1;//this.dec(x, dec);
     else if(mode == 'b') return this.fmtSz(x, dec);
     else if(mode == 'i') return this.fmtInterval(x, dec);
     else if(mode == 'd') return this.fmtDt(new Date(x), dec);
+    else return x;
   }
 
   this.fmtSz = function(x, dec){
-    return x;
+    let i = x ? Math.min(5, Math.floor(Math.log(x) / Math.log(1024))) : 0;
+    return (x / Math.pow(1024, i)).toFixed(dec) * 1 + ' ' + ['B', 'KB', 'MB', 'GB', 'TB', 'PB'/*, 'EB', 'ZB', 'YB'*/][i];
   }
   
   this.fmtInterval = function(x, dec){
-    return x;
+    let y = this.intervalUnits.y;
+    let m = this.intervalUnits.m;
+    var s = [
+        [Math.floor(x / y), 'y'],
+        [Math.floor((x % y) / m), 'm'],
+        [Math.floor(((x % y) % m) / 86400), 'd'],
+        [Math.floor((((x % y) % m) % 86400) / 3600), 'h'],
+        [Math.floor(((((x % y) % m) % 86400) % 3600) / 60), 'min'],
+                   [((((x % y) % m) % 86400) % 3600) % 60, 'sec']
+    ];
+    return s.map(v => v[0] ? v[0] + v[1] : null).filter(v => v !== null).join(' ');
   }
   
   this.fmtDt = function(x, t, f){
@@ -300,43 +298,6 @@ module.exports = new(function() {
     b = b.x[by][0];
     return a < b ? -1 : (a > b ? 1 : 0);
   }
-  
-  /*
-  this.cmp_ = function(by, a, b) {
-    a = a.d[by];
-    b = b.d[by];
-    //date?
-    let mode = 'd';
-    let aa = this.dt(a);
-    let bb = this.dt(b);
-    if (isNaN(aa) || isNaN(bb)) {
-      //size?
-      mode = 'b';
-      aa = this.sz(a);
-      bb = this.sz(b);
-    }
-    if (isNaN(aa) || isNaN(bb)) {
-      //interval?
-      mode = 'i';
-      aa = this.interval(a);
-      bb = this.interval(b);
-    }
-    if (isNaN(aa) || isNaN(bb)) {
-      //number?
-      mode = 'n';
-      aa = this.nr(a);
-      bb = this.nr(b);
-    }
-    if (isNaN(aa) || isNaN(bb)) {
-      //string
-      mode = 's';
-      aa = a;
-      bb = b;
-    }
-    //console.log('['+mode+'] A '+a+' = '+aa+' == '+(new Date(aa))+'; B '+b+' = '+bb+' == '+(new Date(bb)));
-    return aa < bb ? -1 : (aa > bb ? 1 : 0);
-  }
-  */
   
   this.nr = function(s, nanToZero){
     //use Number instead of parseFloat for more strictness

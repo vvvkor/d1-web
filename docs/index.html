@@ -6,8 +6,8 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 
 	<!-- CDN -->
-	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.2.7/dist/d1.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.2.7/dist/d1.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.2.8/dist/d1.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.2.8/dist/d1.min.js"></script>
 	<!-- local-npm-src ->
 	<link href="../src/index.css" rel="stylesheet">
 	<script src="../dist/d1.min.js"></script>
@@ -65,7 +65,7 @@
 	<a href="#top" class="pad -let"><b>d1</b></a>
 	<code class="pad nobr">npm i d1-web</code>
 	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1-web" title="GitHub" class="pad -let">GitHub</a>
-	<a class="shift pad text-n">v1.2.7</a>
+	<a class="shift pad text-n">v1.2.8</a>
 	<a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="pad -let" data-ico="download" title="Download">Download</a>
 </div>
 
@@ -554,6 +554,11 @@ By default, <code>table</code> is styled with border, unless it is a direct desc
 <h3 id="table-interactive">Interactive table</h3>
 
 <p>Filter and sort table rows <code>table.sort, table[data-filter]</code>.
+<p>Dynamic totals in <code>tfoot span</code>:
+<code>[data-total="count|sum|avg|min|max"]</code>, 
+decimal digits <code>[data-dec]</code> (default 2),
+mode <code>[data-mode="s|n|b|i|d"]</code> (default "n"),
+where "s" is string, "n" is numeric, "b" is byte size, "i" is time interval, "d" is datetime.
 
 <div class="code">
 <p>
@@ -566,12 +571,23 @@ By default, <code>table</code> is styled with border, unless it is a direct desc
 	<tr><th>String<th>Number<th>Bytes<th>Interval<th>Date
 	</thead>
 	<tbody>
-		<tr><td>HTML</td><td>4</td><td>9 B</td><td>9d</td><td>1993-07-09</td></tr>
+		<tr><td>HTML</td><td>4</td><td>900 B</td><td>300s</td><td>1993-07-09 08:05:01</td></tr>
 		<tr><td>JavaScript</td><td>10.1</td><td>1 MB</td><td>5m</td><td>12/4/1995</td></tr>
-		<tr><td>CSS</td><td>3</td><td>3 KB</td><td>1y</td><td>17.12.1996</td></tr>
+		<tr><td>CSS</td><td>3</td><td>350 KB</td><td>1y</td><td>17.12.1996</td></tr>
 	</tbody>
 	<tfoot>
-	<tr><th>Totals<th>17.1<th>1.003 MB<th>1y 5m 9h<th>-
+	<tr class="nobr">
+		<th>
+			Count: <span data-total="count"></span>
+		<th>
+			Sum: <span data-total="sum" data-dec="3"></span><br>
+			Avg: <span data-total="avg" data-dec="3"></span>
+		<th>Sum: <span data-total="sum" data-mode="b"></span>
+		<th>Sum: <span data-total="sum" data-dec="3" data-mode="i"></span>
+		<th>
+			Avg: <span data-total="avg" data-mode="d" data-dec="0"></span><br>
+			Min: <span data-total="min" data-mode="d" data-dec="0"></span><br>
+			Max: <span data-total="max" data-mode="d" data-dec="0"></span>
 	</tfoot>
 </table>
 </div>

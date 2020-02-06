@@ -554,6 +554,11 @@ By default, <code>table</code> is styled with border, unless it is a direct desc
 <h3 id="table-interactive">Interactive table</h3>
 
 <p>Filter and sort table rows <code>table.sort, table[data-filter]</code>.
+<p>Dynamic totals in <code>tfoot span</code>:
+<code>[data-total="count|sum|avg|min|max"]</code>, 
+decimal digits <code>[data-dec]</code> (default 2),
+mode <code>[data-mode="s|n|b|i|d"]</code> (default "n"),
+where "s" is string, "n" is numeric, "b" is byte size, "i" is time interval, "d" is datetime.
 
 <div class="code">
 <p>
@@ -566,24 +571,23 @@ By default, <code>table</code> is styled with border, unless it is a direct desc
 	<tr><th>String<th>Number<th>Bytes<th>Interval<th>Date
 	</thead>
 	<tbody>
-		<tr><td>2HTML</td><td>4</td><td>9 B</td><td>9d</td><td>1993-07-09 08:05:01</td></tr>
+		<tr><td>HTML</td><td>4</td><td>900 B</td><td>300s</td><td>1993-07-09 08:05:01</td></tr>
 		<tr><td>JavaScript</td><td>10.1</td><td>1 MB</td><td>5m</td><td>12/4/1995</td></tr>
-		<tr><td>CSS</td><td>3</td><td>3 KB</td><td>1y</td><td>17.12.1996</td></tr>
+		<tr><td>CSS</td><td>3</td><td>350 KB</td><td>1y</td><td>17.12.1996</td></tr>
 	</tbody>
 	<tfoot>
-	<tr>
+	<tr class="nobr">
 		<th>
-			Count: <span data-total="count"></span><br>
-			Sum: <span data-total="sum" data-dec="3"></span>
+			Count: <span data-total="count"></span>
 		<th>
 			Sum: <span data-total="sum" data-dec="3"></span><br>
 			Avg: <span data-total="avg" data-dec="3"></span>
-		<th>Sum: <span data-total="sum" data-dec="3" data-mode="b"></span>
+		<th>Sum: <span data-total="sum" data-mode="b"></span>
 		<th>Sum: <span data-total="sum" data-dec="3" data-mode="i"></span>
 		<th>
 			Avg: <span data-total="avg" data-mode="d" data-dec="0"></span><br>
-			Min: <span data-total="min" data-mode="d"></span><br>
-			Max: <span data-total="max" data-mode="d"></span>
+			Min: <span data-total="min" data-mode="d" data-dec="0"></span><br>
+			Max: <span data-total="max" data-mode="d" data-dec="0"></span>
 	</tfoot>
 </table>
 </div>
