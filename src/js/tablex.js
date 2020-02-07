@@ -12,17 +12,21 @@ module.exports = new(function() {
   this.lang = '';
   this.skipComma = 0;
   this.intervalUnits = {
-    msec: .001,
     ms: .001,
+    msec: .001,
     s: 1,
-    mi: 60,
     sec: 1,
+    mi: 60,
     min: 60,
     h: 3600,
+    hr: 3600,
     d: 86400,
     w: 604800,
     m: 2628000,
-    y: 31536000 // 31556952 = average Gregorian year // 31536000 = common year (365 days)
+    mth: 2628000,
+    y: 31536000,
+    yr: 31536000 
+    // 31556952 = average Gregorian year // 31536000 = common year (365 days)
   };
   this.szUnits = {
     b: 1,
@@ -35,6 +39,8 @@ module.exports = new(function() {
     
   this.opt = {
     aFilter: 'data-filter',
+    aTotal: 'data-total',
+    aTotals: 'data-totals',
     cFilter: 'bg-w', // filter-on - non-empty filter field
     cScan: 'text-i', // col-scan - searchable columns' header (used if "data-filter-cols" is set)
     cShow: '', // row-show - matching row
@@ -65,9 +71,10 @@ module.exports = new(function() {
       start = 1;
     }
     if (!rh || !tb || !tb.rows || tb.rows.length < 2) return;
-    let a = [], h = [];
+    let a = [], h = [], types = [];
     for (j = 0; j < rh.cells.length; j++) {
       h[j] = rh.cells[j];
+      types[j] = {x: 0, s: 0, n: 0, b: 0, i: 0, d: 0};
       //if (this.opt.cSort && this.isSortable(rh.cells[j])) h[j].classList.add(this.opt.cSort);
     }
     //let inp = app.ins('input','',{type:'search',size:4},rh.cells[0]);
@@ -88,6 +95,9 @@ module.exports = new(function() {
       for (j = 0; j < c.length; j++){
         row[j] = this.val(c[j], n.vCase);
         vals[j] = this.convert(row[j]);
+        let type = (vals[j][0] === '') ? 'x' : vals[j][1];
+        types[j][type]++;
+        //c[j].title = type+': '+vals[j][0];
         //c[j].setAttribute('data-cell', row[j]);
       }
       a.push({
@@ -99,6 +109,8 @@ module.exports = new(function() {
     }
     n.vData = a;
     n.vHead = h;
+    n.vTypes = types.map(t => Object.keys(t).reduce((acc, cur) => t[cur] > acc[1] ? [cur, t[cur]] : acc, ['s', 0])[0]);
+    if(n.matches('table[' + this.opt.aTotals + ']')) this.addFooter(n, rh);
     if (n.classList.contains('sort')) {
       for (j = 0; j < h.length; j++)
         if (this.isSortable(h[j])) {
@@ -110,6 +122,16 @@ module.exports = new(function() {
     }
   }
 
+  this.addFooter = function(n, rh){
+    let f = app.ins('tfoot', app.ins('tr'), {className: 'nobr'}, n);
+    app.a(rh.cells).forEach(h => {
+      let t = n.vTypes[h.cellIndex];
+      let func = t=='s' ? 'count' : (t=='d' ? 'max' : 'sum');
+      app.ins('th', app.ins(t=='s' ? 'i' : 'span', '', {[this.opt.aTotal]: func, className: (t=='s' ? 'text-n' : '')}), {title: func}, f.firstChild);
+    }
+    );
+  }
+  
   this.doFilter = function(t, e) {
     if (t.vPrev !== t.vInp.value || !e) {
       t.vPrev = t.vInp.value;
@@ -174,7 +196,7 @@ module.exports = new(function() {
       if (!hide) cnt++;
     }
     //update totals
-    app.e(app.qq('tfoot [data-total]', n), m => m.textContent = this.countTotal(n.vData, m, cnt));
+    app.e(app.qq('[' + this.opt.aTotal + ']', n), m => m.textContent = this.countTotal(n, m, cnt));
     //update state
     if (n.vInp) {
       n.vInp.title = cnt + '/' + n.vData.length;
@@ -184,17 +206,20 @@ module.exports = new(function() {
     }
   }
   
-  this.countTotal = function(d, m, cnt){
-    let f = m.closest('th, td');
-    let j = f.cellIndex;
+  this.countTotal = function(n, m, cnt){
+    let d = n.vData;
+    let j = m.closest('th, td').cellIndex;
     let a = app.attr(m, 'data-total');
     let dec = parseInt(app.attr(m, 'data-dec', 2), 10);
-    let mode = app.attr(m, 'data-mode', 'n');
+    let mode = app.attr(m, 'data-mode', /*'n'*/ n.vTypes[j]);
     let r = 0;
-    if(a == 'count' || a == 'cnt') r = cnt;
-    else if(!cnt) r = NaN;
+    //if(a == 'count' || a == 'cnt') r = cnt;
+    if(a == 'count' || a == 'cnt') r = d.reduce((acc, cur) => acc + (cur.v && cur.x[j][0]!=='' ? 1 : 0), 0);
+    else if(!cnt || mode=='x') r = NaN;
     else if(a == 'sum' || a == 'avg'){
-      r = d.reduce((acc, cur) => acc + (cur.v ? this.numVal(cur.x[j]) : 0), 0) / (a == 'avg' ? cnt : 1);
+      r = (mode=='s')
+        ? NaN
+        : d.reduce((acc, cur) => acc + (cur.v ? this.numVal(cur.x[j]) : 0), 0) / (a == 'avg' ? cnt : 1);
     }
     // only for numbers
     else if(a == 'min') r = d.reduce((acc, cur) => Math.min(acc, (cur.v ? this.numVal(cur.x[j]) : Infinity)), Infinity);
@@ -281,12 +306,15 @@ module.exports = new(function() {
   }
   
   this.fmtDt = function(x, t, f){
-    let d = this.n(x.getDate());
-    let m = this.n(x.getMonth()+1);
     let y = x.getFullYear();
+    let m = this.n(x.getMonth()+1);
+    let d = this.n(x.getDate());
+    let h = this.n(x.getHours());
+    let i = this.n(x.getMinutes());
+    let s = this.n(x.getSeconds());
     if(!f) f = this.opt.dateFormat;
     return (f=='m' ? m + '/' + d + ' ' + y : (f=='d' ? d + '.' + m + '.' + y : y + '-' + m + '-' + d))
-      + (t ? ' '+this.n(x.getHours())+':'+this.n(x.getMinutes())+':'+this.n(x.getSeconds()) : '');
+      + ((t && h+i+s>0) ? ' '+this.n(x.getHours())+':'+this.n(x.getMinutes())+':'+this.n(x.getSeconds()) : '');
   }
   
   this.n = function(v, l){
@@ -324,9 +352,9 @@ module.exports = new(function() {
 
   this.interval = function(s) {
     let x = this.intervalUnits;
-    let m = s.match(/^(\d+)\s*(y|m|w|d|h|min|mi|sec|s|ms|msec)$/i);
-    if (m && x[m[2]]) return m[1] * x[m[2]];
-    return NaN;
+    let m = s.matchAll(/(\d+)\s?(y|m|w|d|h|min|mi|sec|s|msec|ms)\b/gi);
+    m = [...m];
+    return m && m.length>0 ? m.map(cur => x[cur[2]] ? cur[1] * x[cur[2]] : 0).reduce((a, b) => a + b, 0) : NaN;
   }
 
   this.sz = function(s) {

@@ -6,8 +6,8 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 
 	<!-- CDN -->
-	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.2.8/dist/d1.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.2.8/dist/d1.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.2.9/dist/d1.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.2.9/dist/d1.min.js"></script>
 	<!-- local-npm-src ->
 	<link href="../src/index.css" rel="stylesheet">
 	<script src="../dist/d1.min.js"></script>
@@ -65,7 +65,7 @@
 	<a href="#top" class="pad -let"><b>d1</b></a>
 	<code class="pad nobr">npm i d1-web</code>
 	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1-web" title="GitHub" class="pad -let">GitHub</a>
-	<a class="shift pad text-n">v1.2.8</a>
+	<a class="shift pad text-n">v1.2.9</a>
 	<a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="pad -let" data-ico="download" title="Download">Download</a>
 </div>
 
@@ -554,7 +554,8 @@ By default, <code>table</code> is styled with border, unless it is a direct desc
 <h3 id="table-interactive">Interactive table</h3>
 
 <p>Filter and sort table rows <code>table.sort, table[data-filter]</code>.
-<p>Dynamic totals in <code>tfoot span</code>:
+<p>Automatic dynamic totals (<i>sum</i> for numbers, <i>max</i> for dates) <code>table[data-totals]</code>.
+<p>Custom dynamic totals in <code>tfoot span</code>:
 <code>[data-total="count|sum|avg|min|max"]</code>, 
 decimal digits <code>[data-dec]</code> (default 2),
 mode <code>[data-mode="s|n|b|i|d"]</code> (default "n"),
@@ -566,7 +567,7 @@ where "s" is string, "n" is numeric, "b" is byte size, "i" is time interval, "d"
 	<span id="rep"></span>
 </p>
 <div class="roll">
-<table class="sort bord" data-filter="#srch" data-filter-report="#rep" data-filter-cols="0 2 4" data-case>
+<table class="sort bord" data-totals data-filter="#srch" data-filter-report="#rep" data-filter-cols="0 2 4" data-case>
 	<thead>
 	<tr><th>String<th>Number<th>Bytes<th>Interval<th>Date
 	</thead>

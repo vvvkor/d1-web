@@ -1,4 +1,4 @@
-/*! d1-web v1.2.8 */
+/*! d1-web v1.2.9 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -344,9 +344,13 @@ hr {
     border-width: thin 0 0 0;
 }
 
-table.let tr:not(:last-child)>* {
+table.let tr>* {
     border-bottom: thin solid rgba(0, 0, 0, .16);
     border-bottom: var(--border);
+}
+
+table.let *:last-child tr:last-child>* {
+    border-bottom: none;
 }
 
 table.shift {
@@ -426,6 +430,7 @@ form>p, form>.row {
     border-radius: var(--radius);
     white-space: pre;
     z-index: 4;
+    text-align: left;
 }
 
 [data-tip]:not(:hover):after {

@@ -1,4 +1,4 @@
-/*! d1-web v1.2.8 */
+/*! d1-web v1.2.9 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -465,6 +465,14 @@ module.exports = new function () {
       n.setAttribute('data-tip', n.title.replace(/\s\s+/g, '\n'));
       n.title = '';
     }); //init tooltips
+
+    /*
+    app.e(this.opt.qTip, n => {
+      let p = app.ins('div',app.ins('div', n.title.replace(/\s\s+/g, '<br>'), {className: 'btn bg-n'}), {className: 'pop'}, n, 1);
+      n.title = '';
+      p.insertBefore(n, p.firstChild);
+    });//init tooltips as popup
+    */
   };
 
   this.after = function (n) {

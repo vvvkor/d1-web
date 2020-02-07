@@ -65,6 +65,13 @@ module.exports = new(function () {
     app.e(this.opt.qTab + ':first-child', n => app.a(n.parentNode.children).filter(m => app.vis(m)).length ? null : this.tgl(app.q(app.q('a[href^="#"]', n.parentNode.previousElementSibling).hash), 1));//inactive tabs: show first
     app.e('.' + app.opt.cToggle + '[id]', n => this.hiliteLinks(n));//init links state
     app.e(this.opt.qTip, n => { n.setAttribute('data-tip', n.title.replace(/\s\s+/g, '\n')); n.title = ''; });//init tooltips
+    /*
+    app.e(this.opt.qTip, n => {
+      let p = app.ins('div',app.ins('div', n.title.replace(/\s\s+/g, '<br>'), {className: 'btn bg-n'}), {className: 'pop'}, n, 1);
+      n.title = '';
+      p.insertBefore(n, p.firstChild);
+    });//init tooltips as popup
+    */
   }
 
   this.after = function(n){

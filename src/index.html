@@ -554,7 +554,8 @@ By default, <code>table</code> is styled with border, unless it is a direct desc
 <h3 id="table-interactive">Interactive table</h3>
 
 <p>Filter and sort table rows <code>table.sort, table[data-filter]</code>.
-<p>Dynamic totals in <code>tfoot span</code>:
+<p>Automatic dynamic totals (<i>sum</i> for numbers, <i>max</i> for dates) <code>table[data-totals]</code>.
+<p>Custom dynamic totals in <code>tfoot span</code>:
 <code>[data-total="count|sum|avg|min|max"]</code>, 
 decimal digits <code>[data-dec]</code> (default 2),
 mode <code>[data-mode="s|n|b|i|d"]</code> (default "n"),
@@ -566,7 +567,7 @@ where "s" is string, "n" is numeric, "b" is byte size, "i" is time interval, "d"
 	<span id="rep"></span>
 </p>
 <div class="roll">
-<table class="sort bord" data-filter="#srch" data-filter-report="#rep" data-filter-cols="0 2 4" data-case>
+<table class="sort bord" data-totals data-filter="#srch" data-filter-report="#rep" data-filter-cols="0 2 4" data-case>
 	<thead>
 	<tr><th>String<th>Number<th>Bytes<th>Interval<th>Date
 	</thead>

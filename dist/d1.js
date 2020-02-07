@@ -1,4 +1,4 @@
-/*! d1-web v1.2.8 */
+/*! d1-web v1.2.9 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -463,6 +463,14 @@ module.exports = new function () {
       n.setAttribute('data-tip', n.title.replace(/\s\s+/g, '\n'));
       n.title = '';
     }); //init tooltips
+
+    /*
+    app.e(this.opt.qTip, n => {
+      let p = app.ins('div',app.ins('div', n.title.replace(/\s\s+/g, '<br>'), {className: 'btn bg-n'}), {className: 'pop'}, n, 1);
+      n.title = '';
+      p.insertBefore(n, p.firstChild);
+    });//init tooltips as popup
+    */
   };
 
   this.after = function (n) {
@@ -2979,6 +2987,16 @@ module.exports = new function () {
 /* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 /*! tablex - filter and sort HTML table */
 // table.sort[data-filter] [data-filter-report][data-case][data-filter-cols]
 var app = __webpack_require__(0);
@@ -2990,17 +3008,20 @@ module.exports = new function () {
   this.lang = '';
   this.skipComma = 0;
   this.intervalUnits = {
-    msec: .001,
     ms: .001,
+    msec: .001,
     s: 1,
-    mi: 60,
     sec: 1,
+    mi: 60,
     min: 60,
     h: 3600,
+    hr: 3600,
     d: 86400,
     w: 604800,
     m: 2628000,
-    y: 31536000 // 31556952 = average Gregorian year // 31536000 = common year (365 days)
+    mth: 2628000,
+    y: 31536000,
+    yr: 31536000 // 31556952 = average Gregorian year // 31536000 = common year (365 days)
 
   };
   this.szUnits = {
@@ -3013,6 +3034,8 @@ module.exports = new function () {
   };
   this.opt = {
     aFilter: 'data-filter',
+    aTotal: 'data-total',
+    aTotals: 'data-totals',
     cFilter: 'bg-w',
     // filter-on - non-empty filter field
     cScan: 'text-i',
@@ -3055,10 +3078,19 @@ module.exports = new function () {
 
     if (!rh || !tb || !tb.rows || tb.rows.length < 2) return;
     var a = [],
-        h = [];
+        h = [],
+        types = [];
 
     for (j = 0; j < rh.cells.length; j++) {
-      h[j] = rh.cells[j]; //if (this.opt.cSort && this.isSortable(rh.cells[j])) h[j].classList.add(this.opt.cSort);
+      h[j] = rh.cells[j];
+      types[j] = {
+        x: 0,
+        s: 0,
+        n: 0,
+        b: 0,
+        i: 0,
+        d: 0
+      }; //if (this.opt.cSort && this.isSortable(rh.cells[j])) h[j].classList.add(this.opt.cSort);
     } //let inp = app.ins('input','',{type:'search',size:4},rh.cells[0]);
 
 
@@ -3080,7 +3112,10 @@ module.exports = new function () {
 
       for (j = 0; j < c.length; j++) {
         row[j] = this.val(c[j], n.vCase);
-        vals[j] = this.convert(row[j]); //c[j].setAttribute('data-cell', row[j]);
+        vals[j] = this.convert(row[j]);
+        var type = vals[j][0] === '' ? 'x' : vals[j][1];
+        types[j][type]++; //c[j].title = type+': '+vals[j][0];
+        //c[j].setAttribute('data-cell', row[j]);
       }
 
       a.push({
@@ -3097,6 +3132,12 @@ module.exports = new function () {
 
     n.vData = a;
     n.vHead = h;
+    n.vTypes = types.map(function (t) {
+      return Object.keys(t).reduce(function (acc, cur) {
+        return t[cur] > acc[1] ? [cur, t[cur]] : acc;
+      }, ['s', 0])[0];
+    });
+    if (n.matches('table[' + this.opt.aTotals + ']')) this.addFooter(n, rh);
 
     if (n.classList.contains('sort')) {
       for (j = 0; j < h.length; j++) {
@@ -3108,6 +3149,23 @@ module.exports = new function () {
         }
       }
     }
+  };
+
+  this.addFooter = function (n, rh) {
+    var _this = this;
+
+    var f = app.ins('tfoot', app.ins('tr'), {
+      className: 'nobr'
+    }, n);
+    app.a(rh.cells).forEach(function (h) {
+      var _app$ins;
+
+      var t = n.vTypes[h.cellIndex];
+      var func = t == 's' ? 'count' : t == 'd' ? 'max' : 'sum';
+      app.ins('th', app.ins(t == 's' ? 'i' : 'span', '', (_app$ins = {}, _defineProperty(_app$ins, _this.opt.aTotal, func), _defineProperty(_app$ins, "className", t == 's' ? 'text-n' : ''), _app$ins)), {
+        title: func
+      }, f.firstChild);
+    });
   };
 
   this.doFilter = function (t, e) {
@@ -3139,7 +3197,7 @@ module.exports = new function () {
   };
 
   this.filter = function (n, q) {
-    var _this = this;
+    var _this2 = this;
 
     var cnt = 0;
     var i, j, data, s, hide;
@@ -3175,8 +3233,8 @@ module.exports = new function () {
     } //update totals
 
 
-    app.e(app.qq('tfoot [data-total]', n), function (m) {
-      return m.textContent = _this.countTotal(n.vData, m, cnt);
+    app.e(app.qq('[' + this.opt.aTotal + ']', n), function (m) {
+      return m.textContent = _this2.countTotal(n, m, cnt);
     }); //update state
 
     if (n.vInp) {
@@ -3187,24 +3245,29 @@ module.exports = new function () {
     }
   };
 
-  this.countTotal = function (d, m, cnt) {
-    var _this2 = this;
+  this.countTotal = function (n, m, cnt) {
+    var _this3 = this;
 
-    var f = m.closest('th, td');
-    var j = f.cellIndex;
+    var d = n.vData;
+    var j = m.closest('th, td').cellIndex;
     var a = app.attr(m, 'data-total');
     var dec = parseInt(app.attr(m, 'data-dec', 2), 10);
-    var mode = app.attr(m, 'data-mode', 'n');
-    var r = 0;
-    if (a == 'count' || a == 'cnt') r = cnt;else if (!cnt) r = NaN;else if (a == 'sum' || a == 'avg') {
-      r = d.reduce(function (acc, cur) {
-        return acc + (cur.v ? _this2.numVal(cur.x[j]) : 0);
+    var mode = app.attr(m, 'data-mode',
+    /*'n'*/
+    n.vTypes[j]);
+    var r = 0; //if(a == 'count' || a == 'cnt') r = cnt;
+
+    if (a == 'count' || a == 'cnt') r = d.reduce(function (acc, cur) {
+      return acc + (cur.v && cur.x[j][0] !== '' ? 1 : 0);
+    }, 0);else if (!cnt || mode == 'x') r = NaN;else if (a == 'sum' || a == 'avg') {
+      r = mode == 's' ? NaN : d.reduce(function (acc, cur) {
+        return acc + (cur.v ? _this3.numVal(cur.x[j]) : 0);
       }, 0) / (a == 'avg' ? cnt : 1);
     } // only for numbers
     else if (a == 'min') r = d.reduce(function (acc, cur) {
-        return Math.min(acc, cur.v ? _this2.numVal(cur.x[j]) : Infinity);
+        return Math.min(acc, cur.v ? _this3.numVal(cur.x[j]) : Infinity);
       }, Infinity);else if (a == 'max') r = d.reduce(function (acc, cur) {
-        return Math.max(acc, cur.v ? _this2.numVal(cur.x[j]) : -Infinity);
+        return Math.max(acc, cur.v ? _this3.numVal(cur.x[j]) : -Infinity);
       }, -Infinity);
     return isNaN(r) ? '-' : this.strVal(r, mode, dec);
   };
@@ -3287,11 +3350,14 @@ module.exports = new function () {
   };
 
   this.fmtDt = function (x, t, f) {
-    var d = this.n(x.getDate());
-    var m = this.n(x.getMonth() + 1);
     var y = x.getFullYear();
+    var m = this.n(x.getMonth() + 1);
+    var d = this.n(x.getDate());
+    var h = this.n(x.getHours());
+    var i = this.n(x.getMinutes());
+    var s = this.n(x.getSeconds());
     if (!f) f = this.opt.dateFormat;
-    return (f == 'm' ? m + '/' + d + ' ' + y : f == 'd' ? d + '.' + m + '.' + y : y + '-' + m + '-' + d) + (t ? ' ' + this.n(x.getHours()) + ':' + this.n(x.getMinutes()) + ':' + this.n(x.getSeconds()) : '');
+    return (f == 'm' ? m + '/' + d + ' ' + y : f == 'd' ? d + '.' + m + '.' + y : y + '-' + m + '-' + d) + (t && h + i + s > 0 ? ' ' + this.n(x.getHours()) + ':' + this.n(x.getMinutes()) + ':' + this.n(x.getSeconds()) : '');
   };
 
   this.n = function (v, l) {
@@ -3330,9 +3396,13 @@ module.exports = new function () {
 
   this.interval = function (s) {
     var x = this.intervalUnits;
-    var m = s.match(/^(\d+)\s*(y|m|w|d|h|min|mi|sec|s|ms|msec)$/i);
-    if (m && x[m[2]]) return m[1] * x[m[2]];
-    return NaN;
+    var m = s.matchAll(/(\d+)\s?(y|m|w|d|h|min|mi|sec|s|msec|ms)\b/gi);
+    m = _toConsumableArray(m);
+    return m && m.length > 0 ? m.map(function (cur) {
+      return x[cur[2]] ? cur[1] * x[cur[2]] : 0;
+    }).reduce(function (a, b) {
+      return a + b;
+    }, 0) : NaN;
   };
 
   this.sz = function (s) {
