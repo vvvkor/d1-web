@@ -1,4 +1,4 @@
-/*! d1-web v1.2.9 */
+/*! d1-web v1.2.10 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -3033,9 +3033,10 @@ module.exports = new function () {
     pb: 1125899906842624
   };
   this.opt = {
+    cSort: 'sort',
+    cTotals: 'totals',
     aFilter: 'data-filter',
     aTotal: 'data-total',
-    aTotals: 'data-totals',
     cFilter: 'bg-w',
     // filter-on - non-empty filter field
     cScan: 'text-i',
@@ -3043,13 +3044,12 @@ module.exports = new function () {
     cShow: '',
     // row-show - matching row
     //cHide: 'hide', // row-hide - non-matching row (if not set the "display:none" is used)
-    cSort: '',
+    cSortable: '',
     // col-sort - sortable column's header
     cAsc: 'bg-y',
     // col-asc - !non-empty! - header of currently sorted column (ascending)
     cDesc: 'bg-w',
     // col-desc - header of currently sorted column (descending)
-    qSort: 'table.sort',
     dateFormat: 'd',
     //y=Y-m-d, d=d.m.Y, m=m/d Y
     wait: 200
@@ -3057,11 +3057,8 @@ module.exports = new function () {
 
   this.init = function () {
     this.lang = app.attr(document.documentElement, 'lang') || 'en';
-    this.skipComma = this.lang == 'en'; //let t = document.querySelectorAll(this.opt.qSort + ', table[' + this.opt.aFilter + ']');
-    //t.forEach(this.prepare.bind(this));
-    //for (i = 0; i < t.length; i++) this.prepare(t[i]);
-
-    app.e(this.opt.qSort + ', table[' + this.opt.aFilter + ']', this.prepare.bind(this));
+    this.skipComma = this.lang == 'en';
+    app.e('table.' + this.opt.cSort + ', table.' + this.opt.cTotals + ', table[' + this.opt.aFilter + ']', this.prepare.bind(this));
   };
 
   this.prepare = function (n) {
@@ -3090,7 +3087,7 @@ module.exports = new function () {
         b: 0,
         i: 0,
         d: 0
-      }; //if (this.opt.cSort && this.isSortable(rh.cells[j])) h[j].classList.add(this.opt.cSort);
+      }; //if (this.opt.cSortable && this.isSortable(rh.cells[j])) h[j].classList.add(this.opt.cSortable);
     } //let inp = app.ins('input','',{type:'search',size:4},rh.cells[0]);
 
 
@@ -3137,13 +3134,16 @@ module.exports = new function () {
         return t[cur] > acc[1] ? [cur, t[cur]] : acc;
       }, ['s', 0])[0];
     });
-    if (n.matches('table[' + this.opt.aTotals + ']')) this.addFooter(n, rh);
 
-    if (n.classList.contains('sort')) {
+    if (n.classList.contains(this.opt.cTotals)) {
+      this.addFooter(n, rh);
+      if (!n.vInp) this.updateTotals(n, a.length);
+    }
+
+    if (n.classList.contains(this.opt.cSort)) {
       for (j = 0; j < h.length; j++) {
         if (this.isSortable(h[j])) {
-          if (this.opt.cSort) h[j].classList.add(this.opt.cSort); //h[j].onclick = this.doSort.bind(this,n,h[j]);
-
+          if (this.opt.cSortable) h[j].classList.add(this.opt.cSortable);
           if (!h[j].vListen) h[j].addEventListener('click', this.doSort.bind(this, n, h[j]), false);
           h[j].vListen = 1;
         }
@@ -3197,8 +3197,6 @@ module.exports = new function () {
   };
 
   this.filter = function (n, q) {
-    var _this2 = this;
-
     var cnt = 0;
     var i, j, data, s, hide;
 
@@ -3230,12 +3228,10 @@ module.exports = new function () {
       if (this.opt.cShow) n.vData[i].n.classList[hide ? 'remove' : 'add'](this.opt.cShow);
       n.vData[i].v = !hide;
       if (!hide) cnt++;
-    } //update totals
+    } //update state
 
 
-    app.e(app.qq('[' + this.opt.aTotal + ']', n), function (m) {
-      return m.textContent = _this2.countTotal(n, m, cnt);
-    }); //update state
+    this.updateTotals(n, cnt);
 
     if (n.vInp) {
       n.vInp.title = cnt + '/' + n.vData.length;
@@ -3243,6 +3239,14 @@ module.exports = new function () {
       if (rep) rep = document.querySelector(rep);
       if (rep) rep.textContent = n.vInp.title;
     }
+  };
+
+  this.updateTotals = function (n, cnt) {
+    var _this2 = this;
+
+    app.e(app.qq('[' + this.opt.aTotal + ']', n), function (m) {
+      return m.textContent = _this2.countTotal(n, m, cnt);
+    });
   };
 
   this.countTotal = function (n, m, cnt) {
