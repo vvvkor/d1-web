@@ -1,4 +1,4 @@
-/*! d1-web v1.2.11 */
+/*! d1-web v1.2.12 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -2987,14 +2987,6 @@ module.exports = new function () {
 /* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
-
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
-
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 /*! tablex - filter and sort HTML table */
@@ -3400,8 +3392,11 @@ module.exports = new function () {
 
   this.interval = function (s) {
     var x = this.intervalUnits;
-    var m = s.matchAll(/(\d+)\s?(y|m|w|d|h|min|mi|sec|s|msec|ms)\b/gi);
-    m = _toConsumableArray(m);
+    var m = s.match(/\d+\s?(y|m|w|d|h|min|mi|sec|s|msec|ms)\b/gi);
+    if (m) m = m.map(function (v) {
+      return v.match(/^(\d+)\s?(.*)$/);
+    }); //matchAll && m = [...m];
+
     return m && m.length > 0 ? m.map(function (cur) {
       return x[cur[2]] ? cur[1] * x[cur[2]] : 0;
     }).reduce(function (a, b) {
