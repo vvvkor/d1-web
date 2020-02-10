@@ -18,7 +18,7 @@ module.exports = new(function () {
 
   this.prepareFlipTable = function(t){
     let ths = app.qq('thead th', t);
-    let tds = app.qq('tbody tr>*', t);
+    let tds = app.qq('tbody tr>*, tfoot tr>*', t);
     let order = (app.attr(t, 'data-order') || '0 1 2 3').split(/\D+/);
     //t.parentNode.classList.remove('roll');
     for(let i = 0; i < tds.length; i++){

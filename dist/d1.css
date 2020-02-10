@@ -1,4 +1,4 @@
-/*! d1-web v1.2.10 */
+/*! d1-web v1.2.12 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -349,10 +349,6 @@ table.let tr>* {
     border-bottom: var(--border);
 }
 
-table.let *:last-child tr:last-child>* {
-    border-bottom: none;
-}
-
 table.shift {
     width: 100%;
 }
@@ -588,6 +584,9 @@ ul.nav, .nav ul {
 
 .dlg.full {
     height: 100vh;
+    transform: none;
+    top: 0;
+    left: 0;
 }
 
 .full.center {
@@ -699,7 +698,7 @@ body:not(.js) .hide-nojs {
     }
 }
 
-.bg[class], blockquote, pre, code, thead tr, tfoot {
+.bg[class], blockquote, pre, code, thead tr, tfoot tr {
     background-color: rgba(0, 0, 0, .05);
     background-color: var(--bg-pane);
 }
@@ -788,7 +787,7 @@ mark {
         margin-right: 0;
     }
 
-    table.flip tbody, table.flip tr, table.flip tr>* {
+    table.flip tbody, table.flip tfoot, table.flip tr, table.flip tr>* {
         display: block;
         text-align: left;
     }
@@ -804,6 +803,10 @@ mark {
     table.flip.let tr>* {
         border-bottom: thin solid rgba(0, 0, 0, .16);
         border-bottom: var(--border);
+    }
+
+    table.let:not(.flip) *:last-child tr:last-child>* {
+        border-bottom: none;
     }
 
     form table.flip tr {
@@ -829,6 +832,10 @@ mark {
 }
 
 @media (min-width: 900px) {
+    table.let *:last-child tr:last-child>* {
+        border-bottom: none;
+    }
+
     form>.row>:first-child:not(:only-child),
     fieldset>*>.row>:first-child:not(:only-child) {
         text-align: right;
@@ -1204,6 +1211,33 @@ mark {
     border-radius: var(--radius) var(--radius) 0 0;
 }
 
+.js.fade .dlg {
+    border: none;
+    border-radius: 0;
+}
+
+.js.fade .dlg.rad {
+    border-radius: .2em;
+    border-radius: var(--radius);
+}
+
+.js:after {
+    opacity: 0;
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(100, 100, 100, .5);
+    z-index: -1;
+}
+
+.js.fade:after {
+    opacity: 1;
+    z-index: 99;
+}
+
 .fit {
     margin: 0;
     padding: 0;
@@ -1317,7 +1351,6 @@ form .mar {
         transition-duration: .2s;
         transition-property: opacity, transform;
         opacity: 1;
-        transform: translate(-50%, -50%);
     }
 
     .trans .dlg.toggle.off {
@@ -1325,5 +1358,13 @@ form .mar {
         opacity: 0;
         z-index: -1;
         transform: translate(-50%, -50%) scale(.8);
+    }
+
+    .trans .dlg.full.toggle.off {
+        transform: scale(.8);
+    }
+
+    .js.fade:after {
+        transition: .2s opacity;
     }
 }

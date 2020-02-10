@@ -3,6 +3,7 @@
 // table.sort[data-filter] [data-filter-report][data-case][data-filter-cols]
 
 let app = require('./app.js');
+let date = require('./date.js');
 
 module.exports = new(function() {
 
@@ -264,7 +265,8 @@ module.exports = new(function() {
   }
   
   this.convert = function(v){
-    let r = this.dt(v);
+    let r = date.parse(v);
+    r = r ? r.getTime() : NaN;
     if(!isNaN(r)) return [r, 'd'];
     r = this.sz(v);
     if(!isNaN(r)) return [r, 'b'];
@@ -284,7 +286,7 @@ module.exports = new(function() {
     else if(mode == 'n') return x.toFixed(dec) * 1;//this.dec(x, dec);
     else if(mode == 'b') return this.fmtSz(x, dec);
     else if(mode == 'i') return this.fmtInterval(x, dec);
-    else if(mode == 'd') return this.fmtDt(new Date(x), dec);
+    else if(mode == 'd') return date.fmt(new Date(x), dec, this.opt.dateFormat);
     else return x;
   }
 
@@ -307,22 +309,6 @@ module.exports = new(function() {
     return s.map(v => v[0] ? v[0] + v[1] : null).filter(v => v !== null).join(' ');
   }
   
-  this.fmtDt = function(x, t, f){
-    let y = x.getFullYear();
-    let m = this.n(x.getMonth()+1);
-    let d = this.n(x.getDate());
-    let h = this.n(x.getHours());
-    let i = this.n(x.getMinutes());
-    let s = this.n(x.getSeconds());
-    if(!f) f = this.opt.dateFormat;
-    return (f=='m' ? m + '/' + d + ' ' + y : (f=='d' ? d + '.' + m + '.' + y : y + '-' + m + '-' + d))
-      + ((t && h+i+s>0) ? ' '+this.n(x.getHours())+':'+this.n(x.getMinutes())+':'+this.n(x.getSeconds()) : '');
-  }
-  
-  this.n = function(v, l){
-    return ('000'+v).substr(-(l || 2));
-  }
-  
   this.cmp = function(by, a, b) {
     a = a.x[by][0];
     b = b.x[by][0];
@@ -337,19 +323,6 @@ module.exports = new(function() {
     s = parseFloat(s);
     if(isNaN(s) && nanToZero) s = 0;
     return s;
-  }
-
-  this.dt = function(s) {
-    let m = s.match(/^(\d+)(\D)(\d+)\D(\d+)(\D(\d+))?(\D(\d+))?(\D(\d+))?(\D(\d+))?$/);
-    if (m) {
-      let x;
-      if (m[2] == '.') x = [4, 3, 1]; //d.m.Y
-      else if (m[2] == '/') x = [4, 1, 3]; //m/d Y
-      else x = [1, 3, 4]; //Y-m-d
-      let d = new Date(m[x[0]], m[x[1]] - 1, m[x[2]], m[6] || 0, m[8] || 0, m[10] || 0, m[12] || 0);
-      return d ? d.getTime() : NaN;
-    }
-    return NaN;
   }
 
   this.interval = function(s) {

@@ -2,6 +2,7 @@
 
 let app = require('./app.js');
 let toggle = require('./toggle.js');
+let date = require('./date.js');
 
 module.exports = new(function () {
 
@@ -229,25 +230,13 @@ module.exports = new(function () {
   }
 
   this.parse = function(d){
-    if(!d) d = '';
-    let mode = d.indexOf('/')!=-1 ? 'm' : (d.indexOf('.')!=-1 ? 'd' : 'y');
-    let seq = (mode=='m') ? [2, 0, 1] : (mode=='d' ? [2, 1, 0] : [0, 1, 2]);
-    d = d.split(/\D/);
-    while(d.length<6) d.push(d.length==2 ? 1 : 0);
-    d = new Date(parseInt(d[seq[0]], 10), parseInt(d[seq[1]]-1, 10), parseInt(d[seq[2]], 10), parseInt(d[3], 10), parseInt(d[4], 10), parseInt(d[5], 10));
-    if(!d.getFullYear()) d = new Date();
-    return d;
+    return date.parse(d) || (new Date());
   }
   
   this.fmt = function(x, i, t, f){
     if(!x) x = new Date();
     if(i) x = new Date(x.getFullYear(), x.getMonth(), i);
-    let d = this.n(x.getDate());
-    let m = this.n(x.getMonth()+1);
-    let y = x.getFullYear();
-    if(!f) f = this.opt.dateFormat;
-    return (f=='m' ? m + '/' + d + ' ' + y : (f=='d' ? d + '.' + m + '.' + y : y + '-' + m + '-' + d))
-      + (t ? ' '+this.n(x.getHours())+':'+this.n(x.getMinutes()) : '');
+    return date.fmt(x, t, f);
   }
   
   this.btn = function(h, s, p){

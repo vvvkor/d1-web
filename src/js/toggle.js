@@ -35,6 +35,7 @@ module.exports = new(function () {
     qTip: '[data-tip=""][title], .tip[title]',
 
     cMem: 'mem',
+    cFade: 'fade',
     cTarget: 'target'
     //cToggle: 'toggle',
   };
@@ -80,6 +81,7 @@ module.exports = new(function () {
     let modal = app.q(this.opt.qDlg+':not(.'+app.opt.cOff+'), '+this.opt.qGal+'[id="' + location.hash.substr(1) + '"]');
     let bar = window.innerWidth - document.documentElement.clientWidth; //scroll bar width
     let s = document.body.style;
+    document.body.classList[modal ? 'add' : 'remove'](this.opt.cFade);
     if(this.opt.dlgUnscroll){//hide scroll
       s.overflow = modal ? 'hidden' : '';
       if(!(modal && s.paddingRight)) s.paddingRight = modal ? '' + bar + 'px' : ''; // avoid width reflow
@@ -89,7 +91,7 @@ module.exports = new(function () {
       //let f1 = app.q('input, a:not(.' + app.opt.cClose + ')', modal);
       let f1 = app.q('input, a.btn, a:not([href="' + app.opt.hClose + '"])', modal);
       let f = app.q(':focus', modal);
-      if(f1 && !f && (!n || !modal.contains(n))){
+      if(f1 && !f && (!n || !n.nodeType || !modal.contains(n))){
         app.dbg(['focus', n, modal, f1, f]);
         f1.focus();//focus just once when dialog is opened
       }

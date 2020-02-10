@@ -6,8 +6,8 @@
     <meta name="viewport" 
       content="width=device-width, initial-scale=1">
 	<!-- CDN -->
-	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.2.10/dist/d1.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.2.10/dist/d1.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.2.12/dist/d1.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.2.12/dist/d1.min.js"></script>
 	<!-- local-npm-src ->
 	<link href="../src/index.css" rel="stylesheet">
 	<!--link href="../dist/d1.min.css" rel="stylesheet"-->
@@ -53,10 +53,10 @@
   <header class="bg -bg-n -topbar -toggle">
 	  <div class="hide-desktop">
 		<a href="#nav" class="pad hover ico-menu" title="Menu">&equiv;</a>
-		<a href="?" class="pad"><b>d1</b> <span class="text-n">v1.2.10</span></a>
+		<a href="?" class="pad"><b>d1</b> <span class="text-n">v1.2.12</span></a>
 	</div>
 	  <ul class="nav flip hover target-mobile" id="nav">
-		<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v1.2.10</span></a></li>
+		<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v1.2.12</span></a></li>
 		<li><a href="index.html" class="icon-text">Docs</a>
 		<li>
 			<a>Parent</a>
@@ -512,7 +512,7 @@ let double = function (x) {
 						<div class="mar small text-e">Input the date</div>
 					<tr>
 						<td><label for="dtl">Datetime</label>
-						<td><input type="datetime-local" name="dtl" id="dtl" class="calendar datetime" required>
+						<td><input type="datetime-local" name="dtl" id="dtl" class="calendar datetime" required min="5.2.2020" max="2020-02-20" data-def="2/16 2020">
 						<div class="mar small text-e">Input the date and time</div>
 					<tr>
 						<td><label for="num">Number</label>

@@ -1,4 +1,4 @@
-/*! d1-web v1.2.10 */
+/*! d1-web v1.2.12 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -82,7 +82,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 24);
+/******/ 	return __webpack_require__(__webpack_require__.s = 25);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -378,6 +378,7 @@ module.exports = new function () {
     qDrawer: '.drawer[id]:not(.shift)',
     qTip: '[data-tip=""][title], .tip[title]',
     cMem: 'mem',
+    cFade: 'fade',
     cTarget: 'target' //cToggle: 'toggle',
 
   };
@@ -483,6 +484,7 @@ module.exports = new function () {
     var bar = window.innerWidth - document.documentElement.clientWidth; //scroll bar width
 
     var s = document.body.style;
+    document.body.classList[modal ? 'add' : 'remove'](this.opt.cFade);
 
     if (this.opt.dlgUnscroll) {
       //hide scroll
@@ -497,7 +499,7 @@ module.exports = new function () {
       var f1 = app.q('input, a.btn, a:not([href="' + app.opt.hClose + '"])', modal);
       var f = app.q(':focus', modal);
 
-      if (f1 && !f && (!n || !modal.contains(n))) {
+      if (f1 && !f && (!n || !n.nodeType || !modal.contains(n))) {
         app.dbg(['focus', n, modal, f1, f]);
         f1.focus(); //focus just once when dialog is opened
       }
@@ -744,7 +746,7 @@ if (!Element.prototype.closest) {
 
 /***/ }),
 
-/***/ 24:
+/***/ 25:
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(2);
@@ -755,7 +757,7 @@ var app = __webpack_require__(0); //['toggle', 'dialog', 'gallery']
 
 app.plug(__webpack_require__(1));
 app.plug(__webpack_require__(3));
-app.plug(__webpack_require__(4)); //let opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}};
+app.plug(__webpack_require__(5)); //let opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}};
 
 app.b([document], 'DOMContentLoaded', function (e) {
   return app.init();
@@ -958,7 +960,7 @@ module.exports = new function () {
 
 /***/ }),
 
-/***/ 4:
+/***/ 5:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! gallery - image gallery */

@@ -83,7 +83,7 @@ module.exports = new(function () {
     while(n.firstChild) d.appendChild(n.firstChild);
     n.appendChild(d);
     d.style.position = 'relative';
-    d.style.paddingRight = '2em';
+    d.style.paddingRight = '1em';
     let a = app.ins('a', app.i('up', '&uarr;'), {href:'#', className: 'small close text-n hide-print'}, d  );
     //n.style.position = 'relative';
     //let a = app.ins('a', app.i('up', '&uarr;'), {href:'#', className: 'small close text-n hide-print'}, n);

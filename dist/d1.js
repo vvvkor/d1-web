@@ -1,4 +1,4 @@
-/*! d1-web v1.2.10 */
+/*! d1-web v1.2.12 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -82,7 +82,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 8);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -376,6 +376,7 @@ module.exports = new function () {
     qDrawer: '.drawer[id]:not(.shift)',
     qTip: '[data-tip=""][title], .tip[title]',
     cMem: 'mem',
+    cFade: 'fade',
     cTarget: 'target' //cToggle: 'toggle',
 
   };
@@ -481,6 +482,7 @@ module.exports = new function () {
     var bar = window.innerWidth - document.documentElement.clientWidth; //scroll bar width
 
     var s = document.body.style;
+    document.body.classList[modal ? 'add' : 'remove'](this.opt.cFade);
 
     if (this.opt.dlgUnscroll) {
       //hide scroll
@@ -495,7 +497,7 @@ module.exports = new function () {
       var f1 = app.q('input, a.btn, a:not([href="' + app.opt.hClose + '"])', modal);
       var f = app.q(':focus', modal);
 
-      if (f1 && !f && (!n || !modal.contains(n))) {
+      if (f1 && !f && (!n || !n.nodeType || !modal.contains(n))) {
         app.dbg(['focus', n, modal, f1, f]);
         f1.focus(); //focus just once when dialog is opened
       }
@@ -933,6 +935,51 @@ module.exports = new function () {
 
 /***/ }),
 /* 4 */
+/***/ (function(module, exports) {
+
+/*! date - parse and formate date */
+module.exports = new function () {
+  "use strict";
+
+  this.parse = function (s) {
+    var d = '';
+    var m = s.match(/^(\d+)(\D)(\d+)\D(\d+)(\D(\d+))?(\D(\d+))?(\D(\d+))?(\D(\d+))?$/);
+
+    if (m) {
+      var x;
+      if (m[2] == '.') x = [4, 3, 1]; //d.m.Y
+      else if (m[2] == '/') x = [4, 1, 3]; //m/d Y
+        else x = [1, 3, 4]; //Y-m-d
+
+      d = new Date(m[x[0]], m[x[1]] - 1, m[x[2]], m[6] || 0, m[8] || 0, m[10] || 0, m[12] || 0); //return d ? d.getTime() : NaN;
+    }
+
+    return d; // || NaN;
+  };
+  /*
+    x: date object
+    t: include time
+    f: y=Y-m-d (default), d=d.m.Y, m=m/d Y
+  */
+
+
+  this.fmt = function (x, t, f) {
+    var y = x.getFullYear();
+    var m = this.n(x.getMonth() + 1);
+    var d = this.n(x.getDate());
+    var h = this.n(x.getHours());
+    var i = this.n(x.getMinutes());
+    var s = this.n(x.getSeconds());
+    return (f == 'm' ? m + '/' + d + ' ' + y : f == 'd' ? d + '.' + m + '.' + y : y + '-' + m + '-' + d) + (t && h + i + s > 0 ? ' ' + this.n(x.getHours()) + ':' + this.n(x.getMinutes()) + ':' + this.n(x.getSeconds()) : '');
+  };
+
+  this.n = function (v, l) {
+    return ('000' + v).substr(-(l || 2));
+  };
+}();
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! gallery - image gallery */
@@ -1061,7 +1108,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! fetch - asynchronous requests */
@@ -1130,7 +1177,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports) {
 
 /*! iconset - svg paths for building icons */
@@ -1220,7 +1267,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(2);
@@ -1228,7 +1275,7 @@ __webpack_require__(2);
 var app = __webpack_require__(0);
 
 ['code', 'icons', 'toggle', 'dialog', 'gallery', 'tablex', 'scroll', 'calendar', 'lookup', 'edit', 'valid', 'tools', 'form', 'items', 'filter', 'fliptable', 'fetch', 'theme'].forEach(function (p) {
-  return app.plug(__webpack_require__(8)("./" + p + ".js"));
+  return app.plug(__webpack_require__(9)("./" + p + ".js"));
 }); //let opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}};
 
 app.b([document], 'DOMContentLoaded', function (e) {
@@ -1238,32 +1285,33 @@ if (true) module.exports = app;
 if (window) window.d1 = app;
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
 	"./app.js": 0,
-	"./calendar.js": 9,
-	"./code.js": 10,
+	"./calendar.js": 10,
+	"./code.js": 11,
+	"./date.js": 4,
 	"./dialog.js": 3,
-	"./edit.js": 11,
-	"./example.js": 12,
-	"./fetch.js": 5,
-	"./filter.js": 13,
-	"./fliptable.js": 14,
-	"./form.js": 15,
-	"./gallery.js": 4,
-	"./icons.js": 16,
-	"./iconset.js": 6,
-	"./items.js": 17,
-	"./lookup.js": 18,
+	"./edit.js": 12,
+	"./example.js": 13,
+	"./fetch.js": 6,
+	"./filter.js": 14,
+	"./fliptable.js": 15,
+	"./form.js": 16,
+	"./gallery.js": 5,
+	"./icons.js": 17,
+	"./iconset.js": 7,
+	"./items.js": 18,
+	"./lookup.js": 19,
 	"./polyfill.js": 2,
-	"./scroll.js": 19,
-	"./tablex.js": 20,
-	"./theme.js": 21,
+	"./scroll.js": 20,
+	"./tablex.js": 21,
+	"./theme.js": 22,
 	"./toggle.js": 1,
-	"./tools.js": 22,
-	"./valid.js": 23
+	"./tools.js": 23,
+	"./valid.js": 24
 };
 
 
@@ -1284,10 +1332,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 8;
+webpackContext.id = 9;
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
@@ -1302,6 +1350,8 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 var app = __webpack_require__(0);
 
 var toggle = __webpack_require__(1);
+
+var date = __webpack_require__(4);
 
 module.exports = new function () {
   "use strict";
@@ -1625,28 +1675,13 @@ module.exports = new function () {
   };
 
   this.parse = function (d) {
-    if (!d) d = '';
-    var mode = d.indexOf('/') != -1 ? 'm' : d.indexOf('.') != -1 ? 'd' : 'y';
-    var seq = mode == 'm' ? [2, 0, 1] : mode == 'd' ? [2, 1, 0] : [0, 1, 2];
-    d = d.split(/\D/);
-
-    while (d.length < 6) {
-      d.push(d.length == 2 ? 1 : 0);
-    }
-
-    d = new Date(parseInt(d[seq[0]], 10), parseInt(d[seq[1]] - 1, 10), parseInt(d[seq[2]], 10), parseInt(d[3], 10), parseInt(d[4], 10), parseInt(d[5], 10));
-    if (!d.getFullYear()) d = new Date();
-    return d;
+    return date.parse(d) || new Date();
   };
 
   this.fmt = function (x, i, t, f) {
     if (!x) x = new Date();
     if (i) x = new Date(x.getFullYear(), x.getMonth(), i);
-    var d = this.n(x.getDate());
-    var m = this.n(x.getMonth() + 1);
-    var y = x.getFullYear();
-    if (!f) f = this.opt.dateFormat;
-    return (f == 'm' ? m + '/' + d + ' ' + y : f == 'd' ? d + '.' + m + '.' + y : y + '-' + m + '-' + d) + (t ? ' ' + this.n(x.getHours()) + ':' + this.n(x.getMinutes()) : '');
+    return date.fmt(x, t, f);
   };
 
   this.btn = function (h, s, p) {
@@ -1658,7 +1693,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! code - source code sample */
@@ -1788,7 +1823,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! edit - wysiwyg text editor */
@@ -2063,7 +2098,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! example - plugin template */
@@ -2087,7 +2122,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! filter - filter items */
@@ -2247,7 +2282,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! fliptable - responsive table */
@@ -2271,7 +2306,7 @@ module.exports = new function () {
 
   this.prepareFlipTable = function (t) {
     var ths = app.qq('thead th', t);
-    var tds = app.qq('tbody tr>*', t);
+    var tds = app.qq('tbody tr>*, tfoot tr>*', t);
     var order = (app.attr(t, 'data-order') || '0 1 2 3').split(/\D+/); //t.parentNode.classList.remove('roll');
 
     for (var i = 0; i < tds.length; i++) {
@@ -2304,7 +2339,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! form - utilities for form inputs */
@@ -2371,13 +2406,13 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! icons - include svg icons */
 var app = __webpack_require__(0);
 
-var iconset = __webpack_require__(6);
+var iconset = __webpack_require__(7);
 
 module.exports = new function () {
   "use strict";
@@ -2483,7 +2518,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! items - copy, hide, delete items */
@@ -2565,7 +2600,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! lookup - autocomplete lookups with data from XHTTP request */
@@ -2573,7 +2608,7 @@ var app = __webpack_require__(0);
 
 var toggle = __webpack_require__(1);
 
-var fetch = __webpack_require__(5);
+var fetch = __webpack_require__(6);
 
 module.exports = new function () {
   "use strict";
@@ -2869,7 +2904,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! scroll - scrolling behaviours (topbar, drawer) */
@@ -2984,7 +3019,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
@@ -3000,6 +3035,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 /*! tablex - filter and sort HTML table */
 // table.sort[data-filter] [data-filter-report][data-case][data-filter-cols]
 var app = __webpack_require__(0);
+
+var date = __webpack_require__(4);
 
 module.exports = new function () {
   "use strict";
@@ -3315,7 +3352,8 @@ module.exports = new function () {
   };
 
   this.convert = function (v) {
-    var r = this.dt(v);
+    var r = date.parse(v);
+    r = r ? r.getTime() : NaN;
     if (!isNaN(r)) return [r, 'd'];
     r = this.sz(v);
     if (!isNaN(r)) return [r, 'b'];
@@ -3332,7 +3370,7 @@ module.exports = new function () {
 
   this.strVal = function (x, mode, dec) {
     if (mode == 's') return x;else if (mode == 'n') return x.toFixed(dec) * 1; //this.dec(x, dec);
-    else if (mode == 'b') return this.fmtSz(x, dec);else if (mode == 'i') return this.fmtInterval(x, dec);else if (mode == 'd') return this.fmtDt(new Date(x), dec);else return x;
+    else if (mode == 'b') return this.fmtSz(x, dec);else if (mode == 'i') return this.fmtInterval(x, dec);else if (mode == 'd') return date.fmt(new Date(x), dec, this.opt.dateFormat);else return x;
   };
 
   this.fmtSz = function (x, dec) {
@@ -3353,21 +3391,6 @@ module.exports = new function () {
     }).join(' ');
   };
 
-  this.fmtDt = function (x, t, f) {
-    var y = x.getFullYear();
-    var m = this.n(x.getMonth() + 1);
-    var d = this.n(x.getDate());
-    var h = this.n(x.getHours());
-    var i = this.n(x.getMinutes());
-    var s = this.n(x.getSeconds());
-    if (!f) f = this.opt.dateFormat;
-    return (f == 'm' ? m + '/' + d + ' ' + y : f == 'd' ? d + '.' + m + '.' + y : y + '-' + m + '-' + d) + (t && h + i + s > 0 ? ' ' + this.n(x.getHours()) + ':' + this.n(x.getMinutes()) + ':' + this.n(x.getSeconds()) : '');
-  };
-
-  this.n = function (v, l) {
-    return ('000' + v).substr(-(l || 2));
-  };
-
   this.cmp = function (by, a, b) {
     a = a.x[by][0];
     b = b.x[by][0];
@@ -3380,22 +3403,6 @@ module.exports = new function () {
     s = parseFloat(s);
     if (isNaN(s) && nanToZero) s = 0;
     return s;
-  };
-
-  this.dt = function (s) {
-    var m = s.match(/^(\d+)(\D)(\d+)\D(\d+)(\D(\d+))?(\D(\d+))?(\D(\d+))?(\D(\d+))?$/);
-
-    if (m) {
-      var x;
-      if (m[2] == '.') x = [4, 3, 1]; //d.m.Y
-      else if (m[2] == '/') x = [4, 1, 3]; //m/d Y
-        else x = [1, 3, 4]; //Y-m-d
-
-      var d = new Date(m[x[0]], m[x[1]] - 1, m[x[2]], m[6] || 0, m[8] || 0, m[10] || 0, m[12] || 0);
-      return d ? d.getTime() : NaN;
-    }
-
-    return NaN;
   };
 
   this.interval = function (s) {
@@ -3423,7 +3430,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! theme - live theme configurator */
@@ -3546,7 +3553,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! tools - miscellaneous utilities */
@@ -3668,7 +3675,7 @@ module.exports = new function () {
 
     n.appendChild(d);
     d.style.position = 'relative';
-    d.style.paddingRight = '2em';
+    d.style.paddingRight = '1em';
     var a = app.ins('a', app.i('up', '&uarr;'), {
       href: '#',
       className: 'small close text-n hide-print'
@@ -3687,7 +3694,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! valid - custom form validation messages */
