@@ -57,7 +57,7 @@ module.exports = new(function() {
   this.init = function() {
     this.lang = app.attr(document.documentElement, 'lang') || 'en';
     this.skipComma = (this.lang=='en');
-    app.e('table.' + this.opt.cSort + ', table.' + this.opt.cTotals + ', table[' + this.opt.aFilter + ']', this.prepare.bind(this))
+    app.e('table.' + this.opt.cSort + ', table.' + this.opt.cTotals + ', table[' + this.opt.aFilter + ']', this.prepare.bind(this));
   }
 
   this.prepare = function(n) {
@@ -327,8 +327,9 @@ module.exports = new(function() {
 
   this.interval = function(s) {
     let x = this.intervalUnits;
-    let m = s.matchAll(/(\d+)\s?(y|m|w|d|h|min|mi|sec|s|msec|ms)\b/gi);
-    m = [...m];
+    let m = s.match(/\d+\s?(y|m|w|d|h|min|mi|sec|s|msec|ms)\b/gi);
+    if(m) m = m.map(v => v.match(/^(\d+)\s?(.*)$/));
+    //matchAll && m = [...m];
     return m && m.length>0 ? m.map(cur => x[cur[2]] ? cur[1] * x[cur[2]] : 0).reduce((a, b) => a + b, 0) : NaN;
   }
 
