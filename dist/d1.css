@@ -1,4 +1,4 @@
-/*! d1-web v1.2.14 */
+/*! d1-web v1.2.15 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -559,7 +559,7 @@ ul.nav, .nav ul {
 }
 
 .dlg {
-    z-index: 100;
+    z-index: 120;
     position: fixed;
     top: 50%;
     left: 50%;
@@ -623,7 +623,7 @@ ul.nav, .nav ul {
 }
 
 .gal a:target {
-    z-index: 90;
+    z-index: 110;
     color: #fff;
     background: #000 50% 50% / contain no-repeat;
     background-image: var(--img);
@@ -643,7 +643,7 @@ ul.nav, .nav ul {
 }
 
 .gal a:not([id]), .gal a:after {
-    z-index: 91;
+    z-index: 111;
     position: fixed;
     top: 0;
     color: #fff;
@@ -1235,7 +1235,7 @@ mark {
 
 .js.fade:after {
     opacity: 1;
-    z-index: 99;
+    z-index: 100;
 }
 
 .fit {
