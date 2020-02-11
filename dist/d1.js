@@ -1,4 +1,4 @@
-/*! d1-web v1.2.17 */
+/*! d1-web v1.2.18 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -3027,7 +3027,7 @@ module.exports = new function () {
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 /*! tablex - filter and sort HTML table */
-// table.sort[data-filter] [data-filter-report][data-case][data-filter-cols]
+// table.sort.totals.filter[data-filter][data-filter-report][data-case][data-filter-cols]
 var app = __webpack_require__(0);
 
 var date = __webpack_require__(4);
@@ -3067,8 +3067,10 @@ module.exports = new function () {
     cSort: 'sort',
     cTotals: 'totals',
     aFilter: 'data-filter',
+    aRep: 'data-filter-report',
     aTotal: 'data-total',
-    cFilter: 'bg-w',
+    cFilter: 'filter',
+    cFiltered: 'bg-w',
     // filter-on - non-empty filter field
     cScan: 'text-i',
     // col-scan - searchable columns' header (used if "data-filter-cols" is set)
@@ -3089,7 +3091,7 @@ module.exports = new function () {
   this.init = function () {
     this.lang = app.attr(document.documentElement, 'lang') || 'en';
     this.skipComma = this.lang == 'en';
-    app.e('table.' + this.opt.cSort + ', table.' + this.opt.cTotals + ', table[' + this.opt.aFilter + ']', this.prepare.bind(this));
+    app.e('table.' + this.opt.cSort + ', table.' + this.opt.cFilter + ', table.' + this.opt.cTotals + ', table[' + this.opt.aFilter + ']', this.prepare.bind(this));
   };
 
   this.prepare = function (n) {
@@ -3123,8 +3125,10 @@ module.exports = new function () {
 
 
     n.vCase = n.getAttribute('data-case') !== null;
-    var fq = n.getAttribute(this.opt.aFilter);
+    var fq = app.attr(n, this.opt.aFilter);
     n.vInp = fq ? document.querySelector(fq) : n.querySelector('[name="_q"]');
+    n.vRep = app.q(app.attr(n, this.opt.aRep));
+    if (!n.vInp && !n.vRep && n.classList.contains(this.opt.cFilter)) this.addFilter(n);
 
     if (n.vInp) {
       //n.vInp.onsearch = n.vInp.onkeyup = this.doFilter.bind(this,n);
@@ -3182,6 +3186,15 @@ module.exports = new function () {
     }
   };
 
+  this.addFilter = function (n) {
+    var t = n.parentNode.classList.contains('roll') ? n.parentNode : n;
+    var p = app.ins('p', ' ', {}, t, -1);
+    n.vInp = app.ins('input', '', {
+      type: 'search'
+    }, p, false);
+    n.vRep = app.ins('span', '', {}, p);
+  };
+
   this.addFooter = function (n, rh) {
     var _this = this;
 
@@ -3202,7 +3215,7 @@ module.exports = new function () {
   this.doFilter = function (t, e) {
     if (t.vPrev !== t.vInp.value || !e) {
       t.vPrev = t.vInp.value;
-      if (this.opt.cFilter) t.vInp.classList[t.vPrev.length > 0 ? 'add' : 'remove'](this.opt.cFilter);
+      if (this.opt.cFiltered) t.vInp.classList[t.vPrev.length > 0 ? 'add' : 'remove'](this.opt.cFiltered);
       clearTimeout(t.vTimeout);
       t.vTimeout = setTimeout(this.filter.bind(this, t, t.vInp.value), this.opt.wait);
     }
@@ -3232,7 +3245,7 @@ module.exports = new function () {
     var i, j, data, s, hide;
 
     if (!n.vCols) {
-      n.vCols = n.getAttribute('data-filter-cols');
+      n.vCols = app.attr(n, 'data-filter-cols');
       n.vCols = n.vCols ? n.vCols.split(/\D+/) : false;
       if (n.vCols && this.opt.cScan) for (i = 0; i < n.vCols.length; i++) {
         if (n.vHead[n.vCols[i]]) n.vHead[n.vCols[i]].classList.add(this.opt.cScan);
@@ -3263,13 +3276,9 @@ module.exports = new function () {
 
 
     this.updateTotals(n, cnt);
-
-    if (n.vInp) {
-      n.vInp.title = cnt + '/' + n.vData.length;
-      var rep = n.getAttribute('data-filter-report');
-      if (rep) rep = document.querySelector(rep);
-      if (rep) rep.textContent = n.vInp.title;
-    }
+    var x = cnt + '/' + n.vData.length;
+    if (n.vInp) n.vInp.title = x;
+    if (n.vRep) n.vRep.textContent = x;
   };
 
   this.updateTotals = function (n, cnt) {

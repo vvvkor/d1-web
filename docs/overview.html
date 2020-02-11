@@ -6,8 +6,8 @@
     <meta name="viewport" 
       content="width=device-width, initial-scale=1">
 	<!-- CDN -->
-	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.2.17/dist/d1.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.2.17/dist/d1.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.2.18/dist/d1.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.2.18/dist/d1.min.js"></script>
 	<!-- local-npm-src ->
 	<link href="../src/index.css" rel="stylesheet">
 	<script src="../dist/d1.min.js"></script>
@@ -53,10 +53,10 @@
   <header class="bg -bg-n -topbar -toggle">
 	  <div class="hide-desktop">
 		<a href="#nav" class="pad hover ico-menu" title="Menu">&equiv;</a>
-		<a href="?" class="pad"><b>d1</b> <span class="text-n">v1.2.17</span></a>
+		<a href="?" class="pad"><b>d1</b> <span class="text-n">v1.2.18</span></a>
 	</div>
 	  <ul class="nav flip hover target-mobile" id="nav">
-		<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v1.2.17</span></a></li>
+		<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v1.2.18</span></a></li>
 		<li><a href="index.html" class="icon-text">Docs</a>
 		<li>
 			<a>Parent</a>
@@ -512,7 +512,7 @@ let double = function (x) {
 						<div class="mar small text-e">Input the date</div>
 					<tr>
 						<td><label for="dtl">Datetime</label>
-						<td><input type="datetime-local" name="dtl" id="dtl" class="calendar datetime" required min="5.2.2020" max="2020-02-20" data-def="2/16 2020">
+						<td><input type="datetime-local" name="dtl" id="dtl" class="calendar datetime" required min="2020-02-05T23:59:59" max="2020-02-20T00:00:00" data-def="2/16 2020">
 						<div class="mar small text-e">Input the date and time</div>
 					<tr>
 						<td><label for="num">Number</label>
@@ -603,7 +603,7 @@ let double = function (x) {
 			<label><input type="checkbox" data-nodes="#totals" data-set="bg-i" data-unset="hide"> more totals</label>
 		</p>
 		<div class="roll">
-		<table id="tablex" class="flip let shift hover c2 r3 sort totals" data-filter="#table-filter" data-filter-report="#filter-info" data-filter-cols="0 2" data-case-x>
+		<table id="tablex" class="flip let shift hover c2 r3 sort filter totals" data-filter="#table-filter" data-filter-report="#filter-info" data-filter-cols="0 2" data-case-x>
 			<!--caption>Web languages</caption-->
 			<thead>
 				<tr><th>String<th>Number<th>Bytes<th>Interval<th>Date
@@ -622,19 +622,19 @@ let double = function (x) {
 					<th><span data-total="sum" data-dec="3" data-mode="b"></span>
 					<th><span data-total="sum" data-dec="3" data-mode="i"></span>
 					<th>
-				</tr>
+				<tr>
 					<td>Avg
 					<td><span data-total="avg"></span>
 					<td><span data-total="avg" data-mode="b"></span>
 					<td><span data-total="avg" data-mode="i"></span>
 					<td><span data-total="avg" data-mode="d"></span>
-				</tr>
+				<tr>
 					<td>Min
 					<td><span data-total="min"></span>
 					<td><span data-total="min" data-mode="b"></span>
 					<td><span data-total="min" data-mode="i"></span>
 					<td><span data-total="min" data-mode="d"></span>
-				</tr>
+				<tr>
 					<td>Max
 					<td><span data-total="max"></span>
 					<td><span data-total="max" data-mode="b"></span>

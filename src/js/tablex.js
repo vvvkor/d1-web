@@ -1,6 +1,6 @@
 /*! tablex - filter and sort HTML table */
 
-// table.sort[data-filter] [data-filter-report][data-case][data-filter-cols]
+// table.sort.totals.filter[data-filter][data-filter-report][data-case][data-filter-cols]
 
 let app = require('./app.js');
 let date = require('./date.js');
@@ -42,8 +42,10 @@ module.exports = new(function() {
     cSort: 'sort',
     cTotals: 'totals',
     aFilter: 'data-filter',
+    aRep: 'data-filter-report',
     aTotal: 'data-total',
-    cFilter: 'bg-w', // filter-on - non-empty filter field
+    cFilter: 'filter',
+    cFiltered: 'bg-w', // filter-on - non-empty filter field
     cScan: 'text-i', // col-scan - searchable columns' header (used if "data-filter-cols" is set)
     cShow: '', // row-show - matching row
     //cHide: 'hide', // row-hide - non-matching row (if not set the "display:none" is used)
@@ -57,7 +59,7 @@ module.exports = new(function() {
   this.init = function() {
     this.lang = app.attr(document.documentElement, 'lang') || 'en';
     this.skipComma = (this.lang=='en');
-    app.e('table.' + this.opt.cSort + ', table.' + this.opt.cTotals + ', table[' + this.opt.aFilter + ']', this.prepare.bind(this));
+    app.e('table.' + this.opt.cSort + ', table.' + this.opt.cFilter + ', table.' + this.opt.cTotals + ', table[' + this.opt.aFilter + ']', this.prepare.bind(this));
   }
 
   this.prepare = function(n) {
@@ -77,16 +79,20 @@ module.exports = new(function() {
     }
     //let inp = app.ins('input','',{type:'search',size:4},rh.cells[0]);
     n.vCase = (n.getAttribute('data-case') !== null);
-    let fq = n.getAttribute(this.opt.aFilter);
+    let fq = app.attr(n, this.opt.aFilter);
     n.vInp = fq
       ? document.querySelector(fq)
       : n.querySelector('[name="_q"]');
+    n.vRep = app.q(app.attr(n, this.opt.aRep));
+    if(!n.vInp && !n.vRep && n.classList.contains(this.opt.cFilter)) this.addFilter(n);
+    
     if (n.vInp) {
       //n.vInp.onsearch = n.vInp.onkeyup = this.doFilter.bind(this,n);
       if(!n.vInp.vListen) n.vInp.addEventListener('input', this.doFilter.bind(this, n), false);
       n.vInp.vListen = 1;
       this.doFilter(n);
     }
+
     for (i = start; i < tb.rows.length; i++) {
       let c = tb.rows[i].cells;
       let row = [], vals = [];
@@ -121,6 +127,13 @@ module.exports = new(function() {
         }
     }
   }
+  
+  this.addFilter = function(n){
+    let t = n.parentNode.classList.contains('roll') ? n.parentNode : n;
+    let p = app.ins('p', ' ', {}, t, -1);
+    n.vInp = app.ins('input', '', {type: 'search'}, p, false);
+    n.vRep = app.ins('span', '', {}, p);
+  }
 
   this.addFooter = function(n, rh){
     let f = app.ins('tfoot', app.ins('tr'), {className: 'nobr'}, n);
@@ -135,7 +148,7 @@ module.exports = new(function() {
   this.doFilter = function(t, e) {
     if (t.vPrev !== t.vInp.value || !e) {
       t.vPrev = t.vInp.value;
-      if (this.opt.cFilter) t.vInp.classList[t.vPrev.length > 0 ? 'add' : 'remove'](this.opt.cFilter);
+      if (this.opt.cFiltered) t.vInp.classList[t.vPrev.length > 0 ? 'add' : 'remove'](this.opt.cFiltered);
       clearTimeout(t.vTimeout);
       t.vTimeout = setTimeout(this.filter.bind(this, t, t.vInp.value), this.opt.wait);
     }
@@ -172,7 +185,7 @@ module.exports = new(function() {
     let cnt = 0;
     let i, j, data, s, hide;
     if (!n.vCols) {
-      n.vCols = n.getAttribute('data-filter-cols');
+      n.vCols = app.attr(n, 'data-filter-cols');
       n.vCols = n.vCols ? n.vCols.split(/\D+/) : false;
       if (n.vCols && this.opt.cScan)
         for (i = 0; i < n.vCols.length; i++) {
@@ -197,12 +210,9 @@ module.exports = new(function() {
     }
     //update state
     this.updateTotals(n, cnt);
-    if (n.vInp) {
-      n.vInp.title = cnt + '/' + n.vData.length;
-      let rep = n.getAttribute('data-filter-report');
-      if (rep) rep = document.querySelector(rep);
-      if (rep) rep.textContent = n.vInp.title;
-    }
+    let x = cnt + '/' + n.vData.length;
+    if (n.vInp) n.vInp.title = x;
+    if (n.vRep) n.vRep.textContent = x;
   }
   
   this.updateTotals = function(n, cnt){
