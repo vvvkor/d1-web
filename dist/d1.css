@@ -1,4 +1,4 @@
-/*! d1-web v1.2.15 */
+/*! d1-web v1.2.16 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -561,8 +561,8 @@ ul.nav, .nav ul {
 .dlg {
     z-index: 120;
     position: fixed;
-    top: 50%;
     left: 50%;
+    top: 50%;
     transform: translate(-50%, -50%);
     background-clip: padding-box;
     min-width: 16em;
@@ -1211,9 +1211,11 @@ mark {
     border-radius: var(--radius) var(--radius) 0 0;
 }
 
-.js.fade .dlg {
+.js.fade .dlg:not(.full) {
     border: none;
     border-radius: 0;
+    top: 30%;
+    transform: translate(-50%, -30%);
 }
 
 .js.fade .dlg.rad {

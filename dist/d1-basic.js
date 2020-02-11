@@ -1,4 +1,4 @@
-/*! d1-web v1.2.15 */
+/*! d1-web v1.2.16 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -355,7 +355,7 @@ module.exports = new function () {
   this.name = 'toggle';
   this.shown = null;
   this.opt = {
-    keepHash: 1,
+    keepHash: true,
     mediaSuffixes: ['-mobile', '-desktop'],
     dlgUnscroll: true,
     //qTgl: '.toggle[id]',

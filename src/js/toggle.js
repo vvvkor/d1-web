@@ -13,7 +13,7 @@ module.exports = new(function () {
   this.shown = null;
 
   this.opt = {
-    keepHash: 1,
+    keepHash: true,
     mediaSuffixes: ['-mobile', '-desktop'],
     dlgUnscroll: true,
 
