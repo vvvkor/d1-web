@@ -1,4 +1,4 @@
-/*! d1-web v1.2.16 */
+/*! d1-web v1.2.17 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -500,6 +500,8 @@ module.exports = new function () {
       if (f1 && !f && (!n || !n.nodeType || !modal.contains(n))) {
         app.dbg(['focus', n, modal, f1, f]);
         f1.focus(); //focus just once when dialog is opened
+
+        if (f1.type == 'text') f1.select();
       }
     }
   };
