@@ -47,7 +47,8 @@ module.exports = new(function () {
 
   this.setClass = function(n, on, m, c){
     app.dbg(['setclass', m, c]);
-    let u = (n.type == 'radio' || n.tagName=='SELECT') ? '' : app.attr(n, this.opt.aUnset, false);
+    let sel = (n.type == 'radio' || n.tagName=='SELECT');
+    let u = sel ? false /*''*/ : app.attr(n, this.opt.aUnset, false);
     let attr = app.attr(n, this.opt.aAttr) || 'class';
     if(attr !== 'class'){
       let v = on ? c : (u || '');
@@ -55,7 +56,16 @@ module.exports = new(function () {
       else m.removeAttribute(attr);
     }
     else if(u !== false) m.className = on ? c : (u || '');
-    else c.split(/\s+/).filter(cc => cc).forEach(cc => m.classList[on ? 'add' : 'remove'](cc));
+    else{
+      if(sel){
+        //unset other select/radio values
+        let u = (n.type == 'radio')
+          ? app.qq('input[type="radio"][name="' + n.name + '"]').map(nn => app.attr(nn, this.opt.aSet)).join(' ')
+          : app.qq('option', n).map(nn => nn.value).join(' ');
+        u.split(/\s+/).filter(cc => cc).forEach(cc => m.classList.remove(cc));
+      }
+      c.split(/\s+/).filter(cc => cc).forEach(cc => m.classList[on ? 'add' : 'remove'](cc));
+    }
     n.classList[on ? 'add' : 'remove'](app.opt.cAct);
   }
 

@@ -1,4 +1,4 @@
-/*! d1-web v1.2.18 */
+/*! d1-web v1.2.20 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -3629,24 +3629,46 @@ module.exports = new function () {
   };
 
   this.setClass = function (n, on, m, c) {
+    var _this2 = this;
+
     app.dbg(['setclass', m, c]);
-    var u = n.type == 'radio' || n.tagName == 'SELECT' ? '' : app.attr(n, this.opt.aUnset, false);
+    var sel = n.type == 'radio' || n.tagName == 'SELECT';
+    var u = sel ? false
+    /*''*/
+    : app.attr(n, this.opt.aUnset, false);
     var attr = app.attr(n, this.opt.aAttr) || 'class';
 
     if (attr !== 'class') {
       var v = on ? c : u || '';
       if (v) m.setAttribute(attr, v);else m.removeAttribute(attr);
-    } else if (u !== false) m.className = on ? c : u || '';else c.split(/\s+/).filter(function (cc) {
-      return cc;
-    }).forEach(function (cc) {
-      return m.classList[on ? 'add' : 'remove'](cc);
-    });
+    } else if (u !== false) m.className = on ? c : u || '';else {
+      if (sel) {
+        //unset other select/radio values
+        var _u = n.type == 'radio' ? app.qq('input[type="radio"][name="' + n.name + '"]').map(function (nn) {
+          return app.attr(nn, _this2.opt.aSet);
+        }).join(' ') : app.qq('option', n).map(function (nn) {
+          return nn.value;
+        }).join(' ');
+
+        _u.split(/\s+/).filter(function (cc) {
+          return cc;
+        }).forEach(function (cc) {
+          return m.classList.remove(cc);
+        });
+      }
+
+      c.split(/\s+/).filter(function (cc) {
+        return cc;
+      }).forEach(function (cc) {
+        return m.classList[on ? 'add' : 'remove'](cc);
+      });
+    }
 
     n.classList[on ? 'add' : 'remove'](app.opt.cAct);
   };
 
   this.toggleClass = function (n, e) {
-    var _this2 = this;
+    var _this3 = this;
 
     if (n.type == 'radio' && !n.checked) return;
     var box = n.type == 'checkbox' || n.type == 'radio';
@@ -3664,7 +3686,7 @@ module.exports = new function () {
 
     if (c !== false) {
       app.e(q, function (m) {
-        return _this2.setClass(n, on, m, c);
+        return _this3.setClass(n, on, m, c);
       });
       app.fire('updated', {
         q: q
