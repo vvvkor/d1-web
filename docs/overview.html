@@ -6,8 +6,8 @@
     <meta name="viewport" 
       content="width=device-width, initial-scale=1">
 	<!-- CDN -->
-	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.2.22/dist/d1.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.2.22/dist/d1.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.2.23/dist/d1.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.2.23/dist/d1.min.js"></script>
 	<!-- local-npm-src ->
 	<link href="../src/index.css" rel="stylesheet">
 	<script src="../dist/d1.min.js"></script>
@@ -53,10 +53,10 @@
   <header class="bg -bg-n -topbar -toggle">
 	  <div class="hide-desktop">
 		<a href="#nav" class="pad hover ico-menu" title="Menu">&equiv;</a>
-		<a href="?" class="pad"><b>d1</b> <span class="text-n">v1.2.22</span></a>
+		<a href="?" class="pad"><b>d1</b> <span class="text-n">v1.2.23</span></a>
 	</div>
 	  <ul class="nav flip hover target-mobile" id="nav">
-		<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v1.2.22</span></a></li>
+		<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v1.2.23</span></a></li>
 		<li><a href="index.html" class="icon-text">Docs</a>
 		<li>
 			<a>Parent</a>
@@ -103,8 +103,9 @@
 			<label><input type="checkbox" data-nodes="body" data-set="invert"> Invert</label>
 				<span class="text-i tip ico-info" title="Not supported in  IE and Edge 15-">[!]</span>
 				<br>
-			<label><input type="checkbox" data-nodes="html" data-set="scroller" > Custom scroll</label>
+			<label><input type="checkbox" data-nodes="html" data-set="scroller" id="custom-scroll" class="mem"> Custom scroll</label>
 				<span class="text-i tip ico-info" title="Supported in  WebKit and Firefox">[!]</span>
+				<span class="text-w tip ico-bookmark" title="Remember selection  in local storage">[#]</span>
 			</p>
 		</div>
 		<div class="pad mar shade">
@@ -471,8 +472,8 @@ let double = function (x) {
 						<td><label for="country">Chained</label>
 						<td>
 						  <select name="country" id="country" data-chain="#town">
-							<option value="">-</option>
-							<option value="ru" selected>Russia</option>
+							<option value="" selected>-</option>
+							<option value="ru">Russia</option>
 							<option value="fr">France</option>
 							<option value="no">No</option>
 						  </select>
@@ -481,8 +482,8 @@ let double = function (x) {
 						<td><label for="land">Chained datalist</label>
 						<td>
 						  <select name="land" id="land" data-chain="#city">
-							<option value="">-</option>
-							<option value="ru" selected>Russia</option>
+							<option value="" selected>-</option>
+							<option value="ru">Russia</option>
 							<option value="fr">France</option>
 							<option value="no">No</option>
 						  </select>
