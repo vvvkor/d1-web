@@ -12,7 +12,7 @@
 
 /*
 
-# changes: d1css -> d1app
+# changes: d1css -> d1-web
 
 - .dlg.hide -> .dlg
 - .dlg -> .box -> .shade
@@ -105,7 +105,7 @@ css restructure (maybe)
 --btn-lite:    var(--text-lite);
 
 /* derivative */
---bg-btn: var(--link);
+--bg-btn: var(--text-nav);
 --text-btn: var(--bg);
 --link: var(--text-nav);
 --visited: var(--text-vis);
@@ -166,7 +166,7 @@ css restructure (maybe)
 button,input,select,textarea{margin:0;box-sizing:border-box;}
 html{box-sizing:content-box;/*scroll-behavior:smooth;*/}
 *,*:before,*:after{box-sizing:inherit;}
-img,embed,iframe,object,audio,video{/*height:auto;*/max-width:100%;}
+img,embed,iframe,object,audio,video{/*height:auto;*/max-width:100%;box-sizing:border-box;}
 img,iframe{border:0;}
 img{object-fit:cover;}
 html,body,li,dl,dt,dd,legend,iframe{margin:0;padding:0;}

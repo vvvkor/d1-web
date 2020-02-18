@@ -13,6 +13,7 @@ module.exports = new(function () {
     aSet: 'data-set',
     aUnset: 'data-unset',
     aAttr: 'data-attr',
+    cMem: 'mem',
     qTop: 'h2[id], h3[id], h4[id], h5[id], h6[id]', // h1[id],
     minDesktop: 900
   };
@@ -22,6 +23,7 @@ module.exports = new(function () {
     this.opt.qSetClick = 'a[' + this.opt.aSet + ']';
     this.opt.qSetChange = 'input[' + this.opt.aNodes + '], select[' + this.opt.aNodes + ']';
     app.e('table[class]', n => this.alignCells(n));
+    app.e(this.opt.qSet, n => this.restore(n));
     app.e(this.opt.qSet, n => this.toggleClass(n));
     app.b(this.opt.qSetChange, 'change', e => this.toggleClass(e.target));
     app.e(this.opt.qTop, n => this.addTopLink(n));
@@ -44,7 +46,26 @@ module.exports = new(function () {
       }
     }
   }
-
+  
+  this.store = function(n, v){
+    if(n && (n.id || n.name) && n.classList.contains(this.opt.cMem)){
+      localStorage.setItem('set#' + (n.id || '#' + n.name), v);
+    }
+  }
+  
+  this.restore = function(n){
+    if(n && (n.id || n.name) && n.classList && n.classList.contains(this.opt.cMem)){
+      let v = localStorage.getItem('set#' + (n.id || '#' + n.name));
+      if(v !== null){
+        let t = n.tagName;
+        if(t=='A') n.classList[v ? 'add' : 'remove'](app.opt.cAct);
+        else if(t=='SELECT') n.value = v;
+        else if(n.type == 'checkbox') n.checked = !!v;
+        else if(n.type == 'radio') n.checked = (n.value == v);
+      }
+    }
+  }
+  
   this.setClass = function(n, on, m, c){
     app.dbg(['setclass', m, c]);
     let sel = (n.type == 'radio' || n.tagName=='SELECT');
@@ -60,19 +81,20 @@ module.exports = new(function () {
       if(sel){
         //unset other select/radio values
         let u = (n.type == 'radio')
-          ? app.qq('input[type="radio"][name="' + n.name + '"]').map(nn => app.attr(nn, this.opt.aSet)).join(' ')
+          ? app.qq('input[type="radio"][name="' + n.name + '"]').map(nn => /*app.attr(nn, this.opt.aSet)*/nn.value).join(' ')
           : app.qq('option', n).map(nn => nn.value).join(' ');
         u.split(/\s+/).filter(cc => cc).forEach(cc => m.classList.remove(cc));
       }
       c.split(/\s+/).filter(cc => cc).forEach(cc => m.classList[on ? 'add' : 'remove'](cc));
     }
     n.classList[on ? 'add' : 'remove'](app.opt.cAct);
+    this.store(n, sel ? n.value : ((n.type=='checkbox' ? n.checked : n.classList.contains(app.opt.cAct)) ? '1' : ''));
   }
 
   this.toggleClass = function(n, e) {
     if(n.type == 'radio' && !n.checked) return;
     let box = (n.type == 'checkbox' || n.type == 'radio');
-    let sel = (n.tagName == 'SELECT');
+    let sel = (n.tagName == 'SELECT' || n.type == 'radio');
     let q = app.attr(n, this.opt.aNodes, n.hash);
     let c = sel ? n.value : app.attr(n, this.opt.aSet, false);
     let on = sel ? true : (box ? n.checked : n.classList.contains(app.opt.cAct));

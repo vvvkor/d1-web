@@ -1,4 +1,4 @@
-/*! d1-web v1.2.21 */
+/*! d1-web v1.2.22 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -114,6 +114,8 @@ module.exports = new function () {
   this.init = function (opt) {
     var _this = this;
 
+    document.body.classList.add(this.opt.cJs); // prepare body: anti-hover, anti-target
+
     this.fire('beforeopt'); //options
 
     if (!opt) {
@@ -136,8 +138,6 @@ module.exports = new function () {
       return _this.on('click', e);
     });
     if (location.hash) this.on('hash');
-    document.body.classList.add(this.opt.cJs); // prepare body: anti-hover, anti-target
-
     this.fire('after');
     this.fire('afterinit');
   }; // event delegation
@@ -352,6 +352,7 @@ module.exports = new function () {
 
   this.name = 'toggle';
   this.shown = null;
+  this.nEsc = 0;
   this.opt = {
     keepHash: true,
     mediaSuffixes: ['-mobile', '-desktop'],
@@ -536,7 +537,8 @@ module.exports = new function () {
   this.onKey = function (e) {
     var k = e.keyCode;
     app.dbg(['key', k]);
-    if (k == 27) app.fire('esc', e);
+    if (k == 27 && this.nEsc >= 2) localStorage.clear();else if (k == 27) app.fire('esc', e);
+    this.nEsc = k == 27 && this.nEsc < 2 ? this.nEsc + 1 : 0;
   };
 
   this.onClick = function (e) {
@@ -666,13 +668,13 @@ module.exports = new function () {
   };
 
   this.storeVisibility = function (n) {
-    if (n.classList.contains(this.opt.cMem)) {
+    if (n && n.id && n.classList.contains(this.opt.cMem)) {
       localStorage.setItem('vis#' + n.id, app.vis(n) ? 1 : -1);
     }
   };
 
   this.restoreVisibility = function (n) {
-    if (n && n.classList && n.classList.contains(this.opt.cMem)) {
+    if (n && n.id && n.classList && n.classList.contains(this.opt.cMem)) {
       var v = localStorage.getItem('vis#' + n.id);
       if (v) this.toggle(n, v > 0, -1);
     }
@@ -3574,6 +3576,7 @@ module.exports = new function () {
     aSet: 'data-set',
     aUnset: 'data-unset',
     aAttr: 'data-attr',
+    cMem: 'mem',
     qTop: 'h2[id], h3[id], h4[id], h5[id], h6[id]',
     // h1[id],
     minDesktop: 900
@@ -3587,6 +3590,9 @@ module.exports = new function () {
     this.opt.qSetChange = 'input[' + this.opt.aNodes + '], select[' + this.opt.aNodes + ']';
     app.e('table[class]', function (n) {
       return _this.alignCells(n);
+    });
+    app.e(this.opt.qSet, function (n) {
+      return _this.restore(n);
     });
     app.e(this.opt.qSet, function (n) {
       return _this.toggleClass(n);
@@ -3628,9 +3634,24 @@ module.exports = new function () {
     }
   };
 
-  this.setClass = function (n, on, m, c) {
-    var _this2 = this;
+  this.store = function (n, v) {
+    if (n && (n.id || n.name) && n.classList.contains(this.opt.cMem)) {
+      localStorage.setItem('set#' + (n.id || '#' + n.name), v);
+    }
+  };
 
+  this.restore = function (n) {
+    if (n && (n.id || n.name) && n.classList && n.classList.contains(this.opt.cMem)) {
+      var v = localStorage.getItem('set#' + (n.id || '#' + n.name));
+
+      if (v !== null) {
+        var t = n.tagName;
+        if (t == 'A') n.classList[v ? 'add' : 'remove'](app.opt.cAct);else if (t == 'SELECT') n.value = v;else if (n.type == 'checkbox') n.checked = !!v;else if (n.type == 'radio') n.checked = n.value == v;
+      }
+    }
+  };
+
+  this.setClass = function (n, on, m, c) {
     app.dbg(['setclass', m, c]);
     var sel = n.type == 'radio' || n.tagName == 'SELECT';
     var u = sel ? false
@@ -3645,7 +3666,10 @@ module.exports = new function () {
       if (sel) {
         //unset other select/radio values
         var _u = n.type == 'radio' ? app.qq('input[type="radio"][name="' + n.name + '"]').map(function (nn) {
-          return app.attr(nn, _this2.opt.aSet);
+          return (
+            /*app.attr(nn, this.opt.aSet)*/
+            nn.value
+          );
         }).join(' ') : app.qq('option', n).map(function (nn) {
           return nn.value;
         }).join(' ');
@@ -3665,14 +3689,15 @@ module.exports = new function () {
     }
 
     n.classList[on ? 'add' : 'remove'](app.opt.cAct);
+    this.store(n, sel ? n.value : (n.type == 'checkbox' ? n.checked : n.classList.contains(app.opt.cAct)) ? '1' : '');
   };
 
   this.toggleClass = function (n, e) {
-    var _this3 = this;
+    var _this2 = this;
 
     if (n.type == 'radio' && !n.checked) return;
     var box = n.type == 'checkbox' || n.type == 'radio';
-    var sel = n.tagName == 'SELECT';
+    var sel = n.tagName == 'SELECT' || n.type == 'radio';
     var q = app.attr(n, this.opt.aNodes, n.hash);
     var c = sel ? n.value : app.attr(n, this.opt.aSet, false);
     var on = sel ? true : box ? n.checked : n.classList.contains(app.opt.cAct);
@@ -3686,7 +3711,7 @@ module.exports = new function () {
 
     if (c !== false) {
       app.e(q, function (m) {
-        return _this3.setClass(n, on, m, c);
+        return _this2.setClass(n, on, m, c);
       });
       app.fire('updated', {
         q: q

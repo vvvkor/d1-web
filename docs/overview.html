@@ -6,8 +6,8 @@
     <meta name="viewport" 
       content="width=device-width, initial-scale=1">
 	<!-- CDN -->
-	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.2.21/dist/d1.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.2.21/dist/d1.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.2.22/dist/d1.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.2.22/dist/d1.min.js"></script>
 	<!-- local-npm-src ->
 	<link href="../src/index.css" rel="stylesheet">
 	<script src="../dist/d1.min.js"></script>
@@ -53,10 +53,10 @@
   <header class="bg -bg-n -topbar -toggle">
 	  <div class="hide-desktop">
 		<a href="#nav" class="pad hover ico-menu" title="Menu">&equiv;</a>
-		<a href="?" class="pad"><b>d1</b> <span class="text-n">v1.2.21</span></a>
+		<a href="?" class="pad"><b>d1</b> <span class="text-n">v1.2.22</span></a>
 	</div>
 	  <ul class="nav flip hover target-mobile" id="nav">
-		<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v1.2.21</span></a></li>
+		<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v1.2.22</span></a></li>
 		<li><a href="index.html" class="icon-text">Docs</a>
 		<li>
 			<a>Parent</a>
@@ -660,11 +660,11 @@ let double = function (x) {
 				<option value="text-n">note</option>
 			</select>
 			<!--
-				<label><input type="radio" name="r" data-nodes="#code b" data-set="bg-e"> e</label>
-				<label><input type="radio" name="r" data-nodes="#code b" data-set="bg-w"> w</label>
-				<label><input type="radio" name="r" data-nodes="#code b" data-set="bg-y"> y</label>
-				<label><input type="radio" name="r" data-nodes="#code b" data-set="bg-i"> i</label>
-				<label><input type="radio" name="r" data-nodes="#code b" data-set="bg-n"> n	</label>
+				<label><input type="radio" name="r" data-nodes="#code b" value="bg-e"> e</label>
+				<label><input type="radio" name="r" data-nodes="#code b" value="bg-w"> w</label>
+				<label><input type="radio" name="r" data-nodes="#code b" value="bg-y"> y</label>
+				<label><input type="radio" name="r" data-nodes="#code b" value="bg-i"> i</label>
+				<label><input type="radio" name="r" data-nodes="#code b" value="bg-n"> n	</label>
 				<input type="checkbox" data-nodes="#code b" data-set="bord"> bord</label>
 			-->
 			</p>
@@ -762,16 +762,16 @@ let double = function (x) {
 		<h3 id="cols">Columns</h3>
 		<p>
 		With gap:
-		<label><input type="radio" name="colz" data-nodes="#colz" data-set="row flip by-1"> 1</label>
-		<label><input type="radio" name="colz" data-nodes="#colz" data-set="row flip by-2"> 2</label>
-		<label><input type="radio" name="colz" data-nodes="#colz" data-set="row flip by-3" checked> 3</label>
-		<label><input type="radio" name="colz" data-nodes="#colz" data-set="row flip by-4"> 4</label>
+		<label><input type="radio" name="colz" data-nodes="#colz" value="row flip by-1"> 1</label>
+		<label><input type="radio" name="colz" data-nodes="#colz" value="row flip by-2"> 2</label>
+		<label><input type="radio" name="colz" data-nodes="#colz" value="row flip by-3" checked> 3</label>
+		<label><input type="radio" name="colz" data-nodes="#colz" value="row flip by-4"> 4</label>
 		<br>
 		Without gap:
-		<label><input type="radio" name="colz" data-nodes="#colz" data-set="row flip fit by-1"> 1</label>
-		<label><input type="radio" name="colz" data-nodes="#colz" data-set="row flip fit by-2"> 2</label>
-		<label><input type="radio" name="colz" data-nodes="#colz" data-set="row flip fit by-3"> 3</label>
-		<label><input type="radio" name="colz" data-nodes="#colz" data-set="row flip fit by-4"> 4</label>
+		<label><input type="radio" name="colz" data-nodes="#colz" value="row flip fit by-1"> 1</label>
+		<label><input type="radio" name="colz" data-nodes="#colz" value="row flip fit by-2"> 2</label>
+		<label><input type="radio" name="colz" data-nodes="#colz" value="row flip fit by-3"> 3</label>
+		<label><input type="radio" name="colz" data-nodes="#colz" value="row flip fit by-4"> 4</label>
 		</p>
 		
 		<div class="bord">

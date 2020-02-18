@@ -1,4 +1,4 @@
-/*! d1-web v1.2.21 */
+/*! d1-web v1.2.22 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -38,7 +38,7 @@
     --btn-success: var(--text-success);
     --btn-info: var(--text-info);
     --btn-lite: var(--text-lite);
-    --bg-btn: var(--link);
+    --bg-btn: var(--text-nav);
     --text-btn: var(--bg);
     --link: var(--text-nav);
     --visited: var(--text-vis);
@@ -101,6 +101,7 @@ html {
 
 img, embed, iframe, object, audio, video {
     max-width: 100%;
+    box-sizing: border-box;
 }
 
 img, iframe {

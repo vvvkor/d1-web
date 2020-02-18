@@ -11,6 +11,7 @@ module.exports = new(function () {
 
   this.name = 'toggle';
   this.shown = null;
+  this.nEsc = 0;
 
   this.opt = {
     keepHash: true,
@@ -128,7 +129,9 @@ module.exports = new(function () {
   this.onKey = function(e){
     let k = e.keyCode;
     app.dbg(['key', k]);
-    if(k==27) app.fire('esc', e);
+    if(k==27 && this.nEsc>=2) localStorage.clear();
+    else if(k==27) app.fire('esc', e);
+    this.nEsc = (k==27 && this.nEsc<2) ? this.nEsc+1 : 0;
   }
 
   this.onClick = function(e){
@@ -233,13 +236,13 @@ module.exports = new(function () {
   }
 
   this.storeVisibility = function(n){
-    if(n.classList.contains(this.opt.cMem)){
+    if(n && n.id && n.classList.contains(this.opt.cMem)){
       localStorage.setItem('vis#'+n.id, app.vis(n) ? 1 : -1);
     }
   }
 
   this.restoreVisibility = function(n){
-    if(n && n.classList && n.classList.contains(this.opt.cMem)){
+    if(n && n.id && n.classList && n.classList.contains(this.opt.cMem)){
       let v = localStorage.getItem('vis#'+n.id);
       if(v) this.toggle(n, v>0, -1);
     }

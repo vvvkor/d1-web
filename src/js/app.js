@@ -25,6 +25,7 @@ module.exports = new (function(){
   };
 
   this.init = function(opt){
+    document.body.classList.add(this.opt.cJs); // prepare body: anti-hover, anti-target
     this.fire('beforeopt');
     //options
     if(!opt){
@@ -42,7 +43,6 @@ module.exports = new (function(){
     this.b([document], 'click', e => this.on('click', e));
     if(location.hash) this.on('hash')
 
-    document.body.classList.add(this.opt.cJs); // prepare body: anti-hover, anti-target
     this.fire('after');
     this.fire('afterinit');
   }
