@@ -1,4 +1,4 @@
-/*! d1-web v1.2.23 */
+/*! d1-web v1.2.24 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -1264,10 +1264,6 @@ img.fit {
     display: block;
 }
 
-.center {
-    margin: 0 auto;
-}
-
 .mar {
     margin: 1em 0;
     margin: var(--gap-n) 0;
@@ -1276,6 +1272,11 @@ img.fit {
 form .mar {
     margin: .5em 0;
     margin: var(--gap-s) 0;
+}
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .pad {

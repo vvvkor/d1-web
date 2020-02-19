@@ -552,9 +552,9 @@ mark{background-color:var(--bg-warning);}
 	ul.fit li{list-style:none;}
 	a.let{color:inherit;}
 	img.fit{display:block;}
-.center{margin:0 auto;}
 .mar{margin:var(--gap-n) 0;}
 	form .mar{margin:var(--gap-s) 0;}
+.center{margin-left:auto;margin-right:auto;}
 .pad{padding:var(--gaps-n);}
 .bord{border:var(--border);/*thin solid rgba(0,0,0,.2);*/}
 .rad{border-radius:var(--radius);}
