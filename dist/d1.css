@@ -1,4 +1,4 @@
-/*! d1-web v1.2.25 */
+/*! d1-web v1.2.26 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -332,7 +332,7 @@ th, td {
     background-clip: padding-box;
 }
 
-table.bord tr>*, fieldset, hr {
+table.bord>*>tr>*, fieldset, hr {
     border: thin solid rgba(0, 0, 0, .16);
     border: var(--border);
 }
@@ -345,7 +345,7 @@ hr {
     border-width: thin 0 0 0;
 }
 
-table.let tr>* {
+table.let>*>tr>* {
     border-bottom: thin solid rgba(0, 0, 0, .16);
     border-bottom: var(--border);
 }
@@ -806,7 +806,7 @@ mark {
         border-bottom: var(--border);
     }
 
-    table.let:not(.flip) *:last-child tr:last-child>* {
+    table.let:not(.flip)>*:last-child>tr:last-child>* {
         border-bottom: none;
     }
 
@@ -833,7 +833,7 @@ mark {
 }
 
 @media (min-width: 900px) {
-    table.let *:last-child tr:last-child>* {
+    table.let>*:last-child>tr:last-child>* {
         border-bottom: none;
     }
 
