@@ -1,12 +1,13 @@
 {
   "name": "d1-web",
-  "version": "1.2.27",
+  "version": "1.2.28",
   "description": "Lightweight responsive front-end framework",
   "main": "dist/d1.js",
   "directories": {
     "doc": "docs"
   },
   "scripts": {
+    "copy:css": "copyfiles ./src/index.css ./dist -f",
     "build:css": "postcss src/index.css -o dist/d1.css",
     "minify:css": "postcss dist/d1.css -u cssnano -o dist/d1.min.css --no-map",
     "build:docs": "copyfiles ./src/*.html ./docs -f",
@@ -14,7 +15,7 @@
     "build:version": "cross-var replace-in-file \"/0\\.0\\.0/g\" \"$npm_package_version\" \"dist/*.*\" --isRegex",
     "build:docs.version": "cross-var replace-in-file \"/0\\.0\\.0/g\" \"$npm_package_version\" \"docs/*.*\" --isRegex",
     "webpack": "webpack",
-    "build": "npm run build:css && npm run minify:css && npm run build:docs && npm run build:docs.cmt && npm run build:docs.version && webpack && npm run build:version",
+    "build": "npm run copy:css && npm run build:css && npm run minify:css && npm run build:docs && npm run build:docs.cmt && npm run build:docs.version && webpack && npm run build:version",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
