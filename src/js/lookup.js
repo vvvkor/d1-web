@@ -13,6 +13,7 @@ module.exports = new(function () {
   this.opt = {
     aLabel: 'data-label',
     aLookup: 'data-lookup',
+    aList: 'data-list',
     aUrl: 'data-url',
     aGoto: 'data-goto',
     cacheLimit: 0,
@@ -30,7 +31,7 @@ module.exports = new(function () {
     this.closeList();
     document.body.appendChild(this.win);
 
-    app.e('[' + this.opt.aLookup + ']', n => this.prepare(n));
+    app.e('input[' + this.opt.aLookup + ']', n => this.prepare(n));
     app.b('[data-chain]', 'change', e => this.updateChain(e.target));
     app.e('[data-chain]', n => this.updateChain(n));
     app.listen('key', e => this.onKey(e))
@@ -195,7 +196,7 @@ module.exports = new(function () {
     if(m){
       if(!n.value) this.setOptions(m,[]);
       else{
-        let u = app.attr(m, 'data-filter').replace(/\{q\}/,n.value);
+        let u = app.attr(m, this.opt.aList).replace(/\{q\}/,n.value);
         if(m.vCache && m.vCache[u]) this.setOptions(m,m.vCache[u]);
         else fetch.fetch(u, this.onChainData.bind(this, u, m));
       }

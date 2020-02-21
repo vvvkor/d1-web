@@ -6,8 +6,8 @@
     <meta name="viewport" 
       content="width=device-width, initial-scale=1">
 	<!-- CDN -->
-	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.2.26/dist/d1.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.2.26/dist/d1.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.2.27/dist/d1.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.2.27/dist/d1.min.js"></script>
 	<!-- local-npm-src ->
 	<link href="../src/index.css" rel="stylesheet">
 	<script src="../dist/d1.min.js"></script>
@@ -53,10 +53,10 @@
   <header class="bg -bg-n -topbar -toggle">
 	  <div class="hide-desktop">
 		<a href="#nav" class="pad hover ico-menu" title="Menu">&equiv;</a>
-		<a href="?" class="pad"><b>d1</b> <span class="text-n">v1.2.26</span></a>
+		<a href="?" class="pad"><b>d1</b> <span class="text-n">v1.2.27</span></a>
 	</div>
 	  <ul class="nav flip hover target-mobile" id="nav">
-		<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v1.2.26</span></a></li>
+		<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v1.2.27</span></a></li>
 		<li><a href="index.html" class="icon-text">Docs</a>
 		<li>
 			<a>Parent</a>
@@ -477,7 +477,7 @@ let double = function (x) {
 							<option value="fr">France</option>
 							<option value="no">No</option>
 						  </select>
-						  <select name="town" id="town" data-filter="{q}.json" data-placeholder="..." data-cache="10"></select>
+						  <select name="town" id="town" data-list="{q}.json" data-placeholder="..." data-cache="10"></select>
 					<tr>
 						<td><label for="land">Chained datalist</label>
 						<td>
@@ -487,7 +487,7 @@ let double = function (x) {
 							<option value="fr">France</option>
 							<option value="no">No</option>
 						  </select>
-						  <input type="text" list="cities" name="city" id="city" data-filter="{q}.json" data-cache="10">
+						  <input type="text" list="cities" name="city" id="city" data-list="{q}.json" data-cache="10">
 						  <datalist id="cities"><option value="a"></datalist>
 					<tr>
 						<td><label for="lng">Select</label>
@@ -703,7 +703,7 @@ let double = function (x) {
 		<h2 class="" id="filter">Filter items</h2>
 		
 		<!-- filter -->
-		<div class="filter mem item mar pad shade" id="filter-items" data-filter-color="green;yellow">
+		<div class="filters mem item mar pad shade" id="filter-items" data-filter-color="green;yellow">
 			<a href="#x" data-filter class="close pad text-y hover ico-refresh">Reset</a>
 			<i>Colors:</i>
 			<a href="#x" class="hover" data-filter="color">any</a>

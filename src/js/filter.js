@@ -9,7 +9,7 @@ module.exports = new(function () {
   this.name = 'filter';
 
   this.opt = {
-    qFilter: '.filter',
+    qFilter: '.filters',
     qItem: '.item',
     aFilter: 'data-filter',
     cMem: 'mem'
@@ -17,13 +17,13 @@ module.exports = new(function () {
 
   this.init = function () {
     app.e(this.opt.qFilter, n => this.prepare(n));
+    app.b('a[' + this.opt.aFilter + ']', 'click', e => this.applyControl(e.target));
+    app.b(':not(a)[' + this.opt.aFilter + ']', 'input', e => this.applyControl(e.target));
   }
 
   this.prepare = function(n){
     n.vInit = {};
     this.forAttrs(n, (a, k) => n.vInit[k] = a.value);
-    app.b('a[' + this.opt.aFilter + ']', 'click', e => this.applyControl(e.target));
-    app.b(':not(a)[' + this.opt.aFilter + ']', 'input', e => this.applyControl(e.target));
     this.restore(n);
     this.apply(n);
   }
@@ -56,7 +56,7 @@ module.exports = new(function () {
     let f = {};
     let z = this.opt.aFilter.length;
     this.forAttrs(n, (a, k) => a.value.length > 0 ? f[k] = a.value.split(/;/) : null);
-    app.dbg(['filter', f]);
+    app.dbg(['filter', n, f]);
     app.e(app.qq(this.opt.qItem, n), m => m.classList[this.match(m, f) ? 'remove' : 'add'](app.opt.cHide))
     app.e(app.qq('[' + this.opt.aFilter + ']', n), m => this.setUsed(m, f));
     this.store(n, f);

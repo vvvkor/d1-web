@@ -1,4 +1,4 @@
-/*! d1-web v1.2.26 */
+/*! d1-web v1.2.27 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -195,7 +195,7 @@ module.exports = new function () {
 
 
   this.dbg = function (s, l, e) {
-    if (this.opt.debug >= (l || 1)) console[e ? 'error' : 'log'](s);
+    if (this.opt.debug >= (l || 1) || location.href.indexOf('d1debug') != -1) console[e ? 'error' : 'log'](s);
   };
 
   this.seq = function () {
@@ -2137,7 +2137,7 @@ module.exports = new function () {
 
   this.name = 'filter';
   this.opt = {
-    qFilter: '.filter',
+    qFilter: '.filters',
     qItem: '.item',
     aFilter: 'data-filter',
     cMem: 'mem'
@@ -2149,20 +2149,18 @@ module.exports = new function () {
     app.e(this.opt.qFilter, function (n) {
       return _this.prepare(n);
     });
+    app.b('a[' + this.opt.aFilter + ']', 'click', function (e) {
+      return _this.applyControl(e.target);
+    });
+    app.b(':not(a)[' + this.opt.aFilter + ']', 'input', function (e) {
+      return _this.applyControl(e.target);
+    });
   };
 
   this.prepare = function (n) {
-    var _this2 = this;
-
     n.vInit = {};
     this.forAttrs(n, function (a, k) {
       return n.vInit[k] = a.value;
-    });
-    app.b('a[' + this.opt.aFilter + ']', 'click', function (e) {
-      return _this2.applyControl(e.target);
-    });
-    app.b(':not(a)[' + this.opt.aFilter + ']', 'input', function (e) {
-      return _this2.applyControl(e.target);
     });
     this.restore(n);
     this.apply(n);
@@ -2196,19 +2194,19 @@ module.exports = new function () {
   };
 
   this.apply = function (n) {
-    var _this3 = this;
+    var _this2 = this;
 
     var f = {};
     var z = this.opt.aFilter.length;
     this.forAttrs(n, function (a, k) {
       return a.value.length > 0 ? f[k] = a.value.split(/;/) : null;
     });
-    app.dbg(['filter', f]);
+    app.dbg(['filter', n, f]);
     app.e(app.qq(this.opt.qItem, n), function (m) {
-      return m.classList[_this3.match(m, f) ? 'remove' : 'add'](app.opt.cHide);
+      return m.classList[_this2.match(m, f) ? 'remove' : 'add'](app.opt.cHide);
     });
     app.e(app.qq('[' + this.opt.aFilter + ']', n), function (m) {
-      return _this3.setUsed(m, f);
+      return _this2.setUsed(m, f);
     });
     this.store(n, f);
     app.fire('updated', {
@@ -2239,7 +2237,7 @@ module.exports = new function () {
   };
 
   this.restore = function (n) {
-    var _this4 = this;
+    var _this3 = this;
 
     if (n.id && n.classList.contains(this.opt.cMem)) {
       var f = localStorage.getItem('filter-' + n.id);
@@ -2247,10 +2245,10 @@ module.exports = new function () {
       if (f) {
         //create attributes if not exist
         app.e(app.qq('[' + this.opt.aFilter + ']', n), function (m) {
-          var x = app.attr(m, _this4.opt.aFilter).split(/=/);
+          var x = app.attr(m, _this3.opt.aFilter).split(/=/);
 
           if (x[0]) {
-            x = _this4.opt.aFilter + '-' + x[0];
+            x = _this3.opt.aFilter + '-' + x[0];
             if (!n.hasAttribute(x)) n.setAttribute(x, '');
           }
         }); //parse
@@ -2276,11 +2274,11 @@ module.exports = new function () {
   };
 
   this.forAttrs = function (n, f) {
-    var _this5 = this;
+    var _this4 = this;
 
     var z = this.opt.aFilter.length;
     app.a(n.attributes).forEach(function (a) {
-      return a.name.substr(0, z) == _this5.opt.aFilter ? f(a, a.name.substr(z + 1)) : null;
+      return a.name.substr(0, z) == _this4.opt.aFilter ? f(a, a.name.substr(z + 1)) : null;
     });
   };
 }();
@@ -2621,6 +2619,7 @@ module.exports = new function () {
   this.opt = {
     aLabel: 'data-label',
     aLookup: 'data-lookup',
+    aList: 'data-list',
     aUrl: 'data-url',
     aGoto: 'data-goto',
     cacheLimit: 0,
@@ -2641,7 +2640,7 @@ module.exports = new function () {
     });
     this.closeList();
     document.body.appendChild(this.win);
-    app.e('[' + this.opt.aLookup + ']', function (n) {
+    app.e('input[' + this.opt.aLookup + ']', function (n) {
       return _this.prepare(n);
     });
     app.b('[data-chain]', 'change', function (e) {
@@ -2858,7 +2857,7 @@ module.exports = new function () {
 
     if (m) {
       if (!n.value) this.setOptions(m, []);else {
-        var u = app.attr(m, 'data-filter').replace(/\{q\}/, n.value);
+        var u = app.attr(m, this.opt.aList).replace(/\{q\}/, n.value);
         if (m.vCache && m.vCache[u]) this.setOptions(m, m.vCache[u]);else fetch.fetch(u, this.onChainData.bind(this, u, m));
       }
     }

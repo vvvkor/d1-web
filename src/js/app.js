@@ -89,7 +89,7 @@ module.exports = new (function(){
   //utils
 
   this.dbg = function(s, l, e){
-    if(this.opt.debug >= (l || 1)) console[e ? 'error' : 'log'](s);
+    if(this.opt.debug >= (l || 1) || location.href.indexOf('d1debug') != -1) console[e ? 'error' : 'log'](s);
   }
 
   this.seq = function(){

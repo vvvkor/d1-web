@@ -1,4 +1,4 @@
-/*! d1-web v1.2.26 */
+/*! d1-web v1.2.27 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -354,7 +354,7 @@ table.shift {
     width: 100%;
 }
 
-table.fit tr>* {
+table.fit>*>tr>* {
     padding: 0;
 }
 

@@ -265,7 +265,7 @@ table.let>*>tr>*{border-bottom:var(--border);}
 /*table.let *:last-child tr:last-child>*{border-bottom:none;}*/
 	/*table.let tr:not(:last-child)>*{border-bottom:var(--border);}*/
 table.shift{width:100%;/*margin:0;*/}
-table.fit tr>*{padding:0;}
+table.fit>*>tr>*{padding:0;}
 .roll{overflow-x:auto;}
 	.roll>table.bord{border:var(--border);border-width:medium;}
 
