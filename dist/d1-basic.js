@@ -1,4 +1,4 @@
-/*! d1-web v1.2.31 */
+/*! d1-web v1.2.32 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -810,8 +810,9 @@ module.exports = new function () {
   this.init = function () {
     var _this = this;
 
+    this.opt.ccDlg = app.opt.cToggle + ' ' + app.opt.cOff + ' ' + this.opt.ccDlg;
     if (!this.dlg) this.dlg = app.ins('div', '', {
-      className: app.opt.cToggle + ' ' + app.opt.cOff + ' ' + this.opt.ccDlg
+      className: this.ccDlg
     }, document.body);
     app.listen('click', function (e) {
       return _this.onClick(e);
@@ -828,11 +829,12 @@ module.exports = new function () {
     }
   };
 
-  this.initDlg = function (n, h, t, icon, f, def, rev) {
+  this.initDlg = function (n, h, t, icon, f, def, rev, cls) {
     var _this2 = this;
 
     //if(!this.dlg) this.dlg = app.ins('div', '', {className: app.opt.cToggle + ' ' + app.opt.cOff + ' ' + this.opt.ccDlg}, document.body);
     var d = this.dlg;
+    d.className = this.opt.ccDlg + (cls ? ' ' + cls : '');
     app.clr(d);
     var hh = app.ins('div', '', {
       className: 'row bg'

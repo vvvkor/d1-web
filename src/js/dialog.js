@@ -26,7 +26,8 @@ module.exports = new(function () {
   };
   
   this.init = function () {
-    if(!this.dlg) this.dlg = app.ins('div', '', {className: app.opt.cToggle + ' ' + app.opt.cOff + ' ' + this.opt.ccDlg}, document.body);
+    this.opt.ccDlg = app.opt.cToggle + ' ' + app.opt.cOff + ' ' + this.opt.ccDlg;
+    if(!this.dlg) this.dlg = app.ins('div', '', {className: this.ccDlg}, document.body);
     app.listen('click', e => this.onClick(e));
   }
   
@@ -39,9 +40,10 @@ module.exports = new(function () {
     }
   }
 
-  this.initDlg = function(n, h, t, icon, f, def, rev){
+  this.initDlg = function(n, h, t, icon, f, def, rev, cls){
     //if(!this.dlg) this.dlg = app.ins('div', '', {className: app.opt.cToggle + ' ' + app.opt.cOff + ' ' + this.opt.ccDlg}, document.body);
     let d = this.dlg;
+    d.className = this.opt.ccDlg + (cls ? ' '+cls : '');
     app.clr(d);
     let hh = app.ins('div', '', {className: 'row bg'}, d);
     let hhh = app.ins('h3', ' ' + (h || ''), {className: 'fit pad'}, hh);
