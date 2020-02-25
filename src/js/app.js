@@ -50,6 +50,7 @@ module.exports = new (function(){
   // event delegation
   // https://gomakethings.com/why-event-delegation-is-a-better-way-to-listen-for-events-in-vanilla-js/
   this.on = function(t, e){
+    this.fire('before', e);
     this.fire(t, e);
     this.fire(t + 'ed', e);
     this.fire('after', e);
@@ -174,17 +175,20 @@ module.exports = new (function(){
   //func
 
   this.throttle = function(f, ms){
-    let p = false, a;
+    let p = false, c, a;
     return function ff(){
-      if (p) a = arguments; //2
+      if (p) { //2
+        c = this;
+        a = arguments;
+      }
       else{
-        f.apply(null, arguments); //1
+        f.apply(this, arguments); //1
         p = true;
         setTimeout(() => { //3
           p = false;
           if(a){
-            ff.apply(null, a);
-            a = null;
+            ff.apply(c, a);
+            a = c = null;
           }
         }, ms);
       }

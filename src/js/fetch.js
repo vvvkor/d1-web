@@ -26,7 +26,10 @@ module.exports = new(function () {
   }
 
   this.fetchBy = function(n, f) {
-    this.fetch(app.attr(n, 'href'), r => f ? f(n, r) : this.recv(n, r));
+    this.fetch(app.attr(n, 'href'), r => {
+      f ? f(n, r) : this.recv(n, r);
+      app.fire('after');
+    });
   }
 
   this.fetch = function(url, f) {
@@ -50,7 +53,7 @@ module.exports = new(function () {
       }
     }
     else console.error('XHTTP request failed', req);
-    app.fire('after', e);
+    //app.fire('after', e);
   }
 
 })();

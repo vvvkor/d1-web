@@ -1,4 +1,4 @@
-/*! d1-web v1.2.28 */
+/*! d1-web v1.2.29 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -145,6 +145,7 @@ module.exports = new function () {
 
 
   this.on = function (t, e) {
+    this.fire('before', e);
     this.fire(t, e);
     this.fire(t + 'ed', e);
     this.fire('after', e);
@@ -282,23 +283,27 @@ module.exports = new function () {
 
   this.throttle = function (f, ms) {
     var p = false,
+        c,
         a;
     return function ff() {
-      if (p) a = arguments; //2
-      else {
-          f.apply(null, arguments); //1
+      if (p) {
+        //2
+        c = this;
+        a = arguments;
+      } else {
+        f.apply(this, arguments); //1
 
-          p = true;
-          setTimeout(function () {
-            //3
-            p = false;
+        p = true;
+        setTimeout(function () {
+          //3
+          p = false;
 
-            if (a) {
-              ff.apply(null, a);
-              a = null;
-            }
-          }, ms);
-        }
+          if (a) {
+            ff.apply(c, a);
+            a = c = null;
+          }
+        }, ms);
+      }
     };
   }; // url
 
@@ -1149,7 +1154,8 @@ module.exports = new function () {
     var _this2 = this;
 
     this.fetch(app.attr(n, 'href'), function (r) {
-      return f ? f(n, r) : _this2.recv(n, r);
+      f ? f(n, r) : _this2.recv(n, r);
+      app.fire('after');
     });
   };
 
@@ -1174,9 +1180,8 @@ module.exports = new function () {
       } else {
         dialog.initDlg(null, app.attr(n, dialog.opt.aHead), req.responseText);
       }
-    } else console.error('XHTTP request failed', req);
+    } else console.error('XHTTP request failed', req); //app.fire('after', e);
 
-    app.fire('after', e);
   };
 }();
 

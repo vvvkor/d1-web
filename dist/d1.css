@@ -1,4 +1,4 @@
-/*! d1-web v1.2.28 */
+/*! d1-web v1.2.29 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -1368,7 +1368,7 @@ form .mar {
         transform: scale(.8);
     }
 
-    .js.fade:after {
+    .trans.js.fade:after {
         transition: .2s opacity;
     }
 }
