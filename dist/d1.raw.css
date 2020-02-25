@@ -1,4 +1,4 @@
-/*! d1-web v1.2.30 */
+/*! d1-web v1.2.31 */
 
 /* @import url("css/columns.css"); */
 
@@ -439,7 +439,7 @@ mark{background-color:var(--bg-warning);}
 	/* desktop */
 	table.let>*:last-child>tr:last-child>*{border-bottom:none;}
 	form>.row>:first-child:not(:only-child), fieldset>*>.row>:first-child:not(:only-child){text-align:right;flex:.3;}
-	form table:not(.bord):not(.let) td:first-child:nth-last-child(2):not([colspan]){text-align:right;/*min-*/width:12em;}
+	form table:not(.bord):not(.let) td:first-child:nth-last-child(2):not([colspan]){text-align:right;/*min-*/width:30%;/*12em;*/}
 		fieldset table:not(.bord):not(.let) td:first-child:nth-last-child(2):not([colspan]){/*min-*/width:calc(12em - var(--gap-n) - var(--gap-s));}
 	.dlg{min-width:20em;}
 	.dlg.pad{padding:var(--gaps-l);}

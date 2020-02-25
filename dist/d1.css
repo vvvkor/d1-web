@@ -1,4 +1,4 @@
-/*! d1-web v1.2.30 */
+/*! d1-web v1.2.31 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -845,7 +845,7 @@ mark {
 
     form table:not(.bord):not(.let) td:first-child:nth-last-child(2):not([colspan]) {
         text-align: right;
-        width: 12em;
+        width: 30%;
     }
 
     fieldset table:not(.bord):not(.let) td:first-child:nth-last-child(2):not([colspan]) {
