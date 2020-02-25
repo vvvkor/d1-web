@@ -46,7 +46,7 @@ module.exports = new(function () {
     app.listen('hash', e => this.onHash(e));
     app.listen('key', e => this.onKey(e));
     app.listen('click', e => this.onClick(e));
-    app.listen('clicked', e => this.unpop(e.target));
+    app.listen('clicked', e => this.unpop(e.target)); // click out
     app.listen('after', e => this.after(e ? e.target : null));
     //toggle
     let q = this.opt;
@@ -109,6 +109,7 @@ module.exports = new(function () {
 
   this.onHash = function(e){
     app.dbg(['hash', location.hash]);
+    this.nEsc = 0;
     if(location.hash===app.opt.hClose) app.fire('esc', e);
     else if(location.hash){
       let d = app.q(location.hash);
@@ -128,13 +129,14 @@ module.exports = new(function () {
 
   this.onKey = function(e){
     let k = e.keyCode;
-    app.dbg(['key', k]);
+    app.dbg(['key', k, this.nEsc]);
     if(k==27 && this.nEsc>=2) localStorage.clear();
     else if(k==27) app.fire('esc', e);
     this.nEsc = (k==27 && this.nEsc<2) ? this.nEsc+1 : 0;
   }
 
   this.onClick = function(e){
+    this.nEsc = 0;
     let n = e.target;
     let a = n.closest('a');
     let d = (a && a.matches('a[href^="#"]')) ? app.q(a.hash) : null;
@@ -206,7 +208,7 @@ module.exports = new(function () {
 
   this.unpop = function(x, seq){
     let keep = [x];
-    keep.push(this.shown);
+    keep.push(this.shown); // click out: keep
     let a = x ? x.closest('a') : null;
     if(a && a.hash){
       //if(a.hash==app.opt.hClose) keep = []; //to close all, even container

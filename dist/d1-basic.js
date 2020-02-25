@@ -1,4 +1,4 @@
-/*! d1-web v1.2.29 */
+/*! d1-web v1.2.30 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -406,7 +406,8 @@ module.exports = new function () {
     });
     app.listen('clicked', function (e) {
       return _this.unpop(e.target);
-    });
+    }); // click out
+
     app.listen('after', function (e) {
       return _this.after(e ? e.target : null);
     }); //toggle
@@ -523,6 +524,7 @@ module.exports = new function () {
 
   this.onHash = function (e) {
     app.dbg(['hash', location.hash]);
+    this.nEsc = 0;
     if (location.hash === app.opt.hClose) app.fire('esc', e);else if (location.hash) {
       var d = app.q(location.hash);
 
@@ -543,12 +545,13 @@ module.exports = new function () {
 
   this.onKey = function (e) {
     var k = e.keyCode;
-    app.dbg(['key', k]);
+    app.dbg(['key', k, this.nEsc]);
     if (k == 27 && this.nEsc >= 2) localStorage.clear();else if (k == 27) app.fire('esc', e);
     this.nEsc = k == 27 && this.nEsc < 2 ? this.nEsc + 1 : 0;
   };
 
   this.onClick = function (e) {
+    this.nEsc = 0;
     var n = e.target;
     var a = n.closest('a');
     var d = a && a.matches('a[href^="#"]') ? app.q(a.hash) : null;
@@ -634,7 +637,8 @@ module.exports = new function () {
     var _this3 = this;
 
     var keep = [x];
-    keep.push(this.shown);
+    keep.push(this.shown); // click out: keep
+
     var a = x ? x.closest('a') : null;
 
     if (a && a.hash) {
