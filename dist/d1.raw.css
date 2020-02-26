@@ -1,4 +1,4 @@
-/*! d1-web v1.2.33 */
+/*! d1-web v1.2.34 */
 
 /* @import url("css/columns.css"); */
 
@@ -473,7 +473,7 @@ mark{background-color:var(--bg-warning);}
 	textarea{width:100%;}
 	input,button,select,textarea{padding:var(--gap-xs);line-height:normal;}
 	input,button,select,textarea,a.btn{border:thin solid #aaa;} /* rgba(0,0,0,.3) fails for select */
-	a.btn,button[type],input[type="submit"]{padding:var(--gaps-n);border-radius:var(--radius);margin:var(--gap-xs) 0;border-color:transparent;}
+	a.btn,button,input[type="submit"]{padding:var(--gaps-n);border-radius:var(--radius);margin:var(--gap-xs) 0;border-color:transparent;}
 	a.btn,button:not([disabled]),[type="submit"]:not([disabled]){cursor:pointer;}
 	form>a.btn, form>button, form>[type="submit"], form>a>button{padding:var(--gap-xs) var(--gap-s);margin:0;}/* see [.nav a] padding */
 		.btn/*:not(a):not(input):not(button)*/, a.btn.fit,button.fit,[type="submit"].fit{padding:0 var(--gap-s);border-radius:var(--radius);}

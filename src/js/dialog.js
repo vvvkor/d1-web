@@ -1,7 +1,7 @@
 /*! dialog - replacement of standard Javascript dialogs: alert, confirm, prompt */
 
 // a.alert([title]|[data-caption])
-// a.dialog[href]([title]|[data-caption])[data-prompt] [data-src][data-ok][data-cancel][data-reverse] 
+// a.dialog[href]([title]|[data-caption])[data-prompt] [data-src][data-go][data-ok][data-cancel][data-reverse][data-head][data-pic]
 
 let app = require('./app.js');
 let toggle = require('./toggle.js');
@@ -41,7 +41,7 @@ module.exports = new(function () {
   }
 
   //setup object keys: [ok, cancel, icon, class, btn, rev, def]
-  this.open = function(h, t, f, setup /*icon, cls, def, rev, n*/){
+  this.open = function(h, t, f, setup){
     setup = setup || {};
     let d = this.dlg;
     d.className = this.opt.ccDlg + (setup.class ? ' '+setup.class : '');
@@ -58,7 +58,7 @@ module.exports = new(function () {
     let inp = {value: true};
     if(setup.def || setup.def==='') inp = app.ins('input', '', {value: setup.def}, b);
     let bb = app.ins('p', '', {className: 'r'}, b);
-    let b1 = this.opt.cBtn + ' ' + (setup.btn || '');
+    let b1 = this.opt.cBtn + ' ' + (setup.btn || (t.substr(0,1)==' ' ? 'bg-e' : ''));
     let b2 = this.opt.cBtn + ' bg-n';
     let yes = app.ins('a', setup.ok || app.opt.sOk, {href: app.opt.hClose, className: (setup.rev ? b2 : b1)}, bb);
     if(f){
@@ -86,12 +86,15 @@ module.exports = new(function () {
     let t = app.attr(n, app.opt.aCaption, n.title || p || '!').replace(/%([\w\-]+)%/g, (m, a) => n.getAttribute(a));
     let rev = app.attr(n, 'data-reverse');
     let src = app.attr(n, 'data-src');
+    let go = app.attr(n, 'data-go', null);
     src = src ? app.q(src) : null;
     if(!src && n.form) src = n.form.elements[p];
     let v = null;
     let al = n.matches(this.opt.qAlert);
     let def = p ? (src ? src.value : app.get(n, p)) : null;
-    if(this.opt.customDialog){
+    
+    if(def && go!==null) this.onAnswer(n, def, p);//go with default
+    else if(this.opt.customDialog){
       this.open(h, t, al ? null : (w => this.onAnswer(n, w, p)), {
         ok: app.attr(n, 'data-ok'),
         cancel: app.attr(n, 'data-cancel'),

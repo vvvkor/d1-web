@@ -1,4 +1,4 @@
-/*! d1-web v1.2.33 */
+/*! d1-web v1.2.34 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -330,10 +330,10 @@ module.exports = new function () {
     console.log('make ', a.href);
     var g = this.get(a);
     Object.keys(args).forEach(function (k) {
-      return g[k] = args[k];
+      return g[encodeURIComponent(k)] = encodeURIComponent(args[k]);
     });
     var q = Object.keys(g).map(function (k) {
-      return encodeURIComponent(k) + '=' + encodeURIComponent(g[k]);
+      return k + '=' + g[k];
     }).join('&');
     return a.host ? a.protocol + '//' + a.host + a.pathname + (q ? '?' + q : '') + a.hash : a.href.replace(/[\?#].*$/, '') + (q ? '?' + q : '') + a.hash; //ie
   };
@@ -785,7 +785,7 @@ if (window) window.d1 = app;
 
 /*! dialog - replacement of standard Javascript dialogs: alert, confirm, prompt */
 // a.alert([title]|[data-caption])
-// a.dialog[href]([title]|[data-caption])[data-prompt] [data-src][data-ok][data-cancel][data-reverse] 
+// a.dialog[href]([title]|[data-caption])[data-prompt] [data-src][data-go][data-ok][data-cancel][data-reverse][data-head][data-pic]
 var app = __webpack_require__(0);
 
 var toggle = __webpack_require__(1);
@@ -830,9 +830,7 @@ module.exports = new function () {
   }; //setup object keys: [ok, cancel, icon, class, btn, rev, def]
 
 
-  this.open = function (h, t, f, setup
-  /*icon, cls, def, rev, n*/
-  ) {
+  this.open = function (h, t, f, setup) {
     var _this2 = this;
 
     setup = setup || {};
@@ -867,7 +865,7 @@ module.exports = new function () {
     var bb = app.ins('p', '', {
       className: 'r'
     }, b);
-    var b1 = this.opt.cBtn + ' ' + (setup.btn || '');
+    var b1 = this.opt.cBtn + ' ' + (setup.btn || (t.substr(0, 1) == ' ' ? 'bg-e' : ''));
     var b2 = this.opt.cBtn + ' bg-n';
     var yes = app.ins('a', setup.ok || app.opt.sOk, {
       href: app.opt.hClose,
@@ -916,32 +914,32 @@ module.exports = new function () {
     });
     var rev = app.attr(n, 'data-reverse');
     var src = app.attr(n, 'data-src');
+    var go = app.attr(n, 'data-go', null);
     src = src ? app.q(src) : null;
     if (!src && n.form) src = n.form.elements[p];
     var v = null;
     var al = n.matches(this.opt.qAlert);
     var def = p ? src ? src.value : app.get(n, p) : null;
+    if (def && go !== null) this.onAnswer(n, def, p); //go with default
+    else if (this.opt.customDialog) {
+        this.open(h, t, al ? null : function (w) {
+          return _this3.onAnswer(n, w, p);
+        }, {
+          ok: app.attr(n, 'data-ok'),
+          cancel: app.attr(n, 'data-cancel'),
+          icon: icon,
+          //class: '',
+          btn: t.substr(0, 1) == ' ' || n && n.className.match(/-[we]\b/) ? 'bg-e' : 'bg-y',
+          def: def,
+          rev: rev
+        });
+      } else {
+        if (al) v = alert(t); //undef
+        else if (!p) v = confirm(t); //bool
+          else v = prompt(t, def); //null|value
 
-    if (this.opt.customDialog) {
-      this.open(h, t, al ? null : function (w) {
-        return _this3.onAnswer(n, w, p);
-      }, {
-        ok: app.attr(n, 'data-ok'),
-        cancel: app.attr(n, 'data-cancel'),
-        icon: icon,
-        //class: '',
-        btn: t.substr(0, 1) == ' ' || n && n.className.match(/-[we]\b/) ? 'bg-e' : 'bg-y',
-        def: def,
-        rev: rev
-      });
-    } else {
-      if (al) v = alert(t); //undef
-      else if (!p) v = confirm(t); //bool
-        else v = prompt(t, def); //null|value
-
-      this.onAnswer(n, v, p);
-    }
-
+        this.onAnswer(n, v, p);
+      }
     return this.dlg;
   };
 

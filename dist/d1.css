@@ -1,4 +1,4 @@
-/*! d1-web v1.2.33 */
+/*! d1-web v1.2.34 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -946,7 +946,7 @@ mark {
         border: thin solid #aaa;
     }
 
-    a.btn, button[type], input[type="submit"] {
+    a.btn, button, input[type="submit"] {
         padding: .5em 1em;
         padding: var(--gaps-n);
         border-radius: .2em;

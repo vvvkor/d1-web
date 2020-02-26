@@ -213,8 +213,8 @@ module.exports = new (function(){
     if(!a.tagName) a = this.ins('a', '', {href: a});
     console.log('make ',a.href);
     let g = this.get(a);
-    Object.keys(args).forEach(k => g[k] = args[k]);
-    let q = Object.keys(g).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(g[k])).join('&');
+    Object.keys(args).forEach(k => g[encodeURIComponent(k)] = encodeURIComponent(args[k]));
+    let q = Object.keys(g).map(k => k + '=' + g[k]).join('&');
     return a.host
       ? a.protocol + '//' + a.host + a.pathname+(q ? '?' + q : '') + a.hash
       : a.href.replace(/[\?#].*$/, '') + (q ? '?' + q : '') + a.hash; //ie
