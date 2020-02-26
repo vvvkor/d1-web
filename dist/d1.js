@@ -1,4 +1,4 @@
-/*! d1-web v1.2.32 */
+/*! d1-web v1.2.33 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -787,7 +787,7 @@ module.exports = new function () {
 
     this.opt.ccDlg = app.opt.cToggle + ' ' + app.opt.cOff + ' ' + this.opt.ccDlg;
     if (!this.dlg) this.dlg = app.ins('div', '', {
-      className: this.ccDlg
+      className: this.opt.ccDlg
     }, document.body);
     app.listen('click', function (e) {
       return _this.onClick(e);
@@ -798,18 +798,21 @@ module.exports = new function () {
     var as = e.target.closest('a, input, button');
 
     if (as && as.matches(this.opt.qAlert + ',' + this.opt.qDialog)) {
-      //d = this.dialog(e, a, (m, v) => !console.log(v) && toggle.unpop()); //custom callback
+      //d = this.open(e, a, (m, v) => !console.log(v) && toggle.unpop()); //custom callback
       e.preventDefault();
-      return this.dialog(as);
+      return this.openByNode(as);
     }
-  };
+  }; //setup object keys: [ok, cancel, icon, class, btn, rev, def]
 
-  this.initDlg = function (n, h, t, icon, f, def, rev, cls) {
+
+  this.open = function (h, t, f, setup
+  /*icon, cls, def, rev, n*/
+  ) {
     var _this2 = this;
 
-    //if(!this.dlg) this.dlg = app.ins('div', '', {className: app.opt.cToggle + ' ' + app.opt.cOff + ' ' + this.opt.ccDlg}, document.body);
+    setup = setup || {};
     var d = this.dlg;
-    d.className = this.opt.ccDlg + (cls ? ' ' + cls : '');
+    d.className = this.opt.ccDlg + (setup["class"] ? ' ' + setup["class"] : '');
     app.clr(d);
     var hh = app.ins('div', '', {
       className: 'row bg'
@@ -818,8 +821,8 @@ module.exports = new function () {
       className: 'fit pad'
     }, hh);
 
-    if (icon) {
-      var m = icon.match(/(\S+)(\s(.*))?/);
+    if (setup.icon) {
+      var m = setup.icon.match(/(\S+)(\s(.*))?/);
       if (m) hhh.insertBefore(app.ins('span', app.i(m[1]), {
         className: m[3] || ''
       }), hhh.firstChild);
@@ -833,39 +836,44 @@ module.exports = new function () {
     var inp = {
       value: true
     };
-    if (def || def === '') inp = app.ins('input', '', {
-      value: def
+    if (setup.def || setup.def === '') inp = app.ins('input', '', {
+      value: setup.def
     }, b);
     var bb = app.ins('p', '', {
       className: 'r'
     }, b);
-    var warn = this.opt.cBtn + ' ' + (t.substr(0, 1) == ' ' || n && n.className.match(/-[we]\b/) ? 'bg-e' : 'bg-y');
-    var sec = this.opt.cBtn + ' bg-n';
-    var yes = app.ins('a', app.attr(n, 'data-ok', app.opt.sOk), {
+    var b1 = this.opt.cBtn + ' ' + (setup.btn || '');
+    var b2 = this.opt.cBtn + ' bg-n';
+    var yes = app.ins('a', setup.ok || app.opt.sOk, {
       href: app.opt.hClose,
-      className: rev ? sec : warn
+      className: setup.rev ? b2 : b1
     }, bb);
 
     if (f) {
-      app.ins('a', app.attr(n, 'data-cancel', app.opt.sCancel), {
+      app.ins('a', setup.cancel || app.opt.sCancel, {
         href: app.opt.hClose,
-        className: rev ? warn : sec
-      }, yes, rev ? -1 : 1);
-      app.ins('', ' ', {}, yes, rev ? -1 : 1);
+        className: setup.rev ? b1 : b2
+      }, yes, setup.rev ? -1 : 1);
+      app.ins('', ' ', {}, yes, setup.rev ? -1 : 1);
       yes.href = app.opt.hOk;
       app.b([yes], 'click', function (e) {
         e.preventDefault();
-        f.call(_this2, inp.value);
+
+        _this2.callback(f, inp.value, e);
       });
       if (inp.tagName) app.b([inp], 'keyup', function (e) {
-        return e.keyCode == 13 ? f.call(_this2, inp.value, e) : null;
+        return e.keyCode == 13 ? _this2.callback(f, inp.value, e) : null;
       });
     }
 
     toggle.toggle(this.dlg, true);
   };
 
-  this.dialog = function (n, f) {
+  this.callback = function (f, v, e) {
+    if (!f.call(this, v, e)) toggle.unpop(); // close dialog unless callback returns true
+  };
+
+  this.openByNode = function (n, f) {
     var _this3 = this;
 
     if (n.form && !n.form.checkValidity()) {
@@ -890,61 +898,68 @@ module.exports = new function () {
     var def = p ? src ? src.value : app.get(n, p) : null;
 
     if (this.opt.customDialog) {
-      this.initDlg(n, h, t, icon, al ? null : function (w) {
-        return _this3.onAnswer(n, f, p, w);
-      }, def, rev);
+      this.open(h, t, al ? null : function (w) {
+        return _this3.onAnswer(n, w, p);
+      }, {
+        ok: app.attr(n, 'data-ok'),
+        cancel: app.attr(n, 'data-cancel'),
+        icon: icon,
+        //class: '',
+        btn: t.substr(0, 1) == ' ' || n && n.className.match(/-[we]\b/) ? 'bg-e' : 'bg-y',
+        def: def,
+        rev: rev
+      });
     } else {
       if (al) v = alert(t); //undef
       else if (!p) v = confirm(t); //bool
         else v = prompt(t, def); //null|value
 
-      this.onAnswer(n, f, p, v);
+      this.onAnswer(n, v, p);
     }
 
     return this.dlg;
   };
 
-  this.onAnswer = function (n, f, p, v) {
-    //call custom func
-    if (f) f.call(this, n, v); //cancelled
-    else if (!v && v !== '') ; //form submit
-      else if (n.form) {
-          if (v !== true) {
-            var i = n.form.elements[p] || app.ins('input', '', {
-              type: 'hidden',
-              name: p
-            }, n.form);
-            if (i) i.value = v;
-          }
+  this.onAnswer = function (n, v, p, e) {
+    //cancelled
+    if (!v && v !== '') ; //form submit
+    else if (n && n.form) {
+        if (v !== true) {
+          var i = n.form.elements[p] || app.ins('input', '', {
+            type: 'hidden',
+            name: p
+          }, n.form);
+          if (i) i.value = v;
+        }
 
-          if (n.form.reportValidity ? n.form.reportValidity() : n.form.checkValidity()) {
-            app.q('[type="hidden"][name="' + n.name + '"]', n.form) || app.ins('input', '', {
-              type: 'hidden',
-              name: n.name,
-              value: n.value
-            }, n.form);
-            n.form.elements[this.opt.aConfirm] || app.ins('input', '', {
-              type: 'hidden',
-              name: this.opt.aConfirm,
-              value: 1
-            }, n.form);
-            n.form.submit();
-          } else toggle.unpop(); //n.click();
+        if (n.form.reportValidity ? n.form.reportValidity() : n.form.checkValidity()) {
+          app.q('[type="hidden"][name="' + n.name + '"]', n.form) || app.ins('input', '', {
+            type: 'hidden',
+            name: n.name,
+            value: n.value
+          }, n.form);
+          n.form.elements[this.opt.aConfirm] || app.ins('input', '', {
+            type: 'hidden',
+            name: this.opt.aConfirm,
+            value: 1
+          }, n.form);
+          n.form.submit();
+        } else toggle.unpop(); //n.click();
 
-        } //goto link
-        else if (n.href) {
-            var ha = app.attr(n, 'href').substr(0, 1) == '#';
-            var bl = n.target == '_blank';
-            if (ha || bl) toggle.unpop();
-            var u;
-            if (ha) u = n.hash;else {
-              var a = {};
-              a[this.opt.aConfirm] = 1;
-              if (v !== true) a[p] = v;
-              u = app.makeUrl(n, a);
-            }
-            if (n.target == '_blank') window.open(u, n.target);else location.href = u;
+      } //goto link
+      else if (n && n.href) {
+          var ha = app.attr(n, 'href').substr(0, 1) == '#';
+          var bl = n.target == '_blank';
+          if (ha || bl) toggle.unpop();
+          var u;
+          if (ha) u = n.hash;else {
+            var a = {};
+            a[this.opt.aConfirm] = 1;
+            if (v !== true) a[p] = v;
+            u = app.makeUrl(n, a);
           }
+          if (n.target == '_blank') window.open(u, n.target);else location.href = u;
+        }
   };
 }();
 
@@ -1184,7 +1199,7 @@ module.exports = new function () {
         var dlg = d.closest('.dlg[id]');
         if (dlg) toggle.toggle(dlg, true);
       } else {
-        dialog.initDlg(null, app.attr(n, dialog.opt.aHead), req.responseText);
+        dialog.open(app.attr(n, dialog.opt.aHead), req.responseText);
       }
     } else console.error('XHTTP request failed', req); //app.fire('after', e);
 

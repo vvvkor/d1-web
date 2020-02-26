@@ -46,7 +46,7 @@ module.exports = new(function () {
         if (dlg) toggle.toggle(dlg, true);
       }
       else {
-        dialog.initDlg(null, app.attr(n, dialog.opt.aHead), req.responseText);
+        dialog.open(app.attr(n, dialog.opt.aHead), req.responseText);
       }
     }
     else console.error('XHTTP request failed', req);
