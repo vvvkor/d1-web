@@ -1,4 +1,4 @@
-/*! d1-web v1.2.34 */
+/*! d1-web v1.2.35 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -293,9 +293,9 @@ svg {
     transform: translate(0, .15em) scale(1.2);
 }
 
-.icon:not(:last-child) {
-    margin-right: .5em;
-    margin-right: var(--gap-s);
+.icon+* {
+    margin-left: .5em;
+    margin-left: var(--gap-s);
 }
 
 ul {

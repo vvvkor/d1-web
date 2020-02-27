@@ -239,7 +239,8 @@ table.hover tr:hover a{color:var(--text-hilite);}
 /* image */
 svg{fill:currentColor;}
 .icon{display:inline-block;width:1em;height:1em;transform:translate(0,.15em) scale(1.2);}
-	.icon:not(:last-child){margin-right:var(--gap-s);}
+	/*.icon:not(:last-child){margin-right:var(--gap-s);}*/
+	.icon+*{margin-left:var(--gap-s);}
 	/*
 		[data-ico]>.icon{margin-right:0;}
 		[data-ico]>.icon~*{display:none;}
