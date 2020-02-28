@@ -1,4 +1,4 @@
-/*! d1-web v1.2.36 */
+/*! d1-web v1.2.37 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -966,7 +966,8 @@ mark {
         margin: 0;
     }
 
-    .btn:not(button), a.btn.fit, button.fit, [type="submit"].fit {
+    .btn:not(a):not(input):not(button), a.btn.fit, button.fit,
+    [type="submit"].fit {
         padding: 0 .5em;
         padding: 0 var(--gap-s);
         border-radius: .2em;

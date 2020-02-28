@@ -477,7 +477,7 @@ mark{background-color:var(--bg-warning);}
 	a.btn,button,input[type="submit"]{padding:var(--gaps-n);border-radius:var(--radius);margin:var(--gap-xs) 0;border-color:transparent;}
 	a.btn,button:not([disabled]),[type="submit"]:not([disabled]){cursor:pointer;}
 	form>a.btn, form>button, form>[type="submit"], form>a>button{padding:var(--gap-xs) var(--gap-s);margin:0;}/* see [.nav a] padding */
-		/*.btn:not(a):not(input):not(button),*/.btn:not(button), a.btn.fit,button.fit,[type="submit"].fit{padding:0 var(--gap-s);border-radius:var(--radius);}
+		.btn:not(a):not(input):not(button), a.btn.fit,button.fit,[type="submit"].fit{padding:0 var(--gap-s);border-radius:var(--radius);}
 	a.btn:hover, button:hover:not([disabled]), [type="submit"]:hover:not([disabled]),
 	a.btn:focus, button:focus, input:focus, select:focus, textarea:focus, [contenteditable]:focus{box-shadow:0 0 0 .15em var(--focus);outline:none;}
 	button[disabled],[type="submit"][disabled]{opacity:.5;}
