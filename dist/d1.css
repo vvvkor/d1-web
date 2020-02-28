@@ -1,4 +1,4 @@
-/*! d1-web v1.2.35 */
+/*! d1-web v1.2.36 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -65,18 +65,18 @@
     --text-btn: #fff;
     --link: #ec6;
     --visited: #ec6;
-    --text-danger: #fcc;
-    --text-warning: #ffe699;
-    --text-success: #cec;
-    --text-info: #bef;
-    --text-lite: #eee;
+    --text-danger: #faa;
+    --text-warning: #fd8;
+    --text-success: #aea;
+    --text-info: #adf;
+    --text-lite: #bbb;
     --text-nav: #ec6;
     --text-vis: #ec6;
     --bg-danger: #c00;
     --bg-warning: #d70;
     --bg-success: #181;
     --bg-info: #08a;
-    --bg-lite: #999;
+    --bg-lite: #666;
     --bg-nav: #970;
     --bg-vis: #970;
     --btn-danger: var(--bg-danger);
@@ -966,7 +966,7 @@ mark {
         margin: 0;
     }
 
-    .btn, a.btn.fit, button.fit, [type="submit"].fit {
+    .btn:not(button), a.btn.fit, button.fit, [type="submit"].fit {
         padding: 0 .5em;
         padding: 0 var(--gap-s);
         border-radius: .2em;
