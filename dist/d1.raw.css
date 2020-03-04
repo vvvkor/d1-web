@@ -1,4 +1,4 @@
-/*! d1-web v1.2.37 */
+/*! d1-web v1.2.38 */
 
 /* @import url("css/columns.css"); */
 
@@ -460,11 +460,15 @@ mark{background-color:var(--bg-warning);}
 	.topbar.off{top:calc(-.1rem - var(--topbar));}
 	.topbar+*{margin-top:var(--topbar);}/*?*/
 	/* option 1. covers previous if position is relative */
+	/*
 	.topbar~* h1[id]:before, .topbar~* h2[id]:before, .topbar~* h3[id]:before,
 	.topbar~* h4[id]:before, .topbar~* h5[id]:before, .topbar~* h5[id]:before
 		{display:block;content:"";height:calc(.5rem + var(--topbar));margin-top:calc(-.5rem - var(--topbar));}/*?*/
 	/* option 2. extra padding instead of collapsible margin */
 	/*.topbar~* h1[id], .topbar~* h2[id], .topbar~* h3[id], .topbar~* h4[id], .topbar~* h5[id], .topbar~* h6[id]{margin-top:0;padding-top:calc(.5rem + var(--topbar));}/*?*/
+	/* option 3. not supported in ie */
+	.topbar~* [id]{scroll-margin-top:calc(1rem + var(--topbar));}
+	
 	.stick{z-index:3;position:sticky;top:0;max-height:100vh;align-self:flex-start;/*stretch*/overflow:auto;box-sizing:border-box;}
 		.topbar~* .stick{top:var(--topbar);max-height:calc(100vh - var(--topbar));}/*?*/
 
