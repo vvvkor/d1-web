@@ -1,4 +1,4 @@
-/*! d1-web v1.2.38 */
+/*! d1-web v1.2.39 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -1290,7 +1290,7 @@ module.exports = {
   pause: [9, 'M2 2h2v5h-2zm3 0h2v5h-2z'],
   stop: [9, 'M2 2h5v5h-5z'],
   rec: [10, 'M5 2a3 3 0 1 0 .01 0z'],
-  layer: [14, 'M1 4l6-3 6 3-6 3zm0 3l2-1 4 2 4-2 2 1-6 3zm0 3l2-1 4 2 4-2 2 1-6 3z'],
+  layer: [14, 'M1 5.5l6-3 6 3-6 3zm0 3l2-1 4 2 4-2 2 1-6 3z'],
   none: [1, 'M1 1z']
 };
 
