@@ -1,4 +1,4 @@
-/*! d1-web v1.2.40 */
+/*! d1-web v1.2.41 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -501,7 +501,7 @@ module.exports = new function () {
 
     if (modal) {
       //let f1 = app.q('input, a:not(.' + app.opt.cClose + ')', modal);
-      var f1 = app.q('input, a.btn, a:not([href="' + app.opt.hClose + '"])', modal);
+      var f1 = app.q('input:not([type="hidden"]), select, textarea, a.btn, a:not([href="' + app.opt.hClose + '"])', modal);
       var f = app.q(':focus', modal);
 
       if (f1 && !f && (!n || !n.nodeType || !modal.contains(n))) {

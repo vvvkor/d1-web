@@ -90,7 +90,7 @@ module.exports = new(function () {
     app.dbg(['after', n, modal, s.paddingRight]);
     if(modal){
       //let f1 = app.q('input, a:not(.' + app.opt.cClose + ')', modal);
-      let f1 = app.q('input, a.btn, a:not([href="' + app.opt.hClose + '"])', modal);
+      let f1 = app.q('input:not([type="hidden"]), select, textarea, a.btn, a:not([href="' + app.opt.hClose + '"])', modal);
       let f = app.q(':focus', modal);
       if(f1 && !f && (!n || !n.nodeType || !modal.contains(n))){
         app.dbg(['focus', n, modal, f1, f]);
