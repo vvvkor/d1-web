@@ -83,7 +83,7 @@ module.exports = new(function() {
     n.vInp = fq
       ? document.querySelector(fq)
       : n.querySelector('[name="_q"]');
-    n.vRep = app.q(app.attr(n, this.opt.aRep));
+    n.vRep = app.q(app.attr(n, this.opt.aRep, ''));
     if(!n.vInp && !n.vRep && n.classList.contains(this.opt.cFilter)) this.addFilter(n);
     
     if (n.vInp) {
@@ -185,7 +185,7 @@ module.exports = new(function() {
     let cnt = 0;
     let i, j, data, s, hide;
     if (!n.vCols) {
-      n.vCols = app.attr(n, 'data-filter-cols');
+      n.vCols = app.attr(n, 'data-filter-cols', '');
       n.vCols = n.vCols ? n.vCols.split(/\D+/) : false;
       if (n.vCols && this.opt.cScan)
         for (i = 0; i < n.vCols.length; i++) {
@@ -222,7 +222,7 @@ module.exports = new(function() {
   this.countTotal = function(n, m, cnt){
     let d = n.vData;
     let j = m.closest('th, td').cellIndex;
-    let a = app.attr(m, 'data-total');
+    let a = app.attr(m, 'data-total', '');
     let dec = parseInt(app.attr(m, 'data-dec', 2), 10);
     let mode = app.attr(m, 'data-mode', /*'n'*/ n.vTypes[j]);
     let r = 0;

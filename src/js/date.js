@@ -1,4 +1,4 @@
-/*! date - parse and formate date */
+/*! date - parse and format date */
 
 module.exports = new(function() {
 
@@ -6,7 +6,7 @@ module.exports = new(function() {
 
   this.parse = function(s) {
     let d = '';
-    let m = s.match(/^(\d+)(\D)(\d+)\D(\d+)(\D(\d+))?(\D(\d+))?(\D(\d+))?(\D(\d+))?$/);
+    let m = (s || '').match(/^(\d+)(\D)(\d+)\D(\d+)(\D(\d+))?(\D(\d+))?(\D(\d+))?(\D(\d+))?$/);
     if (m) {
       let x;
       if (m[2] == '.') x = [4, 3, 1]; //d.m.Y

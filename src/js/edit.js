@@ -88,7 +88,7 @@ module.exports = new(function () {
         z.id = 'wys-' + n.id;
         app.b('[for="' + n.id + '"]', 'click', e => app.vis(z) ? z.focus() : null);
       }
-      let t = (app.attr(n, 'data-tools') || this.opt.tools).split('');
+      let t = app.attr(n, 'data-tools', this.opt.tools).split('');
       let to = m;
       for (let i in t) {
         let b = this.btn[t[i]];
@@ -112,9 +112,9 @@ module.exports = new(function () {
   }
   
   this.modeAuto = function(n){
-    let t = (app.attr(n, 'data-tools') || this.opt.tools).split('');
-    let wys = app.attr(n, 'data-wys', false);
-    if(wys===false) wys = (t.indexOf('/')==-1) || (n.value.match(/(>|&\w+;)/) && !n.value.match(/<script/i));
+    let t = app.attr(n, 'data-tools', this.opt.tools).split('');
+    let wys = app.attr(n, 'data-wys');
+    if(wys===null) wys = (t.indexOf('/')==-1) || (n.value.match(/(>|&\w+;)/) && !n.value.match(/<script/i));
     this.mode(n.theWys, wys);
   }
 

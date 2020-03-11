@@ -89,13 +89,15 @@ module.exports = new(function () {
   
   this.switchMonth = function(n, y, m, d, ch, ci, e){
     e.preventDefault();
+    e.stopPropagation();
     if(d>28){
       let days = (new Date(y, m+1, 0)).getDate();//days in month
       d = Math.min(d, days);
     }
     let h = ch ? parseInt(ch.textContent, 10) : 0;
     let i = ci ? parseInt(ci.textContent, 10) : 0;
-    this.openDialog(n, new Date(y, m, d, h, i), e);
+    //this.openDialog(n, new Date(y, m, d, h, i), e);
+    this.build(n, new Date(y, m, d, h, i));
   }
   
   this.openDialog = function(n, d, e){
@@ -146,7 +148,7 @@ module.exports = new(function () {
   
   this.build = function(n, x){
     app.clr(this.win);
-    if (typeof x === 'string') x = this.parse(x || app.attr(n, 'data-def'));
+    if (typeof x === 'string') x = this.parse(x || app.attr(n, 'data-def', ''));
     let min = this.getLimit(n, 'min', 0);
     let max = this.getLimit(n, 'max', 0);
     //time

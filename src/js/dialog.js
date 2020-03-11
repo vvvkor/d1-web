@@ -80,13 +80,13 @@ module.exports = new(function () {
       if(n.form.reportValidity) n.form.reportValidity();
       return;
     }
-    let h = app.attr(n, this.opt.aHead).replace(/%([\w\-]+)%/g, (m, a) => n.getAttribute(a));
-    let icon = app.attr(n, this.opt.aPic);
-    let p = app.attr(n, this.opt.aPrompt);
+    let h = app.attr(n, this.opt.aHead, '').replace(/%([\w\-]+)%/g, (m, a) => n.getAttribute(a));
+    let icon = app.attr(n, this.opt.aPic, '');
+    let p = app.attr(n, this.opt.aPrompt, '');
     let t = app.attr(n, app.opt.aCaption, n.title || p || '!').replace(/%([\w\-]+)%/g, (m, a) => n.getAttribute(a));
     let rev = app.attr(n, 'data-reverse');
     let src = app.attr(n, 'data-src');
-    let go = app.attr(n, 'data-go', null);
+    let go = app.attr(n, 'data-go');
     src = src ? app.q(src) : null;
     if(!src && n.form) src = n.form.elements[p];
     let v = null;
@@ -96,8 +96,8 @@ module.exports = new(function () {
     if(def && go!==null) this.onAnswer(n, def, p);//go with default
     else if(this.opt.customDialog){
       this.open(h, t, al ? null : (w => this.onAnswer(n, w, p)), {
-        ok: app.attr(n, 'data-ok'),
-        cancel: app.attr(n, 'data-cancel'),
+        ok: app.attr(n, 'data-ok', ''),
+        cancel: app.attr(n, 'data-cancel', ''),
         icon: icon,
         //class: '',
         btn: (t.substr(0,1)==' ' || (n && n.className.match(/-[we]\b/))) ? 'bg-e' : 'bg-y',
@@ -133,7 +133,7 @@ module.exports = new(function () {
     }
     //goto link
     else if(n && n.href){
-      let ha = (app.attr(n, 'href').substr(0, 1)=='#');
+      let ha = (app.attr(n, 'href', '').substr(0, 1)=='#');
       let bl = (n.target=='_blank');
       if(ha || bl) toggle.unpop();
       let u;

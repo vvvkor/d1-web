@@ -69,10 +69,10 @@ module.exports = new(function () {
           id: this.opt.idPrefix + s,
           href: '#' + this.opt.idPrefix + (i==z-1 ? first : s+1)
           }, g);
-      //p.style.setProperty('--img', 'url("' + app.attr(a[i], 'href') + '")');
-      //p.style.backgroundImage = 'url("' + app.attr(a[i], 'href') + '")';//preload all
-      p.vLink = app.attr(a[i], 'href');//real link
-      p.vImg = app.attr(a[i], 'href');//preload prev & next
+      //p.style.setProperty('--img', 'url("' + app.attr(a[i], 'href', '') + '")');
+      //p.style.backgroundImage = 'url("' + app.attr(a[i], 'href', '') + '")';//preload all
+      p.vLink = app.attr(a[i], 'href', '');//real link
+      p.vImg = app.attr(a[i], 'href', '');//preload prev & next
       p.setAttribute(app.opt.aCaption, (this.opt.num ? (i+1)+'/'+z+(a[i].title ? ' - ' : '') : '') + (a[i].title || ''));
       a[i].href = '#' + p.id;
       a[i].vDone = 1;

@@ -69,19 +69,19 @@ module.exports = new(function () {
   this.setClass = function(n, on, m, c){
     app.dbg(['setclass', m, c]);
     let sel = (n.type == 'radio' || n.tagName=='SELECT');
-    let u = sel ? false /*''*/ : app.attr(n, this.opt.aUnset, false);
+    let u = sel ? null /*''*/ : app.attr(n, this.opt.aUnset);
     let attr = app.attr(n, this.opt.aAttr) || 'class';
     if(attr !== 'class'){
       let v = on ? c : (u || '');
       if(v) m.setAttribute(attr, v);
       else m.removeAttribute(attr);
     }
-    else if(u !== false) m.className = on ? c : (u || '');
+    else if(u !== null) m.className = on ? c : (u || '');
     else{
       if(sel){
         //unset other select/radio values
         let u = (n.type == 'radio')
-          ? app.qq('input[type="radio"][name="' + n.name + '"]').map(nn => /*app.attr(nn, this.opt.aSet)*/nn.value).join(' ')
+          ? app.qq('input[type="radio"][name="' + n.name + '"]').map(nn => /*app.attr(nn, this.opt.aSet, '')*/nn.value).join(' ')
           : app.qq('option', n).map(nn => nn.value).join(' ');
         u.split(/\s+/).filter(cc => cc).forEach(cc => m.classList.remove(cc));
       }
@@ -96,7 +96,7 @@ module.exports = new(function () {
     let box = (n.type == 'checkbox' || n.type == 'radio');
     let sel = (n.tagName == 'SELECT' || n.type == 'radio');
     let q = app.attr(n, this.opt.aNodes, n.hash);
-    let c = sel ? n.value : app.attr(n, this.opt.aSet, false);
+    let c = sel ? n.value : app.attr(n, this.opt.aSet);
     let on = sel ? true : (box ? n.checked : n.classList.contains(app.opt.cAct));
     if(e && !box && !sel){
       on = !on;
@@ -104,7 +104,7 @@ module.exports = new(function () {
       e.stopPropagation();
     }
     //app.dbg(['setclass?', c, on, q, e, box, sel]);
-    if (c !== false){
+    if (c !== null){
       app.e(q, m => this.setClass(n, on, m, c));
       app.fire('updated', {q: q});
     }
@@ -124,8 +124,8 @@ module.exports = new(function () {
   this.onResize = function() {
     let m = (window.innerWidth <= this.opt.minDesktop);
     m
-      ? app.e('[data-class-mobile]', n => n.className = app.attr(n, 'data-class-mobile'))
-      : app.e('[data-class-desktop]', n => n.className = app.attr(n, 'data-class-desktop'));
+      ? app.e('[data-class-mobile]', n => n.className = app.attr(n, 'data-class-mobile', ''))
+      : app.e('[data-class-desktop]', n => n.className = app.attr(n, 'data-class-desktop', ''));
   }
 
 })();

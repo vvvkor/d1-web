@@ -23,8 +23,8 @@ module.exports = new(function () {
   this.icons = iconset;
 
   this.init = function () {
-    //app.e('[' + this.opt.aReplace + ']',  n => this.addIcon(app.attr(n, this.opt.aReplace), n, true));
-    //app.e('[' + this.opt.aAdd + ']', n => this.addIcon(app.attr(n, this.opt.aAdd), n));
+    //app.e('[' + this.opt.aReplace + ']',  n => this.addIcon(app.attr(n, this.opt.aReplace, ''), n, true));
+    //app.e('[' + this.opt.aAdd + ']', n => this.addIcon(app.attr(n, this.opt.aAdd, ''), n));
     app.e(this.opt.qIcon, n => this.iconize(n));
   }
   

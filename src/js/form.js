@@ -30,14 +30,14 @@ module.exports = new(function () {
   }
 
   this.checkBoxes = function(n) {
-    app.e(app.qq('input[type="checkbox"][class~="' + app.attr(n, 'data-group') + '"]', n.form),
+    app.e(app.qq('input[type="checkbox"][class~="' + app.attr(n, 'data-group', '') + '"]', n.form),
       m => m.checked = n.checked);
   }
   
   this.setValue = function(n) {
     let d = app.q(n.hash);
     if (d) {
-      d.value = app.attr(n, 'data-value');
+      d.value = app.attr(n, 'data-value', '');
       toggle.unpop(d, true);
       //toggle.after(); //generally not needed
     }

@@ -88,7 +88,7 @@ module.exports = new(function () {
   }
   
   this.find = function(n){
-    let u = encodeURI(decodeURI(app.makeUrl(app.attr(n, this.opt.aLookup), {
+    let u = encodeURI(decodeURI(app.makeUrl(app.attr(n, this.opt.aLookup, ''), {
         //value: n.vCap.value,
         seq: this.seq,
         time: (new Date()).getTime()
@@ -122,7 +122,7 @@ module.exports = new(function () {
     app.clr(this.win);
     let ul = app.ins('ul', '', {className: 'nav let hover'}, this.win);
     let w, j = 0;
-    let go = app.attr(n, this.opt.aGoto);
+    let go = app.attr(n, this.opt.aGoto, '');
     for(let i in d){
       w = app.ins('li', '', {}, ul);
       let a = app.ins('a', '', {href: go ? go.replace(/\{id\}/, d[i].id) : '#' + d[i].id, className: '-pad -hover'}, w);
@@ -185,18 +185,18 @@ module.exports = new(function () {
   
   this.go = function(n, e){
     e.preventDefault();
-    let u = app.attr(n, this.opt.aUrl);
+    let u = app.attr(n, this.opt.aUrl, '');
     if(n.value.length>0 && u) location.href = encodeURI(decodeURI(u).replace(/\{id\}/, n.value));
   }
 
   // update chain
   
   this.updateChain = function(n){
-    let m = app.q(app.attr(n, 'data-chain'),0);
+    let m = app.q(app.attr(n, 'data-chain', ''), 0);
     if(m){
       if(!n.value) this.setOptions(m,[]);
       else{
-        let u = app.attr(m, this.opt.aList).replace(/\{q\}/,n.value);
+        let u = app.attr(m, this.opt.aList, '').replace(/\{q\}/,n.value);
         if(m.vCache && m.vCache[u]) this.setOptions(m,m.vCache[u]);
         else fetch.fetch(u, this.onChainData.bind(this, u, m));
       }
@@ -219,7 +219,7 @@ module.exports = new(function () {
     }
     else{
       app.clr(n);
-      let z = app.attr(n, 'data-placeholder') || '';
+      let z = app.attr(n, 'data-placeholder', '');
       if(!a || a.length==0 || z) app.ins('option', z || '-', {value: ''}, n);
       if(a) a.forEach(v => app.ins('option', v.nm, {value: v.id}, n));
     }
@@ -227,7 +227,7 @@ module.exports = new(function () {
   
   this.store = function(n,u,d){
     let c = app.attr(n, 'data-cache');
-    if(c===undefined) c = this.opt.cacheLimit;
+    if(c===null) c = this.opt.cacheLimit;
     c = parseInt(c, 10);
     if(c){
       if(!n.vCache || Object.keys(n.vCache).length>=c) n.vCache = {};

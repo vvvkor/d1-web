@@ -1,4 +1,4 @@
-/*! d1-web v1.2.39 */
+/*! d1-web v1.2.40 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -961,12 +961,15 @@ mark {
         margin: 0;
     }
 
-    .btn:not(a):not(input):not(button), a.btn.fit, button.fit,
+    .btn[class], button.fit {
+        border-radius: .2em;
+        border-radius: var(--radius);
+    }
+
+    .btn:not(a):not(input):not(button):not(.pad), a.btn.fit, button.fit,
     [type="submit"].fit {
         padding: 0 .5em;
         padding: 0 var(--gap-s);
-        border-radius: .2em;
-        border-radius: var(--radius);
     }
 
     a.btn:hover, button:hover:not([disabled]),

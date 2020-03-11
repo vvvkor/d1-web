@@ -30,14 +30,14 @@ module.exports = new(function () {
   
   this.applyControl = function(n){
     let f = n.closest(this.opt.qFilter);
-    let x = app.attr(n, this.opt.aFilter).split(/=/, 2);
+    let x = app.attr(n, this.opt.aFilter, '').split(/=/, 2);
     if(f){
       if(x[0]){
         let a = this.opt.aFilter + '-' + x[0];
         let v = (n.tagName=='SELECT' ? n.value : x[1]) || '';
         if(v.substr(0, 1) == '+' && v.length>1){
           v = v.substr(1);
-          let w = app.attr(f, a).split(/;/);
+          let w = app.attr(f, a, '').split(/;/);
           let i = w.indexOf(v);
           if(i==-1) w.push(v);
           else delete w[i];
@@ -65,7 +65,7 @@ module.exports = new(function () {
   
   this.match = function(n, f){
     let r = true;
-    Object.keys(f).forEach(k => (f[k] && f[k].length > 0 && f[k].indexOf(app.attr(n, 'data-' + k))==-1) ? (r = false) : null);
+    Object.keys(f).forEach(k => (f[k] && f[k].length > 0 && f[k].indexOf(app.attr(n, 'data-' + k, ''))==-1) ? (r = false) : null);
     return r;
   }
   
@@ -74,11 +74,11 @@ module.exports = new(function () {
     if(n.tagName=='A') n.classList[u ? 'add' : 'remove'](app.opt.cAct);
     else if(n.type=='checkbox') n.checked = u;
     else if(n.type=='radio') n.checked = u;
-    else if(n.tagName=='SELECT') n.value = (f[app.attr(n, this.opt.aFilter)] || [''])[0];
+    else if(n.tagName=='SELECT') n.value = (f[app.attr(n, this.opt.aFilter, '')] || [''])[0];
   }
 
   this.used = function(n, f){
-    let x = app.attr(n, this.opt.aFilter).split(/=\+?/, 2);
+    let x = app.attr(n, this.opt.aFilter, '').split(/=\+?/, 2);
     return (x[0] && !f[x[0]] && !x[1]) || (f[x[0]] && f[x[0]].length > 0 && f[x[0]].indexOf(x[1]) != -1);
     //return ((f[x[0]] || '') == (x[1] || ''));
   }
@@ -93,7 +93,7 @@ module.exports = new(function () {
       if(f){
         //create attributes if not exist
         app.e(app.qq('[' + this.opt.aFilter + ']', n), m => {
-          let x = app.attr(m, this.opt.aFilter).split(/=/);
+          let x = app.attr(m, this.opt.aFilter, '').split(/=/);
           if(x[0]){
             x = this.opt.aFilter + '-' + x[0];
             if(!n.hasAttribute(x)) n.setAttribute(x, '');

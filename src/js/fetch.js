@@ -26,7 +26,7 @@ module.exports = new(function () {
   }
 
   this.fetchBy = function(n, f) {
-    this.fetch(app.attr(n, 'href'), r => f ? f(n, r) : this.recv(n, r));
+    this.fetch(app.attr(n, 'href', ''), r => f ? f(n, r) : this.recv(n, r));
   }
 
   this.fetch = function(url, f) {
@@ -38,7 +38,7 @@ module.exports = new(function () {
 
   this.recv = function(n, req, e) {
     // JSON.parse(req.responseText)
-    let d = app.q(app.attr(n, 'data-target'));
+    let d = app.q(app.attr(n, 'data-target', ''));
     if (req.status == '200') {
       if (d) {
         d.innerHTML = req.responseText;
@@ -46,7 +46,7 @@ module.exports = new(function () {
         if (dlg) toggle.toggle(dlg, true);
       }
       else {
-        dialog.open(app.attr(n, dialog.opt.aHead), req.responseText);
+        dialog.open(app.attr(n, dialog.opt.aHead, ''), req.responseText);
       }
     }
     else console.error('XHTTP request failed', req);

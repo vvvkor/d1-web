@@ -1,4 +1,4 @@
-/*! d1-web v1.2.39 */
+/*! d1-web v1.2.40 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -242,7 +242,7 @@ module.exports = new function () {
   };
 
   this.attr = function (n, a, def) {
-    return n && n.hasAttribute(a) ? n.getAttribute(a) : def !== undefined ? def : '';
+    return n && n.hasAttribute(a) ? n.getAttribute(a) : def !== undefined ? def : null;
   }; //pos: -1=before, false=prepend, 0=append(default), 1=after
 
 
@@ -879,17 +879,17 @@ module.exports = new function () {
       return;
     }
 
-    var h = app.attr(n, this.opt.aHead).replace(/%([\w\-]+)%/g, function (m, a) {
+    var h = app.attr(n, this.opt.aHead, '').replace(/%([\w\-]+)%/g, function (m, a) {
       return n.getAttribute(a);
     });
-    var icon = app.attr(n, this.opt.aPic);
-    var p = app.attr(n, this.opt.aPrompt);
+    var icon = app.attr(n, this.opt.aPic, '');
+    var p = app.attr(n, this.opt.aPrompt, '');
     var t = app.attr(n, app.opt.aCaption, n.title || p || '!').replace(/%([\w\-]+)%/g, function (m, a) {
       return n.getAttribute(a);
     });
     var rev = app.attr(n, 'data-reverse');
     var src = app.attr(n, 'data-src');
-    var go = app.attr(n, 'data-go', null);
+    var go = app.attr(n, 'data-go');
     src = src ? app.q(src) : null;
     if (!src && n.form) src = n.form.elements[p];
     var v = null;
@@ -900,8 +900,8 @@ module.exports = new function () {
         this.open(h, t, al ? null : function (w) {
           return _this3.onAnswer(n, w, p);
         }, {
-          ok: app.attr(n, 'data-ok'),
-          cancel: app.attr(n, 'data-cancel'),
+          ok: app.attr(n, 'data-ok', ''),
+          cancel: app.attr(n, 'data-cancel', ''),
           icon: icon,
           //class: '',
           btn: t.substr(0, 1) == ' ' || n && n.className.match(/-[we]\b/) ? 'bg-e' : 'bg-y',
@@ -946,7 +946,7 @@ module.exports = new function () {
 
       } //goto link
       else if (n && n.href) {
-          var ha = app.attr(n, 'href').substr(0, 1) == '#';
+          var ha = app.attr(n, 'href', '').substr(0, 1) == '#';
           var bl = n.target == '_blank';
           if (ha || bl) toggle.unpop();
           var u;
@@ -965,13 +965,13 @@ module.exports = new function () {
 /* 4 */
 /***/ (function(module, exports) {
 
-/*! date - parse and formate date */
+/*! date - parse and format date */
 module.exports = new function () {
   "use strict";
 
   this.parse = function (s) {
     var d = '';
-    var m = s.match(/^(\d+)(\D)(\d+)\D(\d+)(\D(\d+))?(\D(\d+))?(\D(\d+))?(\D(\d+))?$/);
+    var m = (s || '').match(/^(\d+)(\D)(\d+)\D(\d+)(\D(\d+))?(\D(\d+))?(\D(\d+))?(\D(\d+))?$/);
 
     if (m) {
       var x;
@@ -1095,12 +1095,12 @@ module.exports = new function () {
         var p = app.ins('a', '', {
           id: this.opt.idPrefix + s,
           href: '#' + this.opt.idPrefix + (i == z - 1 ? first : s + 1)
-        }, g); //p.style.setProperty('--img', 'url("' + app.attr(a[i], 'href') + '")');
-        //p.style.backgroundImage = 'url("' + app.attr(a[i], 'href') + '")';//preload all
+        }, g); //p.style.setProperty('--img', 'url("' + app.attr(a[i], 'href', '') + '")');
+        //p.style.backgroundImage = 'url("' + app.attr(a[i], 'href', '') + '")';//preload all
 
-        p.vLink = app.attr(a[i], 'href'); //real link
+        p.vLink = app.attr(a[i], 'href', ''); //real link
 
-        p.vImg = app.attr(a[i], 'href'); //preload prev & next
+        p.vImg = app.attr(a[i], 'href', ''); //preload prev & next
 
         p.setAttribute(app.opt.aCaption, (this.opt.num ? i + 1 + '/' + z + (a[i].title ? ' - ' : '') : '') + (a[i].title || ''));
         a[i].href = '#' + p.id;
@@ -1172,7 +1172,7 @@ module.exports = new function () {
   this.fetchBy = function (n, f) {
     var _this2 = this;
 
-    this.fetch(app.attr(n, 'href'), function (r) {
+    this.fetch(app.attr(n, 'href', ''), function (r) {
       return f ? f(n, r) : _this2.recv(n, r);
     });
   };
@@ -1189,7 +1189,7 @@ module.exports = new function () {
 
   this.recv = function (n, req, e) {
     // JSON.parse(req.responseText)
-    var d = app.q(app.attr(n, 'data-target'));
+    var d = app.q(app.attr(n, 'data-target', ''));
 
     if (req.status == '200') {
       if (d) {
@@ -1197,7 +1197,7 @@ module.exports = new function () {
         var dlg = d.closest('.dlg[id]');
         if (dlg) toggle.toggle(dlg, true);
       } else {
-        dialog.open(app.attr(n, dialog.opt.aHead), req.responseText);
+        dialog.open(app.attr(n, dialog.opt.aHead, ''), req.responseText);
       }
     } else console.error('XHTTP request failed', req); //app.fire('after', e);
 
@@ -1290,7 +1290,7 @@ module.exports = {
   pause: [9, 'M2 2h2v5h-2zm3 0h2v5h-2z'],
   stop: [9, 'M2 2h5v5h-5z'],
   rec: [10, 'M5 2a3 3 0 1 0 .01 0z'],
-  layer: [14, 'M1 5.5l6-3 6 3-6 3zm0 3l2-1 4 2 4-2 2 1-6 3z'],
+  layers: [14, 'M1 5.5l6-3 6 3-6 3zm0 3l2-1 4 2 4-2 2 1-6 3z'],
   none: [1, 'M1 1z']
 };
 
@@ -1505,6 +1505,7 @@ module.exports = new function () {
 
   this.switchMonth = function (n, y, m, d, ch, ci, e) {
     e.preventDefault();
+    e.stopPropagation();
 
     if (d > 28) {
       var days = new Date(y, m + 1, 0).getDate(); //days in month
@@ -1513,8 +1514,9 @@ module.exports = new function () {
     }
 
     var h = ch ? parseInt(ch.textContent, 10) : 0;
-    var i = ci ? parseInt(ci.textContent, 10) : 0;
-    this.openDialog(n, new Date(y, m, d, h, i), e);
+    var i = ci ? parseInt(ci.textContent, 10) : 0; //this.openDialog(n, new Date(y, m, d, h, i), e);
+
+    this.build(n, new Date(y, m, d, h, i));
   };
 
   this.openDialog = function (n, d, e) {
@@ -1569,7 +1571,7 @@ module.exports = new function () {
     var _this3 = this;
 
     app.clr(this.win);
-    if (typeof x === 'string') x = this.parse(x || app.attr(n, 'data-def'));
+    if (typeof x === 'string') x = this.parse(x || app.attr(n, 'data-def', ''));
     var min = this.getLimit(n, 'min', 0);
     var max = this.getLimit(n, 'max', 0); //time
 
@@ -1973,8 +1975,7 @@ module.exports = new function () {
           });
         }
 
-        var t = (app.attr(n, 'data-tools') || _this2.opt.tools).split('');
-
+        var t = app.attr(n, 'data-tools', _this2.opt.tools).split('');
         var to = m;
 
         var _loop = function _loop(i) {
@@ -2021,9 +2022,9 @@ module.exports = new function () {
   };
 
   this.modeAuto = function (n) {
-    var t = (app.attr(n, 'data-tools') || this.opt.tools).split('');
-    var wys = app.attr(n, 'data-wys', false);
-    if (wys === false) wys = t.indexOf('/') == -1 || n.value.match(/(>|&\w+;)/) && !n.value.match(/<script/i);
+    var t = app.attr(n, 'data-tools', this.opt.tools).split('');
+    var wys = app.attr(n, 'data-wys');
+    if (wys === null) wys = t.indexOf('/') == -1 || n.value.match(/(>|&\w+;)/) && !n.value.match(/<script/i);
     this.mode(n.theWys, wys);
   };
 
@@ -2192,7 +2193,7 @@ module.exports = new function () {
 
   this.applyControl = function (n) {
     var f = n.closest(this.opt.qFilter);
-    var x = app.attr(n, this.opt.aFilter).split(/=/, 2);
+    var x = app.attr(n, this.opt.aFilter, '').split(/=/, 2);
 
     if (f) {
       if (x[0]) {
@@ -2201,7 +2202,7 @@ module.exports = new function () {
 
         if (v.substr(0, 1) == '+' && v.length > 1) {
           v = v.substr(1);
-          var w = app.attr(f, a).split(/;/);
+          var w = app.attr(f, a, '').split(/;/);
           var i = w.indexOf(v);
           if (i == -1) w.push(v);else delete w[i];
           v = w.filter(function (val, key, arr) {
@@ -2241,18 +2242,18 @@ module.exports = new function () {
   this.match = function (n, f) {
     var r = true;
     Object.keys(f).forEach(function (k) {
-      return f[k] && f[k].length > 0 && f[k].indexOf(app.attr(n, 'data-' + k)) == -1 ? r = false : null;
+      return f[k] && f[k].length > 0 && f[k].indexOf(app.attr(n, 'data-' + k, '')) == -1 ? r = false : null;
     });
     return r;
   };
 
   this.setUsed = function (n, f) {
     var u = this.used(n, f);
-    if (n.tagName == 'A') n.classList[u ? 'add' : 'remove'](app.opt.cAct);else if (n.type == 'checkbox') n.checked = u;else if (n.type == 'radio') n.checked = u;else if (n.tagName == 'SELECT') n.value = (f[app.attr(n, this.opt.aFilter)] || [''])[0];
+    if (n.tagName == 'A') n.classList[u ? 'add' : 'remove'](app.opt.cAct);else if (n.type == 'checkbox') n.checked = u;else if (n.type == 'radio') n.checked = u;else if (n.tagName == 'SELECT') n.value = (f[app.attr(n, this.opt.aFilter, '')] || [''])[0];
   };
 
   this.used = function (n, f) {
-    var x = app.attr(n, this.opt.aFilter).split(/=\+?/, 2);
+    var x = app.attr(n, this.opt.aFilter, '').split(/=\+?/, 2);
     return x[0] && !f[x[0]] && !x[1] || f[x[0]] && f[x[0]].length > 0 && f[x[0]].indexOf(x[1]) != -1; //return ((f[x[0]] || '') == (x[1] || ''));
   };
 
@@ -2269,7 +2270,7 @@ module.exports = new function () {
       if (f) {
         //create attributes if not exist
         app.e(app.qq('[' + this.opt.aFilter + ']', n), function (m) {
-          var x = app.attr(m, _this3.opt.aFilter).split(/=/);
+          var x = app.attr(m, _this3.opt.aFilter, '').split(/=/);
 
           if (x[0]) {
             x = _this3.opt.aFilter + '-' + x[0];
@@ -2333,7 +2334,7 @@ module.exports = new function () {
   this.prepareFlipTable = function (t) {
     var ths = app.qq('thead th', t);
     var tds = app.qq('tbody tr>*, tfoot tr>*', t);
-    var order = (app.attr(t, 'data-order') || '0 1 2 3').split(/\D+/); //t.parentNode.classList.remove('roll');
+    var order = app.attr(t, 'data-order', '0 1 2 3').split(/\D+/); //t.parentNode.classList.remove('roll');
 
     for (var i = 0; i < tds.length; i++) {
       var td = tds[i];
@@ -2403,7 +2404,7 @@ module.exports = new function () {
   };
 
   this.checkBoxes = function (n) {
-    app.e(app.qq('input[type="checkbox"][class~="' + app.attr(n, 'data-group') + '"]', n.form), function (m) {
+    app.e(app.qq('input[type="checkbox"][class~="' + app.attr(n, 'data-group', '') + '"]', n.form), function (m) {
       return m.checked = n.checked;
     });
   };
@@ -2412,7 +2413,7 @@ module.exports = new function () {
     var d = app.q(n.hash);
 
     if (d) {
-      d.value = app.attr(n, 'data-value');
+      d.value = app.attr(n, 'data-value', '');
       toggle.unpop(d, true); //toggle.after(); //generally not needed
     }
   };
@@ -2460,8 +2461,8 @@ module.exports = new function () {
   this.init = function () {
     var _this = this;
 
-    //app.e('[' + this.opt.aReplace + ']',  n => this.addIcon(app.attr(n, this.opt.aReplace), n, true));
-    //app.e('[' + this.opt.aAdd + ']', n => this.addIcon(app.attr(n, this.opt.aAdd), n));
+    //app.e('[' + this.opt.aReplace + ']',  n => this.addIcon(app.attr(n, this.opt.aReplace, ''), n, true));
+    //app.e('[' + this.opt.aAdd + ']', n => this.addIcon(app.attr(n, this.opt.aAdd, ''), n));
     app.e(this.opt.qIcon, function (n) {
       return _this.iconize(n);
     });
@@ -2752,7 +2753,7 @@ module.exports = new function () {
   };
 
   this.find = function (n) {
-    var u = encodeURI(decodeURI(app.makeUrl(app.attr(n, this.opt.aLookup), {
+    var u = encodeURI(decodeURI(app.makeUrl(app.attr(n, this.opt.aLookup, ''), {
       //value: n.vCap.value,
       seq: this.seq,
       time: new Date().getTime()
@@ -2792,7 +2793,7 @@ module.exports = new function () {
     }, this.win);
     var w,
         j = 0;
-    var go = app.attr(n, this.opt.aGoto);
+    var go = app.attr(n, this.opt.aGoto, '');
 
     var _loop = function _loop(i) {
       w = app.ins('li', '', {}, ul);
@@ -2871,17 +2872,17 @@ module.exports = new function () {
 
   this.go = function (n, e) {
     e.preventDefault();
-    var u = app.attr(n, this.opt.aUrl);
+    var u = app.attr(n, this.opt.aUrl, '');
     if (n.value.length > 0 && u) location.href = encodeURI(decodeURI(u).replace(/\{id\}/, n.value));
   }; // update chain
 
 
   this.updateChain = function (n) {
-    var m = app.q(app.attr(n, 'data-chain'), 0);
+    var m = app.q(app.attr(n, 'data-chain', ''), 0);
 
     if (m) {
       if (!n.value) this.setOptions(m, []);else {
-        var u = app.attr(m, this.opt.aList).replace(/\{q\}/, n.value);
+        var u = app.attr(m, this.opt.aList, '').replace(/\{q\}/, n.value);
         if (m.vCache && m.vCache[u]) this.setOptions(m, m.vCache[u]);else fetch.fetch(u, this.onChainData.bind(this, u, m));
       }
     }
@@ -2906,7 +2907,7 @@ module.exports = new function () {
       }
     } else {
       app.clr(n);
-      var z = app.attr(n, 'data-placeholder') || '';
+      var z = app.attr(n, 'data-placeholder', '');
       if (!a || a.length == 0 || z) app.ins('option', z || '-', {
         value: ''
       }, n);
@@ -2920,7 +2921,7 @@ module.exports = new function () {
 
   this.store = function (n, u, d) {
     var c = app.attr(n, 'data-cache');
-    if (c === undefined) c = this.opt.cacheLimit;
+    if (c === null) c = this.opt.cacheLimit;
     c = parseInt(c, 10);
 
     if (c) {
@@ -3152,7 +3153,7 @@ module.exports = new function () {
     n.vCase = n.getAttribute('data-case') !== null;
     var fq = app.attr(n, this.opt.aFilter);
     n.vInp = fq ? document.querySelector(fq) : n.querySelector('[name="_q"]');
-    n.vRep = app.q(app.attr(n, this.opt.aRep));
+    n.vRep = app.q(app.attr(n, this.opt.aRep, ''));
     if (!n.vInp && !n.vRep && n.classList.contains(this.opt.cFilter)) this.addFilter(n);
 
     if (n.vInp) {
@@ -3270,7 +3271,7 @@ module.exports = new function () {
     var i, j, data, s, hide;
 
     if (!n.vCols) {
-      n.vCols = app.attr(n, 'data-filter-cols');
+      n.vCols = app.attr(n, 'data-filter-cols', '');
       n.vCols = n.vCols ? n.vCols.split(/\D+/) : false;
       if (n.vCols && this.opt.cScan) for (i = 0; i < n.vCols.length; i++) {
         if (n.vHead[n.vCols[i]]) n.vHead[n.vCols[i]].classList.add(this.opt.cScan);
@@ -3319,7 +3320,7 @@ module.exports = new function () {
 
     var d = n.vData;
     var j = m.closest('th, td').cellIndex;
-    var a = app.attr(m, 'data-total');
+    var a = app.attr(m, 'data-total', '');
     var dec = parseInt(app.attr(m, 'data-dec', 2), 10);
     var mode = app.attr(m, 'data-mode',
     /*'n'*/
@@ -3677,20 +3678,20 @@ module.exports = new function () {
   this.setClass = function (n, on, m, c) {
     app.dbg(['setclass', m, c]);
     var sel = n.type == 'radio' || n.tagName == 'SELECT';
-    var u = sel ? false
+    var u = sel ? null
     /*''*/
-    : app.attr(n, this.opt.aUnset, false);
+    : app.attr(n, this.opt.aUnset);
     var attr = app.attr(n, this.opt.aAttr) || 'class';
 
     if (attr !== 'class') {
       var v = on ? c : u || '';
       if (v) m.setAttribute(attr, v);else m.removeAttribute(attr);
-    } else if (u !== false) m.className = on ? c : u || '';else {
+    } else if (u !== null) m.className = on ? c : u || '';else {
       if (sel) {
         //unset other select/radio values
         var _u = n.type == 'radio' ? app.qq('input[type="radio"][name="' + n.name + '"]').map(function (nn) {
           return (
-            /*app.attr(nn, this.opt.aSet)*/
+            /*app.attr(nn, this.opt.aSet, '')*/
             nn.value
           );
         }).join(' ') : app.qq('option', n).map(function (nn) {
@@ -3722,7 +3723,7 @@ module.exports = new function () {
     var box = n.type == 'checkbox' || n.type == 'radio';
     var sel = n.tagName == 'SELECT' || n.type == 'radio';
     var q = app.attr(n, this.opt.aNodes, n.hash);
-    var c = sel ? n.value : app.attr(n, this.opt.aSet, false);
+    var c = sel ? n.value : app.attr(n, this.opt.aSet);
     var on = sel ? true : box ? n.checked : n.classList.contains(app.opt.cAct);
 
     if (e && !box && !sel) {
@@ -3732,7 +3733,7 @@ module.exports = new function () {
     } //app.dbg(['setclass?', c, on, q, e, box, sel]);
 
 
-    if (c !== false) {
+    if (c !== null) {
       app.e(q, function (m) {
         return _this2.setClass(n, on, m, c);
       });
@@ -3762,9 +3763,9 @@ module.exports = new function () {
   this.onResize = function () {
     var m = window.innerWidth <= this.opt.minDesktop;
     m ? app.e('[data-class-mobile]', function (n) {
-      return n.className = app.attr(n, 'data-class-mobile');
+      return n.className = app.attr(n, 'data-class-mobile', '');
     }) : app.e('[data-class-desktop]', function (n) {
-      return n.className = app.attr(n, 'data-class-desktop');
+      return n.className = app.attr(n, 'data-class-desktop', '');
     });
   };
 }();

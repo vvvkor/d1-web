@@ -1,4 +1,4 @@
-/*! d1-web v1.2.39 */
+/*! d1-web v1.2.40 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -243,7 +243,7 @@ module.exports = new function () {
   };
 
   this.attr = function (n, a, def) {
-    return n && n.hasAttribute(a) ? n.getAttribute(a) : def !== undefined ? def : '';
+    return n && n.hasAttribute(a) ? n.getAttribute(a) : def !== undefined ? def : null;
   }; //pos: -1=before, false=prepend, 0=append(default), 1=after
 
 
@@ -904,17 +904,17 @@ module.exports = new function () {
       return;
     }
 
-    var h = app.attr(n, this.opt.aHead).replace(/%([\w\-]+)%/g, function (m, a) {
+    var h = app.attr(n, this.opt.aHead, '').replace(/%([\w\-]+)%/g, function (m, a) {
       return n.getAttribute(a);
     });
-    var icon = app.attr(n, this.opt.aPic);
-    var p = app.attr(n, this.opt.aPrompt);
+    var icon = app.attr(n, this.opt.aPic, '');
+    var p = app.attr(n, this.opt.aPrompt, '');
     var t = app.attr(n, app.opt.aCaption, n.title || p || '!').replace(/%([\w\-]+)%/g, function (m, a) {
       return n.getAttribute(a);
     });
     var rev = app.attr(n, 'data-reverse');
     var src = app.attr(n, 'data-src');
-    var go = app.attr(n, 'data-go', null);
+    var go = app.attr(n, 'data-go');
     src = src ? app.q(src) : null;
     if (!src && n.form) src = n.form.elements[p];
     var v = null;
@@ -925,8 +925,8 @@ module.exports = new function () {
         this.open(h, t, al ? null : function (w) {
           return _this3.onAnswer(n, w, p);
         }, {
-          ok: app.attr(n, 'data-ok'),
-          cancel: app.attr(n, 'data-cancel'),
+          ok: app.attr(n, 'data-ok', ''),
+          cancel: app.attr(n, 'data-cancel', ''),
           icon: icon,
           //class: '',
           btn: t.substr(0, 1) == ' ' || n && n.className.match(/-[we]\b/) ? 'bg-e' : 'bg-y',
@@ -971,7 +971,7 @@ module.exports = new function () {
 
       } //goto link
       else if (n && n.href) {
-          var ha = app.attr(n, 'href').substr(0, 1) == '#';
+          var ha = app.attr(n, 'href', '').substr(0, 1) == '#';
           var bl = n.target == '_blank';
           if (ha || bl) toggle.unpop();
           var u;
@@ -1076,12 +1076,12 @@ module.exports = new function () {
         var p = app.ins('a', '', {
           id: this.opt.idPrefix + s,
           href: '#' + this.opt.idPrefix + (i == z - 1 ? first : s + 1)
-        }, g); //p.style.setProperty('--img', 'url("' + app.attr(a[i], 'href') + '")');
-        //p.style.backgroundImage = 'url("' + app.attr(a[i], 'href') + '")';//preload all
+        }, g); //p.style.setProperty('--img', 'url("' + app.attr(a[i], 'href', '') + '")');
+        //p.style.backgroundImage = 'url("' + app.attr(a[i], 'href', '') + '")';//preload all
 
-        p.vLink = app.attr(a[i], 'href'); //real link
+        p.vLink = app.attr(a[i], 'href', ''); //real link
 
-        p.vImg = app.attr(a[i], 'href'); //preload prev & next
+        p.vImg = app.attr(a[i], 'href', ''); //preload prev & next
 
         p.setAttribute(app.opt.aCaption, (this.opt.num ? i + 1 + '/' + z + (a[i].title ? ' - ' : '') : '') + (a[i].title || ''));
         a[i].href = '#' + p.id;
