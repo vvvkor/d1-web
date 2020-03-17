@@ -1,4 +1,4 @@
-/*! d1-web v1.2.41 */
+/*! d1-web v1.2.42 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -194,19 +194,23 @@ module.exports = new function () {
       return h.call(_this3, e);
     });
   }; //utils
+  // debug
 
 
   this.dbg = function (s, l, e) {
     if (this.opt.debug >= (l || 1) || location.href.indexOf('d1debug') != -1) console[e ? 'error' : 'log'](s);
-  };
+  }; // sequence for IDs of generated nodes
+
 
   this.seq = function () {
     return ++this.sequence;
-  };
+  }; // convert to array
+
 
   this.a = function (c) {
     return c ? Array.prototype.slice.call(c) : c;
-  };
+  }; // find node
+
 
   this.q = function (s, n) {
     try {
@@ -214,7 +218,8 @@ module.exports = new function () {
     } catch (e) {
       return null;
     }
-  };
+  }; // find nodes
+
 
   this.qq = function (s, n) {
     try {
@@ -223,7 +228,8 @@ module.exports = new function () {
     } catch (e) {
       return [];
     }
-  };
+  }; // add event listener
+
 
   this.b = function (nn, et, f) {
     var _this4 = this;
@@ -236,15 +242,18 @@ module.exports = new function () {
       /*f.bind(this)*/
       , false) : f.call(_this4, n);
     });
-  };
+  }; // execute for each node
+
 
   this.e = function (nn, f) {
     return this.b(nn, '', f);
-  };
+  }; // get attribute of node
+
 
   this.attr = function (n, a, def) {
     return n && n.hasAttribute(a) ? n.getAttribute(a) : def !== undefined ? def : null;
-  }; //pos: -1=before, false=prepend, 0=append(default), 1=after
+  }; // insert node
+  //pos: -1=before, false=prepend, 0=append(default), 1=after
 
 
   this.ins = function (tag, t, attrs, n, pos) {
@@ -258,28 +267,32 @@ module.exports = new function () {
     }
 
     return n ? pos ? n.parentNode.insertBefore(c, pos < 0 ? n : n.nextSibling) : pos === false ? n.insertBefore(c, n.firstChild) : n.appendChild(c) : c;
-  };
+  }; // remove all children
+
 
   this.clr = function (n) {
     if (n) while (n.firstChild) {
       n.removeChild(n.firstChild);
     }
-  };
+  }; // insert close link with icon
+
 
   this.x = function (d, pos, cls) {
     return this.ins('a', this.i('close', '&#x2715;'), {
       href: this.opt.hClose,
       className: cls || ''
     }, d, pos);
-  };
+  }; // insert icon
+
 
   this.i = function (ico, alt) {
     return this.plugins.icons ? this.plugins.icons.i(ico, alt) : this.ins('span', alt || ico);
-  };
+  }; // get node toggle status
+
 
   this.vis = function (n) {
     return !n.classList.contains(this.opt.cOff);
-  }; //func
+  }; // function
 
 
   this.throttle = function (f, ms) {
@@ -307,6 +320,7 @@ module.exports = new function () {
       }
     };
   }; // url
+  // get url parameter(s) from link node
 
 
   this.get = function (a, g) {
@@ -321,7 +335,8 @@ module.exports = new function () {
     }
 
     return g ? gets[g] : gets; //protocol, host (hostname, port), pathname, search, hash
-  };
+  }; // compose url from link node or string, with additional parameters
+
 
   this.makeUrl = function (a, args) {
     if (!a.tagName) a = this.ins('a', '', {

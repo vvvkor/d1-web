@@ -88,9 +88,11 @@ module.exports = new(function() {
     
     if (n.vInp) {
       //n.vInp.onsearch = n.vInp.onkeyup = this.doFilter.bind(this,n);
+        //let f = d1.throttle(this.doFilter, this.opt.wait);
+        //if(!n.vInp.vListen) n.vInp.addEventListener('input', f.bind(this, n), false);
       if(!n.vInp.vListen) n.vInp.addEventListener('input', this.doFilter.bind(this, n), false);
       n.vInp.vListen = 1;
-      this.doFilter(n);
+      //this.doFilter(n);
     }
 
     for (i = start; i < tb.rows.length; i++) {
@@ -114,6 +116,7 @@ module.exports = new(function() {
     n.vData = a;
     n.vHead = h;
     n.vTypes = types.map(t => Object.keys(t).reduce((acc, cur) => t[cur] > acc[1] ? [cur, t[cur]] : acc, ['s', 0])[0]);
+    if(n.vInp) this.doFilter(n);
     if(n.classList.contains(this.opt.cTotals)){
       this.addFooter(n, rh);
       if(!n.vInp) this.updateTotals(n, a.length);
@@ -149,6 +152,7 @@ module.exports = new(function() {
     if (t.vPrev !== t.vInp.value || !e) {
       t.vPrev = t.vInp.value;
       if (this.opt.cFiltered) t.vInp.classList[t.vPrev.length > 0 ? 'add' : 'remove'](this.opt.cFiltered);
+        //this.filter(t, t.vInp.value);
       clearTimeout(t.vTimeout);
       t.vTimeout = setTimeout(this.filter.bind(this, t, t.vInp.value), this.opt.wait);
     }

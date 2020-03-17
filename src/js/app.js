@@ -89,18 +89,22 @@ module.exports = new (function(){
 
   //utils
 
+  // debug
   this.dbg = function(s, l, e){
     if(this.opt.debug >= (l || 1) || location.href.indexOf('d1debug') != -1) console[e ? 'error' : 'log'](s);
   }
 
+  // sequence for IDs of generated nodes
   this.seq = function(){
     return ++this.sequence;
   }
 
+  // convert to array
   this.a = function(c){
     return c ? Array.prototype.slice.call(c) : c;
   }
 
+  // find node
   this.q = function(s, n){
     try{
       return (n || document).querySelector(s);
@@ -110,6 +114,7 @@ module.exports = new (function(){
     }
   }
 
+  // find nodes
   this.qq = function(s, n){
     try{
       let r = (n || document).querySelectorAll(s);
@@ -120,6 +125,7 @@ module.exports = new (function(){
     }
   }
 
+  // add event listener
   this.b = function(nn, et, f){
     if(typeof nn === 'string') nn = this.qq(nn);
     else if(nn.tagName) nn = [nn];
@@ -127,14 +133,17 @@ module.exports = new (function(){
     if(nn && f) nn.forEach(n => et ? n.addEventListener(et, e => f(e) /*f.bind(this)*/, false) : f.call(this, n));
   }
 
+  // execute for each node
   this.e = function(nn, f){
     return this.b(nn, '', f);
   }
 
+  // get attribute of node
   this.attr = function(n, a, def){
     return (n && n.hasAttribute(a)) ? n.getAttribute(a) : (def !== undefined ? def : null);
   }
 
+  // insert node
   //pos: -1=before, false=prepend, 0=append(default), 1=after
   this.ins = function(tag, t, attrs, n, pos) {
     let c = document.createElement(tag || 'span');
@@ -154,25 +163,29 @@ module.exports = new (function(){
       : c;
   }
   
+  // remove all children
   this.clr = function(n){
     if(n) while(n.firstChild) n.removeChild(n.firstChild);
   }
 
+  // insert close link with icon
   this.x = function(d, pos, cls){
     return this.ins('a', this.i('close', '&#x2715;'), {href: this.opt.hClose, className: (cls || '')}, d, pos);
   }
 
+  // insert icon
   this.i = function(ico, alt){
     return this.plugins.icons
       ? this.plugins.icons.i(ico, alt)
       : this.ins('span', alt || ico);
   }
   
+  // get node toggle status
   this.vis = function(n){
     return !n.classList.contains(this.opt.cOff);
   }
 
-  //func
+  // function
 
   this.throttle = function(f, ms){
     let p = false, c, a;
@@ -197,6 +210,7 @@ module.exports = new (function(){
 
   // url
 
+  // get url parameter(s) from link node
   this.get = function(a, g){
     if(!a || a.tagName!='A') return null;
     let i, gets={};
@@ -209,6 +223,7 @@ module.exports = new (function(){
     //protocol, host (hostname, port), pathname, search, hash
   }
 
+  // compose url from link node or string, with additional parameters
   this.makeUrl = function(a, args){
     if(!a.tagName) a = this.ins('a', '', {href: a});
     console.log('make ',a.href);
