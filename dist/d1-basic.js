@@ -1,4 +1,4 @@
-/*! d1-web v1.2.42 */
+/*! d1-web v1.2.43 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -318,6 +318,21 @@ module.exports = new function () {
           }
         }, ms);
       }
+    };
+  };
+
+  this.delay = function (f, ms) {
+    var p = null,
+        c,
+        a;
+    return function ff() {
+      if (p) clearTimeout(p);
+      c = this;
+      a = arguments;
+      p = setTimeout(function () {
+        f.apply(c, a);
+        a = c = p = null;
+      }, ms);
     };
   }; // url
   // get url parameter(s) from link node

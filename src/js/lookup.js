@@ -19,11 +19,10 @@ module.exports = new(function () {
     cacheLimit: 0,
     pList: 'lookup-list-',
     max: 10,
-    wait: 300,
+    wait: 1300,
     inPop: 0
   };
   
-  this.seq = 0;
   this.win = null;
 
   this.init = function() {
@@ -70,36 +69,28 @@ module.exports = new(function () {
   this.setHandlers = function(n, m, i) {
     n.vCap = m;//todo: avoid
     m.vId = n;//todo: avoid
-    app.b(m, 'input', e => this.planFind(n, 0), false);
+    let f = app.delay(this.find, this.opt.wait);
+    app.b(m, 'input', f.bind(this, n), false);
     if(i) app.b(i, 'click', e => this.go(n, e), false);
   }
-  
-  this.planFind = function(n, now){
-    if(n.vCap.value===''){
-      this.fix(n, '', '');
-    }
-    else{
-      this.seq++;
-      n.vSeq = this.seq;
-      if(n.vWait) clearTimeout(n.vWait);
-      if(n.vCache && n.vCache[n.vCap.value]) this.openList(n, n.vCache[n.vCap.value]);
-      else n.vWait = setTimeout(this.find.bind(this, n), now ? 0 : this.opt.wait);
-    }
-  }
-  
+
   this.find = function(n){
-    let u = encodeURI(decodeURI(app.makeUrl(app.attr(n, this.opt.aLookup, ''), {
-        //value: n.vCap.value,
-        seq: this.seq,
-        time: (new Date()).getTime()
-    })).replace(/\{q\}/, n.vCap.value));
-    n.vCur = null;
-    fetch.fetch(u, this.list.bind(this, n.vCap.value, this.seq, n));
+    if(n.vCap.value==='') this.fix(n, '', ''); //empty
+    else if(n.vCache && n.vCache[n.vCap.value]) this.openList(n, n.vCache[n.vCap.value]); //cached
+    else{
+      let u = encodeURI(decodeURI(app.makeUrl(app.attr(n, this.opt.aLookup, ''), {
+          //value: n.vCap.value,
+          time: (new Date()).getTime()
+      })).replace(/\{q\}/, n.vCap.value));
+      n.vCur = null;
+      fetch.fetch(u, this.list.bind(this, n.vCap.value, n));
+    }
   }
   
-  this.list = function(u, seq, n, req){
+  this.list = function(u, n, req){
     let d = JSON.parse(req.responseText);
-    if(seq==n.vSeq) this.openList(n, d.data);
+    if(u===n.vCap.value) this.openList(n, d.data);
+    //setTimeout(() => { if(u===n.vCap.value) this.openList(n, d.data); else console.log('chg'); } , 1000); // check
     this.store(n, u, d);
   }
 
@@ -161,7 +152,6 @@ module.exports = new(function () {
   
   this.fix = function(n, v, c){
     n.vCur = null;
-    n.vSeq = 0;
     if(n.vWait) clearTimeout(n.vWait);
     n.value = v;
     n.vLabel = n.vCap.value = c;
@@ -173,7 +163,7 @@ module.exports = new(function () {
     let n = e.target.vId;
     if(n){
       if(e.keyCode == 27) this.fix(n, n.value, n.vLabel);
-      else if(e.keyCode == 40 && !app.vis(this.win)) this.planFind(n, 1);
+      else if(e.keyCode == 40 && !app.vis(this.win)) this.find(n);
       else if(e.keyCode == 38 || e.keyCode == 40) this.hiliteNext(n, e.keyCode == 38);
       //else if(e.keyCode == 13) this.choose(n, n.vCur);
       else if(e.keyCode == 13 && n.vCur){

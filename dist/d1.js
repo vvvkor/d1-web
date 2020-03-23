@@ -1,4 +1,4 @@
-/*! d1-web v1.2.42 */
+/*! d1-web v1.2.43 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -317,6 +317,21 @@ module.exports = new function () {
           }
         }, ms);
       }
+    };
+  };
+
+  this.delay = function (f, ms) {
+    var p = null,
+        c,
+        a;
+    return function ff() {
+      if (p) clearTimeout(p);
+      c = this;
+      a = arguments;
+      p = setTimeout(function () {
+        f.apply(c, a);
+        a = c = p = null;
+      }, ms);
     };
   }; // url
   // get url parameter(s) from link node
@@ -2665,10 +2680,9 @@ module.exports = new function () {
     cacheLimit: 0,
     pList: 'lookup-list-',
     max: 10,
-    wait: 300,
+    wait: 1300,
     inPop: 0
   };
-  this.seq = 0;
   this.win = null;
 
   this.init = function () {
@@ -2748,38 +2762,30 @@ module.exports = new function () {
 
     m.vId = n; //todo: avoid
 
-    app.b(m, 'input', function (e) {
-      return _this2.planFind(n, 0);
-    }, false);
+    var f = app.delay(this.find, this.opt.wait);
+    app.b(m, 'input', f.bind(this, n), false);
     if (i) app.b(i, 'click', function (e) {
       return _this2.go(n, e);
     }, false);
   };
 
-  this.planFind = function (n, now) {
-    if (n.vCap.value === '') {
-      this.fix(n, '', '');
-    } else {
-      this.seq++;
-      n.vSeq = this.seq;
-      if (n.vWait) clearTimeout(n.vWait);
-      if (n.vCache && n.vCache[n.vCap.value]) this.openList(n, n.vCache[n.vCap.value]);else n.vWait = setTimeout(this.find.bind(this, n), now ? 0 : this.opt.wait);
-    }
-  };
-
   this.find = function (n) {
-    var u = encodeURI(decodeURI(app.makeUrl(app.attr(n, this.opt.aLookup, ''), {
-      //value: n.vCap.value,
-      seq: this.seq,
-      time: new Date().getTime()
-    })).replace(/\{q\}/, n.vCap.value));
-    n.vCur = null;
-    fetch.fetch(u, this.list.bind(this, n.vCap.value, this.seq, n));
+    if (n.vCap.value === '') this.fix(n, '', ''); //empty
+    else if (n.vCache && n.vCache[n.vCap.value]) this.openList(n, n.vCache[n.vCap.value]); //cached
+      else {
+          var u = encodeURI(decodeURI(app.makeUrl(app.attr(n, this.opt.aLookup, ''), {
+            //value: n.vCap.value,
+            time: new Date().getTime()
+          })).replace(/\{q\}/, n.vCap.value));
+          n.vCur = null;
+          fetch.fetch(u, this.list.bind(this, n.vCap.value, n));
+        }
   };
 
-  this.list = function (u, seq, n, req) {
+  this.list = function (u, n, req) {
     var d = JSON.parse(req.responseText);
-    if (seq == n.vSeq) this.openList(n, d.data);
+    if (u === n.vCap.value) this.openList(n, d.data); //setTimeout(() => { if(u===n.vCap.value) this.openList(n, d.data); else console.log('chg'); } , 1000); // check
+
     this.store(n, u, d);
   };
 
@@ -2864,7 +2870,6 @@ module.exports = new function () {
 
   this.fix = function (n, v, c) {
     n.vCur = null;
-    n.vSeq = 0;
     if (n.vWait) clearTimeout(n.vWait);
     n.value = v;
     n.vLabel = n.vCap.value = c;
@@ -2877,7 +2882,7 @@ module.exports = new function () {
     var n = e.target.vId;
 
     if (n) {
-      if (e.keyCode == 27) this.fix(n, n.value, n.vLabel);else if (e.keyCode == 40 && !app.vis(this.win)) this.planFind(n, 1);else if (e.keyCode == 38 || e.keyCode == 40) this.hiliteNext(n, e.keyCode == 38); //else if(e.keyCode == 13) this.choose(n, n.vCur);
+      if (e.keyCode == 27) this.fix(n, n.value, n.vLabel);else if (e.keyCode == 40 && !app.vis(this.win)) this.find(n);else if (e.keyCode == 38 || e.keyCode == 40) this.hiliteNext(n, e.keyCode == 38); //else if(e.keyCode == 13) this.choose(n, n.vCur);
       else if (e.keyCode == 13 && n.vCur) {
           if (app.vis(this.win)) e.preventDefault();
           n.vCur.click();
@@ -3173,9 +3178,11 @@ module.exports = new function () {
 
     if (n.vInp) {
       //n.vInp.onsearch = n.vInp.onkeyup = this.doFilter.bind(this,n);
-      //let f = d1.throttle(this.doFilter, this.opt.wait);
-      //if(!n.vInp.vListen) n.vInp.addEventListener('input', f.bind(this, n), false);
-      if (!n.vInp.vListen) n.vInp.addEventListener('input', this.doFilter.bind(this, n), false);
+      //1.
+      //if(!n.vInp.vListen) n.vInp.addEventListener('input', this.doFilter.bind(this, n), false);
+      //2.
+      var f = app.delay(this.doFilter, this.opt.wait);
+      if (!n.vInp.vListen) n.vInp.addEventListener('input', f.bind(this, n), false);
       n.vInp.vListen = 1; //this.doFilter(n);
     }
 
@@ -3258,10 +3265,12 @@ module.exports = new function () {
   this.doFilter = function (t, e) {
     if (t.vPrev !== t.vInp.value || !e) {
       t.vPrev = t.vInp.value;
-      if (this.opt.cFiltered) t.vInp.classList[t.vPrev.length > 0 ? 'add' : 'remove'](this.opt.cFiltered); //this.filter(t, t.vInp.value);
+      if (this.opt.cFiltered) t.vInp.classList[t.vPrev.length > 0 ? 'add' : 'remove'](this.opt.cFiltered); //1.
+      //clearTimeout(t.vTimeout);
+      //t.vTimeout = setTimeout(this.filter.bind(this, t, t.vInp.value), this.opt.wait);
+      //2.
 
-      clearTimeout(t.vTimeout);
-      t.vTimeout = setTimeout(this.filter.bind(this, t, t.vInp.value), this.opt.wait);
+      this.filter(t, t.vInp.value);
     }
   };
 

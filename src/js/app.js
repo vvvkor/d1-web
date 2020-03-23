@@ -208,6 +208,19 @@ module.exports = new (function(){
     }
   }
 
+  this.delay = function(f, ms){
+    let p = null, c, a;
+    return function ff(){
+      if(p) clearTimeout(p);
+      c = this;
+      a = arguments;
+      p = setTimeout(() => {
+        f.apply(c, a);
+        a = c = p = null;
+      }, ms);
+    }
+  }
+
   // url
 
   // get url parameter(s) from link node
