@@ -91,7 +91,7 @@ module.exports = new(function() {
       //1.
       //if(!n.vInp.vListen) n.vInp.addEventListener('input', this.doFilter.bind(this, n), false);
       //2.
-      let f = app.delay(this.doFilter, this.opt.wait);
+      let f = app.delay(this.doFilter, this.opt.wait, true);
       if(!n.vInp.vListen) n.vInp.addEventListener('input', f.bind(this, n), false);
       n.vInp.vListen = 1;
       //this.doFilter(n);

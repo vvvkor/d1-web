@@ -77,7 +77,7 @@ module.exports = new(function () {
       let ic = app.ins('span', '', {className:'input-tools nobr'}, n, 1);//icons container
       for(let i in this.opt.addIcons){
         app.ins('', ' ', {}, ic);
-        let ii = app.ins('a', app.i(...this.opt.addIcons[i]), {href: '#'+this.opt.addIcons[i][0], className: 'let'}, ic);
+        let ii = app.ins('a', app.i.apply(app, this.opt.addIcons[i]), {href: '#'+this.opt.addIcons[i][0], className: 'let'}, ic);
         ico.push(ii);
       }
       if(ico[0]) app.b(ico[0], 'click', e => this.openDialog(n, null, e), false);

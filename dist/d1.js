@@ -1,4 +1,4 @@
-/*! d1-web v1.2.43 */
+/*! d1-web v1.2.45 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -320,17 +320,16 @@ module.exports = new function () {
     };
   };
 
-  this.delay = function (f, ms) {
-    var p = null,
-        c,
-        a;
+  this.delay = function (f, ms, skip) {
+    var p = null;
     return function ff() {
-      if (p) clearTimeout(p);
-      c = this;
-      a = arguments;
+      var _arguments = arguments,
+          _this5 = this;
+
+      if (skip && p) clearTimeout(p);
       p = setTimeout(function () {
-        f.apply(c, a);
-        a = c = p = null;
+        f.apply(_this5, _arguments);
+        p = null;
       }, ms);
     };
   }; // url
@@ -1396,14 +1395,6 @@ webpackContext.id = 9;
 /* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
-
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
-
 /*! calendar - replacement of standard date and datetime-local inputs */
 var app = __webpack_require__(0);
 
@@ -1512,7 +1503,7 @@ module.exports = new function () {
 
       for (var i in this.opt.addIcons) {
         app.ins('', ' ', {}, ic);
-        var ii = app.ins('a', app.i.apply(app, _toConsumableArray(this.opt.addIcons[i])), {
+        var ii = app.ins('a', app.i.apply(app, this.opt.addIcons[i]), {
           href: '#' + this.opt.addIcons[i][0],
           className: 'let'
         }, ic);
@@ -2680,7 +2671,7 @@ module.exports = new function () {
     cacheLimit: 0,
     pList: 'lookup-list-',
     max: 10,
-    wait: 1300,
+    wait: 300,
     inPop: 0
   };
   this.win = null;
@@ -2762,7 +2753,7 @@ module.exports = new function () {
 
     m.vId = n; //todo: avoid
 
-    var f = app.delay(this.find, this.opt.wait);
+    var f = app.delay(this.find, this.opt.wait, true);
     app.b(m, 'input', f.bind(this, n), false);
     if (i) app.b(i, 'click', function (e) {
       return _this2.go(n, e);
@@ -3181,7 +3172,7 @@ module.exports = new function () {
       //1.
       //if(!n.vInp.vListen) n.vInp.addEventListener('input', this.doFilter.bind(this, n), false);
       //2.
-      var f = app.delay(this.doFilter, this.opt.wait);
+      var f = app.delay(this.doFilter, this.opt.wait, true);
       if (!n.vInp.vListen) n.vInp.addEventListener('input', f.bind(this, n), false);
       n.vInp.vListen = 1; //this.doFilter(n);
     }

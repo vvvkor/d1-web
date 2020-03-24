@@ -19,7 +19,7 @@ module.exports = new(function () {
     cacheLimit: 0,
     pList: 'lookup-list-',
     max: 10,
-    wait: 1300,
+    wait: 300,
     inPop: 0
   };
   
@@ -69,7 +69,7 @@ module.exports = new(function () {
   this.setHandlers = function(n, m, i) {
     n.vCap = m;//todo: avoid
     m.vId = n;//todo: avoid
-    let f = app.delay(this.find, this.opt.wait);
+    let f = app.delay(this.find, this.opt.wait, true);
     app.b(m, 'input', f.bind(this, n), false);
     if(i) app.b(i, 'click', e => this.go(n, e), false);
   }

@@ -208,15 +208,13 @@ module.exports = new (function(){
     }
   }
 
-  this.delay = function(f, ms){
-    let p = null, c, a;
+  this.delay = function(f, ms, skip){
+    let p = null;
     return function ff(){
-      if(p) clearTimeout(p);
-      c = this;
-      a = arguments;
+      if(skip && p) clearTimeout(p);
       p = setTimeout(() => {
-        f.apply(c, a);
-        a = c = p = null;
+        f.apply(this, arguments);
+        p = null;
       }, ms);
     }
   }
