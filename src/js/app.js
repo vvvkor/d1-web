@@ -44,7 +44,7 @@ module.exports = new (function(){
     if(location.hash) this.on('hash')
 
     this.fire('after');
-    this.fire('afterinit');
+    this.fire('ready');
   }
 
   // event delegation
@@ -73,6 +73,7 @@ module.exports = new (function(){
     Object.keys(this.plugins).forEach(k => (opt && opt.plug && opt.plug[k]) ? this.setOpt(this.plugins[k], opt.plug[k]) : null);
     this.fire('beforeinit');
     Object.keys(this.plugins).forEach(k => this.plugins[k].init());
+    this.fire('afterinit');
   }
 
   //events

@@ -1,4 +1,4 @@
-/*! d1-web v1.2.46 */
+/*! d1-web v1.2.47 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -140,7 +140,7 @@ module.exports = new function () {
     });
     if (location.hash) this.on('hash');
     this.fire('after');
-    this.fire('afterinit');
+    this.fire('ready');
   }; // event delegation
   // https://gomakethings.com/why-event-delegation-is-a-better-way-to-listen-for-events-in-vanilla-js/
 
@@ -178,6 +178,7 @@ module.exports = new function () {
     Object.keys(this.plugins).forEach(function (k) {
       return _this2.plugins[k].init();
     });
+    this.fire('afterinit');
   }; //events
 
 
