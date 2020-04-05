@@ -1,4 +1,4 @@
-/*! d1-web v1.2.45 */
+/*! d1-web v1.2.46 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -3209,12 +3209,13 @@ module.exports = new function () {
         return t[cur] > acc[1] ? [cur, t[cur]] : acc;
       }, ['s', 0])[0];
     });
-    if (n.vInp) this.doFilter(n);
 
     if (n.classList.contains(this.opt.cTotals)) {
       this.addFooter(n, rh);
       if (!n.vInp) this.updateTotals(n, a.length);
     }
+
+    if (n.vInp) this.doFilter(n);
 
     if (n.classList.contains(this.opt.cSort)) {
       for (j = 0; j < h.length; j++) {

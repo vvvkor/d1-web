@@ -118,12 +118,12 @@ module.exports = new(function() {
     n.vData = a;
     n.vHead = h;
     n.vTypes = types.map(t => Object.keys(t).reduce((acc, cur) => t[cur] > acc[1] ? [cur, t[cur]] : acc, ['s', 0])[0]);
-    if(n.vInp) this.doFilter(n);
     if(n.classList.contains(this.opt.cTotals)){
       this.addFooter(n, rh);
       if(!n.vInp) this.updateTotals(n, a.length);
     }
-    if (n.classList.contains(this.opt.cSort)) {
+    if(n.vInp) this.doFilter(n);
+    if(n.classList.contains(this.opt.cSort)) {
       for (j = 0; j < h.length; j++)
         if (this.isSortable(h[j])) {
           if (this.opt.cSortable) h[j].classList.add(this.opt.cSortable);
