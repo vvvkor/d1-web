@@ -1,4 +1,4 @@
-/*! d1-web v1.2.47 */
+/*! d1-web v1.2.48 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -761,7 +761,7 @@ mark {
     margin-bottom: 0;
 }
 
-/* ! will not collapse with following element*/
+/* ! will not collapse with following element */
 
 .row.let.mar>* {
     margin-bottom: 1em;
@@ -786,6 +786,11 @@ mark {
 
     .row[class].flip[class]>* {
         margin-right: 0;
+    }
+
+    .row.flip.mar>:not(:last-child) {
+        margin-bottom: 1em;
+        margin-bottom: var(--gap-n);
     }
 
     table.flip tbody, table.flip tfoot, table.flip tr, table.flip tr>* {

@@ -1,4 +1,4 @@
-/*! d1-web v1.2.47 */
+/*! d1-web v1.2.48 */
 
 /* @import url("css/columns.css"); */
 
@@ -409,7 +409,7 @@ mark{background-color:var(--bg-warning);}
 	.row.center{align-items:center;}
 	.shift{margin-left:auto;} /* .nav>li.shift, .row>*.shift */
 
-.row.let.mar{margin-bottom:0;} /* ! will not collapse with following element*/
+.row.let.mar{margin-bottom:0;} /* ! will not collapse with following element */
 .row.let.mar>*{margin-bottom:var(--gap-n);}
 
 /* media */
@@ -426,6 +426,7 @@ mark{background-color:var(--bg-warning);}
 	ul.flip, .flip /*.row.flip, .nav.flip*/{display:block;} /* should have less priority then hiding (like .off) */
 	.row[class].flip[class]>*{margin-right:0;}
 		/*.row.flip.mar[class]>*+*:not(.mar){margin-top:var(--gap-xs);}*/
+	.row.flip.mar>:not(:last-child){margin-bottom:var(--gap-n);} /* keep cell margin */
 	table.flip tbody, table.flip tfoot, table.flip tr, table.flip tr>*{display:block;text-align:left;}
 	table.flip tr{margin-bottom:var(--gap-n);border:var(--border);border-width:medium;}
 	table.flip.let tr>*{border-bottom:var(--border);}
