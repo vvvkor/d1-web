@@ -6,8 +6,8 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 
 	<!-- CDN -->
-	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.2.48/dist/d1.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.2.48/dist/d1.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.2.49/dist/d1.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.2.49/dist/d1.min.js"></script>
 	<!-- local-npm-src ->
 	<link href="../src/index.css" rel="stylesheet">
 	<script src="../dist/d1.min.js"></script>
@@ -56,7 +56,8 @@
 		*/
 	</style>
 </head>
-<body class="js-theme" data-d1='{"hOk":"#yes","debug":false,"disable":["-theme","-valid","-icons"],"plug":{"toggle":{"keepHash":true},"gallery":{"idPrefix":"image-"},"theme":{"fonts":["sans-serif","serif","monospace","PT Sans","Roboto Slab"]},"-scroll":{"qHideOnScroll":".drawer[id]"},"-icons":{"pSvg":"icon-"}}}'>
+<body class="js-theme" data-d1='{"hOk":"#yes","debug":false,"disable":[
+"-scroll","-theme","-valid","-icons"],"plug":{"toggle":{"keepHash":true},"gallery":{"idPrefix":"image-"},"theme":{"fonts":["sans-serif","serif","monospace","PT Sans","Roboto Slab"]},"-scroll":{"qHideOnScroll":".drawer[id]"},"-icons":{"pSvg":"icon-"}}}'>
 <div
   class="topbar toggle shade  row let center fit hide-print"
   id="topline"
@@ -65,7 +66,7 @@
 	<a href="#top" class="pad -let"><b>d1</b></a>
 	<code class="pad nobr">npm i d1-web</code>
 	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1-web" title="GitHub" class="pad -let">GitHub</a>
-	<a class="shift pad text-n">v1.2.48</a>
+	<a class="shift pad text-n">v1.2.49</a>
 	<a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="pad -let" data-ico="download" title="Download">Download</a>
 </div>
 
@@ -1645,12 +1646,16 @@ If link needs to be outside of the item, point at item with query selector in li
 			<a href="#hide" class="pad">&mdash;</a>
 			<a href="#delete" class="pad">&#x2715;</a>
 		</div>
-		Div item
+		Div item 
+		<div class="pop">
+			<a href="#pp-1">pop</a>
+			<div id="pp-1" class="pad">POP</div>
+		</div>
 	</div>
 	<ul class="bg">
 		<li class="item">List item <a href="#copy">+</a> <a href="#hide">&mdash;</a> <a href="#del">&#x2715;</a></li>
 	</ul>
-	<table class="mar" id="tab-items">
+	<table class="mar let" id="tab-items">
 		<tbody>
 			<tr>
 				<th>

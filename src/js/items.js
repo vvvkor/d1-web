@@ -43,9 +43,11 @@ module.exports = new(function () {
   this.process = function(n, x, before){
     let r = true;
     if(x=='copy'){
-      let m = n.parentNode.insertBefore(n.cloneNode(true), 1||before ? n : n.nextSibling);
+      if(before === undefined) before = n.classList.contains(app.opt.cHide);
+      let m = n.parentNode.insertBefore(n.cloneNode(true), before ? n : n.nextSibling);
       m.classList.remove(app.opt.cHide);
       m.removeAttribute('id');
+      app.e(app.qq('[id]', m), i => this.fixId(i, m));
     }
     else if(x=='del'){
       if(this.items(n.parentNode).length>1) n.parentNode.removeChild(n);
@@ -64,6 +66,13 @@ module.exports = new(function () {
     }
     else r = false;
     return r;
+  }
+  
+  this.fixId = function(i, m){
+    let old = i.id;
+    let id = i.id.replace(/-\d+$/, '') + '-' + app.seq();
+    i.id = id;
+    app.e(app.qq('a[href="#'+ old +'"]', m), a => a.href = '#' + id);
   }
 
 })();

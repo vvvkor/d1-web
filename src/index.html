@@ -56,7 +56,8 @@
 		*/
 	</style>
 </head>
-<body class="js-theme" data-d1='{"hOk":"#yes","debug":false,"disable":["-theme","-valid","-icons"],"plug":{"toggle":{"keepHash":true},"gallery":{"idPrefix":"image-"},"theme":{"fonts":["sans-serif","serif","monospace","PT Sans","Roboto Slab"]},"-scroll":{"qHideOnScroll":".drawer[id]"},"-icons":{"pSvg":"icon-"}}}'>
+<body class="js-theme" data-d1='{"hOk":"#yes","debug":false,"disable":[
+"-scroll","-theme","-valid","-icons"],"plug":{"toggle":{"keepHash":true},"gallery":{"idPrefix":"image-"},"theme":{"fonts":["sans-serif","serif","monospace","PT Sans","Roboto Slab"]},"-scroll":{"qHideOnScroll":".drawer[id]"},"-icons":{"pSvg":"icon-"}}}'>
 <div
   class="topbar toggle shade  row let center fit hide-print"
   id="topline"
@@ -1645,12 +1646,16 @@ If link needs to be outside of the item, point at item with query selector in li
 			<a href="#hide" class="pad">&mdash;</a>
 			<a href="#delete" class="pad">&#x2715;</a>
 		</div>
-		Div item
+		Div item 
+		<div class="pop">
+			<a href="#pp-1">pop</a>
+			<div id="pp-1" class="pad">POP</div>
+		</div>
 	</div>
 	<ul class="bg">
 		<li class="item">List item <a href="#copy">+</a> <a href="#hide">&mdash;</a> <a href="#del">&#x2715;</a></li>
 	</ul>
-	<table class="mar" id="tab-items">
+	<table class="mar let" id="tab-items">
 		<tbody>
 			<tr>
 				<th>

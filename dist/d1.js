@@ -1,4 +1,4 @@
-/*! d1-web v1.2.48 */
+/*! d1-web v1.2.49 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -234,7 +234,8 @@ module.exports = new function () {
   this.b = function (nn, et, f) {
     var _this4 = this;
 
-    if (typeof nn === 'string') nn = this.qq(nn);else if (nn.tagName) nn = [nn];else nn = this.a(nn);
+    if (typeof nn === 'string') nn = this.qq(nn);else if (nn.tagName) nn = [nn];else nn = this.a(nn); //if(nn && nn.length>50) console.log('b:'+nn.length, arguments[0]);
+
     if (nn && f) nn.forEach(function (n) {
       return et ? n.addEventListener(et, function (e) {
         return f(e);
@@ -2624,12 +2625,18 @@ module.exports = new function () {
   };
 
   this.process = function (n, x, before) {
+    var _this3 = this;
+
     var r = true;
 
     if (x == 'copy') {
-      var m = n.parentNode.insertBefore(n.cloneNode(true),  true ? n : undefined);
+      if (before === undefined) before = n.classList.contains(app.opt.cHide);
+      var m = n.parentNode.insertBefore(n.cloneNode(true), before ? n : n.nextSibling);
       m.classList.remove(app.opt.cHide);
       m.removeAttribute('id');
+      app.e(app.qq('[id]', m), function (i) {
+        return _this3.fixId(i, m);
+      });
     } else if (x == 'del') {
       if (this.items(n.parentNode).length > 1) n.parentNode.removeChild(n);
     } else if (x == 'delete') {
@@ -2645,6 +2652,15 @@ module.exports = new function () {
     } else r = false;
 
     return r;
+  };
+
+  this.fixId = function (i, m) {
+    var old = i.id;
+    var id = i.id.replace(/-\d+$/, '') + '-' + app.seq();
+    i.id = id;
+    app.e(app.qq('a[href="#' + old + '"]', m), function (a) {
+      return a.href = '#' + id;
+    });
   };
 }();
 

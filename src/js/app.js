@@ -131,6 +131,7 @@ module.exports = new (function(){
     if(typeof nn === 'string') nn = this.qq(nn);
     else if(nn.tagName) nn = [nn];
     else nn = this.a(nn);
+    //if(nn && nn.length>50) console.log('b:'+nn.length, arguments[0]);
     if(nn && f) nn.forEach(n => et ? n.addEventListener(et, e => f(e) /*f.bind(this)*/, false) : f.call(this, n));
   }
 

@@ -1,4 +1,4 @@
-/*! d1-web v1.2.48 */
+/*! d1-web v1.2.49 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -235,7 +235,8 @@ module.exports = new function () {
   this.b = function (nn, et, f) {
     var _this4 = this;
 
-    if (typeof nn === 'string') nn = this.qq(nn);else if (nn.tagName) nn = [nn];else nn = this.a(nn);
+    if (typeof nn === 'string') nn = this.qq(nn);else if (nn.tagName) nn = [nn];else nn = this.a(nn); //if(nn && nn.length>50) console.log('b:'+nn.length, arguments[0]);
+
     if (nn && f) nn.forEach(function (n) {
       return et ? n.addEventListener(et, function (e) {
         return f(e);
