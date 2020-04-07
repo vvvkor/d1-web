@@ -1,4 +1,4 @@
-/*! d1-web v1.2.49 */
+/*! d1-web v1.2.50 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -136,6 +136,9 @@ module.exports = new function () {
     });
     this.b([document], 'click', function (e) {
       return _this.on('click', e);
+    });
+    this.b([document], 'input', function (e) {
+      return _this.on('input', e);
     });
     if (location.hash) this.on('hash');
     this.fire('after');

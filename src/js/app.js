@@ -41,6 +41,7 @@ module.exports = new (function(){
     this.b([window], 'hashchange', e => this.on('hash', e));
     this.b([document], 'keydown', e => this.on('key', e));
     this.b([document], 'click', e => this.on('click', e));
+    this.b([document], 'input', e => this.on('input', e));
     if(location.hash) this.on('hash')
 
     this.fire('after');
