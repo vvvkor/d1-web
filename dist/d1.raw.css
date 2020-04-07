@@ -1,4 +1,4 @@
-/*! d1-web v1.2.50 */
+/*! d1-web v1.2.51 */
 
 /* @import url("css/columns.css"); */
 
@@ -455,6 +455,7 @@ mark{background-color:var(--bg-warning);}
 	.hide-screen{display:none !important;}
 	.wrap{max-width:60em;}
 	.read{max-width:40em;}
+	.wrap, .read, .narrow{box-sizing:border-box;}
 
 	/* topbar */
 	

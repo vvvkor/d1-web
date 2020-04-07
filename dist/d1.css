@@ -1,4 +1,4 @@
-/*! d1-web v1.2.50 */
+/*! d1-web v1.2.51 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -894,6 +894,10 @@ mark {
 
     .read {
         max-width: 40em;
+    }
+
+    .wrap, .read, .narrow {
+        box-sizing: border-box;
     }
 
     .topbar.off {
