@@ -1,4 +1,4 @@
-/*! d1-web v1.2.52 */
+/*! d1-web v1.2.53 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -2641,6 +2641,14 @@ module.exports = new function () {
   this.process = function (n, x, before) {
     var _this3 = this;
 
+    d1.fire('beforeitem', {
+      n: n,
+      a: x
+    });
+    var e = {
+      n: n,
+      a: x
+    };
     var r = true;
 
     if (x == 'copy') {
@@ -2651,6 +2659,9 @@ module.exports = new function () {
       app.e(app.qq('[id]', m), function (i) {
         return _this3.fixId(i, m);
       });
+      e.p = e.n; // prototype
+
+      e.n = m; // new node
     } else if (x == 'del') {
       if (this.items(n.parentNode).length > 1) n.parentNode.removeChild(n);
     } else if (x == 'delete') {
@@ -2665,6 +2676,7 @@ module.exports = new function () {
       n.classList.add(app.opt.cHide);
     } else r = false;
 
+    d1.fire('afteritem', e);
     return r;
   };
 

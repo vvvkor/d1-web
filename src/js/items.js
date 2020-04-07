@@ -41,6 +41,8 @@ module.exports = new(function () {
   }
   
   this.process = function(n, x, before){
+    d1.fire('beforeitem', {n: n, a: x});
+    let e = {n: n, a: x};
     let r = true;
     if(x=='copy'){
       if(before === undefined) before = n.classList.contains(app.opt.cHide);
@@ -48,6 +50,8 @@ module.exports = new(function () {
       m.classList.remove(app.opt.cHide);
       m.removeAttribute('id');
       app.e(app.qq('[id]', m), i => this.fixId(i, m));
+      e.p = e.n; // prototype
+      e.n = m; // new node
     }
     else if(x=='del'){
       if(this.items(n.parentNode).length>1) n.parentNode.removeChild(n);
@@ -65,6 +69,7 @@ module.exports = new(function () {
       n.classList.add(app.opt.cHide);
     }
     else r = false;
+    d1.fire('afteritem', e);
     return r;
   }
   
