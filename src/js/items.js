@@ -41,9 +41,9 @@ module.exports = new(function () {
   }
   
   this.process = function(n, x, before){
+    if(['copy', 'del', 'delete', 'delall', 'clear', 'hide'].indexOf(x) == -1) return false;
     d1.fire('beforeitem', {n: n, a: x});
     let e = {n: n, a: x};
-    let r = true;
     if(x=='copy'){
       if(before === undefined) before = n.classList.contains(app.opt.cHide);
       let m = n.parentNode.insertBefore(n.cloneNode(true), before ? n : n.nextSibling);
@@ -68,9 +68,8 @@ module.exports = new(function () {
     else if(x=='hide'){
       n.classList.add(app.opt.cHide);
     }
-    else r = false;
     d1.fire('afteritem', e);
-    return r;
+    return true;
   }
   
   this.fixId = function(i, m){
