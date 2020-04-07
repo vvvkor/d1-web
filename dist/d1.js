@@ -1,4 +1,4 @@
-/*! d1-web v1.2.51 */
+/*! d1-web v1.2.52 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -627,6 +627,11 @@ module.exports = new function () {
       if (d.matches(this.opt.qTab) && on === undefined) on = true; //tabs: show instead of toggle
       //console.log('toggle '+d.id, on, deep);
 
+      app.fire('beforetoggle', {
+        n: d,
+        on: on,
+        deep: deep
+      });
       this.tgl(d, on);
       app.dbg(['toggle' + (deep ? ' deep' : ''), on, d], deep ? 2 : 1);
 
@@ -640,6 +645,12 @@ module.exports = new function () {
         this.hiliteLinks(d);
         this.storeVisibility(d); //if(!deep) this.after(d);
       }
+
+      app.fire('aftertoggle', {
+        n: d,
+        on: on,
+        deep: deep
+      });
     }
 
     return d;

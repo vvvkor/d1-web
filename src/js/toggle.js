@@ -178,6 +178,7 @@ module.exports = new(function () {
     if(d){
       if(d.matches(this.opt.qTab) && on===undefined) on = true; //tabs: show instead of toggle
       //console.log('toggle '+d.id, on, deep);
+      app.fire('beforetoggle', {n: d, on: on, deep: deep});
       this.tgl(d, on);
       app.dbg(['toggle' + (deep ? ' deep' : ''), on, d], deep ? 2 : 1);
       if(app.vis(d)){
@@ -190,6 +191,7 @@ module.exports = new(function () {
         this.storeVisibility(d);
         //if(!deep) this.after(d);
       }
+      app.fire('aftertoggle', {n: d, on: on, deep: deep});
     }
     return d;
   }
