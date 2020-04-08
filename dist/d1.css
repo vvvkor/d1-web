@@ -1,4 +1,4 @@
-/*! d1-web v1.2.55 */
+/*! d1-web v1.2.56 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -749,7 +749,7 @@ mark {
     flex: none;
 }
 
-.row.center {
+.row.center:not(.wrap) {
     align-items: center;
 }
 
