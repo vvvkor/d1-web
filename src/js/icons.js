@@ -34,9 +34,11 @@ module.exports = new(function () {
       m = n.className.match(/\bicon?-([\w\-_]+)/);
       if(m) i = m[1];
     }
-    let clr = n.matches(this.opt.qIconReplace);
-    this.addIcon(i, n, clr);
-    if(m) n.classList.remove(m[0]);
+    if(i){
+      let clr = n.matches(this.opt.qIconReplace);
+      this.addIcon(i, n, clr);
+      if(m) n.classList.remove(m[0]);
+    }
   }
 
   this.addIcon = function(i, n, clr){
