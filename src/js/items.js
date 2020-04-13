@@ -54,9 +54,11 @@ module.exports = new(function () {
       e.n = m; // new node
     }
     else if(x=='del'){
+      e.p = n.parentNode;
       if(this.items(n.parentNode).length>1) n.parentNode.removeChild(n);
     }
     else if(x=='delete'){
+      e.p = n.parentNode;
       n.parentNode.removeChild(n);
     }
     else if(x=='delall'){
