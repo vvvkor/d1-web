@@ -360,7 +360,6 @@ module.exports = new function () {
     if (!a.tagName) a = this.ins('a', '', {
       href: a
     });
-    console.log('make ', a.href);
     var g = this.get(a);
     Object.keys(args).forEach(function (k) {
       return g[encodeURIComponent(k)] = encodeURIComponent(args[k]);
@@ -2911,6 +2910,7 @@ module.exports = new function () {
     if (n.vWait) clearTimeout(n.vWait);
     n.value = v;
     n.vLabel = n.vCap.value = c;
+    console.log('lookup fix', n);
     if (typeof Event === 'function') n.dispatchEvent(new Event('input')); //-ie
 
     this.closeList();

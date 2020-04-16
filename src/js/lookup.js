@@ -155,6 +155,7 @@ module.exports = new(function () {
     if(n.vWait) clearTimeout(n.vWait);
     n.value = v;
     n.vLabel = n.vCap.value = c;
+    console.log('lookup fix', n);
     if(typeof(Event) === 'function') n.dispatchEvent(new Event('input'));//-ie
     this.closeList();
   }

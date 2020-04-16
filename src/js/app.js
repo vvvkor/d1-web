@@ -240,7 +240,6 @@ module.exports = new (function(){
   // compose url from link node or string, with additional parameters
   this.makeUrl = function(a, args){
     if(!a.tagName) a = this.ins('a', '', {href: a});
-    console.log('make ',a.href);
     let g = this.get(a);
     Object.keys(args).forEach(k => g[encodeURIComponent(k)] = encodeURIComponent(args[k]));
     let q = Object.keys(g).map(k => k + '=' + g[k]).join('&');

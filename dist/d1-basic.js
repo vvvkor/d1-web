@@ -361,7 +361,6 @@ module.exports = new function () {
     if (!a.tagName) a = this.ins('a', '', {
       href: a
     });
-    console.log('make ', a.href);
     var g = this.get(a);
     Object.keys(args).forEach(function (k) {
       return g[encodeURIComponent(k)] = encodeURIComponent(args[k]);
