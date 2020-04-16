@@ -561,7 +561,7 @@ mark{background-color:var(--bg-warning);}
 	a.let{color:inherit;}
 	img.fit{display:block;}
 .mar{margin:var(--gap-n) 0;}
-	form .mar{margin:var(--gap-s) 0;}
+	form .mar{margin-top:var(--gap-s);margin-bottom:var(--gap-s)}
 .center{margin-left:auto;margin-right:auto;}
 .pad{padding:var(--gaps-n);}
 .bord{border:var(--border);/*thin solid rgba(0,0,0,.2);*/}
