@@ -1,4 +1,4 @@
-/*! d1-web v1.2.58 */
+/*! d1-web v1.2.59 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -196,6 +196,21 @@ module.exports = new function () {
     if (this.handlers[t]) this.handlers[t].forEach(function (h) {
       return h.call(_this3, e);
     });
+  };
+
+  this.dispatch = function (n, e, p) {
+    // {view: window, bubbles: true, cancelable: true, composed: false}
+    if (!p) p = {
+      bubbles: true,
+      view: window
+    };
+
+    if (typeof Event === 'function') {
+      //-ie
+      if (e instanceof Array) e.forEach(function (ee) {
+        return n.dispatchEvent(new Event(ee, p));
+      });else n.dispatchEvent(new Event(e, p));
+    }
   }; //utils
   // debug
 
@@ -240,7 +255,11 @@ module.exports = new function () {
     if (typeof nn === 'string') nn = this.qq(nn);else if (nn.tagName) nn = [nn];else nn = this.a(nn); //if(nn && nn.length>50) console.log('b:'+nn.length, arguments[0]);
 
     if (nn && f) nn.forEach(function (n) {
-      return et ? n.addEventListener(et, function (e) {
+      return et ? et instanceof Array ? et.forEach(function (ett) {
+        return n.addEventListener(ett, function (e) {
+          return f(e);
+        }, false);
+      }) : n.addEventListener(et, function (e) {
         return f(e);
       }
       /*f.bind(this)*/
@@ -2099,7 +2118,7 @@ module.exports = new function () {
   this.up = function (w, z) {
     if (w) z.innerHTML = z.theArea.value;else z.theArea.value = z.innerHTML.replace(/(\shref=")!/ig, ' target="_blank"$1').replace(/(\ssrc="[^"]+#[a-z]*)(\d+%?)"/ig, ' width="$2"$1"'); //.replace(/(\ssrc="[^"]+)#([lrc])"/ig,' class="$2"$1"');
 
-    if (!w && typeof Event === 'function') z.theArea.dispatchEvent(new Event('input')); //-ie
+    if (!w) app.dispatch(z.theArea, ['input', 'change']);
   };
 
   this.mode = function (z, w) {
@@ -2643,7 +2662,7 @@ module.exports = new function () {
     var _this3 = this;
 
     if (['copy', 'del', 'delete', 'delall', 'clear', 'hide'].indexOf(x) == -1) return false;
-    d1.fire('beforeitem', {
+    app.fire('beforeitem', {
       n: n,
       a: x
     });
@@ -2679,7 +2698,7 @@ module.exports = new function () {
       n.classList.add(app.opt.cHide);
     }
 
-    d1.fire('afteritem', e);
+    app.fire('afteritem', e);
     return true;
   };
 
@@ -2711,6 +2730,7 @@ module.exports = new function () {
   this.opt = {
     aLabel: 'data-label',
     aLookup: 'data-lookup',
+    aCap: 'data-cap',
     aList: 'data-list',
     aUrl: 'data-url',
     aGoto: 'data-goto',
@@ -2746,6 +2766,8 @@ module.exports = new function () {
   };
 
   this.prepare = function (n) {
+    var _this2 = this;
+
     var pop = app.ins('div', '', {
       className: 'pop l'
     }, n, 1);
@@ -2754,8 +2776,8 @@ module.exports = new function () {
     n.classList.add('bg-n');
     n.classList.add(app.opt.cHide); //n.type = 'hidden';
 
-    n.vLabel = app.attr(n, this.opt.aLabel) || n.value || ''; //@@
-
+    var cap = app.attr(n, this.opt.aLabel);
+    n.vLabel = cap || n.value || '';
     var m = app.ins('input', '', {
       type: 'text',
       value: n.vLabel,
@@ -2789,11 +2811,24 @@ module.exports = new function () {
       app.ins('', ' ', {}, ic, -1);
     }
 
-    this.setHandlers(n, m, i);
+    this.setHandlers(n, m, i); //
+
+    var uc = app.attr(n, this.opt.aCap, '');
+
+    if (!cap && n.value && uc) {
+      var u = encodeURI(decodeURI(app.makeUrl(uc, {
+        time: new Date().getTime()
+      })).replace(/\{q\}/, n.vCap.value));
+      fetch.fetch(u, function (req) {
+        var d = JSON.parse(req.responseText); //m.value = d.data;
+
+        _this2.fix(n, n.value, d.data);
+      });
+    }
   };
 
   this.setHandlers = function (n, m, i) {
-    var _this2 = this;
+    var _this3 = this;
 
     n.vCap = m; //todo: avoid
 
@@ -2802,7 +2837,7 @@ module.exports = new function () {
     var f = app.delay(this.find, this.opt.wait, true);
     app.b(m, 'input', f.bind(this, n), false);
     if (i) app.b(i, 'click', function (e) {
-      return _this2.go(n, e);
+      return _this3.go(n, e);
     }, false);
   };
 
@@ -2843,7 +2878,7 @@ module.exports = new function () {
   };
 
   this.build = function (n, d) {
-    var _this3 = this;
+    var _this4 = this;
 
     app.clr(this.win);
     var ul = app.ins('ul', '', {
@@ -2869,10 +2904,10 @@ module.exports = new function () {
       }
 
       if (!go) app.b(a, 'click', function (e) {
-        return _this3.choose(n, a, e);
+        return _this4.choose(n, a, e);
       }, false);
       j++;
-      if (j >= _this3.opt.max) return "break";
+      if (j >= _this4.opt.max) return "break";
     };
 
     for (var i in d) {
@@ -2910,9 +2945,7 @@ module.exports = new function () {
     if (n.vWait) clearTimeout(n.vWait);
     n.value = v;
     n.vLabel = n.vCap.value = c;
-    console.log('lookup fix', n);
-    if (typeof Event === 'function') n.dispatchEvent(new Event('input')); //-ie
-
+    app.dispatch(n, ['input', 'change']);
     this.closeList();
   };
 

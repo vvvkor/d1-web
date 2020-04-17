@@ -13,6 +13,7 @@ module.exports = new(function () {
   this.opt = {
     aLabel: 'data-label',
     aLookup: 'data-lookup',
+    aCap: 'data-cap',
     aList: 'data-list',
     aUrl: 'data-url',
     aGoto: 'data-goto',
@@ -43,7 +44,8 @@ module.exports = new(function () {
     n.classList.add('bg-n');
     n.classList.add(app.opt.cHide);
     //n.type = 'hidden';
-    n.vLabel = app.attr(n, this.opt.aLabel) || n.value || '';//@@
+    let cap = app.attr(n, this.opt.aLabel);
+    n.vLabel = cap || n.value || '';
     let m = app.ins('input', '', {type: 'text', value: n.vLabel, className:'input-lookup subinput'}, pop, this.opt.inPop ? 0 : 1);
     m.name = 'lookup-' + n.name;
     //m.required = n.required;
@@ -64,6 +66,17 @@ module.exports = new(function () {
       app.ins('', ' ', {}, ic, -1);
     }
     this.setHandlers(n, m, i);
+    //
+    let uc = app.attr(n, this.opt.aCap, '');
+    if(!cap && n.value && uc){
+      let u = encodeURI(decodeURI(app.makeUrl(uc, {time: (new Date()).getTime()}))
+        .replace(/\{q\}/, n.vCap.value));
+      fetch.fetch(u, req => {
+        let d = JSON.parse(req.responseText);
+        //m.value = d.data;
+        this.fix(n, n.value, d.data);
+      });
+    }
   }
   
   this.setHandlers = function(n, m, i) {
@@ -155,8 +168,7 @@ module.exports = new(function () {
     if(n.vWait) clearTimeout(n.vWait);
     n.value = v;
     n.vLabel = n.vCap.value = c;
-    console.log('lookup fix', n);
-    if(typeof(Event) === 'function') n.dispatchEvent(new Event('input'));//-ie
+    app.dispatch(n, ['input', 'change']);
     this.closeList();
   }
   

@@ -1,4 +1,4 @@
-/*! d1-web v1.2.58 */
+/*! d1-web v1.2.59 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -197,6 +197,21 @@ module.exports = new function () {
     if (this.handlers[t]) this.handlers[t].forEach(function (h) {
       return h.call(_this3, e);
     });
+  };
+
+  this.dispatch = function (n, e, p) {
+    // {view: window, bubbles: true, cancelable: true, composed: false}
+    if (!p) p = {
+      bubbles: true,
+      view: window
+    };
+
+    if (typeof Event === 'function') {
+      //-ie
+      if (e instanceof Array) e.forEach(function (ee) {
+        return n.dispatchEvent(new Event(ee, p));
+      });else n.dispatchEvent(new Event(e, p));
+    }
   }; //utils
   // debug
 
@@ -241,7 +256,11 @@ module.exports = new function () {
     if (typeof nn === 'string') nn = this.qq(nn);else if (nn.tagName) nn = [nn];else nn = this.a(nn); //if(nn && nn.length>50) console.log('b:'+nn.length, arguments[0]);
 
     if (nn && f) nn.forEach(function (n) {
-      return et ? n.addEventListener(et, function (e) {
+      return et ? et instanceof Array ? et.forEach(function (ett) {
+        return n.addEventListener(ett, function (e) {
+          return f(e);
+        }, false);
+      }) : n.addEventListener(et, function (e) {
         return f(e);
       }
       /*f.bind(this)*/

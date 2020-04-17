@@ -88,6 +88,15 @@ module.exports = new (function(){
     this.dbg(['fire ' + t, e]);
     if(this.handlers[t]) this.handlers[t].forEach(h => h.call(this, e));
   }
+  
+  this.dispatch = function(n, e, p){
+    // {view: window, bubbles: true, cancelable: true, composed: false}
+    if(!p) p = {bubbles: true, view: window};
+    if(typeof(Event) === 'function'){ //-ie
+      if(e instanceof Array) e.forEach(ee => n.dispatchEvent(new Event(ee, p)));
+      else n.dispatchEvent(new Event(e, p));
+    }
+  }
 
   //utils
 
@@ -133,7 +142,13 @@ module.exports = new (function(){
     else if(nn.tagName) nn = [nn];
     else nn = this.a(nn);
     //if(nn && nn.length>50) console.log('b:'+nn.length, arguments[0]);
-    if(nn && f) nn.forEach(n => et ? n.addEventListener(et, e => f(e) /*f.bind(this)*/, false) : f.call(this, n));
+    if(nn && f) nn.forEach(n => et
+      ? (et instanceof Array
+        ? et.forEach(ett => n.addEventListener(ett, e => f(e), false))
+        : n.addEventListener(et, e => f(e) /*f.bind(this)*/, false)
+        )
+      : f.call(this, n)
+      );
   }
 
   // execute for each node

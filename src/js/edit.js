@@ -153,7 +153,7 @@ module.exports = new(function () {
       replace(/(\shref=")!/ig, ' target="_blank"$1').
       replace(/(\ssrc="[^"]+#[a-z]*)(\d+%?)"/ig, ' width="$2"$1"');
       //.replace(/(\ssrc="[^"]+)#([lrc])"/ig,' class="$2"$1"');
-    if(!w && (typeof(Event) === 'function')) z.theArea.dispatchEvent(new Event('input'));//-ie
+    if(!w) app.dispatch(z.theArea, ['input', 'change']);
   }
 
   this.mode = function (z, w) {
