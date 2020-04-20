@@ -38,34 +38,44 @@ module.exports = new(function () {
   }
 
   this.prepare = function(n) {
-    let pop = app.ins('div', '', {className: 'pop l'}, n, 1);
-    if(!this.opt.inPop) pop.style.verticalAlign = 'bottom';
-    n.thePop = pop;
-    n.classList.add('bg-n');
-    n.classList.add(app.opt.cHide);
-    //n.type = 'hidden';
     let cap = app.attr(n, this.opt.aLabel);
     n.vLabel = cap || n.value || '';
-    let m = app.ins('input', '', {type: 'text', value: n.vLabel, className:'input-lookup subinput'}, pop, this.opt.inPop ? 0 : 1);
-    m.name = 'lookup-' + n.name;
-    //m.required = n.required;
-    //n.required = false;
-    if(n.id) {
-      m.id = 'lookup-' + n.id;
-      if(n.title) m.title = n.title;
-      app.e('[for="' + n.id + '"]', lbl => lbl.htmlFor = m.id);
-      //app.b('[for="' + n.id + '"]', 'click', e => m.focus());
+    if(!this.opt.inPop && n.nextElementSibling && n.nextElementSibling.classList.contains('pop-lookup')){
+      //re-init
+      if(!this.opt.inPop){
+        let pop = n.nextElementSibling;
+        let m = pop.nextElementSibling;
+        let i = m.nextElementSibling.nextElementSibling.firstChild;
+        this.setHandlers(n, m, pop, i);
+      }
     }
-    if(n.placeholder) m.placeholder = n.placeholder;
-    m.autocomplete = 'off';
-    let i = null;
-    if(app.attr(n, this.opt.aUrl)){
-      let ic = app.ins('span', '', {className:'input-tools nobr'}, this.opt.inPop ? pop : m, 1);//icons container
-      i = app.ins('a', app.i('right', '&rarr;'), {href: '#goto', className: 'let'}, ic);
-      i.style.cursor = 'pointer';
-      app.ins('', ' ', {}, ic, -1);
+    else{
+      let pop = app.ins('div', '', {className: 'pop l pop-lookup'}, n, 1);
+      if(!this.opt.inPop) pop.style.verticalAlign = 'bottom';
+      n.classList.add('bg-n');
+      n.classList.add(app.opt.cHide);
+      //n.type = 'hidden';
+      let m = app.ins('input', '', {type: 'text', value: n.vLabel, className:'input-lookup subinput'}, pop, this.opt.inPop ? 0 : 1);
+      m.name = 'lookup-' + n.name;
+      //m.required = n.required;
+      //n.required = false;
+      if(n.id) {
+        m.id = 'lookup-' + n.id;
+        if(n.title) m.title = n.title;
+        app.e('[for="' + n.id + '"]', lbl => lbl.htmlFor = m.id);
+        //app.b('[for="' + n.id + '"]', 'click', e => m.focus());
+      }
+      if(n.placeholder) m.placeholder = n.placeholder;
+      m.autocomplete = 'off';
+      let i = null;
+      if(app.attr(n, this.opt.aUrl)){
+        let ic = app.ins('span', '', {className:'input-tools nobr'}, this.opt.inPop ? pop : m, 1);//icons container
+        i = app.ins('a', app.i('right', '&rarr;'), {href: '#goto', className: 'let'}, ic);
+        i.style.cursor = 'pointer';
+        app.ins('', ' ', {}, ic, -1);
+      }
+      this.setHandlers(n, m, pop, i);
     }
-    this.setHandlers(n, m, i);
     //
     let uc = app.attr(n, this.opt.aCap, '');
     if(!cap && n.value && uc){
@@ -79,7 +89,8 @@ module.exports = new(function () {
     }
   }
   
-  this.setHandlers = function(n, m, i) {
+  this.setHandlers = function(n, m, pop, i) {
+    n.thePop = pop;//todo: avoid
     n.vCap = m;//todo: avoid
     m.vId = n;//todo: avoid
     let f = app.delay(this.find, this.opt.wait, true);

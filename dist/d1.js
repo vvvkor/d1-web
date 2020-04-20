@@ -1,4 +1,4 @@
-/*! d1-web v1.2.59 */
+/*! d1-web v1.2.60 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -2768,50 +2768,63 @@ module.exports = new function () {
   this.prepare = function (n) {
     var _this2 = this;
 
-    var pop = app.ins('div', '', {
-      className: 'pop l'
-    }, n, 1);
-    if (!this.opt.inPop) pop.style.verticalAlign = 'bottom';
-    n.thePop = pop;
-    n.classList.add('bg-n');
-    n.classList.add(app.opt.cHide); //n.type = 'hidden';
-
     var cap = app.attr(n, this.opt.aLabel);
     n.vLabel = cap || n.value || '';
-    var m = app.ins('input', '', {
-      type: 'text',
-      value: n.vLabel,
-      className: 'input-lookup subinput'
-    }, pop, this.opt.inPop ? 0 : 1);
-    m.name = 'lookup-' + n.name; //m.required = n.required;
-    //n.required = false;
 
-    if (n.id) {
-      m.id = 'lookup-' + n.id;
-      if (n.title) m.title = n.title;
-      app.e('[for="' + n.id + '"]', function (lbl) {
-        return lbl.htmlFor = m.id;
-      }); //app.b('[for="' + n.id + '"]', 'click', e => m.focus());
-    }
+    if (!this.opt.inPop && n.nextElementSibling && n.nextElementSibling.classList.contains('pop-lookup')) {
+      //re-init
+      if (!this.opt.inPop) {
+        var pop = n.nextElementSibling;
+        var m = pop.nextElementSibling;
+        var i = m.nextElementSibling.nextElementSibling.firstChild;
+        this.setHandlers(n, m, pop, i);
+      }
+    } else {
+      var _pop = app.ins('div', '', {
+        className: 'pop l pop-lookup'
+      }, n, 1);
 
-    if (n.placeholder) m.placeholder = n.placeholder;
-    m.autocomplete = 'off';
-    var i = null;
+      if (!this.opt.inPop) _pop.style.verticalAlign = 'bottom';
+      n.classList.add('bg-n');
+      n.classList.add(app.opt.cHide); //n.type = 'hidden';
 
-    if (app.attr(n, this.opt.aUrl)) {
-      var ic = app.ins('span', '', {
-        className: 'input-tools nobr'
-      }, this.opt.inPop ? pop : m, 1); //icons container
+      var _m = app.ins('input', '', {
+        type: 'text',
+        value: n.vLabel,
+        className: 'input-lookup subinput'
+      }, _pop, this.opt.inPop ? 0 : 1);
 
-      i = app.ins('a', app.i('right', '&rarr;'), {
-        href: '#goto',
-        className: 'let'
-      }, ic);
-      i.style.cursor = 'pointer';
-      app.ins('', ' ', {}, ic, -1);
-    }
+      _m.name = 'lookup-' + n.name; //m.required = n.required;
+      //n.required = false;
 
-    this.setHandlers(n, m, i); //
+      if (n.id) {
+        _m.id = 'lookup-' + n.id;
+        if (n.title) _m.title = n.title;
+        app.e('[for="' + n.id + '"]', function (lbl) {
+          return lbl.htmlFor = _m.id;
+        }); //app.b('[for="' + n.id + '"]', 'click', e => m.focus());
+      }
+
+      if (n.placeholder) _m.placeholder = n.placeholder;
+      _m.autocomplete = 'off';
+      var _i = null;
+
+      if (app.attr(n, this.opt.aUrl)) {
+        var ic = app.ins('span', '', {
+          className: 'input-tools nobr'
+        }, this.opt.inPop ? _pop : _m, 1); //icons container
+
+        _i = app.ins('a', app.i('right', '&rarr;'), {
+          href: '#goto',
+          className: 'let'
+        }, ic);
+        _i.style.cursor = 'pointer';
+        app.ins('', ' ', {}, ic, -1);
+      }
+
+      this.setHandlers(n, _m, _pop, _i);
+    } //
+
 
     var uc = app.attr(n, this.opt.aCap, '');
 
@@ -2827,8 +2840,10 @@ module.exports = new function () {
     }
   };
 
-  this.setHandlers = function (n, m, i) {
+  this.setHandlers = function (n, m, pop, i) {
     var _this3 = this;
+
+    n.thePop = pop; //todo: avoid
 
     n.vCap = m; //todo: avoid
 
