@@ -149,7 +149,7 @@ module.exports = new(function () {
       else this.unhash();
       return d;
     }
-    else if(!a){
+    else if(!a && !n.matches('input, select, textarea')){
       this.unhash();
     }
     if(e.clientX<=5 && e.clientY>5 && this.opt.qDrawer) this.toggle(this.opt.qDrawer);
@@ -229,7 +229,7 @@ module.exports = new(function () {
     //v1.
     if(location.hash) location.hash = app.opt.hClose;
     //v2.
-    this.addHistory(location.pathname + location.search /* + app.opt.hClose*/);
+    this.addHistory(location.pathname + location.search /* + app.opt.hClose*/); //inputs flicker
   }
 
   this.addHistory = function(h) {

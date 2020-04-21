@@ -6,8 +6,8 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 
 	<!-- CDN -->
-	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.2.60/dist/d1.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.2.60/dist/d1.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.2.61/dist/d1.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.2.61/dist/d1.min.js"></script>
 	<!-- local-npm-src ->
 	<link href="../src/index.css" rel="stylesheet">
 	<script src="../dist/d1.min.js"></script>
@@ -66,7 +66,7 @@
 	<a href="#top" class="pad -let"><b>d1</b></a>
 	<code class="pad nobr">npm i d1-web</code>
 	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1-web" title="GitHub" class="pad -let">GitHub</a>
-	<a class="shift pad text-n">v1.2.60</a>
+	<a class="shift pad text-n">v1.2.61</a>
 	<a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="pad -let" data-ico="download" title="Download">Download</a>
 </div>
 
@@ -942,6 +942,20 @@ Table will become stacked on small screen.
   </select>
   <select name="town" id="town" data-list="{q}.json" data-placeholder="..." data-cache="10"></select>
 </div>
+
+	<p>Chained datalist.
+
+<div class="code">
+  <select name="land" id="land" data-chain="#city">
+    <option value="" selected>-</option>
+    <option value="ru">Russia</option>
+    <option value="fr">France</option>
+    <option value="no">No</option>
+  </select>
+  <input type="text" list="cities" name="city" id="city" data-list="{q}.json" data-cache="10">
+  <datalist id="cities"><option value="a"></datalist>
+</div>
+
 
 <h3 id="validate">Validation</h3>
 

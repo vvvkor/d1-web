@@ -943,6 +943,20 @@ Table will become stacked on small screen.
   <select name="town" id="town" data-list="{q}.json" data-placeholder="..." data-cache="10"></select>
 </div>
 
+	<p>Chained datalist.
+
+<div class="code">
+  <select name="land" id="land" data-chain="#city">
+    <option value="" selected>-</option>
+    <option value="ru">Russia</option>
+    <option value="fr">France</option>
+    <option value="no">No</option>
+  </select>
+  <input type="text" list="cities" name="city" id="city" data-list="{q}.json" data-cache="10">
+  <datalist id="cities"><option value="a"></datalist>
+</div>
+
+
 <h3 id="validate">Validation</h3>
 
 <p>Custom form validation.

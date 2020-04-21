@@ -135,6 +135,10 @@ module.exports = new (function(){
       return [];
     }
   }
+  
+  this.next = function(n, s, prev){
+    while(n = n[prev ? 'previousElementSibling' : 'nextElementSibling']) if(n.matches(s)) return n;
+  }
 
   // add event listener
   this.b = function(nn, et, f){

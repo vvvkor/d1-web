@@ -32,98 +32,101 @@ module.exports = new(function () {
     document.body.appendChild(this.win);
 
     app.e('input[' + this.opt.aLookup + ']', n => this.prepare(n));
-    app.b('[data-chain]', 'change', e => this.updateChain(e.target));
+    //app.b('[data-chain]', 'change', e => this.updateChain(e.target));
+    app.b([document], 'change', e => e.target.matches('[data-chain]') ? this.updateChain(e.target) : null)
     app.e('[data-chain]', n => this.updateChain(n));
-    app.listen('key', e => this.onKey(e))
+    app.listen('input', e => e.target.matches('.input-lookup')
+      ? app.delay((i) => this.find(i), this.opt.wait, true)(this.ident(e.target))
+      : null);
+    app.listen('click', e => this.go(e));
+    app.listen('key', e => this.onKey(e));
   }
 
   this.prepare = function(n) {
+    if(this.cap(n)) return;
     let cap = app.attr(n, this.opt.aLabel);
     n.vLabel = cap || n.value || '';
-    if(!this.opt.inPop && n.nextElementSibling && n.nextElementSibling.classList.contains('pop-lookup')){
-      //re-init
-      if(!this.opt.inPop){
-        let pop = n.nextElementSibling;
-        let m = pop.nextElementSibling;
-        let i = m.nextElementSibling.nextElementSibling.firstChild;
-        this.setHandlers(n, m, pop, i);
-      }
+    let pop = app.ins('div', '', {className: 'pop l pop-lookup'}, n, 1);
+    if(!this.opt.inPop) pop.style.verticalAlign = 'bottom';
+    n.classList.add('bg-n');
+    n.classList.add(app.opt.cHide);
+    //n.type = 'hidden';
+    let m = app.ins('input', '', {type: 'text', value: n.vLabel, className:'input-lookup subinput'}, pop, this.opt.inPop ? 0 : 1);
+    m.name = 'lookup-' + n.name;
+    //m.required = n.required;
+    //n.required = false;
+    if(n.id) {
+      m.id = 'lookup-' + n.id;
+      if(n.title) m.title = n.title;
+      app.e('[for="' + n.id + '"]', lbl => lbl.htmlFor = m.id);
+      //app.b('[for="' + n.id + '"]', 'click', e => m.focus());
     }
-    else{
-      let pop = app.ins('div', '', {className: 'pop l pop-lookup'}, n, 1);
-      if(!this.opt.inPop) pop.style.verticalAlign = 'bottom';
-      n.classList.add('bg-n');
-      n.classList.add(app.opt.cHide);
-      //n.type = 'hidden';
-      let m = app.ins('input', '', {type: 'text', value: n.vLabel, className:'input-lookup subinput'}, pop, this.opt.inPop ? 0 : 1);
-      m.name = 'lookup-' + n.name;
-      //m.required = n.required;
-      //n.required = false;
-      if(n.id) {
-        m.id = 'lookup-' + n.id;
-        if(n.title) m.title = n.title;
-        app.e('[for="' + n.id + '"]', lbl => lbl.htmlFor = m.id);
-        //app.b('[for="' + n.id + '"]', 'click', e => m.focus());
-      }
-      if(n.placeholder) m.placeholder = n.placeholder;
-      m.autocomplete = 'off';
-      let i = null;
-      if(app.attr(n, this.opt.aUrl)){
-        let ic = app.ins('span', '', {className:'input-tools nobr'}, this.opt.inPop ? pop : m, 1);//icons container
-        i = app.ins('a', app.i('right', '&rarr;'), {href: '#goto', className: 'let'}, ic);
-        i.style.cursor = 'pointer';
-        app.ins('', ' ', {}, ic, -1);
-      }
-      this.setHandlers(n, m, pop, i);
+    if(n.placeholder) m.placeholder = n.placeholder;
+    m.autocomplete = 'off';
+    let i = null;
+    if(app.attr(n, this.opt.aUrl)){
+      let ic = app.ins('span', '', {className:'input-tools nobr'}, this.opt.inPop ? pop : m, 1);//icons container
+      i = app.ins('a', app.i('right', '&rarr;'), {href: '#goto', className: 'let goto-lookup'}, ic);
+      i.style.cursor = 'pointer';
+      app.ins('', ' ', {}, ic, -1);
     }
-    //
+    //this.setHandlers(n, m, pop, i);
+    this.initCaption(n)
+  }
+  
+  this.initCaption = function(n){
+    let cap = app.attr(n, this.opt.aLabel);
     let uc = app.attr(n, this.opt.aCap, '');
-    if(!cap && n.value && uc){
+    if(n.value && !cap && uc){
       let u = encodeURI(decodeURI(app.makeUrl(uc, {time: (new Date()).getTime()}))
-        .replace(/\{q\}/, n.vCap.value));
+        .replace(/\{q\}/, n.value));
       fetch.fetch(u, req => {
         let d = JSON.parse(req.responseText);
-        //m.value = d.data;
         this.fix(n, n.value, d.data);
       });
     }
   }
   
-  this.setHandlers = function(n, m, pop, i) {
-    n.thePop = pop;//todo: avoid
-    n.vCap = m;//todo: avoid
-    m.vId = n;//todo: avoid
-    let f = app.delay(this.find, this.opt.wait, true);
-    app.b(m, 'input', f.bind(this, n), false);
-    if(i) app.b(i, 'click', e => this.go(n, e), false);
+  this.ident = function(n){
+    return app.next(n, 'input.hide[type="text"]', true);
+  }
+
+  this.cap = function(n){
+    return app.next(n, 'input.input-lookup[type="text"]');
+  }
+
+  this.pop = function(n){
+    return app.next(n, '.pop-lookup');
   }
 
   this.find = function(n){
-    if(n.vCap.value==='') this.fix(n, '', ''); //empty
-    else if(n.vCache && n.vCache[n.vCap.value]) this.openList(n, n.vCache[n.vCap.value]); //cached
+    let c = this.cap(n);
+    if(!c) return;
+    let v = c.value;
+    if(v==='') this.fix(n, '', ''); //empty
+    else if(n.vCache && n.vCache[v]) this.openList(n, n.vCache[v]); //cached
     else{
       let u = encodeURI(decodeURI(app.makeUrl(app.attr(n, this.opt.aLookup, ''), {
-          //value: n.vCap.value,
+          //value: v,
           time: (new Date()).getTime()
-      })).replace(/\{q\}/, n.vCap.value));
+      })).replace(/\{q\}/, v));
       n.vCur = null;
-      fetch.fetch(u, this.list.bind(this, n.vCap.value, n));
+      fetch.fetch(u, this.list.bind(this, v, n));
     }
   }
   
   this.list = function(u, n, req){
     let d = JSON.parse(req.responseText);
-    if(u===n.vCap.value) this.openList(n, d.data);
-    //setTimeout(() => { if(u===n.vCap.value) this.openList(n, d.data); else console.log('chg'); } , 1000); // check
+    if(u===this.cap(n).value) this.openList(n, d.data);
     this.store(n, u, d);
   }
 
   this.openList = function(n, d, e){
     if(e) e.stopPropagation();
     this.closeList();
-    let pop = n.thePop;
-    pop.appendChild(this.win);//.pop
-    this.win.vRel = n.vCap;
+    let pop = this.pop(n);
+    pop.appendChild(this.win);
+    //this.win.vRel = n.vCap;
     toggle.toggle(this.win, true);
     this.build(n, d);
     toggle.shown = null;
@@ -178,13 +181,13 @@ module.exports = new(function () {
     n.vCur = null;
     if(n.vWait) clearTimeout(n.vWait);
     n.value = v;
-    n.vLabel = n.vCap.value = c;
+    n.vLabel = this.cap(n).value = c;
     app.dispatch(n, ['input', 'change']);
     this.closeList();
   }
   
   this.onKey = function(e){
-    let n = e.target.vId;
+    let n = e.target.matches('.input-lookup') ? this.ident(e.target) : null;
     if(n){
       if(e.keyCode == 27) this.fix(n, n.value, n.vLabel);
       else if(e.keyCode == 40 && !app.vis(this.win)) this.find(n);
@@ -197,10 +200,14 @@ module.exports = new(function () {
     }
   }
   
-  this.go = function(n, e){
-    e.preventDefault();
-    let u = app.attr(n, this.opt.aUrl, '');
-    if(n.value.length>0 && u) location.href = encodeURI(decodeURI(u).replace(/\{id\}/, n.value));
+  this.go = function(e){
+    let n = e.target.closest('a.goto-lookup');
+    if(n){
+      e.preventDefault();
+      n = this.ident(n.parentNode);
+      let u = app.attr(n, this.opt.aUrl, '');
+      if(n.value.length>0 && u) location.href = encodeURI(decodeURI(u).replace(/\{id\}/, n.value));
+    }
   }
 
   // update chain

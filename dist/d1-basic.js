@@ -1,4 +1,4 @@
-/*! d1-web v1.2.60 */
+/*! d1-web v1.2.61 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -246,6 +246,12 @@ module.exports = new function () {
       return this.a(r);
     } catch (e) {
       return [];
+    }
+  };
+
+  this.next = function (n, s, prev) {
+    while (n = n[prev ? 'previousElementSibling' : 'nextElementSibling']) {
+      if (n.matches(s)) return n;
     }
   }; // add event listener
 
@@ -612,7 +618,7 @@ module.exports = new function () {
       d = this.toggle(d);
       if (app.vis(d) && this.opt.keepHash) this.addHistory(a.hash);else this.unhash();
       return d;
-    } else if (!a) {
+    } else if (!a && !n.matches('input, select, textarea')) {
       this.unhash();
     }
     if (e.clientX <= 5 && e.clientY > 5 && this.opt.qDrawer) this.toggle(this.opt.qDrawer);
@@ -732,7 +738,7 @@ module.exports = new function () {
 
     this.addHistory(location.pathname + location.search
     /* + app.opt.hClose*/
-    );
+    ); //inputs flicker
   };
 
   this.addHistory = function (h) {
@@ -1084,8 +1090,14 @@ module.exports = new function () {
     app.listen('click', function (e) {
       return _this.onClick(e);
     });
-    app.e(this.opt.qGallery, function (n) {
-      return _this.prepare(n);
+    this.prepareAll();
+  };
+
+  this.prepareAll = function (d) {
+    var _this2 = this;
+
+    app.e(app.qq(this.opt.qGallery, d), function (n) {
+      return _this2.prepare(n);
     });
   };
 

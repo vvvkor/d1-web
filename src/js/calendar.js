@@ -57,7 +57,7 @@ module.exports = new(function () {
           let s = this.win.style;
           s.left = s.right = s.top = s.bottom = '';
         }
-        this.win.vRel = m ? null : n;
+        //this.win.vRel = m ? null : n;
       }
     }
     toggle.toggle(this.win, on);

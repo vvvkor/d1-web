@@ -23,7 +23,11 @@ module.exports = new(function () {
     app.listen('hash', e => this.onHash(e));
     app.listen('key', e => this.onKey(e));
     app.listen('click', e => this.onClick(e));
-    app.e(this.opt.qGallery, n => this.prepare(n));
+    this.prepareAll();
+  }
+  
+  this.prepareAll = function(d){
+    app.e(app.qq(this.opt.qGallery, d), n => this.prepare(n));
   }
   
   this.onClick = function(e){
