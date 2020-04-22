@@ -930,6 +930,7 @@ Table will become stacked on small screen.
   data-cache="10"
   data-url="/users/{id}">
 </div>
+<!-- data-goto="/userz/{id}" -->
 
 	<p>Chained selects.
 
@@ -981,10 +982,10 @@ Table will become stacked on small screen.
 		<tbody>
 		<tr>
 			<td><label for="v-def">Default validation</label>
-			<td><input oninput="console.log(this.value)" type="text" name="def" id="v-def" required pattern="[A-Za-z]{2,}" title="Two up to four letters" autocomplete="off" minlength="2" maxlength="4">
+			<td><input type="text" name="def" id="v-def" required pattern="[A-Za-z]{2,}" title="Two up to four letters" autocomplete="off" minlength="2" maxlength="4">
 		<tr>
 			<td><label for="v-nm">Name</label>
-			<td><input oninput="console.log(this.value)" type="text" name="nm" id="v-nm" required pattern="[A-Za-z]{2,}" data-hint="Enter %minlength% up to %maxlength% letters" title="Two up to four letters" autocomplete="off" minlength="2" maxlength="4">
+			<td><input type="text" name="nm" id="v-nm" required pattern="[A-Za-z]{2,}" data-hint="Enter %minlength% up to %maxlength% letters" title="Two up to four letters" autocomplete="off" minlength="2" maxlength="4">
 				<div class="small text-e mar">Enter 2 up to 4 latin letters</div>
 				<div class="small text-y mar">Looks good</div>
 		<tr>
@@ -1045,7 +1046,7 @@ Table will become stacked on small screen.
 		<tbody>
 		<tr>
 			<td><label for="vv-nm">Name</label>
-			<td><input oninput="console.log(this.value)" type="text" name="nm" id="vv-nm" required pattern="[A-Za-z]{2,}" title="Two up to four letters" autocomplete="off" minlength="2" maxlength="4">
+			<td><input type="text" name="nm" id="vv-nm" required pattern="[A-Za-z]{2,}" title="Two up to four letters" autocomplete="off" minlength="2" maxlength="4">
 				<small class="text-e">Validation hint inside small</small>
 				<div class="small text-e mar">Validation hint inside div</div>
 				<div class="small text-y mar">Looks good</div>
@@ -1488,7 +1489,7 @@ Toggles on resize.
 	
 	<a href="#x" data-set="invert" data-nodes="body">Invert page</a><br>
 	
-	<a href="#test-input" class="act mem" id="set-input-type" data-set="radio" data-unset="checkbox" data-attr="type"> Change type of the following input</a>
+	<a href="#test-input" class="act mem" id="set-input-type" data-set="radio" data-unset="checkbox" data-attr="type"> Change <i>type</i> of the following input</a>
 	<input type="checkbox" id="test-input">
 	<br>
 	

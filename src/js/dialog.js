@@ -28,16 +28,12 @@ module.exports = new(function () {
   this.init = function () {
     this.opt.ccDlg = app.opt.cToggle + ' ' + app.opt.cOff + ' ' + this.opt.ccDlg;
     if(!this.dlg) this.dlg = app.ins('div', '', {className: this.opt.ccDlg}, document.body);
-    app.listen('click', e => this.onClick(e));
+    app.h('click', this.opt.qAlert+', '+this.opt.qDialog, e => this.onClick(e));
   }
   
   this.onClick = function(e){
-    let as = e.target.closest('a, input, button');
-    if(as && as.matches(this.opt.qAlert+','+this.opt.qDialog)){
-      //d = this.open(e, a, (m, v) => !console.log(v) && toggle.unpop()); //custom callback
       e.preventDefault();
-      return this.openByNode(as);
-    }
+      return this.openByNode(e.recv);
   }
 
   //setup object keys: [ok, cancel, icon, class, btn, rev, def]

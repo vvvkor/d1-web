@@ -22,7 +22,7 @@ module.exports = new(function () {
   this.init = function () {
     app.listen('hash', e => this.onHash(e));
     app.listen('key', e => this.onKey(e));
-    app.listen('click', e => this.onClick(e));
+    app.h('click', this.opt.qGal, e => this.next(e));
     this.prepareAll();
   }
   
@@ -30,13 +30,10 @@ module.exports = new(function () {
     app.e(app.qq(this.opt.qGallery, d), n => this.prepare(n));
   }
   
-  this.onClick = function(e){
-    let n = e.target;
-    if(n.matches(this.opt.qGal)){
-      if(e.clientX > 0 /* not Enter key */ && e.clientX < n.clientWidth / 3){
-        if(this.prevImg(n)) e.preventDefault();
-      }
-      //return n;
+  this.next = function(e){
+    let n = e.recv;
+    if(e.clientX > 0 /* not Enter key */ && e.clientX < n.clientWidth / 3){
+      if(this.prevImg(n)) e.preventDefault();
     }
   }
   
@@ -70,6 +67,7 @@ module.exports = new(function () {
       let s = app.seq();
       if(!i) first = s;
       let p = app.ins('a', '', {
+          className: 'gallery-pic',
           id: this.opt.idPrefix + s,
           href: '#' + this.opt.idPrefix + (i==z-1 ? first : s+1)
           }, g);
@@ -82,7 +80,6 @@ module.exports = new(function () {
       a[i].vDone = 1;
     }
     app.x(g);
-    app.b(app.qq('a[id]', g), 'click', app.gotoPrev);
     document.body.appendChild(g);
   }
 

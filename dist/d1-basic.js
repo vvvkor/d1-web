@@ -1,4 +1,4 @@
-/*! d1-web v1.2.61 */
+/*! d1-web v1.2.62 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -131,15 +131,22 @@ module.exports = new function () {
 
     this.b([window], 'hashchange', function (e) {
       return _this.on('hash', e);
-    });
+    }); // on window, renamed
+
     this.b([document], 'keydown', function (e) {
       return _this.on('key', e);
-    });
-    this.b([document], 'click', function (e) {
-      return _this.on('click', e);
-    });
-    this.b([document], 'input', function (e) {
-      return _this.on('input', e);
+    }); //renamed
+
+    ['invalid', 'focus'].forEach(function (et) {
+      return _this.b([document], et, function (e) {
+        return _this.on(et, e);
+      }, true);
+    }); //useCapture
+
+    ['click', 'input', 'change', 'submit'].forEach(function (et) {
+      return _this.b([document], et, function (e) {
+        return _this.on(et, e);
+      });
     });
     if (location.hash) this.on('hash');
     this.fire('after');
@@ -150,8 +157,8 @@ module.exports = new function () {
 
   this.on = function (t, e) {
     this.fire('before', e);
-    this.fire(t, e);
-    this.fire(t + 'ed', e);
+    this.fire(t, e); //this.fire(t + 'ed', e);
+
     this.fire('after', e);
   }; //plugins
 
@@ -186,8 +193,9 @@ module.exports = new function () {
 
 
   this.listen = function (t, f) {
-    if (!this.handlers[t]) this.handlers[t] = [];
-    this.handlers[t].push(f);
+    //if(!this.handlers[t]) this.handlers[t] = [];
+    //this.handlers[t].push(f);
+    this.h(t, '', f);
   };
 
   this.fire = function (t, e) {
@@ -197,6 +205,21 @@ module.exports = new function () {
     if (this.handlers[t]) this.handlers[t].forEach(function (h) {
       return h.call(_this3, e);
     });
+  }; //handle
+
+
+  this.h = function (t, s, f, before) {
+    var _this4 = this;
+
+    if (t instanceof Array) t.forEach(function (et) {
+      return _this4.h(et, s, f, before);
+    });else {
+      if (!this.handlers[t]) this.handlers[t] = [];
+      this.handlers[t][before ? 'unshift' : 'push'](function (e) {
+        if (s) e.recv = e.target.closest(s);
+        if (!s || e.recv) f(e);
+      });
+    }
   };
 
   this.dispatch = function (n, e, p) {
@@ -256,8 +279,8 @@ module.exports = new function () {
   }; // add event listener
 
 
-  this.b = function (nn, et, f) {
-    var _this4 = this;
+  this.b = function (nn, et, f, capt) {
+    var _this5 = this;
 
     if (typeof nn === 'string') nn = this.qq(nn);else if (nn.tagName) nn = [nn];else nn = this.a(nn); //if(nn && nn.length>50) console.log('b:'+nn.length, arguments[0]);
 
@@ -265,12 +288,12 @@ module.exports = new function () {
       return et ? et instanceof Array ? et.forEach(function (ett) {
         return n.addEventListener(ett, function (e) {
           return f(e);
-        }, false);
+        }, capt);
       }) : n.addEventListener(et, function (e) {
         return f(e);
       }
       /*f.bind(this)*/
-      , false) : f.call(_this4, n);
+      , capt) : f.call(_this5, n);
     });
   }; // execute for each node
 
@@ -355,11 +378,11 @@ module.exports = new function () {
     var p = null;
     return function ff() {
       var _arguments = arguments,
-          _this5 = this;
+          _this6 = this;
 
       if (skip && p) clearTimeout(p);
       p = setTimeout(function () {
-        f.apply(_this5, _arguments);
+        f.apply(_this6, _arguments);
         p = null;
       }, ms);
     };
@@ -461,13 +484,14 @@ module.exports = new function () {
     });
     app.listen('click', function (e) {
       return _this.onClick(e);
-    });
-    app.listen('clicked', function (e) {
-      return _this.unpop(e.target);
+    }); //app.listen('clicked', e => this.unpop(e.target)); // click out
+
+    app.listen('after', function (e) {
+      return e && e.type == 'click' ? _this.unpop(e.target) : null;
     }); // click out
 
     app.listen('after', function (e) {
-      return _this.after(e ? e.target : null);
+      return !e || ['click', 'key', 'hash'].indexOf(e.type) != -1 ? _this.modalStyle(e ? e.target : null) : null;
     }); //toggle
 
     var q = this.opt;
@@ -541,7 +565,7 @@ module.exports = new function () {
     */
   };
 
-  this.after = function (n) {
+  this.modalStyle = function (n) {
     this.shown = null; //do it just once when dialog is opened
     //let modal = app.q(this.opt.qDlg+':not(.'+app.opt.cOff+'), '+this.opt.qGal+':target'); // :target not updated after Esc key
 
@@ -557,7 +581,7 @@ module.exports = new function () {
       if (!(modal && s.paddingRight)) s.paddingRight = modal ? '' + bar + 'px' : ''; // avoid width reflow
     }
 
-    app.dbg(['after', n, modal, s.paddingRight]);
+    app.dbg(['modalStyle', n, modal, s.paddingRight]);
 
     if (modal) {
       //let f1 = app.q('input, a:not(.' + app.opt.cClose + ')', modal);
@@ -577,7 +601,7 @@ module.exports = new function () {
     if (e) e.preventDefault();
     this.unpop(null, true);
     this.unhash();
-    this.after();
+    this.modalStyle();
   };
 
   this.onHash = function (e) {
@@ -596,7 +620,7 @@ module.exports = new function () {
           if (!this.opt.keepHash) this.unhash();
         }
 
-        if (t || g) this.after();else this.unpop(); //app.fire('esc', e);
+        if (t || g) this.modalStyle();else this.unpop(); //app.fire('esc', e);
       }
     }
   };
@@ -669,7 +693,7 @@ module.exports = new function () {
       if (deep != -1) {
         if (!deep) this.toggleDependent(d);
         this.hiliteLinks(d);
-        this.storeVisibility(d); //if(!deep) this.after(d);
+        this.storeVisibility(d); //if(!deep) this.modalStyle(d);
       }
 
       app.fire('aftertoggle', {
@@ -883,19 +907,14 @@ module.exports = new function () {
     if (!this.dlg) this.dlg = app.ins('div', '', {
       className: this.opt.ccDlg
     }, document.body);
-    app.listen('click', function (e) {
+    app.h('click', this.opt.qAlert + ', ' + this.opt.qDialog, function (e) {
       return _this.onClick(e);
     });
   };
 
   this.onClick = function (e) {
-    var as = e.target.closest('a, input, button');
-
-    if (as && as.matches(this.opt.qAlert + ',' + this.opt.qDialog)) {
-      //d = this.open(e, a, (m, v) => !console.log(v) && toggle.unpop()); //custom callback
-      e.preventDefault();
-      return this.openByNode(as);
-    }
+    e.preventDefault();
+    return this.openByNode(e.recv);
   }; //setup object keys: [ok, cancel, icon, class, btn, rev, def]
 
 
@@ -1087,8 +1106,8 @@ module.exports = new function () {
     app.listen('key', function (e) {
       return _this.onKey(e);
     });
-    app.listen('click', function (e) {
-      return _this.onClick(e);
+    app.h('click', this.opt.qGal, function (e) {
+      return _this.next(e);
     });
     this.prepareAll();
   };
@@ -1101,16 +1120,13 @@ module.exports = new function () {
     });
   };
 
-  this.onClick = function (e) {
-    var n = e.target;
+  this.next = function (e) {
+    var n = e.recv;
 
-    if (n.matches(this.opt.qGal)) {
-      if (e.clientX > 0
-      /* not Enter key */
-      && e.clientX < n.clientWidth / 3) {
-        if (this.prevImg(n)) e.preventDefault();
-      } //return n;
-
+    if (e.clientX > 0
+    /* not Enter key */
+    && e.clientX < n.clientWidth / 3) {
+      if (this.prevImg(n)) e.preventDefault();
     }
   };
 
@@ -1149,6 +1165,7 @@ module.exports = new function () {
         var s = app.seq();
         if (!i) first = s;
         var p = app.ins('a', '', {
+          className: 'gallery-pic',
           id: this.opt.idPrefix + s,
           href: '#' + this.opt.idPrefix + (i == z - 1 ? first : s + 1)
         }, g); //p.style.setProperty('--img', 'url("' + app.attr(a[i], 'href', '') + '")');
@@ -1165,7 +1182,6 @@ module.exports = new function () {
     }
 
     app.x(g);
-    app.b(app.qq('a[id]', g), 'click', app.gotoPrev);
     document.body.appendChild(g);
   };
 

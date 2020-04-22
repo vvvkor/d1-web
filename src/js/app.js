@@ -38,10 +38,12 @@ module.exports = new (function(){
     this.initPlugins(opt); // plugins
 
     // bind events
-    this.b([window], 'hashchange', e => this.on('hash', e));
-    this.b([document], 'keydown', e => this.on('key', e));
-    this.b([document], 'click', e => this.on('click', e));
-    this.b([document], 'input', e => this.on('input', e));
+    this.b([window], 'hashchange', e => this.on('hash', e)); // on window, renamed
+    this.b([document], 'keydown', e => this.on('key', e)); //renamed
+    ['invalid', 'focus']
+      .forEach(et => this.b([document], et, e => this.on(et, e), true));//useCapture
+    ['click', 'input', 'change', 'submit']
+      .forEach(et => this.b([document], et, e => this.on(et, e)));
     if(location.hash) this.on('hash')
 
     this.fire('after');
@@ -53,7 +55,7 @@ module.exports = new (function(){
   this.on = function(t, e){
     this.fire('before', e);
     this.fire(t, e);
-    this.fire(t + 'ed', e);
+    //this.fire(t + 'ed', e);
     this.fire('after', e);
   }
 
@@ -80,13 +82,26 @@ module.exports = new (function(){
   //events
 
   this.listen = function(t, f){
-    if(!this.handlers[t]) this.handlers[t] = [];
-    this.handlers[t].push(f);
+    //if(!this.handlers[t]) this.handlers[t] = [];
+    //this.handlers[t].push(f);
+    this.h(t, '', f);
   }
 
   this.fire = function(t, e){
     this.dbg(['fire ' + t, e]);
     if(this.handlers[t]) this.handlers[t].forEach(h => h.call(this, e));
+  }
+  
+  //handle
+  this.h = function(t, s, f, before){
+    if(t instanceof Array) t.forEach(et => this.h(et, s, f, before));
+    else{
+      if(!this.handlers[t]) this.handlers[t] = [];
+      this.handlers[t][before ? 'unshift' : 'push'](e => {
+        if(s) e.recv = e.target.closest(s);
+        if(!s || e.recv) f(e);
+      });
+    }
   }
   
   this.dispatch = function(n, e, p){
@@ -141,15 +156,15 @@ module.exports = new (function(){
   }
 
   // add event listener
-  this.b = function(nn, et, f){
+  this.b = function(nn, et, f, capt){
     if(typeof nn === 'string') nn = this.qq(nn);
     else if(nn.tagName) nn = [nn];
     else nn = this.a(nn);
     //if(nn && nn.length>50) console.log('b:'+nn.length, arguments[0]);
     if(nn && f) nn.forEach(n => et
       ? (et instanceof Array
-        ? et.forEach(ett => n.addEventListener(ett, e => f(e), false))
-        : n.addEventListener(et, e => f(e) /*f.bind(this)*/, false)
+        ? et.forEach(ett => n.addEventListener(ett, e => f(e), capt))
+        : n.addEventListener(et, e => f(e) /*f.bind(this)*/, capt)
         )
       : f.call(this, n)
       );

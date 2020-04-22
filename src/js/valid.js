@@ -19,36 +19,36 @@ module.exports = new(function () {
     //let q = this.opt.qValidate;
     //let dh = '[' + this.opt.aHint + ']';
     //app.e(q + ' input' + dh + ', ' + q + ' textarea' + dh + ', '+ q +' select' + dh, n => this.initInput(n));
+    
     let inputs = ['input', 'textarea', 'select'].map(s => this.opt.qValidate + ' ' + s + '[' + this.opt.aHint + ']').join(', ');
-    app.e(inputs + ', .' + this.opt.cLiveVal + ' [name]', n => this.initInput(n));
+    inputs += ', .' + this.opt.cLiveVal + ' [name]';
+    
+    app.h(['input', 'change'], inputs, e => this.validateInput(e.target));
+    app.h('invalid', inputs, e => this.setCustomMessage(e.target));
     app.e('form.' + this.opt.cUnhint, n => this.unhint(n));
     app.e('form.' + this.opt.cLiveVal, n => this.validateForm(n));
-    app.b('form.' + this.opt.cUnhint, 'submit', e => this.validateForm(e.target, e));
+    app.h('submit', this.opt.qValidate, e => e.target.getAttribute('novalidate') ? this.validateForm(e.target, e) : null);//custom validation
   }
   
-  this.initInput = function(n) {
-    if (n.willValidate) {
-      if (n.tagName == 'select' || n.type == 'radio' || n.type == 'checkbox') app.b(n, 'change', e => this.validateInput(e.target));
-      else app.b([n], 'input', e => this.validateInput(e.target));
-      app.b([n], 'invalid', e => this.setCustomMessage(e.target));
-    }
-  }
-
   this.isLive = function(f){
     return (f && f.classList.contains(this.opt.cLiveVal));
   }
   
   this.validateInput = function(n) {
-    if (n.type == 'radio') app.e(app.qq('[name="'+n.name+'"]', n.form), m => m.setCustomValidity(''));
-    else n.setCustomValidity('');
-    n.checkValidity();
-    if(this.isLive(n.form)) this.validateForm(n.form);
+    if (n.willValidate){
+      if (n.type == 'radio') app.e(app.qq('[name="'+n.name+'"]', n.form), m => m.setCustomValidity(''));
+      else n.setCustomValidity('');
+      n.checkValidity();
+      if(this.isLive(n.form)) this.validateForm(n.form);
+    }
   }
 
   this.setCustomMessage = function(n) {
-    let t = n.getAttribute('data-hint') || '';// || n.title;
-    t = t.replace(/%([\w\-]+)%/g, (m, v) => n.getAttribute(v));
-    n.setCustomValidity(t);
+    if (n.willValidate){
+      let t = n.getAttribute('data-hint') || '';// || n.title;
+      t = t.replace(/%([\w\-]+)%/g, (m, v) => n.getAttribute(v));
+      n.setCustomValidity(t);
+    }
   }
   
   this.unhint = function(n) {

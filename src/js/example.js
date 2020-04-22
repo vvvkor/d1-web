@@ -12,12 +12,12 @@ module.exports = new(function () {
   };
 
   this.init = function () {
-    //app.listen('click', e => this.onClick(e));
+    //app.h('click', 'a.example', e => this.onClick(e));
   }
 
   /*
   this.onClick = function(e){
-    let n = e.target;
+    let n = e.target; //e.recv
   }
   */
 

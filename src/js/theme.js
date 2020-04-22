@@ -33,7 +33,7 @@ module.exports = new(function () {
     app.ins('a', '&#x2715;', {href: '#cancel', className: 'pad hover close'}, this.drw);
     
     //menu
-    this.h('Theme', 2);
+    this.hx('Theme', 2);
     app.b([app.ins('a', 'Reset to default', {href:'#', className: ''}, this.drw)], 'click', e => this.unstyle(e));
     this.put('Background', ['#fff', '#eee', '#ffeee6', '#ffe', '#efe', '#e6fcf9', '#e3eeff', '#f9e9ff'], '--bg');
     this.put('Menu', ['rgba(255,255,255,0)', 'rgba(0,0,0,.1)', 'hsla(1,100%,55%,.3)', 'hsla(45,100%,50%,.3)', 'hsla(120,100%,35%,.3)', 'hsla(180,100%,35%,.3)', 'hsla(220,100%,55%,.3)', 'hsla(290,100%,50%,.3)'], ['--bg-pane', '--bg-hilite']);
@@ -69,12 +69,12 @@ module.exports = new(function () {
     //localStorage.removeItem('theme-body');
   }
   
-  this.h = function(s, l){
+  this.hx = function(s, l){
     app.ins('h'+(l || 1), s, {className: 'mar'}, this.drw);
   }
   
   this.put = function(hh, arr, func){
-    this.h(hh, 3);
+    this.hx(hh, 3);
     let c = [];
     arr.forEach((v/*, k*/) => {
       let color = v.match(/[#(]/);

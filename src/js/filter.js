@@ -17,8 +17,8 @@ module.exports = new(function () {
 
   this.init = function () {
     app.e(this.opt.qFilter, n => this.prepare(n));
-    app.b('a[' + this.opt.aFilter + ']', 'click', e => this.applyControl(e.target));
-    app.b(':not(a)[' + this.opt.aFilter + ']', 'input', e => this.applyControl(e.target));
+    app.h('click', 'a[' + this.opt.aFilter + ']', e => this.applyControl(e.recv));
+    app.h('input', ':not(a)[' + this.opt.aFilter + ']', e => this.applyControl(e.recv));
   }
 
   this.prepare = function(n){
@@ -60,7 +60,7 @@ module.exports = new(function () {
     app.e(app.qq(this.opt.qItem, n), m => m.classList[this.match(m, f) ? 'remove' : 'add'](app.opt.cHide))
     app.e(app.qq('[' + this.opt.aFilter + ']', n), m => this.setUsed(m, f));
     this.store(n, f);
-    app.fire('updated', {n: n});
+    app.fire('update', {n: n});
   }
   
   this.match = function(n, f){

@@ -14,21 +14,13 @@ module.exports = new(function () {
 
   this.init = function () {
     app.e('input[type="color"]', n => this.prepareColor(n));
-    app.listen('click', e => this.onClick(e));
-  }
-
-  this.onClick = function(e){
-    let n = e.target;
-    let a = n.closest('a[href^="#"][data-value]');
-    if(a){
+    app.h('click', 'a[href^="#"][data-value]', e => {
       e.preventDefault();
-      this.setValue(a);
-    }
-    else if(n.matches('input[data-group]')){
-      this.checkBoxes(n);
-    }
+      this.setValue(e.recv);
+    });
+    app.h('click', 'input[data-group]', e => this.checkBoxes(e.target));
   }
-
+  
   this.checkBoxes = function(n) {
     app.e(app.qq('input[type="checkbox"][class~="' + app.attr(n, 'data-group', '') + '"]', n.form),
       m => m.checked = n.checked);
@@ -39,7 +31,7 @@ module.exports = new(function () {
     if (d) {
       d.value = app.attr(n, 'data-value', '');
       toggle.unpop(d, true);
-      //toggle.after(); //generally not needed
+      //toggle.modalStyle(); //generally not needed
     }
   }
 

@@ -14,19 +14,16 @@ module.exports = new(function () {
   };
 
   this.init = function () {
-    app.listen('click', e => this.onClick(e));
+    app.h('click', 'a[data-target]', e => this.onClick(e));
   }
 
   this.onClick = function(e){
-    let a = e.target.closest('a[data-target]');
-    if(a){
-      e.preventDefault();
-      this.fetchBy(a);
-    }
+    e.preventDefault();
+    this.fetchBy(e.recv);
   }
 
   this.fetchBy = function(n, f) {
-    this.fetch(app.attr(n, 'href', ''), r => f ? f(n, r) : this.recv(n, r));
+    this.fetch(app.attr(n, 'href', ''), r => f ? f(n, r) : this.receive(n, r));
   }
 
   this.fetch = function(url, f) {
@@ -36,7 +33,7 @@ module.exports = new(function () {
     req.send();
   }
 
-  this.recv = function(n, req, e) {
+  this.receive = function(n, req, e) {
     // JSON.parse(req.responseText)
     let d = app.q(app.attr(n, 'data-target', ''));
     if (req.status == '200') {

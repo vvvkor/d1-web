@@ -14,18 +14,18 @@ module.exports = new(function () {
   };
 
   this.init = function () {
-    app.listen('click', e => this.onClick(e));
+    app.h('click', 'a[href^="#"]', e => this.onClick(e));
   }
 
   this.onClick = function(e){
-    let n = e.target.closest('a[href^="#"]');
+    let n = e.recv;
     if(n && n.hash){
       let q = app.attr(n, this.opt.aItem);
       let d = q ? app.q(q) : e.target.closest(this.opt.qItem);
       if(d){
         let cont = d.parentNode;
-        if(this.process(d, n.hash.substr(1)), !!q){
-          app.fire('updated', {n: cont});
+        if(this.process(d, n.hash.substr(1), !!q)){
+          app.fire('update', {n: cont});
           e.preventDefault();
           e.stopPropagation();
         }

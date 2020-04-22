@@ -46,8 +46,9 @@ module.exports = new(function () {
     app.listen('hash', e => this.onHash(e));
     app.listen('key', e => this.onKey(e));
     app.listen('click', e => this.onClick(e));
-    app.listen('clicked', e => this.unpop(e.target)); // click out
-    app.listen('after', e => this.after(e ? e.target : null));
+    //app.listen('clicked', e => this.unpop(e.target)); // click out
+    app.listen('after', e => (e && e.type == 'click') ? this.unpop(e.target) : null); // click out
+    app.listen('after', e => (!e || ['click', 'key', 'hash'].indexOf(e.type) != -1) ? this.modalStyle(e ? e.target : null) : null);
     //toggle
     let q = this.opt;
     this.opt.qTgl = this.opt.mediaSuffixes.concat(['']).map(x => '[id].' + app.opt.cToggle + x).join(', ')
@@ -76,7 +77,7 @@ module.exports = new(function () {
     */
   }
 
-  this.after = function(n){
+  this.modalStyle = function(n){
     this.shown = null;//do it just once when dialog is opened
     //let modal = app.q(this.opt.qDlg+':not(.'+app.opt.cOff+'), '+this.opt.qGal+':target'); // :target not updated after Esc key
     let modal = app.q(this.opt.qDlg+':not(.'+app.opt.cOff+'), '+this.opt.qGal+'[id="' + location.hash.substr(1) + '"]');
@@ -87,7 +88,7 @@ module.exports = new(function () {
       s.overflow = modal ? 'hidden' : '';
       if(!(modal && s.paddingRight)) s.paddingRight = modal ? '' + bar + 'px' : ''; // avoid width reflow
     }
-    app.dbg(['after', n, modal, s.paddingRight]);
+    app.dbg(['modalStyle', n, modal, s.paddingRight]);
     if(modal){
       //let f1 = app.q('input, a:not(.' + app.opt.cClose + ')', modal);
       let f1 = app.q('input:not([type="hidden"]), select, textarea, a.btn, a:not([href="' + app.opt.hClose + '"])', modal);
@@ -104,7 +105,7 @@ module.exports = new(function () {
     if(e) e.preventDefault();
     this.unpop(null, true);
     this.unhash();
-    this.after();
+    this.modalStyle();
   }
 
   this.onHash = function(e){
@@ -121,7 +122,7 @@ module.exports = new(function () {
           this.toggle(d, true);
           if(!this.opt.keepHash) this.unhash();
         }
-        if(t || g) this.after();
+        if(t || g) this.modalStyle();
         else this.unpop();//app.fire('esc', e);
       }
     }
@@ -189,7 +190,7 @@ module.exports = new(function () {
         if(!deep) this.toggleDependent(d);
         this.hiliteLinks(d);
         this.storeVisibility(d);
-        //if(!deep) this.after(d);
+        //if(!deep) this.modalStyle(d);
       }
       app.fire('aftertoggle', {n: d, on: on, deep: deep});
     }

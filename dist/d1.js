@@ -1,4 +1,4 @@
-/*! d1-web v1.2.61 */
+/*! d1-web v1.2.62 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -130,15 +130,22 @@ module.exports = new function () {
 
     this.b([window], 'hashchange', function (e) {
       return _this.on('hash', e);
-    });
+    }); // on window, renamed
+
     this.b([document], 'keydown', function (e) {
       return _this.on('key', e);
-    });
-    this.b([document], 'click', function (e) {
-      return _this.on('click', e);
-    });
-    this.b([document], 'input', function (e) {
-      return _this.on('input', e);
+    }); //renamed
+
+    ['invalid', 'focus'].forEach(function (et) {
+      return _this.b([document], et, function (e) {
+        return _this.on(et, e);
+      }, true);
+    }); //useCapture
+
+    ['click', 'input', 'change', 'submit'].forEach(function (et) {
+      return _this.b([document], et, function (e) {
+        return _this.on(et, e);
+      });
     });
     if (location.hash) this.on('hash');
     this.fire('after');
@@ -149,8 +156,8 @@ module.exports = new function () {
 
   this.on = function (t, e) {
     this.fire('before', e);
-    this.fire(t, e);
-    this.fire(t + 'ed', e);
+    this.fire(t, e); //this.fire(t + 'ed', e);
+
     this.fire('after', e);
   }; //plugins
 
@@ -185,8 +192,9 @@ module.exports = new function () {
 
 
   this.listen = function (t, f) {
-    if (!this.handlers[t]) this.handlers[t] = [];
-    this.handlers[t].push(f);
+    //if(!this.handlers[t]) this.handlers[t] = [];
+    //this.handlers[t].push(f);
+    this.h(t, '', f);
   };
 
   this.fire = function (t, e) {
@@ -196,6 +204,21 @@ module.exports = new function () {
     if (this.handlers[t]) this.handlers[t].forEach(function (h) {
       return h.call(_this3, e);
     });
+  }; //handle
+
+
+  this.h = function (t, s, f, before) {
+    var _this4 = this;
+
+    if (t instanceof Array) t.forEach(function (et) {
+      return _this4.h(et, s, f, before);
+    });else {
+      if (!this.handlers[t]) this.handlers[t] = [];
+      this.handlers[t][before ? 'unshift' : 'push'](function (e) {
+        if (s) e.recv = e.target.closest(s);
+        if (!s || e.recv) f(e);
+      });
+    }
   };
 
   this.dispatch = function (n, e, p) {
@@ -255,8 +278,8 @@ module.exports = new function () {
   }; // add event listener
 
 
-  this.b = function (nn, et, f) {
-    var _this4 = this;
+  this.b = function (nn, et, f, capt) {
+    var _this5 = this;
 
     if (typeof nn === 'string') nn = this.qq(nn);else if (nn.tagName) nn = [nn];else nn = this.a(nn); //if(nn && nn.length>50) console.log('b:'+nn.length, arguments[0]);
 
@@ -264,12 +287,12 @@ module.exports = new function () {
       return et ? et instanceof Array ? et.forEach(function (ett) {
         return n.addEventListener(ett, function (e) {
           return f(e);
-        }, false);
+        }, capt);
       }) : n.addEventListener(et, function (e) {
         return f(e);
       }
       /*f.bind(this)*/
-      , false) : f.call(_this4, n);
+      , capt) : f.call(_this5, n);
     });
   }; // execute for each node
 
@@ -354,11 +377,11 @@ module.exports = new function () {
     var p = null;
     return function ff() {
       var _arguments = arguments,
-          _this5 = this;
+          _this6 = this;
 
       if (skip && p) clearTimeout(p);
       p = setTimeout(function () {
-        f.apply(_this5, _arguments);
+        f.apply(_this6, _arguments);
         p = null;
       }, ms);
     };
@@ -459,13 +482,14 @@ module.exports = new function () {
     });
     app.listen('click', function (e) {
       return _this.onClick(e);
-    });
-    app.listen('clicked', function (e) {
-      return _this.unpop(e.target);
+    }); //app.listen('clicked', e => this.unpop(e.target)); // click out
+
+    app.listen('after', function (e) {
+      return e && e.type == 'click' ? _this.unpop(e.target) : null;
     }); // click out
 
     app.listen('after', function (e) {
-      return _this.after(e ? e.target : null);
+      return !e || ['click', 'key', 'hash'].indexOf(e.type) != -1 ? _this.modalStyle(e ? e.target : null) : null;
     }); //toggle
 
     var q = this.opt;
@@ -539,7 +563,7 @@ module.exports = new function () {
     */
   };
 
-  this.after = function (n) {
+  this.modalStyle = function (n) {
     this.shown = null; //do it just once when dialog is opened
     //let modal = app.q(this.opt.qDlg+':not(.'+app.opt.cOff+'), '+this.opt.qGal+':target'); // :target not updated after Esc key
 
@@ -555,7 +579,7 @@ module.exports = new function () {
       if (!(modal && s.paddingRight)) s.paddingRight = modal ? '' + bar + 'px' : ''; // avoid width reflow
     }
 
-    app.dbg(['after', n, modal, s.paddingRight]);
+    app.dbg(['modalStyle', n, modal, s.paddingRight]);
 
     if (modal) {
       //let f1 = app.q('input, a:not(.' + app.opt.cClose + ')', modal);
@@ -575,7 +599,7 @@ module.exports = new function () {
     if (e) e.preventDefault();
     this.unpop(null, true);
     this.unhash();
-    this.after();
+    this.modalStyle();
   };
 
   this.onHash = function (e) {
@@ -594,7 +618,7 @@ module.exports = new function () {
           if (!this.opt.keepHash) this.unhash();
         }
 
-        if (t || g) this.after();else this.unpop(); //app.fire('esc', e);
+        if (t || g) this.modalStyle();else this.unpop(); //app.fire('esc', e);
       }
     }
   };
@@ -667,7 +691,7 @@ module.exports = new function () {
       if (deep != -1) {
         if (!deep) this.toggleDependent(d);
         this.hiliteLinks(d);
-        this.storeVisibility(d); //if(!deep) this.after(d);
+        this.storeVisibility(d); //if(!deep) this.modalStyle(d);
       }
 
       app.fire('aftertoggle', {
@@ -858,19 +882,14 @@ module.exports = new function () {
     if (!this.dlg) this.dlg = app.ins('div', '', {
       className: this.opt.ccDlg
     }, document.body);
-    app.listen('click', function (e) {
+    app.h('click', this.opt.qAlert + ', ' + this.opt.qDialog, function (e) {
       return _this.onClick(e);
     });
   };
 
   this.onClick = function (e) {
-    var as = e.target.closest('a, input, button');
-
-    if (as && as.matches(this.opt.qAlert + ',' + this.opt.qDialog)) {
-      //d = this.open(e, a, (m, v) => !console.log(v) && toggle.unpop()); //custom callback
-      e.preventDefault();
-      return this.openByNode(as);
-    }
+    e.preventDefault();
+    return this.openByNode(e.recv);
   }; //setup object keys: [ok, cancel, icon, class, btn, rev, def]
 
 
@@ -1106,8 +1125,8 @@ module.exports = new function () {
     app.listen('key', function (e) {
       return _this.onKey(e);
     });
-    app.listen('click', function (e) {
-      return _this.onClick(e);
+    app.h('click', this.opt.qGal, function (e) {
+      return _this.next(e);
     });
     this.prepareAll();
   };
@@ -1120,16 +1139,13 @@ module.exports = new function () {
     });
   };
 
-  this.onClick = function (e) {
-    var n = e.target;
+  this.next = function (e) {
+    var n = e.recv;
 
-    if (n.matches(this.opt.qGal)) {
-      if (e.clientX > 0
-      /* not Enter key */
-      && e.clientX < n.clientWidth / 3) {
-        if (this.prevImg(n)) e.preventDefault();
-      } //return n;
-
+    if (e.clientX > 0
+    /* not Enter key */
+    && e.clientX < n.clientWidth / 3) {
+      if (this.prevImg(n)) e.preventDefault();
     }
   };
 
@@ -1168,6 +1184,7 @@ module.exports = new function () {
         var s = app.seq();
         if (!i) first = s;
         var p = app.ins('a', '', {
+          className: 'gallery-pic',
           id: this.opt.idPrefix + s,
           href: '#' + this.opt.idPrefix + (i == z - 1 ? first : s + 1)
         }, g); //p.style.setProperty('--img', 'url("' + app.attr(a[i], 'href', '') + '")');
@@ -1184,7 +1201,6 @@ module.exports = new function () {
     }
 
     app.x(g);
-    app.b(app.qq('a[id]', g), 'click', app.gotoPrev);
     document.body.appendChild(g);
   };
 
@@ -1230,25 +1246,21 @@ module.exports = new function () {
   this.init = function () {
     var _this = this;
 
-    app.listen('click', function (e) {
+    app.h('click', 'a[data-target]', function (e) {
       return _this.onClick(e);
     });
   };
 
   this.onClick = function (e) {
-    var a = e.target.closest('a[data-target]');
-
-    if (a) {
-      e.preventDefault();
-      this.fetchBy(a);
-    }
+    e.preventDefault();
+    this.fetchBy(e.recv);
   };
 
   this.fetchBy = function (n, f) {
     var _this2 = this;
 
     this.fetch(app.attr(n, 'href', ''), function (r) {
-      return f ? f(n, r) : _this2.recv(n, r);
+      return f ? f(n, r) : _this2.receive(n, r);
     });
   };
 
@@ -1262,7 +1274,7 @@ module.exports = new function () {
     req.send();
   };
 
-  this.recv = function (n, req, e) {
+  this.receive = function (n, req, e) {
     // JSON.parse(req.responseText)
     var d = app.q(app.attr(n, 'data-target', ''));
 
@@ -1843,7 +1855,7 @@ module.exports = new function () {
     app.e('code[class*="language-"]', function (n) {
       return _this.hiliteNode(n);
     });
-    app.listen('updated', function (e) {
+    app.listen('update', function (e) {
       return _this.updateCode(e);
     });
   };
@@ -2205,11 +2217,11 @@ module.exports = new function () {
   this.name = 'example';
   this.opt = {};
 
-  this.init = function () {} //app.listen('click', e => this.onClick(e));
+  this.init = function () {} //app.h('click', 'a.example', e => this.onClick(e));
 
   /*
   this.onClick = function(e){
-    let n = e.target;
+    let n = e.target; //e.recv
   }
   */
   //app.plug(this);
@@ -2240,11 +2252,11 @@ module.exports = new function () {
     app.e(this.opt.qFilter, function (n) {
       return _this.prepare(n);
     });
-    app.b('a[' + this.opt.aFilter + ']', 'click', function (e) {
-      return _this.applyControl(e.target);
+    app.h('click', 'a[' + this.opt.aFilter + ']', function (e) {
+      return _this.applyControl(e.recv);
     });
-    app.b(':not(a)[' + this.opt.aFilter + ']', 'input', function (e) {
-      return _this.applyControl(e.target);
+    app.h('input', ':not(a)[' + this.opt.aFilter + ']', function (e) {
+      return _this.applyControl(e.recv);
     });
   };
 
@@ -2300,7 +2312,7 @@ module.exports = new function () {
       return _this2.setUsed(m, f);
     });
     this.store(n, f);
-    app.fire('updated', {
+    app.fire('update', {
       n: n
     });
   };
@@ -2452,21 +2464,14 @@ module.exports = new function () {
     app.e('input[type="color"]', function (n) {
       return _this.prepareColor(n);
     });
-    app.listen('click', function (e) {
-      return _this.onClick(e);
-    });
-  };
-
-  this.onClick = function (e) {
-    var n = e.target;
-    var a = n.closest('a[href^="#"][data-value]');
-
-    if (a) {
+    app.h('click', 'a[href^="#"][data-value]', function (e) {
       e.preventDefault();
-      this.setValue(a);
-    } else if (n.matches('input[data-group]')) {
-      this.checkBoxes(n);
-    }
+
+      _this.setValue(e.recv);
+    });
+    app.h('click', 'input[data-group]', function (e) {
+      return _this.checkBoxes(e.target);
+    });
   };
 
   this.checkBoxes = function (n) {
@@ -2480,7 +2485,7 @@ module.exports = new function () {
 
     if (d) {
       d.value = app.attr(n, 'data-value', '');
-      toggle.unpop(d, true); //toggle.after(); //generally not needed
+      toggle.unpop(d, true); //toggle.modalStyle(); //generally not needed
     }
   };
 
@@ -2632,13 +2637,13 @@ module.exports = new function () {
   this.init = function () {
     var _this = this;
 
-    app.listen('click', function (e) {
+    app.h('click', 'a[href^="#"]', function (e) {
       return _this.onClick(e);
     });
   };
 
   this.onClick = function (e) {
-    var n = e.target.closest('a[href^="#"]');
+    var n = e.recv;
 
     if (n && n.hash) {
       var q = app.attr(n, this.opt.aItem);
@@ -2647,8 +2652,8 @@ module.exports = new function () {
       if (d) {
         var cont = d.parentNode;
 
-        if (this.process(d, n.hash.substr(1)), !!q) {
-          app.fire('updated', {
+        if (this.process(d, n.hash.substr(1), !!q)) {
+          app.fire('update', {
             n: cont
           });
           e.preventDefault();
@@ -2764,24 +2769,26 @@ module.exports = new function () {
     document.body.appendChild(this.win);
     app.e('input[' + this.opt.aLookup + ']', function (n) {
       return _this.prepare(n);
-    }); //app.b('[data-chain]', 'change', e => this.updateChain(e.target));
-
-    app.b([document], 'change', function (e) {
-      return e.target.matches('[data-chain]') ? _this.updateChain(e.target) : null;
     });
     app.e('[data-chain]', function (n) {
       return _this.updateChain(n);
     });
-    app.listen('input', function (e) {
-      return e.target.matches('.input-lookup') ? app.delay(function (i) {
+    app.h('input', '.input-lookup', function (e) {
+      return app.delay(function (i) {
         return _this.find(i);
-      }, _this.opt.wait, true)(_this.ident(e.target)) : null;
+      }, _this.opt.wait, true)(e);
     });
-    app.listen('click', function (e) {
+    app.h('key', '.input-lookup', function (e) {
+      return _this.key(e);
+    });
+    app.h('click', '.item-lookup', function (e) {
+      return _this.choose(e);
+    });
+    app.h('click', '.goto-lookup', function (e) {
       return _this.go(e);
     });
-    app.listen('key', function (e) {
-      return _this.onKey(e);
+    app.h('change', '[data-chain]', function (e) {
+      return _this.updateChain(e.target);
     });
   };
 
@@ -2793,7 +2800,7 @@ module.exports = new function () {
       className: 'pop l pop-lookup'
     }, n, 1);
     if (!this.opt.inPop) pop.style.verticalAlign = 'bottom';
-    n.classList.add('bg-n');
+    n.classList.add('bg-n', 'id-lookup');
     n.classList.add(app.opt.cHide); //n.type = 'hidden';
 
     var m = app.ins('input', '', {
@@ -2809,7 +2816,7 @@ module.exports = new function () {
       if (n.title) m.title = n.title;
       app.e('[for="' + n.id + '"]', function (lbl) {
         return lbl.htmlFor = m.id;
-      }); //app.b('[for="' + n.id + '"]', 'click', e => m.focus());
+      });
     }
 
     if (n.placeholder) m.placeholder = n.placeholder;
@@ -2827,8 +2834,7 @@ module.exports = new function () {
       }, ic);
       i.style.cursor = 'pointer';
       app.ins('', ' ', {}, ic, -1);
-    } //this.setHandlers(n, m, pop, i);
-
+    }
 
     this.initCaption(n);
   };
@@ -2851,21 +2857,23 @@ module.exports = new function () {
     }
   };
 
-  this.ident = function (n) {
-    return app.next(n, 'input.hide[type="text"]', true);
+  this.ident = function (n, mode) {
+    if (mode != 't' && (mode == 'i' || this.opt.inPop)) n = n.closest('.pop-lookup');
+    return app.next(n, '.id-lookup', true);
   };
 
   this.cap = function (n) {
-    return app.next(n, 'input.input-lookup[type="text"]');
+    return this.opt.inPop ? app.q('.input-lookup', this.pop(n)) : app.next(n, '.input-lookup');
   };
 
   this.pop = function (n) {
     return app.next(n, '.pop-lookup');
   };
 
-  this.find = function (n) {
-    var c = this.cap(n);
-    if (!c) return;
+  this.find = function (e) {
+    var c = e.target;
+    var n = this.ident(c);
+    if (!n) return;
     var v = c.value;
     if (v === '') this.fix(n, '', ''); //empty
     else if (n.vCache && n.vCache[v]) this.openList(n, n.vCache[v]); //cached
@@ -2901,8 +2909,6 @@ module.exports = new function () {
   };
 
   this.build = function (n, d) {
-    var _this3 = this;
-
     app.clr(this.win);
     var ul = app.ins('ul', '', {
       className: 'nav let hover'
@@ -2911,11 +2917,11 @@ module.exports = new function () {
         j = 0;
     var go = app.attr(n, this.opt.aGoto, '');
 
-    var _loop = function _loop(i) {
+    for (var i in d) {
       w = app.ins('li', '', {}, ul);
       var a = app.ins('a', '', {
         href: go ? go.replace(/\{id\}/, d[i].id) : '#' + d[i].id,
-        className: '-pad -hover'
+        className: '-pad -hover' + (go ? '' : ' item-lookup')
       }, w);
       app.ins('span', d[i].nm, {}, a);
 
@@ -2926,17 +2932,8 @@ module.exports = new function () {
         }, a);
       }
 
-      if (!go) app.b(a, 'click', function (e) {
-        return _this3.choose(n, a, e);
-      }, false);
       j++;
-      if (j >= _this3.opt.max) return "break";
-    };
-
-    for (var i in d) {
-      var _ret = _loop(i);
-
-      if (_ret === "break") break;
+      if (j >= this.opt.max) break;
     }
 
     if (ul.firstChild) this.hilite(n, ul.firstChild.firstChild);
@@ -2957,8 +2954,10 @@ module.exports = new function () {
     }
   };
 
-  this.choose = function (n, a, e) {
+  this.choose = function (e) {
     if (e) e.preventDefault();
+    var a = e.recv;
+    var n = this.ident(a, 'i');
     n.vCur = a;
     this.fix(n, a.hash.substr(1), a.firstChild.textContent);
   };
@@ -2972,24 +2971,23 @@ module.exports = new function () {
     this.closeList();
   };
 
-  this.onKey = function (e) {
-    var n = e.target.matches('.input-lookup') ? this.ident(e.target) : null;
+  this.key = function (e) {
+    var n = e.target ? this.ident(e.target) : null;
+    ;
 
     if (n) {
-      if (e.keyCode == 27) this.fix(n, n.value, n.vLabel);else if (e.keyCode == 40 && !app.vis(this.win)) this.find(n);else if (e.keyCode == 38 || e.keyCode == 40) this.hiliteNext(n, e.keyCode == 38); //else if(e.keyCode == 13) this.choose(n, n.vCur);
-      else if (e.keyCode == 13 && n.vCur) {
-          if (app.vis(this.win)) e.preventDefault();
-          n.vCur.click();
-        }
+      if (e.keyCode == 27) this.fix(n, n.value, n.vLabel);else if (e.keyCode == 40 && !app.vis(this.win)) this.find(e);else if (e.keyCode == 38 || e.keyCode == 40) this.hiliteNext(n, e.keyCode == 38);else if (e.keyCode == 13 && n.vCur) {
+        if (app.vis(this.win)) e.preventDefault();
+        n.vCur.click();
+      }
     }
   };
 
   this.go = function (e) {
-    var n = e.target.closest('a.goto-lookup');
+    var n = e.recv ? this.ident(e.recv.parentNode, 't') : null;
 
     if (n) {
       e.preventDefault();
-      n = this.ident(n.parentNode);
       var u = app.attr(n, this.opt.aUrl, '');
       if (n.value.length > 0 && u) location.href = encodeURI(decodeURI(u).replace(/\{id\}/, n.value));
     }
@@ -3633,7 +3631,7 @@ module.exports = new function () {
       className: 'pad hover close'
     }, this.drw); //menu
 
-    this.h('Theme', 2);
+    this.hx('Theme', 2);
     app.b([app.ins('a', 'Reset to default', {
       href: '#',
       className: ''
@@ -3680,7 +3678,7 @@ module.exports = new function () {
     localStorage.removeItem('theme-html'); //localStorage.removeItem('theme-body');
   };
 
-  this.h = function (s, l) {
+  this.hx = function (s, l) {
     app.ins('h' + (l || 1), s, {
       className: 'mar'
     }, this.drw);
@@ -3689,7 +3687,7 @@ module.exports = new function () {
   this.put = function (hh, arr, func) {
     var _this3 = this;
 
-    this.h(hh, 3);
+    this.hx(hh, 3);
     var c = [];
     arr.forEach(function (v
     /*, k*/
@@ -3748,25 +3746,19 @@ module.exports = new function () {
     app.e(this.opt.qSet, function (n) {
       return _this.toggleClass(n);
     });
-    app.b(this.opt.qSetChange, 'change', function (e) {
+    app.h('change', this.opt.qSetChange, function (e) {
       return _this.toggleClass(e.target);
     });
     app.e(this.opt.qTop, function (n) {
       return _this.addTopLink(n);
     });
-    app.listen('click', function (e) {
-      return _this.onClick(e);
+    app.h('click', this.opt.qSetClick, function (e) {
+      return _this.toggleClass(e.recv, e);
     });
     this.onResize();
     app.b([window], 'resize', function (e) {
       return _this.onResize(e);
     });
-  };
-
-  this.onClick = function (e) {
-    var n = e.target;
-    var a = n.closest(this.opt.qSetClick);
-    if (a) this.toggleClass(n, e);
   };
 
   this.alignCells = function (n) {
@@ -3864,7 +3856,7 @@ module.exports = new function () {
       app.e(q, function (m) {
         return _this2.setClass(n, on, m, c);
       });
-      app.fire('updated', {
+      app.fire('update', {
         q: q
       });
     }
@@ -3927,8 +3919,12 @@ module.exports = new function () {
     var inputs = ['input', 'textarea', 'select'].map(function (s) {
       return _this.opt.qValidate + ' ' + s + '[' + _this.opt.aHint + ']';
     }).join(', ');
-    app.e(inputs + ', .' + this.opt.cLiveVal + ' [name]', function (n) {
-      return _this.initInput(n);
+    inputs += ', .' + this.opt.cLiveVal + ' [name]';
+    app.h(['input', 'change'], inputs, function (e) {
+      return _this.validateInput(e.target);
+    });
+    app.h('invalid', inputs, function (e) {
+      return _this.setCustomMessage(e.target);
     });
     app.e('form.' + this.opt.cUnhint, function (n) {
       return _this.unhint(n);
@@ -3936,24 +3932,9 @@ module.exports = new function () {
     app.e('form.' + this.opt.cLiveVal, function (n) {
       return _this.validateForm(n);
     });
-    app.b('form.' + this.opt.cUnhint, 'submit', function (e) {
-      return _this.validateForm(e.target, e);
-    });
-  };
-
-  this.initInput = function (n) {
-    var _this2 = this;
-
-    if (n.willValidate) {
-      if (n.tagName == 'select' || n.type == 'radio' || n.type == 'checkbox') app.b(n, 'change', function (e) {
-        return _this2.validateInput(e.target);
-      });else app.b([n], 'input', function (e) {
-        return _this2.validateInput(e.target);
-      });
-      app.b([n], 'invalid', function (e) {
-        return _this2.setCustomMessage(e.target);
-      });
-    }
+    app.h('submit', this.opt.qValidate, function (e) {
+      return e.target.getAttribute('novalidate') ? _this.validateForm(e.target, e) : null;
+    }); //custom validation
   };
 
   this.isLive = function (f) {
@@ -3961,20 +3942,24 @@ module.exports = new function () {
   };
 
   this.validateInput = function (n) {
-    if (n.type == 'radio') app.e(app.qq('[name="' + n.name + '"]', n.form), function (m) {
-      return m.setCustomValidity('');
-    });else n.setCustomValidity('');
-    n.checkValidity();
-    if (this.isLive(n.form)) this.validateForm(n.form);
+    if (n.willValidate) {
+      if (n.type == 'radio') app.e(app.qq('[name="' + n.name + '"]', n.form), function (m) {
+        return m.setCustomValidity('');
+      });else n.setCustomValidity('');
+      n.checkValidity();
+      if (this.isLive(n.form)) this.validateForm(n.form);
+    }
   };
 
   this.setCustomMessage = function (n) {
-    var t = n.getAttribute('data-hint') || ''; // || n.title;
+    if (n.willValidate) {
+      var t = n.getAttribute('data-hint') || ''; // || n.title;
 
-    t = t.replace(/%([\w\-]+)%/g, function (m, v) {
-      return n.getAttribute(v);
-    });
-    n.setCustomValidity(t);
+      t = t.replace(/%([\w\-]+)%/g, function (m, v) {
+        return n.getAttribute(v);
+      });
+      n.setCustomValidity(t);
+    }
   };
 
   this.unhint = function (n) {

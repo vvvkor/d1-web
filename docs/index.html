@@ -6,8 +6,8 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 
 	<!-- CDN -->
-	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.2.61/dist/d1.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.2.61/dist/d1.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.2.62/dist/d1.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.2.62/dist/d1.min.js"></script>
 	<!-- local-npm-src ->
 	<link href="../src/index.css" rel="stylesheet">
 	<script src="../dist/d1.min.js"></script>
@@ -66,7 +66,7 @@
 	<a href="#top" class="pad -let"><b>d1</b></a>
 	<code class="pad nobr">npm i d1-web</code>
 	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1-web" title="GitHub" class="pad -let">GitHub</a>
-	<a class="shift pad text-n">v1.2.61</a>
+	<a class="shift pad text-n">v1.2.62</a>
 	<a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="pad -let" data-ico="download" title="Download">Download</a>
 </div>
 
@@ -930,6 +930,7 @@ Table will become stacked on small screen.
   data-cache="10"
   data-url="/users/{id}">
 </div>
+<!-- data-goto="/userz/{id}" -->
 
 	<p>Chained selects.
 
@@ -981,10 +982,10 @@ Table will become stacked on small screen.
 		<tbody>
 		<tr>
 			<td><label for="v-def">Default validation</label>
-			<td><input oninput="console.log(this.value)" type="text" name="def" id="v-def" required pattern="[A-Za-z]{2,}" title="Two up to four letters" autocomplete="off" minlength="2" maxlength="4">
+			<td><input type="text" name="def" id="v-def" required pattern="[A-Za-z]{2,}" title="Two up to four letters" autocomplete="off" minlength="2" maxlength="4">
 		<tr>
 			<td><label for="v-nm">Name</label>
-			<td><input oninput="console.log(this.value)" type="text" name="nm" id="v-nm" required pattern="[A-Za-z]{2,}" data-hint="Enter %minlength% up to %maxlength% letters" title="Two up to four letters" autocomplete="off" minlength="2" maxlength="4">
+			<td><input type="text" name="nm" id="v-nm" required pattern="[A-Za-z]{2,}" data-hint="Enter %minlength% up to %maxlength% letters" title="Two up to four letters" autocomplete="off" minlength="2" maxlength="4">
 				<div class="small text-e mar">Enter 2 up to 4 latin letters</div>
 				<div class="small text-y mar">Looks good</div>
 		<tr>
@@ -1045,7 +1046,7 @@ Table will become stacked on small screen.
 		<tbody>
 		<tr>
 			<td><label for="vv-nm">Name</label>
-			<td><input oninput="console.log(this.value)" type="text" name="nm" id="vv-nm" required pattern="[A-Za-z]{2,}" title="Two up to four letters" autocomplete="off" minlength="2" maxlength="4">
+			<td><input type="text" name="nm" id="vv-nm" required pattern="[A-Za-z]{2,}" title="Two up to four letters" autocomplete="off" minlength="2" maxlength="4">
 				<small class="text-e">Validation hint inside small</small>
 				<div class="small text-e mar">Validation hint inside div</div>
 				<div class="small text-y mar">Looks good</div>
@@ -1488,7 +1489,7 @@ Toggles on resize.
 	
 	<a href="#x" data-set="invert" data-nodes="body">Invert page</a><br>
 	
-	<a href="#test-input" class="act mem" id="set-input-type" data-set="radio" data-unset="checkbox" data-attr="type"> Change type of the following input</a>
+	<a href="#test-input" class="act mem" id="set-input-type" data-set="radio" data-unset="checkbox" data-attr="type"> Change <i>type</i> of the following input</a>
 	<input type="checkbox" id="test-input">
 	<br>
 	

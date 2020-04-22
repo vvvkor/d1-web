@@ -25,17 +25,11 @@ module.exports = new(function () {
     app.e('table[class]', n => this.alignCells(n));
     app.e(this.opt.qSet, n => this.restore(n));
     app.e(this.opt.qSet, n => this.toggleClass(n));
-    app.b(this.opt.qSetChange, 'change', e => this.toggleClass(e.target));
+    app.h('change', this.opt.qSetChange, e => this.toggleClass(e.target));
     app.e(this.opt.qTop, n => this.addTopLink(n));
-    app.listen('click', e => this.onClick(e));
+    app.h('click', this.opt.qSetClick, e => this.toggleClass(e.recv, e));
     this.onResize();
     app.b([window], 'resize', e => this.onResize(e));
-  }
-
-  this.onClick = function(e){
-    let n = e.target;
-    let a = n.closest(this.opt.qSetClick);
-    if(a) this.toggleClass(n, e)
   }
 
   this.alignCells = function(n) {
@@ -106,7 +100,7 @@ module.exports = new(function () {
     //app.dbg(['setclass?', c, on, q, e, box, sel]);
     if (c !== null){
       app.e(q, m => this.setClass(n, on, m, c));
-      app.fire('updated', {q: q});
+      app.fire('update', {q: q});
     }
   }
 
