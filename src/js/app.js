@@ -81,17 +81,17 @@ module.exports = new (function(){
 
   //events
 
+  this.fire = function(t, e){
+    this.dbg(['fire ' + t, e]);
+    if(this.handlers[t]) this.handlers[t].forEach(h => h.call(this, e));
+  }
+  
   this.listen = function(t, f){
     //if(!this.handlers[t]) this.handlers[t] = [];
     //this.handlers[t].push(f);
     this.h(t, '', f);
   }
 
-  this.fire = function(t, e){
-    this.dbg(['fire ' + t, e]);
-    if(this.handlers[t]) this.handlers[t].forEach(h => h.call(this, e));
-  }
-  
   //handle
   this.h = function(t, s, f, before){
     if(t instanceof Array) t.forEach(et => this.h(et, s, f, before));
