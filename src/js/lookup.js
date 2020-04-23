@@ -33,10 +33,10 @@ module.exports = new(function () {
 
     app.e('input[' + this.opt.aLookup + ']', n => this.prepare(n));
     app.e('[data-chain]', n => this.updateChain(n));
-    app.h('input', '.input-lookup', e => app.delay(i => this.find(i), this.opt.wait, true)(e));
-    app.h('key', '.input-lookup', e => this.key(e));
-    app.h('click', '.item-lookup', e => this.choose(e));
-    app.h('click', '.goto-lookup', e => this.go(e));
+    app.h('input', '.lookup-input', e => app.delay(i => this.find(i), this.opt.wait, true)(e));
+    app.h('keydown', '.lookup-input', e => this.key(e));
+    app.h('click', '.lookup-item', e => this.choose(e));
+    app.h('click', '.lookup-goto', e => this.go(e));
     app.h('change', '[data-chain]', e => this.updateChain(e.target));
   }
 
@@ -44,12 +44,12 @@ module.exports = new(function () {
     if(this.cap(n)) return;
     let cap = app.attr(n, this.opt.aLabel);
     n.vLabel = cap || n.value || '';
-    let pop = app.ins('div', '', {className: 'pop l pop-lookup'}, n, 1);
+    let pop = app.ins('div', '', {className: 'pop l lookup-pop'}, n, 1);
     if(!this.opt.inPop) pop.style.verticalAlign = 'bottom';
-    n.classList.add('bg-n', 'id-lookup');
+    n.classList.add('bg-n', 'lookup-id');
     n.classList.add(app.opt.cHide);
     //n.type = 'hidden';
-    let m = app.ins('input', '', {type: 'text', value: n.vLabel, className:'input-lookup subinput'}, pop, this.opt.inPop ? 0 : 1);
+    let m = app.ins('input', '', {type: 'text', value: n.vLabel, className:'lookup-input subinput'}, pop, this.opt.inPop ? 0 : 1);
     m.name = 'lookup-' + n.name;
     //m.required = n.required;
     //n.required = false;
@@ -63,7 +63,7 @@ module.exports = new(function () {
     let i = null;
     if(app.attr(n, this.opt.aUrl)){
       let ic = app.ins('span', '', {className:'input-tools nobr'}, this.opt.inPop ? pop : m, 1);//icons container
-      i = app.ins('a', app.i('right', '&rarr;'), {href: '#goto', className: 'let goto-lookup'}, ic);
+      i = app.ins('a', app.i('right', '&rarr;'), {href: '#goto', className: 'let lookup-goto'}, ic);
       i.style.cursor = 'pointer';
       app.ins('', ' ', {}, ic, -1);
     }
@@ -84,18 +84,18 @@ module.exports = new(function () {
   }
   
   this.ident = function(n, mode){
-    if(mode != 't' && (mode == 'i' || this.opt.inPop)) n = n.closest('.pop-lookup');
-    return app.next(n, '.id-lookup', true);
+    if(mode != 't' && (mode == 'i' || this.opt.inPop)) n = n.closest('.lookup-pop');
+    return app.next(n, '.lookup-id', true);
   }
 
   this.cap = function(n){
     return this.opt.inPop
-      ? app.q('.input-lookup', this.pop(n))
-      : app.next(n, '.input-lookup');
+      ? app.q('.lookup-input', this.pop(n))
+      : app.next(n, '.lookup-input');
   }
 
   this.pop = function(n){
-    return app.next(n, '.pop-lookup');
+    return app.next(n, '.lookup-pop');
   }
 
   this.find = function(e){
@@ -143,7 +143,7 @@ module.exports = new(function () {
     let go = app.attr(n, this.opt.aGoto, '');
     for(let i in d){
       w = app.ins('li', '', {}, ul);
-      let a = app.ins('a', '', {href: go ? go.replace(/\{id\}/, d[i].id) : '#' + d[i].id, className: '-pad -hover' + (go ? '' : ' item-lookup')}, w);
+      let a = app.ins('a', '', {href: go ? go.replace(/\{id\}/, d[i].id) : '#' + d[i].id, className: '-pad -hover' + (go ? '' : ' lookup-item')}, w);
       app.ins('span', d[i].nm, {}, a);
       if(d[i].info){
         app.ins('br', '', {}, a);

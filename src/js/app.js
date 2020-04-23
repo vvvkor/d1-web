@@ -38,14 +38,11 @@ module.exports = new (function(){
     this.initPlugins(opt); // plugins
 
     // bind events
-    this.b([window], 'hashchange', e => this.on('hash', e)); // on window, renamed
-    this.b([document], 'keydown', e => this.on('key', e)); //renamed
-    ['invalid', 'focus']
-      .forEach(et => this.b([document], et, e => this.on(et, e), true));//useCapture
-    ['click', 'input', 'change', 'submit']
-      .forEach(et => this.b([document], et, e => this.on(et, e)));
-    if(location.hash) this.on('hash')
+    this.b([window], 'hashchange', e => this.on('hashchange', e)); // on window
+    this.b([document], ['invalid', 'focus'], e => this.on(e.type, e), true);//useCapture
+    this.b([document], ['click', 'keydown', 'input', 'change', 'submit'], e => this.on(e.type, e));
 
+    if(location.hash) this.on('hashchange')
     this.fire('after');
     this.fire('ready');
   }
@@ -56,6 +53,7 @@ module.exports = new (function(){
     this.fire('before', e);
     this.fire(t, e);
     //this.fire(t + 'ed', e);
+    //if(!e || !e.defaultPrevented) ;
     this.fire('after', e);
   }
 
@@ -81,35 +79,35 @@ module.exports = new (function(){
 
   //events
 
-  this.fire = function(t, e){
-    this.dbg(['fire ' + t, e]);
-    if(this.handlers[t]) this.handlers[t].forEach(h => h.call(this, e));
+  this.fire = function(et, e){
+    this.dbg(['fire ' + et, e]);
+    if(this.handlers[et]) this.handlers[et].forEach(h => h.call(this, e));
   }
   
-  this.listen = function(t, f){
-    //if(!this.handlers[t]) this.handlers[t] = [];
-    //this.handlers[t].push(f);
-    this.h(t, '', f);
+  this.listen = function(et, f){
+    //if(!this.handlers[et]) this.handlers[et] = [];
+    //this.handlers[et].push(f);
+    this.h(et, '', f);
   }
 
   //handle
-  this.h = function(t, s, f, before){
-    if(t instanceof Array) t.forEach(et => this.h(et, s, f, before));
+  this.h = function(et, s, f, before){
+    if(et instanceof Array) et.forEach(ett => this.h(ett, s, f, before));
     else{
-      if(!this.handlers[t]) this.handlers[t] = [];
-      this.handlers[t][before ? 'unshift' : 'push'](e => {
+      if(!this.handlers[et]) this.handlers[et] = [];
+      this.handlers[et][before ? 'unshift' : 'push'](e => {
         if(s) e.recv = e.target.closest(s);
         if(!s || e.recv) f(e);
       });
     }
   }
   
-  this.dispatch = function(n, e, p){
+  this.dispatch = function(n, et, p){
     // {view: window, bubbles: true, cancelable: true, composed: false}
     if(!p) p = {bubbles: true, view: window};
     if(typeof(Event) === 'function'){ //-ie
-      if(e instanceof Array) e.forEach(ee => n.dispatchEvent(new Event(ee, p)));
-      else n.dispatchEvent(new Event(e, p));
+      if(et instanceof Array) et.forEach(ett => n.dispatchEvent(new Event(ett, p)));
+      else n.dispatchEvent(new Event(et, p));
     }
   }
 
@@ -154,25 +152,25 @@ module.exports = new (function(){
   this.next = function(n, s, prev){
     while(n = n[prev ? 'previousElementSibling' : 'nextElementSibling']) if(n.matches(s)) return n;
   }
+  
+  this.nn = function(q){
+    if(!q) return [];
+    else if(typeof q === 'string') return this.qq(q);
+    else if(q.tagName) return [q];
+    else return this.a(q);
+  }
 
   // add event listener
-  this.b = function(nn, et, f, capt){
-    if(typeof nn === 'string') nn = this.qq(nn);
-    else if(nn.tagName) nn = [nn];
-    else nn = this.a(nn);
-    //if(nn && nn.length>50) console.log('b:'+nn.length, arguments[0]);
-    if(nn && f) nn.forEach(n => et
-      ? (et instanceof Array
+  this.b = function(q, et, f, capt){
+    if(f) this.nn(q).forEach(n => et instanceof Array
         ? et.forEach(ett => n.addEventListener(ett, e => f(e), capt))
         : n.addEventListener(et, e => f(e) /*f.bind(this)*/, capt)
-        )
-      : f.call(this, n)
       );
   }
 
   // execute for each node
-  this.e = function(nn, f){
-    return this.b(nn, '', f);
+  this.e = function(q, f){
+    if(f) this.nn(q).forEach(n => f.call(this, n));
   }
 
   // get attribute of node

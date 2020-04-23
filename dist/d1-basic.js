@@ -1,4 +1,4 @@
-/*! d1-web v1.2.62 */
+/*! d1-web v1.2.63 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -130,25 +130,17 @@ module.exports = new function () {
     // bind events
 
     this.b([window], 'hashchange', function (e) {
-      return _this.on('hash', e);
-    }); // on window, renamed
+      return _this.on('hashchange', e);
+    }); // on window
 
-    this.b([document], 'keydown', function (e) {
-      return _this.on('key', e);
-    }); //renamed
+    this.b([document], ['invalid', 'focus'], function (e) {
+      return _this.on(e.type, e);
+    }, true); //useCapture
 
-    ['invalid', 'focus'].forEach(function (et) {
-      return _this.b([document], et, function (e) {
-        return _this.on(et, e);
-      }, true);
-    }); //useCapture
-
-    ['click', 'input', 'change', 'submit'].forEach(function (et) {
-      return _this.b([document], et, function (e) {
-        return _this.on(et, e);
-      });
+    this.b([document], ['click', 'keydown', 'input', 'change', 'submit'], function (e) {
+      return _this.on(e.type, e);
     });
-    if (location.hash) this.on('hash');
+    if (location.hash) this.on('hashchange');
     this.fire('after');
     this.fire('ready');
   }; // event delegation
@@ -158,6 +150,7 @@ module.exports = new function () {
   this.on = function (t, e) {
     this.fire('before', e);
     this.fire(t, e); //this.fire(t + 'ed', e);
+    //if(!e || !e.defaultPrevented) ;
 
     this.fire('after', e);
   }; //plugins
@@ -192,37 +185,37 @@ module.exports = new function () {
   }; //events
 
 
-  this.listen = function (t, f) {
-    //if(!this.handlers[t]) this.handlers[t] = [];
-    //this.handlers[t].push(f);
-    this.h(t, '', f);
-  };
-
-  this.fire = function (t, e) {
+  this.fire = function (et, e) {
     var _this3 = this;
 
-    this.dbg(['fire ' + t, e]);
-    if (this.handlers[t]) this.handlers[t].forEach(function (h) {
+    this.dbg(['fire ' + et, e]);
+    if (this.handlers[et]) this.handlers[et].forEach(function (h) {
       return h.call(_this3, e);
     });
+  };
+
+  this.listen = function (et, f) {
+    //if(!this.handlers[et]) this.handlers[et] = [];
+    //this.handlers[et].push(f);
+    this.h(et, '', f);
   }; //handle
 
 
-  this.h = function (t, s, f, before) {
+  this.h = function (et, s, f, before) {
     var _this4 = this;
 
-    if (t instanceof Array) t.forEach(function (et) {
-      return _this4.h(et, s, f, before);
+    if (et instanceof Array) et.forEach(function (ett) {
+      return _this4.h(ett, s, f, before);
     });else {
-      if (!this.handlers[t]) this.handlers[t] = [];
-      this.handlers[t][before ? 'unshift' : 'push'](function (e) {
+      if (!this.handlers[et]) this.handlers[et] = [];
+      this.handlers[et][before ? 'unshift' : 'push'](function (e) {
         if (s) e.recv = e.target.closest(s);
         if (!s || e.recv) f(e);
       });
     }
   };
 
-  this.dispatch = function (n, e, p) {
+  this.dispatch = function (n, et, p) {
     // {view: window, bubbles: true, cancelable: true, composed: false}
     if (!p) p = {
       bubbles: true,
@@ -231,9 +224,9 @@ module.exports = new function () {
 
     if (typeof Event === 'function') {
       //-ie
-      if (e instanceof Array) e.forEach(function (ee) {
-        return n.dispatchEvent(new Event(ee, p));
-      });else n.dispatchEvent(new Event(e, p));
+      if (et instanceof Array) et.forEach(function (ett) {
+        return n.dispatchEvent(new Event(ett, p));
+      });else n.dispatchEvent(new Event(et, p));
     }
   }; //utils
   // debug
@@ -276,16 +269,16 @@ module.exports = new function () {
     while (n = n[prev ? 'previousElementSibling' : 'nextElementSibling']) {
       if (n.matches(s)) return n;
     }
+  };
+
+  this.nn = function (q) {
+    if (!q) return [];else if (typeof q === 'string') return this.qq(q);else if (q.tagName) return [q];else return this.a(q);
   }; // add event listener
 
 
-  this.b = function (nn, et, f, capt) {
-    var _this5 = this;
-
-    if (typeof nn === 'string') nn = this.qq(nn);else if (nn.tagName) nn = [nn];else nn = this.a(nn); //if(nn && nn.length>50) console.log('b:'+nn.length, arguments[0]);
-
-    if (nn && f) nn.forEach(function (n) {
-      return et ? et instanceof Array ? et.forEach(function (ett) {
+  this.b = function (q, et, f, capt) {
+    if (f) this.nn(q).forEach(function (n) {
+      return et instanceof Array ? et.forEach(function (ett) {
         return n.addEventListener(ett, function (e) {
           return f(e);
         }, capt);
@@ -293,13 +286,17 @@ module.exports = new function () {
         return f(e);
       }
       /*f.bind(this)*/
-      , capt) : f.call(_this5, n);
+      , capt);
     });
   }; // execute for each node
 
 
-  this.e = function (nn, f) {
-    return this.b(nn, '', f);
+  this.e = function (q, f) {
+    var _this5 = this;
+
+    if (f) this.nn(q).forEach(function (n) {
+      return f.call(_this5, n);
+    });
   }; // get attribute of node
 
 
@@ -476,22 +473,21 @@ module.exports = new function () {
     app.listen('esc', function (e) {
       return _this.esc(e);
     });
-    app.listen('hash', function (e) {
+    app.listen('hashchange', function (e) {
       return _this.onHash(e);
     });
-    app.listen('key', function (e) {
+    app.listen('keydown', function (e) {
       return _this.onKey(e);
     });
     app.listen('click', function (e) {
       return _this.onClick(e);
-    }); //app.listen('clicked', e => this.unpop(e.target)); // click out
-
+    });
     app.listen('after', function (e) {
-      return e && e.type == 'click' ? _this.unpop(e.target) : null;
+      return e && e.type == 'click' && !e.defaultPrevented ? _this.unpop(e.target) : null;
     }); // click out
 
     app.listen('after', function (e) {
-      return !e || ['click', 'key', 'hash'].indexOf(e.type) != -1 ? _this.modalStyle(e ? e.target : null) : null;
+      return !e || ['click', 'keydown', 'hashchange'].indexOf(e.type) != -1 ? _this.modalStyle(e) : null;
     }); //toggle
 
     var q = this.opt;
@@ -565,9 +561,11 @@ module.exports = new function () {
     */
   };
 
-  this.modalStyle = function (n) {
+  this.modalStyle = function (e) {
+    var n = e ? e.target : null;
     this.shown = null; //do it just once when dialog is opened
     //let modal = app.q(this.opt.qDlg+':not(.'+app.opt.cOff+'), '+this.opt.qGal+':target'); // :target not updated after Esc key
+    //styles
 
     var modal = app.q(this.opt.qDlg + ':not(.' + app.opt.cOff + '), ' + this.opt.qGal + '[id="' + location.hash.substr(1) + '"]');
     var bar = window.innerWidth - document.documentElement.clientWidth; //scroll bar width
@@ -581,7 +579,7 @@ module.exports = new function () {
       if (!(modal && s.paddingRight)) s.paddingRight = modal ? '' + bar + 'px' : ''; // avoid width reflow
     }
 
-    app.dbg(['modalStyle', n, modal, s.paddingRight]);
+    app.dbg(['modalStyle', n, modal, s.paddingRight]); //focus first input
 
     if (modal) {
       //let f1 = app.q('input, a:not(.' + app.opt.cClose + ')', modal);
@@ -605,7 +603,7 @@ module.exports = new function () {
   };
 
   this.onHash = function (e) {
-    app.dbg(['hash', location.hash]);
+    app.dbg(['hashchange', location.hash]);
     this.nEsc = 0;
     if (location.hash === app.opt.hClose) app.fire('esc', e);else if (location.hash) {
       var d = app.q(location.hash);
@@ -627,7 +625,7 @@ module.exports = new function () {
 
   this.onKey = function (e) {
     var k = e.keyCode;
-    app.dbg(['key', k, this.nEsc]);
+    app.dbg(['keydown', k, this.nEsc]);
     if (k == 27 && this.nEsc >= 2) localStorage.clear();else if (k == 27) app.fire('esc', e);
     this.nEsc = k == 27 && this.nEsc < 2 ? this.nEsc + 1 : 0;
   };
@@ -1100,10 +1098,10 @@ module.exports = new function () {
   this.init = function () {
     var _this = this;
 
-    app.listen('hash', function (e) {
+    app.listen('hashchange', function (e) {
       return _this.onHash(e);
     });
-    app.listen('key', function (e) {
+    app.listen('keydown', function (e) {
       return _this.onKey(e);
     });
     app.h('click', this.opt.qGal, function (e) {

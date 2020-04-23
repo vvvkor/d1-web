@@ -24,7 +24,7 @@ module.exports = new(function () {
   this.init = function () {
     let t;
     if(app.q(this.opt.qEnable)){
-      app.listen('hash', e => this.onHash(e));
+      app.listen('hashchange', e => this.onHash(e));
       let ons = app.throttle(() => this.onScroll(), 500);
       //let ons = app.throttle((h) => this.onScroll(h), 500);
       //ons(); // forces reflow
@@ -33,7 +33,7 @@ module.exports = new(function () {
     }
     /*
     else if(t = app.q(this.opt.qTopbarFixed)){
-      app.listen('hash', e => this.fixScroll());
+      app.listen('hashchange', e => this.fixScroll());
     }
     */
   }

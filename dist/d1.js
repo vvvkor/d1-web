@@ -1,4 +1,4 @@
-/*! d1-web v1.2.62 */
+/*! d1-web v1.2.63 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -129,25 +129,17 @@ module.exports = new function () {
     // bind events
 
     this.b([window], 'hashchange', function (e) {
-      return _this.on('hash', e);
-    }); // on window, renamed
+      return _this.on('hashchange', e);
+    }); // on window
 
-    this.b([document], 'keydown', function (e) {
-      return _this.on('key', e);
-    }); //renamed
+    this.b([document], ['invalid', 'focus'], function (e) {
+      return _this.on(e.type, e);
+    }, true); //useCapture
 
-    ['invalid', 'focus'].forEach(function (et) {
-      return _this.b([document], et, function (e) {
-        return _this.on(et, e);
-      }, true);
-    }); //useCapture
-
-    ['click', 'input', 'change', 'submit'].forEach(function (et) {
-      return _this.b([document], et, function (e) {
-        return _this.on(et, e);
-      });
+    this.b([document], ['click', 'keydown', 'input', 'change', 'submit'], function (e) {
+      return _this.on(e.type, e);
     });
-    if (location.hash) this.on('hash');
+    if (location.hash) this.on('hashchange');
     this.fire('after');
     this.fire('ready');
   }; // event delegation
@@ -157,6 +149,7 @@ module.exports = new function () {
   this.on = function (t, e) {
     this.fire('before', e);
     this.fire(t, e); //this.fire(t + 'ed', e);
+    //if(!e || !e.defaultPrevented) ;
 
     this.fire('after', e);
   }; //plugins
@@ -191,37 +184,37 @@ module.exports = new function () {
   }; //events
 
 
-  this.listen = function (t, f) {
-    //if(!this.handlers[t]) this.handlers[t] = [];
-    //this.handlers[t].push(f);
-    this.h(t, '', f);
-  };
-
-  this.fire = function (t, e) {
+  this.fire = function (et, e) {
     var _this3 = this;
 
-    this.dbg(['fire ' + t, e]);
-    if (this.handlers[t]) this.handlers[t].forEach(function (h) {
+    this.dbg(['fire ' + et, e]);
+    if (this.handlers[et]) this.handlers[et].forEach(function (h) {
       return h.call(_this3, e);
     });
+  };
+
+  this.listen = function (et, f) {
+    //if(!this.handlers[et]) this.handlers[et] = [];
+    //this.handlers[et].push(f);
+    this.h(et, '', f);
   }; //handle
 
 
-  this.h = function (t, s, f, before) {
+  this.h = function (et, s, f, before) {
     var _this4 = this;
 
-    if (t instanceof Array) t.forEach(function (et) {
-      return _this4.h(et, s, f, before);
+    if (et instanceof Array) et.forEach(function (ett) {
+      return _this4.h(ett, s, f, before);
     });else {
-      if (!this.handlers[t]) this.handlers[t] = [];
-      this.handlers[t][before ? 'unshift' : 'push'](function (e) {
+      if (!this.handlers[et]) this.handlers[et] = [];
+      this.handlers[et][before ? 'unshift' : 'push'](function (e) {
         if (s) e.recv = e.target.closest(s);
         if (!s || e.recv) f(e);
       });
     }
   };
 
-  this.dispatch = function (n, e, p) {
+  this.dispatch = function (n, et, p) {
     // {view: window, bubbles: true, cancelable: true, composed: false}
     if (!p) p = {
       bubbles: true,
@@ -230,9 +223,9 @@ module.exports = new function () {
 
     if (typeof Event === 'function') {
       //-ie
-      if (e instanceof Array) e.forEach(function (ee) {
-        return n.dispatchEvent(new Event(ee, p));
-      });else n.dispatchEvent(new Event(e, p));
+      if (et instanceof Array) et.forEach(function (ett) {
+        return n.dispatchEvent(new Event(ett, p));
+      });else n.dispatchEvent(new Event(et, p));
     }
   }; //utils
   // debug
@@ -275,16 +268,16 @@ module.exports = new function () {
     while (n = n[prev ? 'previousElementSibling' : 'nextElementSibling']) {
       if (n.matches(s)) return n;
     }
+  };
+
+  this.nn = function (q) {
+    if (!q) return [];else if (typeof q === 'string') return this.qq(q);else if (q.tagName) return [q];else return this.a(q);
   }; // add event listener
 
 
-  this.b = function (nn, et, f, capt) {
-    var _this5 = this;
-
-    if (typeof nn === 'string') nn = this.qq(nn);else if (nn.tagName) nn = [nn];else nn = this.a(nn); //if(nn && nn.length>50) console.log('b:'+nn.length, arguments[0]);
-
-    if (nn && f) nn.forEach(function (n) {
-      return et ? et instanceof Array ? et.forEach(function (ett) {
+  this.b = function (q, et, f, capt) {
+    if (f) this.nn(q).forEach(function (n) {
+      return et instanceof Array ? et.forEach(function (ett) {
         return n.addEventListener(ett, function (e) {
           return f(e);
         }, capt);
@@ -292,13 +285,17 @@ module.exports = new function () {
         return f(e);
       }
       /*f.bind(this)*/
-      , capt) : f.call(_this5, n);
+      , capt);
     });
   }; // execute for each node
 
 
-  this.e = function (nn, f) {
-    return this.b(nn, '', f);
+  this.e = function (q, f) {
+    var _this5 = this;
+
+    if (f) this.nn(q).forEach(function (n) {
+      return f.call(_this5, n);
+    });
   }; // get attribute of node
 
 
@@ -474,22 +471,21 @@ module.exports = new function () {
     app.listen('esc', function (e) {
       return _this.esc(e);
     });
-    app.listen('hash', function (e) {
+    app.listen('hashchange', function (e) {
       return _this.onHash(e);
     });
-    app.listen('key', function (e) {
+    app.listen('keydown', function (e) {
       return _this.onKey(e);
     });
     app.listen('click', function (e) {
       return _this.onClick(e);
-    }); //app.listen('clicked', e => this.unpop(e.target)); // click out
-
+    });
     app.listen('after', function (e) {
-      return e && e.type == 'click' ? _this.unpop(e.target) : null;
+      return e && e.type == 'click' && !e.defaultPrevented ? _this.unpop(e.target) : null;
     }); // click out
 
     app.listen('after', function (e) {
-      return !e || ['click', 'key', 'hash'].indexOf(e.type) != -1 ? _this.modalStyle(e ? e.target : null) : null;
+      return !e || ['click', 'keydown', 'hashchange'].indexOf(e.type) != -1 ? _this.modalStyle(e) : null;
     }); //toggle
 
     var q = this.opt;
@@ -563,9 +559,11 @@ module.exports = new function () {
     */
   };
 
-  this.modalStyle = function (n) {
+  this.modalStyle = function (e) {
+    var n = e ? e.target : null;
     this.shown = null; //do it just once when dialog is opened
     //let modal = app.q(this.opt.qDlg+':not(.'+app.opt.cOff+'), '+this.opt.qGal+':target'); // :target not updated after Esc key
+    //styles
 
     var modal = app.q(this.opt.qDlg + ':not(.' + app.opt.cOff + '), ' + this.opt.qGal + '[id="' + location.hash.substr(1) + '"]');
     var bar = window.innerWidth - document.documentElement.clientWidth; //scroll bar width
@@ -579,7 +577,7 @@ module.exports = new function () {
       if (!(modal && s.paddingRight)) s.paddingRight = modal ? '' + bar + 'px' : ''; // avoid width reflow
     }
 
-    app.dbg(['modalStyle', n, modal, s.paddingRight]);
+    app.dbg(['modalStyle', n, modal, s.paddingRight]); //focus first input
 
     if (modal) {
       //let f1 = app.q('input, a:not(.' + app.opt.cClose + ')', modal);
@@ -603,7 +601,7 @@ module.exports = new function () {
   };
 
   this.onHash = function (e) {
-    app.dbg(['hash', location.hash]);
+    app.dbg(['hashchange', location.hash]);
     this.nEsc = 0;
     if (location.hash === app.opt.hClose) app.fire('esc', e);else if (location.hash) {
       var d = app.q(location.hash);
@@ -625,7 +623,7 @@ module.exports = new function () {
 
   this.onKey = function (e) {
     var k = e.keyCode;
-    app.dbg(['key', k, this.nEsc]);
+    app.dbg(['keydown', k, this.nEsc]);
     if (k == 27 && this.nEsc >= 2) localStorage.clear();else if (k == 27) app.fire('esc', e);
     this.nEsc = k == 27 && this.nEsc < 2 ? this.nEsc + 1 : 0;
   };
@@ -1119,10 +1117,10 @@ module.exports = new function () {
   this.init = function () {
     var _this = this;
 
-    app.listen('hash', function (e) {
+    app.listen('hashchange', function (e) {
       return _this.onHash(e);
     });
-    app.listen('key', function (e) {
+    app.listen('keydown', function (e) {
       return _this.onKey(e);
     });
     app.h('click', this.opt.qGal, function (e) {
@@ -1470,7 +1468,7 @@ module.exports = new function () {
     //y=Y-m-d, d=d.m.Y, m=m/d Y
     hashCancel: '#cancel',
     hashNow: '#now',
-    addIcons: [['date', '#'], ['ok', '&check;'], ['delete', '&#x2715;']],
+    addIcons: [['date', '#', '#open'], ['ok', '&check;', '#now'], ['delete', '&#x2715;', '#clear']],
     idPicker: 'pick-date',
     minWidth: 801,
     qsCalendar: 'input.calendar',
@@ -1496,24 +1494,51 @@ module.exports = new function () {
       className: app.opt.cToggle + ' ' + app.opt.cOff + ' pad'
     }); //dlg hide pad
 
-    this.win.style.whiteSpace = 'nowrap'; //this.toggle(false);
-
+    this.win.style.whiteSpace = 'nowrap';
     document.body.appendChild(this.win);
-    var t = app.qq(this.opt.qsCalendar);
+    app.e(this.opt.qsCalendar, function (n) {
+      return _this.preparePick(n);
+    });
+    app.h('click', this.opt.qsCalendar, function (e) {
+      return _this.openDialog(e.target, null, e);
+    });
+    app.h('input', this.opt.qsCalendar, function (e) {
+      return _this.validate(e.target, 0);
+    });
+    app.h('click', '#' + this.opt.idPicker + ' a', function (e) {
+      return _this.onClick(e);
+    });
+    app.h('click', '.calendar-tools a', function (e) {
+      return _this.onClick(e, true);
+    });
+  };
 
-    var _loop = function _loop(_i) {
-      _this.preparePick(t[_i]);
+  this.onClick = function (e, tool) {
+    var a = e.recv;
+    var h = a.hash;
 
-      app.b(t[_i], 'click', function (e) {
-        return _this.openDialog(t[_i], null, e);
-      }, false);
-      app.b(t[_i], 'input', function (e) {
-        return _this.validate(t[_i], 0);
-      }, false);
-    };
+    if (h) {
+      //nodes
+      var n;
+      var c = this.opt.qsCalendar;
 
-    for (var _i = 0; _i < t.length; _i++) {
-      _loop(_i);
+      if (tool) {
+        n = this.opt.inPop ? app.q(c, app.next(a.parentNode, '.pop', true)) : app.next(a.parentNode, c, true);
+      } else {
+        var p = a.closest('#' + this.opt.idPicker);
+        n = this.opt.inPop ? app.next(p, c, true) : app.next(p.parentNode, c);
+      } //data
+
+
+      var x = this.win.vCur;
+      var dy = h == '#prev-year' ? -1 : h == '#next-year' ? 1 : 0;
+      var dm = h == '#prev-month' ? -1 : h == '#next-month' ? 1 : 0;
+      var dh = h == '#prev-hour' ? -1 : h == '#next-hour' ? 1 : 0;
+      var di = h == '#prev-min' ? -this.opt.stepMinutes : h == '#next-min' ? this.opt.stepMinutes : 0; //actions
+
+      if (dy || dm) this.switchMonths(n, x.getFullYear() + dy, x.getMonth() + dm, x.getDate());else if (dh || di) this.setTime(n, dh, di);else if (h == this.opt.hashNow) this.closeDialog(n, true);else if (h == this.opt.hashCancel) this.closeDialog(n, null);else if (h == '#open') this.openDialog(n, null);else if (h == '#clear') this.closeDialog(n, '');else if (h.match(/#\d\d?/)) this.closeDialog(n, this.fmt(x, h.substr(1)));
+      e.preventDefault();
+      e.stopPropagation();
     }
   };
 
@@ -1539,8 +1564,6 @@ module.exports = new function () {
   };
 
   this.preparePick = function (n) {
-    var _this2 = this;
-
     n.vTime = n.type == 'datetime-local' || n.classList.contains('datetime');
     n.type = 'text';
     n.autocomplete = 'off';
@@ -1553,74 +1576,35 @@ module.exports = new function () {
     n.thePop = pop;
 
     if (this.opt.addIcons.length > 0) {
-      var ico = [];
       var ic = app.ins('span', '', {
-        className: 'input-tools nobr'
+        className: 'input-tools calendar-tools nobr'
       }, n, 1); //icons container
 
       for (var i in this.opt.addIcons) {
         app.ins('', ' ', {}, ic);
-        var ii = app.ins('a', app.i.apply(app, this.opt.addIcons[i]), {
-          href: '#' + this.opt.addIcons[i][0],
+        app.ins('a', app.i.apply(app, this.opt.addIcons[i].slice(0, 2)), {
+          href: this.opt.addIcons[i][2],
           className: 'let'
         }, ic);
-        ico.push(ii);
       }
-
-      if (ico[0]) app.b(ico[0], 'click', function (e) {
-        return _this2.openDialog(n, null, e);
-      }, false);
-      if (ico[1]) app.b(ico[1], 'click', function (e) {
-        return _this2.closeDialog(n, true, null, null, e);
-      }, false);
-      if (ico[2]) app.b(ico[2], 'click', function (e) {
-        return _this2.closeDialog(n, '', null, null, e);
-      }, false);
     }
 
     if (this.opt.inPop) pop.appendChild(n);
   };
 
-  this.switchMonth = function (n, y, m, d, ch, ci, e) {
-    e.preventDefault();
-    e.stopPropagation();
-
-    if (d > 28) {
-      var days = new Date(y, m + 1, 0).getDate(); //days in month
-
-      d = Math.min(d, days);
-    }
-
-    var h = ch ? parseInt(ch.textContent, 10) : 0;
-    var i = ci ? parseInt(ci.textContent, 10) : 0; //this.openDialog(n, new Date(y, m, d, h, i), e);
-
-    this.build(n, new Date(y, m, d, h, i));
-  };
-
   this.openDialog = function (n, d, e) {
-    e.stopPropagation();
+    if (e) e.preventDefault();
     this.build(n, d || n.value);
     this.toggle(true, n);
   };
 
-  this.closeDialog = function (n, d, h, m, e) {
-    e.preventDefault();
-    e.stopPropagation();
-
+  this.closeDialog = function (n, d) {
     if (n) {
-      this.setValue(n, d, h, m);
+      this.setValue(n, d);
       n.focus();
     }
 
     this.toggle(false);
-  };
-
-  this.setValue = function (n, d, h, m) {
-    if (d !== null) {
-      n.value = d === true ? this.fmt(0, 0, n.vTime) : d;
-      if (!(d === true && n.vTime) && h && m) n.value += ' ' + this.n(h.textContent) + ':' + this.n(m.textContent);
-      this.validate(n, 0);
-    }
   };
 
   this.n = function (v, l) {
@@ -1645,85 +1629,18 @@ module.exports = new function () {
     if (n.reportValidity) n.reportValidity();
   };
 
-  this.build = function (n, x) {
-    var _this3 = this;
-
-    app.clr(this.win);
-    if (typeof x === 'string') x = this.parse(x || app.attr(n, 'data-def', ''));
-    var min = this.getLimit(n, 'min', 0);
-    var max = this.getLimit(n, 'max', 0); //time
-
-    var ch = null;
-    var ci = null;
-    var p2 = null;
-
-    if (n.vTime) {
-      p2 = app.ins('p', '', {
-        className: 'c'
-      });
-      var ph = this.btn('#prev-hour', app.i('prev', '&lsaquo;'), p2);
-      ch = app.ins('span', this.n(x.getHours()), {
-        className: 'pad'
-      }, p2);
-      var nh = this.btn('#next-hour', app.i('next', '&rsaquo;'), p2);
-      app.ins('span', ':', {
-        className: 'pad'
-      }, p2);
-      var pi = this.btn('#prev-min', app.i('prev', '&lsaquo;'), p2);
-      ci = app.ins('span', this.n(x.getMinutes()), {
-        className: 'pad'
-      }, p2);
-      var ni = this.btn('#next-min', app.i('next', '&rsaquo;'), p2);
-      app.b(ph, 'click', function (e) {
-        return _this3.setTime(n, ch, ci, -1, 'h', e);
-      }, false);
-      app.b(nh, 'click', function (e) {
-        return _this3.setTime(n, ch, ci, +1, 'h', e);
-      }, false);
-      app.b(pi, 'click', function (e) {
-        return _this3.setTime(n, ch, ci, -_this3.opt.stepMinutes, 'i', e);
-      }, false);
-      app.b(ni, 'click', function (e) {
-        return _this3.setTime(n, ch, ci, +_this3.opt.stepMinutes, 'i', e);
-      }, false);
-    } //buttons
-
-
+  this.update = function (n, x) {
+    var rows = this.win.vDays;
+    app.clr(rows);
     var y = x.getFullYear();
     var m = x.getMonth();
     var d = x.getDate();
-    var my = this.n(m + 1) + '.' + y;
-    var p1 = app.ins('p', '', {
-      className: 'c'
-    }, this.win);
-    var now = this.btn(this.opt.hashNow, app.i('ok', '&check;'), p1);
-    var py = this.btn('#prev-year', app.i('prev2', '&laquo;'), p1);
-    var pm = this.btn('#prev-month', app.i('prev', '&lsaquo;'), p1);
-    var cur = app.ins('span', my, {
-      className: 'pad'
-    }, p1);
-    var nm = this.btn('#next-month', app.i('next', '&rsaquo;'), p1);
-    var ny = this.btn('#next-year', app.i('next2', '&raquo;'), p1);
-    var cls = this.btn(this.opt.hashCancel, app.i('close', '&#x2715;'), p1);
-    app.ins('hr', '', {}, this.win);
-    app.b(now, 'click', function (e) {
-      return _this3.closeDialog(n, true, ch, ci, e);
-    }, false);
-    app.b(cls, 'click', function (e) {
-      return _this3.closeDialog(n, null, null, null, e);
-    }, false);
-    app.b(py, 'click', function (e) {
-      return _this3.switchMonth(n, y - 1, m, d, ch, ci, e);
-    }, false);
-    app.b(ny, 'click', function (e) {
-      return _this3.switchMonth(n, y + 1, m, d, ch, ci, e);
-    }, false);
-    app.b(pm, 'click', function (e) {
-      return _this3.switchMonth(n, y, m - 1, d, ch, ci, e);
-    }, false);
-    app.b(nm, 'click', function (e) {
-      return _this3.switchMonth(n, y, m + 1, d, ch, ci, e);
-    }, false); //dates
+    var min = this.getLimit(n, 'min', 0);
+    var max = this.getLimit(n, 'max', 0); //y,m,h,mi
+
+    this.win.vNodeCur.textContent = this.n(m + 1) + '.' + y;
+    this.win.vHours.textContent = this.n(x.getHours());
+    this.win.vMinutes.textContent = this.n(x.getMinutes()); //days
 
     var days = new Date(y, m + 1, 0).getDate(); //days in month
 
@@ -1739,47 +1656,104 @@ module.exports = new function () {
       wd = (skip + i - 1) % 7 + 1;
       if (wd == 1) row = app.ins('div', '', {
         className: 'row'
-      }, this.win);
+      }, rows);
       if (i < 1 || i > days) c = app.ins('a', '', {
         className: 'pad c center'
       }, row);else {
-        (function () {
-          var v = _this3.fmt(x, i);
+        vv = this.fmt(x, i, 0, 'y');
+        sel = i == d;
+        today = false; //(this.fmt(x, i) == cd);
 
-          vv = _this3.fmt(x, i, 0, 'y');
-          sel = v == xd;
-          today = false; //(v == cd);
-
-          off = min && vv < min || max && vv > max;
-          c = app.ins('a', i, {
-            className: 'pad c center ' + (sel ? 'bg-w ' : '') + (today ? 'bg-y ' : '') + (off ? 'text-n ' : 'hover ') + (wd > 5 ? 'text-e ' : '')
-          }, row);
-
-          if (!off) {
-            c.href = '#' + i;
-            app.b(c, 'click', function (e) {
-              return _this3.closeDialog(n, v, ch, ci, e);
-            }, false);
-          }
-        })();
+        off = min && vv < min || max && vv > max;
+        c = app.ins('a', i, {
+          className: 'pad c center ' + (sel ? 'bg-w ' : '') + (today ? 'bg-y ' : '') + (off ? 'text-n ' : 'hover ') + (wd > 5 ? 'text-e ' : '')
+        }, row);
+        if (!off) c.href = '#' + i;
       }
-    }
+    } //time
 
-    if (n.vTime) {
-      app.ins('hr', '', {}, this.win);
-      this.win.appendChild(p2);
-    }
+
+    this.win.vNodeTime.classList[n.vTime ? 'remove' : 'add'](app.opt.cHide);
   };
 
-  this.setTime = function (n, ch, ci, step, item, e) {
-    var max = item == 'h' ? 24 : 60;
-    var m = item == 'h' ? ch : ci;
-    e.preventDefault();
+  this.build = function (n, x) {
+    if (typeof x === 'string') x = this.parse(x || app.attr(n, 'data-def', ''));
+    this.win.vCur = x;
+
+    if (!this.win.vDays) {
+      app.clr(this.win); //buttons
+
+      var p1 = app.ins('p', '', {
+        className: 'c'
+      }, this.win);
+      var now = this.btn(this.opt.hashNow, app.i('ok', '&check;'), p1);
+      var py = this.btn('#prev-year', app.i('prev2', '&laquo;'), p1);
+      var pm = this.btn('#prev-month', app.i('prev', '&lsaquo;'), p1);
+      this.win.vNodeCur = app.ins('span', '', {
+        className: 'pad'
+      }, p1);
+      var nm = this.btn('#next-month', app.i('next', '&rsaquo;'), p1);
+      var ny = this.btn('#next-year', app.i('next2', '&raquo;'), p1);
+      var cls = this.btn(this.opt.hashCancel, app.i('close', '&#x2715;'), p1);
+      app.ins('hr', '', {}, this.win); //dates
+
+      this.win.vDays = app.ins('div', '', {}, this.win); //time
+
+      var hm = app.ins('div', '', {}, this.win);
+      this.win.vNodeTime = hm;
+      app.ins('hr', '', {}, hm);
+      var p2 = app.ins('p', '', {
+        className: 'c'
+      }, hm);
+      this.btn('#prev-hour', app.i('prev', '&lsaquo;'), p2);
+      this.win.vHours = app.ins('span', '', {
+        className: 'pad'
+      }, p2);
+      this.btn('#next-hour', app.i('next', '&rsaquo;'), p2);
+      app.ins('span', ':', {
+        className: 'pad'
+      }, p2);
+      this.btn('#prev-min', app.i('prev', '&lsaquo;'), p2);
+      this.win.vMinutes = app.ins('span', '', {
+        className: 'pad'
+      }, p2);
+      this.btn('#next-min', app.i('next', '&rsaquo;'), p2);
+    }
+
+    this.update(n, x);
+  };
+
+  this.switchMonths = function (n, y, m, d) {
+    if (d > 28) {
+      var days = new Date(y, m + 1, 0).getDate(); //days in month
+
+      d = Math.min(d, days);
+    }
+
+    var h = parseInt(this.win.vHours.textContent, 10);
+    var i = parseInt(this.win.vMinutes.textContent, 10);
+    this.build(n, new Date(y, m, d, h, i));
+  };
+
+  this.setTime = function (n, dh, di) {
+    var step = dh || di;
+    var max = dh ? 24 : 60;
+    var m = this.win[dh ? 'vHours' : 'vMinutes'];
     var v = parseInt(m.textContent, 10);
     var x = v % Math.abs(step);
     v += x ? step > 0 ? step - x : -x : max + step;
     m.textContent = this.n(v % max);
-    this.setValue(n, this.fmt(this.parse(n.value)), ch, ci);
+    this.setValue(n, this.fmt(this.parse(n.value)));
+  };
+
+  this.setValue = function (n, d) {
+    if (d !== null) {
+      n.value = d === true ? this.fmt(0, 0, n.vTime) : d;
+      var h = this.win.vHours;
+      var m = this.win.vMinutes;
+      if (n.vTime && d !== true && d !== '' && h && m) n.value += ' ' + this.n(h.textContent) + ':' + this.n(m.textContent);
+      this.validate(n, 0);
+    }
   };
 
   this.parse = function (d) {
@@ -2773,18 +2747,18 @@ module.exports = new function () {
     app.e('[data-chain]', function (n) {
       return _this.updateChain(n);
     });
-    app.h('input', '.input-lookup', function (e) {
+    app.h('input', '.lookup-input', function (e) {
       return app.delay(function (i) {
         return _this.find(i);
       }, _this.opt.wait, true)(e);
     });
-    app.h('key', '.input-lookup', function (e) {
+    app.h('keydown', '.lookup-input', function (e) {
       return _this.key(e);
     });
-    app.h('click', '.item-lookup', function (e) {
+    app.h('click', '.lookup-item', function (e) {
       return _this.choose(e);
     });
-    app.h('click', '.goto-lookup', function (e) {
+    app.h('click', '.lookup-goto', function (e) {
       return _this.go(e);
     });
     app.h('change', '[data-chain]', function (e) {
@@ -2797,16 +2771,16 @@ module.exports = new function () {
     var cap = app.attr(n, this.opt.aLabel);
     n.vLabel = cap || n.value || '';
     var pop = app.ins('div', '', {
-      className: 'pop l pop-lookup'
+      className: 'pop l lookup-pop'
     }, n, 1);
     if (!this.opt.inPop) pop.style.verticalAlign = 'bottom';
-    n.classList.add('bg-n', 'id-lookup');
+    n.classList.add('bg-n', 'lookup-id');
     n.classList.add(app.opt.cHide); //n.type = 'hidden';
 
     var m = app.ins('input', '', {
       type: 'text',
       value: n.vLabel,
-      className: 'input-lookup subinput'
+      className: 'lookup-input subinput'
     }, pop, this.opt.inPop ? 0 : 1);
     m.name = 'lookup-' + n.name; //m.required = n.required;
     //n.required = false;
@@ -2830,7 +2804,7 @@ module.exports = new function () {
 
       i = app.ins('a', app.i('right', '&rarr;'), {
         href: '#goto',
-        className: 'let goto-lookup'
+        className: 'let lookup-goto'
       }, ic);
       i.style.cursor = 'pointer';
       app.ins('', ' ', {}, ic, -1);
@@ -2858,16 +2832,16 @@ module.exports = new function () {
   };
 
   this.ident = function (n, mode) {
-    if (mode != 't' && (mode == 'i' || this.opt.inPop)) n = n.closest('.pop-lookup');
-    return app.next(n, '.id-lookup', true);
+    if (mode != 't' && (mode == 'i' || this.opt.inPop)) n = n.closest('.lookup-pop');
+    return app.next(n, '.lookup-id', true);
   };
 
   this.cap = function (n) {
-    return this.opt.inPop ? app.q('.input-lookup', this.pop(n)) : app.next(n, '.input-lookup');
+    return this.opt.inPop ? app.q('.lookup-input', this.pop(n)) : app.next(n, '.lookup-input');
   };
 
   this.pop = function (n) {
-    return app.next(n, '.pop-lookup');
+    return app.next(n, '.lookup-pop');
   };
 
   this.find = function (e) {
@@ -2921,7 +2895,7 @@ module.exports = new function () {
       w = app.ins('li', '', {}, ul);
       var a = app.ins('a', '', {
         href: go ? go.replace(/\{id\}/, d[i].id) : '#' + d[i].id,
-        className: '-pad -hover' + (go ? '' : ' item-lookup')
+        className: '-pad -hover' + (go ? '' : ' lookup-item')
       }, w);
       app.ins('span', d[i].nm, {}, a);
 
@@ -3081,7 +3055,7 @@ module.exports = new function () {
     var t;
 
     if (app.q(this.opt.qEnable)) {
-      app.listen('hash', function (e) {
+      app.listen('hashchange', function (e) {
         return _this.onHash(e);
       });
       var ons = app.throttle(function () {
@@ -3098,7 +3072,7 @@ module.exports = new function () {
     }
     /*
     else if(t = app.q(this.opt.qTopbarFixed)){
-      app.listen('hash', e => this.fixScroll());
+      app.listen('hashchange', e => this.fixScroll());
     }
     */
 

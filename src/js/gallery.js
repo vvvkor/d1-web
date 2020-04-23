@@ -20,8 +20,8 @@ module.exports = new(function () {
   };
   
   this.init = function () {
-    app.listen('hash', e => this.onHash(e));
-    app.listen('key', e => this.onKey(e));
+    app.listen('hashchange', e => this.onHash(e));
+    app.listen('keydown', e => this.onKey(e));
     app.h('click', this.opt.qGal, e => this.next(e));
     this.prepareAll();
   }

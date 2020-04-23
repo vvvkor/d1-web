@@ -43,12 +43,11 @@ module.exports = new(function () {
 
   this.init = function () {
     app.listen('esc', e => this.esc(e));
-    app.listen('hash', e => this.onHash(e));
-    app.listen('key', e => this.onKey(e));
+    app.listen('hashchange', e => this.onHash(e));
+    app.listen('keydown', e => this.onKey(e));
     app.listen('click', e => this.onClick(e));
-    //app.listen('clicked', e => this.unpop(e.target)); // click out
-    app.listen('after', e => (e && e.type == 'click') ? this.unpop(e.target) : null); // click out
-    app.listen('after', e => (!e || ['click', 'key', 'hash'].indexOf(e.type) != -1) ? this.modalStyle(e ? e.target : null) : null);
+    app.listen('after', e => (e && e.type == 'click' && !e.defaultPrevented) ? this.unpop(e.target) : null); // click out
+    app.listen('after', e => (!e || ['click', 'keydown', 'hashchange'].indexOf(e.type) != -1) ? this.modalStyle(e) : null);
     //toggle
     let q = this.opt;
     this.opt.qTgl = this.opt.mediaSuffixes.concat(['']).map(x => '[id].' + app.opt.cToggle + x).join(', ')
@@ -77,9 +76,12 @@ module.exports = new(function () {
     */
   }
 
-  this.modalStyle = function(n){
+  this.modalStyle = function(e){
+    let n = e ? e.target : null;
     this.shown = null;//do it just once when dialog is opened
     //let modal = app.q(this.opt.qDlg+':not(.'+app.opt.cOff+'), '+this.opt.qGal+':target'); // :target not updated after Esc key
+    
+    //styles
     let modal = app.q(this.opt.qDlg+':not(.'+app.opt.cOff+'), '+this.opt.qGal+'[id="' + location.hash.substr(1) + '"]');
     let bar = window.innerWidth - document.documentElement.clientWidth; //scroll bar width
     let s = document.body.style;
@@ -89,6 +91,8 @@ module.exports = new(function () {
       if(!(modal && s.paddingRight)) s.paddingRight = modal ? '' + bar + 'px' : ''; // avoid width reflow
     }
     app.dbg(['modalStyle', n, modal, s.paddingRight]);
+    
+    //focus first input
     if(modal){
       //let f1 = app.q('input, a:not(.' + app.opt.cClose + ')', modal);
       let f1 = app.q('input:not([type="hidden"]), select, textarea, a.btn, a:not([href="' + app.opt.hClose + '"])', modal);
@@ -109,7 +113,7 @@ module.exports = new(function () {
   }
 
   this.onHash = function(e){
-    app.dbg(['hash', location.hash]);
+    app.dbg(['hashchange', location.hash]);
     this.nEsc = 0;
     if(location.hash===app.opt.hClose) app.fire('esc', e);
     else if(location.hash){
@@ -130,7 +134,7 @@ module.exports = new(function () {
 
   this.onKey = function(e){
     let k = e.keyCode;
-    app.dbg(['key', k, this.nEsc]);
+    app.dbg(['keydown', k, this.nEsc]);
     if(k==27 && this.nEsc>=2) localStorage.clear();
     else if(k==27) app.fire('esc', e);
     this.nEsc = (k==27 && this.nEsc<2) ? this.nEsc+1 : 0;
