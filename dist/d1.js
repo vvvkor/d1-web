@@ -1,4 +1,4 @@
-/*! d1-web v1.2.66 */
+/*! d1-web v1.2.67 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -732,7 +732,6 @@ module.exports = new function () {
     var keep = [x];
     keep.push(this.shown); // click out: keep
 
-    console.log('unpop:keep', keep);
     var a = x ? x.closest('a') : null;
 
     if (a && a.hash) {
@@ -2090,11 +2089,12 @@ module.exports = new function () {
     this.mode(n.theWys, wys);
   };
 
-  this.cmd = function (e) {
-    var n = e.recv;
-    var b = this.btn[n.getAttribute('data-cmd')];
-    var z = app.next(n.closest('nav'), '.edit-wysiwyg');
-    app.dbg(['cmd', n, b, z, e]);
+  this.cmd = function (e, bb, nn) {
+    // (e) or (z, b, n)
+    var n = nn || e.recv;
+    var b = bb || this.btn[n.getAttribute('data-cmd')];
+    var z = bb ? e : app.next(n.closest('nav'), '.edit-wysiwyg');
+    app.dbg(['cmd', z, b, n, e]);
 
     if (e) {
       e.preventDefault();

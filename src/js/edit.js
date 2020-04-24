@@ -120,11 +120,11 @@ module.exports = new(function () {
     this.mode(n.theWys, wys);
   }
 
-  this.cmd = function (e) {
-    let n = e.recv;
-    let b = this.btn[n.getAttribute('data-cmd')];
-    let z = app.next(n.closest('nav'), '.edit-wysiwyg');
-    app.dbg(['cmd', n, b, z, e]);
+  this.cmd = function (e, bb, nn) { // (e) or (z, b, n)
+    let n = nn || e.recv;
+    let b = bb || this.btn[n.getAttribute('data-cmd')];
+    let z = bb ? e : app.next(n.closest('nav'), '.edit-wysiwyg');
+    app.dbg(['cmd', z, b, n, e]);
     if(e){
       e.preventDefault();
       e.stopPropagation();

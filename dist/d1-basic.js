@@ -1,4 +1,4 @@
-/*! d1-web v1.2.66 */
+/*! d1-web v1.2.67 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -734,7 +734,6 @@ module.exports = new function () {
     var keep = [x];
     keep.push(this.shown); // click out: keep
 
-    console.log('unpop:keep', keep);
     var a = x ? x.closest('a') : null;
 
     if (a && a.hash) {

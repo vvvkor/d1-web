@@ -217,7 +217,6 @@ module.exports = new(function () {
   this.unpop = function(x, seq){
     let keep = [x];
     keep.push(this.shown); // click out: keep
-    console.log('unpop:keep', keep);
     let a = x ? x.closest('a') : null;
     if(a && a.hash){
       //if(a.hash==app.opt.hClose) keep = []; //to close all, even container
