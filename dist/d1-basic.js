@@ -1,4 +1,4 @@
-/*! d1-web v1.2.63 */
+/*! d1-web v1.2.66 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -133,7 +133,7 @@ module.exports = new function () {
       return _this.on('hashchange', e);
     }); // on window
 
-    this.b([document], ['invalid', 'focus'], function (e) {
+    this.b([document], ['invalid', 'focus', 'blur'], function (e) {
       return _this.on(e.type, e);
     }, true); //useCapture
 
@@ -483,11 +483,18 @@ module.exports = new function () {
       return _this.onClick(e);
     });
     app.listen('after', function (e) {
-      return e && e.type == 'click' && !e.defaultPrevented ? _this.unpop(e.target) : null;
+      return e && e.type == 'click'
+      /*&& (e.target.hash!==app.opt.hClose)*/
+
+      /*&& !e.defaultPrevented*/
+      ? _this.unpop(e.target) : null;
     }); // click out
 
     app.listen('after', function (e) {
       return !e || ['click', 'keydown', 'hashchange'].indexOf(e.type) != -1 ? _this.modalStyle(e) : null;
+    });
+    app.listen('after', function (e) {
+      return !e || ['click', 'keydown', 'hashchange'].indexOf(e.type) != -1 ? _this.shown = null : null;
     }); //toggle
 
     var q = this.opt;
@@ -562,8 +569,7 @@ module.exports = new function () {
   };
 
   this.modalStyle = function (e) {
-    var n = e ? e.target : null;
-    this.shown = null; //do it just once when dialog is opened
+    var n = e ? e.target : null; //this.shown = null;//do it just once when dialog is opened
     //let modal = app.q(this.opt.qDlg+':not(.'+app.opt.cOff+'), '+this.opt.qGal+':target'); // :target not updated after Esc key
     //styles
 
@@ -712,9 +718,7 @@ module.exports = new function () {
     var _this2 = this;
 
     if (app.vis(d)) {
-      if (d.matches(this.opt.qDlg)) app.e(this.opt.qDlg, function (n) {
-        return n == d ? null : _this2.toggle(n, false, 1);
-      }); //hide other dialogs
+      if (d.matches(this.opt.qDlg)) ; //app.e(this.opt.qDlg, n => n==d ? null : this.toggle(n, false, 1)); //hide other dialogs
       else if (d.matches(this.opt.qTab)) app.e(d.parentNode.children, function (n) {
           return n == d ? null : _this2.toggle(n, false, 1);
         }); //hide sibling tabs
@@ -730,12 +734,13 @@ module.exports = new function () {
     var keep = [x];
     keep.push(this.shown); // click out: keep
 
+    console.log('unpop:keep', keep);
     var a = x ? x.closest('a') : null;
 
     if (a && a.hash) {
       //if(a.hash==app.opt.hClose) keep = []; //to close all, even container
       //else
-      keep.push(app.q(a.hash));
+      keep.push(app.q(a.hash)); //keep hash target
     }
 
     app.dbg(['unpop', keep]); //app.e(this.opt.qUnpop, n => (keep && keep.filter(m => m && m.tagName && n.contains(m)).length) ? null : this.toggle(n, false, 1));
@@ -744,7 +749,8 @@ module.exports = new function () {
       return !(keep && keep.filter(function (m) {
         return m && m.tagName && n.contains(m);
       }).length);
-    });
+    }); // skip if contains one of [keep]
+
     if (seq) nn = nn.filter(function (n) {
       return !app.q(_this3.opt.qUnpopOn, n);
     }); // to close nested subsequently

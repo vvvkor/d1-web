@@ -39,7 +39,7 @@ module.exports = new (function(){
 
     // bind events
     this.b([window], 'hashchange', e => this.on('hashchange', e)); // on window
-    this.b([document], ['invalid', 'focus'], e => this.on(e.type, e), true);//useCapture
+    this.b([document], ['invalid', 'focus', 'blur'], e => this.on(e.type, e), true);//useCapture
     this.b([document], ['click', 'keydown', 'input', 'change', 'submit'], e => this.on(e.type, e));
 
     if(location.hash) this.on('hashchange')

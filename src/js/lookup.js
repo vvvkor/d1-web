@@ -129,7 +129,7 @@ module.exports = new(function () {
     //this.win.vRel = n.vCap;
     toggle.toggle(this.win, true);
     this.build(n, d);
-    toggle.shown = null;
+    //toggle.shown = null;
   }
   
   this.closeList = function(){

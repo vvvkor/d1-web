@@ -46,8 +46,9 @@ module.exports = new(function () {
     app.listen('hashchange', e => this.onHash(e));
     app.listen('keydown', e => this.onKey(e));
     app.listen('click', e => this.onClick(e));
-    app.listen('after', e => (e && e.type == 'click' && !e.defaultPrevented) ? this.unpop(e.target) : null); // click out
+    app.listen('after', e => (e && e.type == 'click' /*&& (e.target.hash!==app.opt.hClose)*/ /*&& !e.defaultPrevented*/) ? this.unpop(e.target) : null); // click out
     app.listen('after', e => (!e || ['click', 'keydown', 'hashchange'].indexOf(e.type) != -1) ? this.modalStyle(e) : null);
+    app.listen('after', e => (!e || ['click', 'keydown', 'hashchange'].indexOf(e.type) != -1) ? (this.shown = null) : null);
     //toggle
     let q = this.opt;
     this.opt.qTgl = this.opt.mediaSuffixes.concat(['']).map(x => '[id].' + app.opt.cToggle + x).join(', ')
@@ -78,7 +79,7 @@ module.exports = new(function () {
 
   this.modalStyle = function(e){
     let n = e ? e.target : null;
-    this.shown = null;//do it just once when dialog is opened
+    //this.shown = null;//do it just once when dialog is opened
     //let modal = app.q(this.opt.qDlg+':not(.'+app.opt.cOff+'), '+this.opt.qGal+':target'); // :target not updated after Esc key
     
     //styles
@@ -207,7 +208,7 @@ module.exports = new(function () {
 
   this.toggleDependent = function(d){
     if(app.vis(d)){
-      if(d.matches(this.opt.qDlg)) app.e(this.opt.qDlg, n => n==d ? null : this.toggle(n, false, 1)); //hide other dialogs
+      if(d.matches(this.opt.qDlg)) ;//app.e(this.opt.qDlg, n => n==d ? null : this.toggle(n, false, 1)); //hide other dialogs
       else if(d.matches(this.opt.qTab)) app.e(d.parentNode.children, n => n==d ? null : this.toggle(n, false, 1)); //hide sibling tabs
       else if(d.matches(this.opt.qAcc)) app.e(app.qq(this.opt.qAcc, d.closest(this.opt.qAccRoot)), n => n.contains(d) ? null : this.toggle(n, false, 1)); //hide other ul
     }
@@ -216,16 +217,17 @@ module.exports = new(function () {
   this.unpop = function(x, seq){
     let keep = [x];
     keep.push(this.shown); // click out: keep
+    console.log('unpop:keep', keep);
     let a = x ? x.closest('a') : null;
     if(a && a.hash){
       //if(a.hash==app.opt.hClose) keep = []; //to close all, even container
       //else
-        keep.push(app.q(a.hash));
+        keep.push(app.q(a.hash));//keep hash target
     }
     app.dbg(['unpop', keep]);
     //app.e(this.opt.qUnpop, n => (keep && keep.filter(m => m && m.tagName && n.contains(m)).length) ? null : this.toggle(n, false, 1));
     let nn = app.qq(this.opt.qUnpop)
-      .filter(n => !(keep && keep.filter(m => m && m.tagName && n.contains(m)).length));
+      .filter(n => !(keep && keep.filter(m => m && m.tagName && n.contains(m)).length)); // skip if contains one of [keep]
     if(seq) nn = nn.filter(n => !app.q(this.opt.qUnpopOn, n)); // to close nested subsequently
     app.e(nn, n => this.toggle(n, false, 1));
   }

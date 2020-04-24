@@ -19,7 +19,7 @@ module.exports = new(function () {
     idPicker: 'pick-date',
     minWidth: 801,
     qsCalendar: 'input.calendar',
-    showModal: 0,
+    showModal: 0, // ! avoid modal calendar inside modal dialog
     sizeLimit: 801,
     stepMinutes: 1,
     inPop: 0
@@ -39,17 +39,30 @@ module.exports = new(function () {
     app.e(this.opt.qsCalendar, n => this.preparePick(n));
     app.h('click', this.opt.qsCalendar, e => this.openDialog(e.target, null, e));
     app.h('input', this.opt.qsCalendar, e => this.validate(e.target, 0));
+    //app.h('keydown', this.opt.qsCalendar, e => this.key(e));
+    //app.h('click', '#' + this.opt.idPicker, e => toggle.shown = e.recv.vRel);
     app.h('click', '#' + this.opt.idPicker + ' a', e => this.onClick(e));
     app.h('click', '.calendar-tools a', e => this.onClick(e, true));
   }
+  
+  /*
+  this.key = function(e){
+    if(e.keyCode == 40 && !app.vis(this.win)) this.openDialog(e.target, null, e);
+  }
+  */
   
   this.onClick = function(e, tool){
     let a = e.recv;
     let h = a.hash;
     if(h){
       //nodes
-      let n;
+      let n;// = this.win.vRel;
+      
       let c = this.opt.qsCalendar;
+      /*
+      if(this.win.vRel) n = this.win.vRel;
+      else 
+      */
       if(tool){
         n = this.opt.inPop
           ? app.q(c, app.next(a.parentNode, '.pop', true))
@@ -92,11 +105,13 @@ module.exports = new(function () {
           let s = this.win.style;
           s.left = s.right = s.top = s.bottom = '';
         }
-        //this.win.vRel = m ? null : n;
+        //this.win.vRel = n;//m ? n : null;//m ? null : n;//n;
       }
     }
     toggle.toggle(this.win, on);
-    app.fire('after');
+    //if(!on) this.win.tabindex = -1;
+    if(!on) document.body.appendChild(this.win);
+    //app.fire('after');
   }
   
   this.preparePick = function(n){
@@ -121,6 +136,8 @@ module.exports = new(function () {
     if(e) e.preventDefault();
     this.build(n, d || n.value);
     this.toggle(true, n);
+    //let f = (app.q('.bg-w', this.win) || app.q('#1', this.win));
+    //if(f) f.focus();
   }
 
   this.closeDialog = function(n, d){
@@ -163,8 +180,8 @@ module.exports = new(function () {
     let max = this.getLimit(n, 'max', 0);
     //y,m,h,mi
     this.win.vNodeCur.textContent = this.n(m+1) + '.' + y;
-    this.win.vHours.textContent = this.n(x.getHours());
-    this.win.vMinutes.textContent = this.n(x.getMinutes());
+    this.win.vHours.textContent = this.n(n.vTime ? x.getHours() : 0);
+    this.win.vMinutes.textContent = this.n(n.vTime ? x.getMinutes() : 0);
     //days
     let days = (new Date(y, m+1, 0)).getDate();//days in month
     let skip = ((new Date(y, m, 1)).getDay() + 6) % 7;//skip weekdays

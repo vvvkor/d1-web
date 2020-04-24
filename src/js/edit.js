@@ -68,9 +68,19 @@ module.exports = new(function () {
     app.e(this.opt.qEdit, n => this.prepare(n));
     app.e(this.opt.qAdjust, n => this.setStyle(n));
     this.adjustAll();
-    app.b(this.opt.qAdjust, 'input', e => this.adjust(e.target));
-    app.b(this.opt.qAdjust, 'mouseup', e => this.resized(e.target));
+    //wysiwyg
+    app.h('click', 'label[for]', e => this.setFocus(e.recv));
+    app.h('click', 'a[data-cmd]', e => this.cmd(e));
+    app.h(['input', 'blur'], '.edit-wysiwyg', e => this.up(0, e.target));//for validation
+    //adjust
+    app.h('input', this.opt.qAdjust, e => this.adjust(e.target));
+    app.h('mouseup', this.opt.qAdjust, e => this.resized(e.target));
     app.b([window], 'resize', e => this.adjustAll());
+  }
+  
+  this.setFocus = function(l){
+    let a = app.q('#' + l.htmlFor);
+    if(a && a.theWys && app.vis(a.theWys)) a.theWys.focus();
   }
 
   this.prepare = function (n) {
@@ -78,34 +88,26 @@ module.exports = new(function () {
       let m = app.ins('nav', '', {className: 'bg'}, /*d*/ n, -1);
       let mm = app.ins('div', '', {className: app.opt.cToggle + ' ' + app.opt.cOff});
       //let zc = app.ins('div', '', {className:'subinput'}, n, 1)
-      let z = app.ins('div', '', {className: app.opt.cToggle + ' bord pad subinput'}, n, 1/*zc*/);
+      let z = app.ins('div', '', {className: app.opt.cToggle + ' bord pad subinput edit-wysiwyg'}, n, 1/*zc*/);
       z.setAttribute('contenteditable', true);
       z.theArea = n;
       z.theNav = m;
       n.theWys = z;
       n.classList.add(app.opt.cToggle);
-      if(n.id) {
-        z.id = 'wys-' + n.id;
-        app.b('[for="' + n.id + '"]', 'click', e => app.vis(z) ? z.focus() : null);
-      }
+      if(n.id) z.id = 'wys-' + n.id;
       let t = app.attr(n, 'data-tools', this.opt.tools).split('');
       let to = m;
       for (let i in t) {
         let b = this.btn[t[i]];
-        let a = app.ins('a', b[2], {href: '#cmd-' + b[0]/*i*/, title: b[3], className: app.opt.cToggle + ' pad hover'}, to);
+        let a = app.ins('a', b[2], {href: '#cmd-' + b[0]/*i*/, title: b[3], className: app.opt.cToggle + ' pad hover', 'data-cmd': t[i]}, to);
         if(b[0] == 'tools') to = mm;
-        app.b(a, 'click', e => this.cmd(z, b, a, e));
       }
       m.appendChild(mm);
-      //app.b(app.qq('a', m), 'click', e => this.cmd(z));
       n.className += ' bord pad';
       n.style.width = '100%';
       this.setStyle(n);
       this.setStyle(z);
       //let l = n.closest('label') || n;
-      app.b([z], 'blur', e => this.up(0, e.target));
-      app.b([z], 'input', e => this.up(0, e.target));//for validation
-      //app.b([n], 'input', e => this.adjust(e.target));
     }
     this.up(1, n.theWys);
     this.modeAuto(n);
@@ -118,8 +120,11 @@ module.exports = new(function () {
     this.mode(n.theWys, wys);
   }
 
-  this.cmd = function (z, b, n, e) {
-    app.dbg(['cmd', arguments]);
+  this.cmd = function (e) {
+    let n = e.recv;
+    let b = this.btn[n.getAttribute('data-cmd')];
+    let z = app.next(n.closest('nav'), '.edit-wysiwyg');
+    app.dbg(['cmd', n, b, z, e]);
     if(e){
       e.preventDefault();
       e.stopPropagation();

@@ -1,4 +1,4 @@
-/*! d1-web v1.2.63 */
+/*! d1-web v1.2.66 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -132,7 +132,7 @@ module.exports = new function () {
       return _this.on('hashchange', e);
     }); // on window
 
-    this.b([document], ['invalid', 'focus'], function (e) {
+    this.b([document], ['invalid', 'focus', 'blur'], function (e) {
       return _this.on(e.type, e);
     }, true); //useCapture
 
@@ -481,11 +481,18 @@ module.exports = new function () {
       return _this.onClick(e);
     });
     app.listen('after', function (e) {
-      return e && e.type == 'click' && !e.defaultPrevented ? _this.unpop(e.target) : null;
+      return e && e.type == 'click'
+      /*&& (e.target.hash!==app.opt.hClose)*/
+
+      /*&& !e.defaultPrevented*/
+      ? _this.unpop(e.target) : null;
     }); // click out
 
     app.listen('after', function (e) {
       return !e || ['click', 'keydown', 'hashchange'].indexOf(e.type) != -1 ? _this.modalStyle(e) : null;
+    });
+    app.listen('after', function (e) {
+      return !e || ['click', 'keydown', 'hashchange'].indexOf(e.type) != -1 ? _this.shown = null : null;
     }); //toggle
 
     var q = this.opt;
@@ -560,8 +567,7 @@ module.exports = new function () {
   };
 
   this.modalStyle = function (e) {
-    var n = e ? e.target : null;
-    this.shown = null; //do it just once when dialog is opened
+    var n = e ? e.target : null; //this.shown = null;//do it just once when dialog is opened
     //let modal = app.q(this.opt.qDlg+':not(.'+app.opt.cOff+'), '+this.opt.qGal+':target'); // :target not updated after Esc key
     //styles
 
@@ -710,9 +716,7 @@ module.exports = new function () {
     var _this2 = this;
 
     if (app.vis(d)) {
-      if (d.matches(this.opt.qDlg)) app.e(this.opt.qDlg, function (n) {
-        return n == d ? null : _this2.toggle(n, false, 1);
-      }); //hide other dialogs
+      if (d.matches(this.opt.qDlg)) ; //app.e(this.opt.qDlg, n => n==d ? null : this.toggle(n, false, 1)); //hide other dialogs
       else if (d.matches(this.opt.qTab)) app.e(d.parentNode.children, function (n) {
           return n == d ? null : _this2.toggle(n, false, 1);
         }); //hide sibling tabs
@@ -728,12 +732,13 @@ module.exports = new function () {
     var keep = [x];
     keep.push(this.shown); // click out: keep
 
+    console.log('unpop:keep', keep);
     var a = x ? x.closest('a') : null;
 
     if (a && a.hash) {
       //if(a.hash==app.opt.hClose) keep = []; //to close all, even container
       //else
-      keep.push(app.q(a.hash));
+      keep.push(app.q(a.hash)); //keep hash target
     }
 
     app.dbg(['unpop', keep]); //app.e(this.opt.qUnpop, n => (keep && keep.filter(m => m && m.tagName && n.contains(m)).length) ? null : this.toggle(n, false, 1));
@@ -742,7 +747,8 @@ module.exports = new function () {
       return !(keep && keep.filter(function (m) {
         return m && m.tagName && n.contains(m);
       }).length);
-    });
+    }); // skip if contains one of [keep]
+
     if (seq) nn = nn.filter(function (n) {
       return !app.q(_this3.opt.qUnpopOn, n);
     }); // to close nested subsequently
@@ -1473,6 +1479,7 @@ module.exports = new function () {
     minWidth: 801,
     qsCalendar: 'input.calendar',
     showModal: 0,
+    // ! avoid modal calendar inside modal dialog
     sizeLimit: 801,
     stepMinutes: 1,
     inPop: 0
@@ -1504,7 +1511,9 @@ module.exports = new function () {
     });
     app.h('input', this.opt.qsCalendar, function (e) {
       return _this.validate(e.target, 0);
-    });
+    }); //app.h('keydown', this.opt.qsCalendar, e => this.key(e));
+    //app.h('click', '#' + this.opt.idPicker, e => toggle.shown = e.recv.vRel);
+
     app.h('click', '#' + this.opt.idPicker + ' a', function (e) {
       return _this.onClick(e);
     });
@@ -1512,6 +1521,12 @@ module.exports = new function () {
       return _this.onClick(e, true);
     });
   };
+  /*
+  this.key = function(e){
+    if(e.keyCode == 40 && !app.vis(this.win)) this.openDialog(e.target, null, e);
+  }
+  */
+
 
   this.onClick = function (e, tool) {
     var a = e.recv;
@@ -1519,8 +1534,13 @@ module.exports = new function () {
 
     if (h) {
       //nodes
-      var n;
+      var n; // = this.win.vRel;
+
       var c = this.opt.qsCalendar;
+      /*
+      if(this.win.vRel) n = this.win.vRel;
+      else 
+      */
 
       if (tool) {
         n = this.opt.inPop ? app.q(c, app.next(a.parentNode, '.pop', true)) : app.next(a.parentNode, c, true);
@@ -1554,13 +1574,14 @@ module.exports = new function () {
         if (m) {
           var s = this.win.style;
           s.left = s.right = s.top = s.bottom = '';
-        } //this.win.vRel = m ? null : n;
+        } //this.win.vRel = n;//m ? n : null;//m ? null : n;//n;
 
       }
     }
 
-    toggle.toggle(this.win, on);
-    app.fire('after');
+    toggle.toggle(this.win, on); //if(!on) this.win.tabindex = -1;
+
+    if (!on) document.body.appendChild(this.win); //app.fire('after');
   };
 
   this.preparePick = function (n) {
@@ -1595,7 +1616,8 @@ module.exports = new function () {
   this.openDialog = function (n, d, e) {
     if (e) e.preventDefault();
     this.build(n, d || n.value);
-    this.toggle(true, n);
+    this.toggle(true, n); //let f = (app.q('.bg-w', this.win) || app.q('#1', this.win));
+    //if(f) f.focus();
   };
 
   this.closeDialog = function (n, d) {
@@ -1639,8 +1661,8 @@ module.exports = new function () {
     var max = this.getLimit(n, 'max', 0); //y,m,h,mi
 
     this.win.vNodeCur.textContent = this.n(m + 1) + '.' + y;
-    this.win.vHours.textContent = this.n(x.getHours());
-    this.win.vMinutes.textContent = this.n(x.getMinutes()); //days
+    this.win.vHours.textContent = this.n(n.vTime ? x.getHours() : 0);
+    this.win.vMinutes.textContent = this.n(n.vTime ? x.getMinutes() : 0); //days
 
     var days = new Date(y, m + 1, 0).getDate(); //days in month
 
@@ -1983,11 +2005,23 @@ module.exports = new function () {
     app.e(this.opt.qAdjust, function (n) {
       return _this.setStyle(n);
     });
-    this.adjustAll();
-    app.b(this.opt.qAdjust, 'input', function (e) {
+    this.adjustAll(); //wysiwyg
+
+    app.h('click', 'label[for]', function (e) {
+      return _this.setFocus(e.recv);
+    });
+    app.h('click', 'a[data-cmd]', function (e) {
+      return _this.cmd(e);
+    });
+    app.h(['input', 'blur'], '.edit-wysiwyg', function (e) {
+      return _this.up(0, e.target);
+    }); //for validation
+    //adjust
+
+    app.h('input', this.opt.qAdjust, function (e) {
       return _this.adjust(e.target);
     });
-    app.b(this.opt.qAdjust, 'mouseup', function (e) {
+    app.h('mouseup', this.opt.qAdjust, function (e) {
       return _this.resized(e.target);
     });
     app.b([window], 'resize', function (e) {
@@ -1995,78 +2029,54 @@ module.exports = new function () {
     });
   };
 
+  this.setFocus = function (l) {
+    var a = app.q('#' + l.htmlFor);
+    if (a && a.theWys && app.vis(a.theWys)) a.theWys.focus();
+  };
+
   this.prepare = function (n) {
-    var _this2 = this;
-
     if (!n.theWys) {
-      (function () {
-        var m = app.ins('nav', '', {
-          className: 'bg'
-        },
-        /*d*/
-        n, -1);
-        var mm = app.ins('div', '', {
-          className: app.opt.cToggle + ' ' + app.opt.cOff
-        }); //let zc = app.ins('div', '', {className:'subinput'}, n, 1)
+      var m = app.ins('nav', '', {
+        className: 'bg'
+      },
+      /*d*/
+      n, -1);
+      var mm = app.ins('div', '', {
+        className: app.opt.cToggle + ' ' + app.opt.cOff
+      }); //let zc = app.ins('div', '', {className:'subinput'}, n, 1)
 
-        var z = app.ins('div', '', {
-          className: app.opt.cToggle + ' bord pad subinput'
-        }, n, 1
-        /*zc*/
-        );
-        z.setAttribute('contenteditable', true);
-        z.theArea = n;
-        z.theNav = m;
-        n.theWys = z;
-        n.classList.add(app.opt.cToggle);
+      var z = app.ins('div', '', {
+        className: app.opt.cToggle + ' bord pad subinput edit-wysiwyg'
+      }, n, 1
+      /*zc*/
+      );
+      z.setAttribute('contenteditable', true);
+      z.theArea = n;
+      z.theNav = m;
+      n.theWys = z;
+      n.classList.add(app.opt.cToggle);
+      if (n.id) z.id = 'wys-' + n.id;
+      var t = app.attr(n, 'data-tools', this.opt.tools).split('');
+      var to = m;
 
-        if (n.id) {
-          z.id = 'wys-' + n.id;
-          app.b('[for="' + n.id + '"]', 'click', function (e) {
-            return app.vis(z) ? z.focus() : null;
-          });
-        }
+      for (var i in t) {
+        var b = this.btn[t[i]];
+        var a = app.ins('a', b[2], {
+          href: '#cmd-' + b[0]
+          /*i*/
+          ,
+          title: b[3],
+          className: app.opt.cToggle + ' pad hover',
+          'data-cmd': t[i]
+        }, to);
+        if (b[0] == 'tools') to = mm;
+      }
 
-        var t = app.attr(n, 'data-tools', _this2.opt.tools).split('');
-        var to = m;
-
-        var _loop = function _loop(i) {
-          var b = _this2.btn[t[i]];
-          var a = app.ins('a', b[2], {
-            href: '#cmd-' + b[0]
-            /*i*/
-            ,
-            title: b[3],
-            className: app.opt.cToggle + ' pad hover'
-          }, to);
-          if (b[0] == 'tools') to = mm;
-          app.b(a, 'click', function (e) {
-            return _this2.cmd(z, b, a, e);
-          });
-        };
-
-        for (var i in t) {
-          _loop(i);
-        }
-
-        m.appendChild(mm); //app.b(app.qq('a', m), 'click', e => this.cmd(z));
-
-        n.className += ' bord pad';
-        n.style.width = '100%';
-
-        _this2.setStyle(n);
-
-        _this2.setStyle(z); //let l = n.closest('label') || n;
-
-
-        app.b([z], 'blur', function (e) {
-          return _this2.up(0, e.target);
-        });
-        app.b([z], 'input', function (e) {
-          return _this2.up(0, e.target);
-        }); //for validation
-        //app.b([n], 'input', e => this.adjust(e.target));
-      })();
+      m.appendChild(mm);
+      n.className += ' bord pad';
+      n.style.width = '100%';
+      this.setStyle(n);
+      this.setStyle(z); //let l = n.closest('label') || n;
     }
 
     this.up(1, n.theWys);
@@ -2080,8 +2090,11 @@ module.exports = new function () {
     this.mode(n.theWys, wys);
   };
 
-  this.cmd = function (z, b, n, e) {
-    app.dbg(['cmd', arguments]);
+  this.cmd = function (e) {
+    var n = e.recv;
+    var b = this.btn[n.getAttribute('data-cmd')];
+    var z = app.next(n.closest('nav'), '.edit-wysiwyg');
+    app.dbg(['cmd', n, b, z, e]);
 
     if (e) {
       e.preventDefault();
@@ -2153,10 +2166,10 @@ module.exports = new function () {
   };
 
   this.adjustAll = function () {
-    var _this3 = this;
+    var _this2 = this;
 
     app.e(this.opt.qAdjust, function (n) {
-      return _this3.adjust(n);
+      return _this2.adjust(n);
     });
   };
 
@@ -2874,8 +2887,7 @@ module.exports = new function () {
     pop.appendChild(this.win); //this.win.vRel = n.vCap;
 
     toggle.toggle(this.win, true);
-    this.build(n, d);
-    toggle.shown = null;
+    this.build(n, d); //toggle.shown = null;
   };
 
   this.closeList = function () {
