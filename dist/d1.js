@@ -1,4 +1,4 @@
-/*! d1-web v1.2.67 */
+/*! d1-web v1.2.68 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -276,6 +276,7 @@ module.exports = new function () {
 
 
   this.b = function (q, et, f, capt) {
+    if (!et) this.e(q, f);
     if (f) this.nn(q).forEach(function (n) {
       return et instanceof Array ? et.forEach(function (ett) {
         return n.addEventListener(ett, function (e) {
@@ -477,15 +478,14 @@ module.exports = new function () {
     app.listen('keydown', function (e) {
       return _this.onKey(e);
     });
+    app.h('click', 'a[href^="#"]', function (e) {
+      return _this.onLink(e);
+    });
     app.listen('click', function (e) {
       return _this.onClick(e);
     });
     app.listen('after', function (e) {
-      return e && e.type == 'click'
-      /*&& (e.target.hash!==app.opt.hClose)*/
-
-      /*&& !e.defaultPrevented*/
-      ? _this.unpop(e.target) : null;
+      return e && e.type == 'click' ? _this.unpop(e.target) : null;
     }); // click out
 
     app.listen('after', function (e) {
@@ -600,6 +600,7 @@ module.exports = new function () {
   };
 
   this.esc = function (e) {
+    app.dbg(['esc', e]);
     if (e) e.preventDefault();
     this.unpop(null, true);
     this.unhash();
@@ -634,19 +635,22 @@ module.exports = new function () {
     this.nEsc = k == 27 && this.nEsc < 2 ? this.nEsc + 1 : 0;
   };
 
+  this.onLink = function (e) {
+    var a = e.recv;
+    if (a && a.hash === app.opt.hClose) app.fire('esc', e);else {
+      var d = app.q(a.hash);
+
+      if (d && d.matches(this.opt.qTgl)) {
+        e.preventDefault();
+        d = this.toggle(d);
+        if (app.vis(d) && this.opt.keepHash) this.addHistory(a.hash);else this.unhash();
+      }
+    }
+  };
+
   this.onClick = function (e) {
     this.nEsc = 0;
-    var n = e.target;
-    var a = n.closest('a');
-    var d = a && a.matches('a[href^="#"]') ? app.q(a.hash) : null;
-    if (a && a.hash === app.opt.hClose) app.fire('esc', e);else if (d && d.matches(this.opt.qTgl)) {
-      e.preventDefault();
-      d = this.toggle(d);
-      if (app.vis(d) && this.opt.keepHash) this.addHistory(a.hash);else this.unhash();
-      return d;
-    } else if (!a && !n.matches('input, select, textarea')) {
-      this.unhash();
-    }
+    if (!e.target.closest('a, input, select, textarea')) this.unhash();
     if (e.clientX <= 5 && e.clientY > 5 && this.opt.qDrawer) this.toggle(this.opt.qDrawer);
   };
 
@@ -732,12 +736,14 @@ module.exports = new function () {
     var keep = [x];
     keep.push(this.shown); // click out: keep
 
-    var a = x ? x.closest('a') : null;
+    if (x) {
+      var a = x.closest('a');
 
-    if (a && a.hash) {
-      //if(a.hash==app.opt.hClose) keep = []; //to close all, even container
-      //else
-      keep.push(app.q(a.hash)); //keep hash target
+      if (a && a.hash) {
+        //if(a.hash==app.opt.hClose) keep = []; //return app.fire('esc'); //to close all, even container
+        //else
+        keep.push(app.q(a.hash)); //keep hash target
+      }
     }
 
     app.dbg(['unpop', keep]); //app.e(this.opt.qUnpop, n => (keep && keep.filter(m => m && m.tagName && n.contains(m)).length) ? null : this.toggle(n, false, 1));
@@ -1471,7 +1477,7 @@ module.exports = new function () {
     cBtn: 'pad hover',
     dateFormat: 'd',
     //y=Y-m-d, d=d.m.Y, m=m/d Y
-    hashCancel: '#cancel',
+    hCancel: '#cancel',
     hashNow: '#now',
     addIcons: [['date', '#', '#open'], ['ok', '&check;', '#now'], ['delete', '&#x2715;', '#clear']],
     idPicker: 'pick-date',
@@ -1533,17 +1539,12 @@ module.exports = new function () {
 
     if (h) {
       //nodes
-      var n; // = this.win.vRel;
-
+      var n;
       var c = this.opt.qsCalendar;
-      /*
-      if(this.win.vRel) n = this.win.vRel;
-      else 
-      */
 
       if (tool) {
         n = this.opt.inPop ? app.q(c, app.next(a.parentNode, '.pop', true)) : app.next(a.parentNode, c, true);
-      } else {
+      } else if (this.win.vRel) n = this.win.vRel;else {
         var p = a.closest('#' + this.opt.idPicker);
         n = this.opt.inPop ? app.next(p, c, true) : app.next(p.parentNode, c);
       } //data
@@ -1555,7 +1556,9 @@ module.exports = new function () {
       var dh = h == '#prev-hour' ? -1 : h == '#next-hour' ? 1 : 0;
       var di = h == '#prev-min' ? -this.opt.stepMinutes : h == '#next-min' ? this.opt.stepMinutes : 0; //actions
 
-      if (dy || dm) this.switchMonths(n, x.getFullYear() + dy, x.getMonth() + dm, x.getDate());else if (dh || di) this.setTime(n, dh, di);else if (h == this.opt.hashNow) this.closeDialog(n, true);else if (h == this.opt.hashCancel) this.closeDialog(n, null);else if (h == '#open') this.openDialog(n, null);else if (h == '#clear') this.closeDialog(n, '');else if (h.match(/#\d\d?/)) this.closeDialog(n, this.fmt(x, h.substr(1)));
+      if (dy || dm) this.switchMonths(n, x.getFullYear() + dy, x.getMonth() + dm, x.getDate());else if (dh || di) this.setTime(n, dh, di);else if (h == this.opt.hashNow) this.closeDialog(n, true); //else if(h==this.opt.hCancel) this.closeDialog(n, null); // same as esc
+      else if (h == '#open') this.openDialog(n, null);else if (h == '#clear') this.closeDialog(n, '');else if (h.match(/#\d\d?/)) this.closeDialog(n, this.fmt(x, h.substr(1)));
+      toggle.shown = h == '#open' ? this.win : n;
       e.preventDefault();
       e.stopPropagation();
     }
@@ -1573,8 +1576,9 @@ module.exports = new function () {
         if (m) {
           var s = this.win.style;
           s.left = s.right = s.top = s.bottom = '';
-        } //this.win.vRel = n;//m ? n : null;//m ? null : n;//n;
+        }
 
+        this.win.vRel = n; //m ? n : null;//m ? null : n;//n;
       }
     }
 
@@ -1707,15 +1711,15 @@ module.exports = new function () {
       var p1 = app.ins('p', '', {
         className: 'c'
       }, this.win);
-      var now = this.btn(this.opt.hashNow, app.i('ok', '&check;'), p1);
-      var py = this.btn('#prev-year', app.i('prev2', '&laquo;'), p1);
-      var pm = this.btn('#prev-month', app.i('prev', '&lsaquo;'), p1);
+      this.btn(this.opt.hashNow, app.i('ok', '&check;'), p1);
+      this.btn('#prev-year', app.i('prev2', '&laquo;'), p1);
+      this.btn('#prev-month', app.i('prev', '&lsaquo;'), p1);
       this.win.vNodeCur = app.ins('span', '', {
         className: 'pad'
       }, p1);
-      var nm = this.btn('#next-month', app.i('next', '&rsaquo;'), p1);
-      var ny = this.btn('#next-year', app.i('next2', '&raquo;'), p1);
-      var cls = this.btn(this.opt.hashCancel, app.i('close', '&#x2715;'), p1);
+      this.btn('#next-month', app.i('next', '&rsaquo;'), p1);
+      this.btn('#next-year', app.i('next2', '&raquo;'), p1);
+      this.btn(this.opt.hCancel, app.i('close', '&#x2715;'), p1);
       app.ins('hr', '', {}, this.win); //dates
 
       this.win.vDays = app.ins('div', '', {}, this.win); //time
@@ -2090,8 +2094,8 @@ module.exports = new function () {
   };
 
   this.cmd = function (e, bb, nn) {
-    // (e) or (z, b, n)
-    var n = nn || e.recv;
+    // (e) or (z, b)
+    var n = e.recv;
     var b = bb || this.btn[n.getAttribute('data-cmd')];
     var z = bb ? e : app.next(n.closest('nav'), '.edit-wysiwyg');
     app.dbg(['cmd', z, b, n, e]);

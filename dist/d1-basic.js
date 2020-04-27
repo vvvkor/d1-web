@@ -1,4 +1,4 @@
-/*! d1-web v1.2.67 */
+/*! d1-web v1.2.68 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -277,6 +277,7 @@ module.exports = new function () {
 
 
   this.b = function (q, et, f, capt) {
+    if (!et) this.e(q, f);
     if (f) this.nn(q).forEach(function (n) {
       return et instanceof Array ? et.forEach(function (ett) {
         return n.addEventListener(ett, function (e) {
@@ -479,15 +480,14 @@ module.exports = new function () {
     app.listen('keydown', function (e) {
       return _this.onKey(e);
     });
+    app.h('click', 'a[href^="#"]', function (e) {
+      return _this.onLink(e);
+    });
     app.listen('click', function (e) {
       return _this.onClick(e);
     });
     app.listen('after', function (e) {
-      return e && e.type == 'click'
-      /*&& (e.target.hash!==app.opt.hClose)*/
-
-      /*&& !e.defaultPrevented*/
-      ? _this.unpop(e.target) : null;
+      return e && e.type == 'click' ? _this.unpop(e.target) : null;
     }); // click out
 
     app.listen('after', function (e) {
@@ -602,6 +602,7 @@ module.exports = new function () {
   };
 
   this.esc = function (e) {
+    app.dbg(['esc', e]);
     if (e) e.preventDefault();
     this.unpop(null, true);
     this.unhash();
@@ -636,19 +637,22 @@ module.exports = new function () {
     this.nEsc = k == 27 && this.nEsc < 2 ? this.nEsc + 1 : 0;
   };
 
+  this.onLink = function (e) {
+    var a = e.recv;
+    if (a && a.hash === app.opt.hClose) app.fire('esc', e);else {
+      var d = app.q(a.hash);
+
+      if (d && d.matches(this.opt.qTgl)) {
+        e.preventDefault();
+        d = this.toggle(d);
+        if (app.vis(d) && this.opt.keepHash) this.addHistory(a.hash);else this.unhash();
+      }
+    }
+  };
+
   this.onClick = function (e) {
     this.nEsc = 0;
-    var n = e.target;
-    var a = n.closest('a');
-    var d = a && a.matches('a[href^="#"]') ? app.q(a.hash) : null;
-    if (a && a.hash === app.opt.hClose) app.fire('esc', e);else if (d && d.matches(this.opt.qTgl)) {
-      e.preventDefault();
-      d = this.toggle(d);
-      if (app.vis(d) && this.opt.keepHash) this.addHistory(a.hash);else this.unhash();
-      return d;
-    } else if (!a && !n.matches('input, select, textarea')) {
-      this.unhash();
-    }
+    if (!e.target.closest('a, input, select, textarea')) this.unhash();
     if (e.clientX <= 5 && e.clientY > 5 && this.opt.qDrawer) this.toggle(this.opt.qDrawer);
   };
 
@@ -734,12 +738,14 @@ module.exports = new function () {
     var keep = [x];
     keep.push(this.shown); // click out: keep
 
-    var a = x ? x.closest('a') : null;
+    if (x) {
+      var a = x.closest('a');
 
-    if (a && a.hash) {
-      //if(a.hash==app.opt.hClose) keep = []; //to close all, even container
-      //else
-      keep.push(app.q(a.hash)); //keep hash target
+      if (a && a.hash) {
+        //if(a.hash==app.opt.hClose) keep = []; //return app.fire('esc'); //to close all, even container
+        //else
+        keep.push(app.q(a.hash)); //keep hash target
+      }
     }
 
     app.dbg(['unpop', keep]); //app.e(this.opt.qUnpop, n => (keep && keep.filter(m => m && m.tagName && n.contains(m)).length) ? null : this.toggle(n, false, 1));

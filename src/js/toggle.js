@@ -45,8 +45,9 @@ module.exports = new(function () {
     app.listen('esc', e => this.esc(e));
     app.listen('hashchange', e => this.onHash(e));
     app.listen('keydown', e => this.onKey(e));
+    app.h('click', 'a[href^="#"]', e => this.onLink(e));
     app.listen('click', e => this.onClick(e));
-    app.listen('after', e => (e && e.type == 'click' /*&& (e.target.hash!==app.opt.hClose)*/ /*&& !e.defaultPrevented*/) ? this.unpop(e.target) : null); // click out
+    app.listen('after', e => (e && e.type == 'click') ? this.unpop(e.target) : null); // click out
     app.listen('after', e => (!e || ['click', 'keydown', 'hashchange'].indexOf(e.type) != -1) ? this.modalStyle(e) : null);
     app.listen('after', e => (!e || ['click', 'keydown', 'hashchange'].indexOf(e.type) != -1) ? (this.shown = null) : null);
     //toggle
@@ -107,6 +108,7 @@ module.exports = new(function () {
   }
 
   this.esc = function(e){
+    app.dbg(['esc', e]);
     if(e) e.preventDefault();
     this.unpop(null, true);
     this.unhash();
@@ -141,23 +143,23 @@ module.exports = new(function () {
     this.nEsc = (k==27 && this.nEsc<2) ? this.nEsc+1 : 0;
   }
 
+  this.onLink = function(e){
+    let a = e.recv;
+    if(a && a.hash===app.opt.hClose) app.fire('esc', e);
+    else{
+      let d = app.q(a.hash);
+      if(d && d.matches(this.opt.qTgl)){
+        e.preventDefault();
+        d = this.toggle(d);
+        if(app.vis(d) && this.opt.keepHash) this.addHistory(a.hash);
+        else this.unhash();
+      }
+    }
+  }
+  
   this.onClick = function(e){
     this.nEsc = 0;
-    let n = e.target;
-    let a = n.closest('a');
-    let d = (a && a.matches('a[href^="#"]')) ? app.q(a.hash) : null;
-
-    if(a && a.hash===app.opt.hClose) app.fire('esc', e);
-    else if(d && d.matches(this.opt.qTgl)){
-      e.preventDefault();
-      d = this.toggle(d);
-      if(app.vis(d) && this.opt.keepHash) this.addHistory(a.hash);
-      else this.unhash();
-      return d;
-    }
-    else if(!a && !n.matches('input, select, textarea')){
-      this.unhash();
-    }
+    if(!e.target.closest('a, input, select, textarea')) this.unhash();
     if(e.clientX<=5 && e.clientY>5 && this.opt.qDrawer) this.toggle(this.opt.qDrawer);
   }
   
@@ -217,11 +219,13 @@ module.exports = new(function () {
   this.unpop = function(x, seq){
     let keep = [x];
     keep.push(this.shown); // click out: keep
-    let a = x ? x.closest('a') : null;
-    if(a && a.hash){
-      //if(a.hash==app.opt.hClose) keep = []; //to close all, even container
-      //else
-        keep.push(app.q(a.hash));//keep hash target
+    if(x){
+      let a = x.closest('a');
+      if(a && a.hash){
+        //if(a.hash==app.opt.hClose) keep = []; //return app.fire('esc'); //to close all, even container
+        //else
+          keep.push(app.q(a.hash));//keep hash target
+      }
     }
     app.dbg(['unpop', keep]);
     //app.e(this.opt.qUnpop, n => (keep && keep.filter(m => m && m.tagName && n.contains(m)).length) ? null : this.toggle(n, false, 1));

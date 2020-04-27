@@ -13,7 +13,7 @@ module.exports = new(function () {
   this.opt = {
     cBtn: 'pad hover',
     dateFormat: 'd', //y=Y-m-d, d=d.m.Y, m=m/d Y
-    hashCancel: '#cancel',
+    hCancel: '#cancel',
     hashNow: '#now',
     addIcons: [['date', '#', '#open'], ['ok', '&check;', '#now'], ['delete', '&#x2715;', '#clear']],
     idPicker: 'pick-date',
@@ -56,22 +56,19 @@ module.exports = new(function () {
     let h = a.hash;
     if(h){
       //nodes
-      let n;// = this.win.vRel;
-      
+      let n;
       let c = this.opt.qsCalendar;
-      /*
-      if(this.win.vRel) n = this.win.vRel;
-      else 
-      */
       if(tool){
         n = this.opt.inPop
           ? app.q(c, app.next(a.parentNode, '.pop', true))
           : app.next(a.parentNode, c, true);
       }
+      else if(this.win.vRel) n = this.win.vRel;
       else{
         let p = a.closest('#' + this.opt.idPicker);
         n = this.opt.inPop ? app.next(p, c, true) : app.next(p.parentNode, c);
       }
+      
       
       //data
       let x = this.win.vCur;
@@ -84,10 +81,11 @@ module.exports = new(function () {
       if(dy || dm) this.switchMonths(n, x.getFullYear()+dy, x.getMonth()+dm, x.getDate());
       else if(dh || di) this.setTime(n, dh, di);
       else if(h==this.opt.hashNow) this.closeDialog(n, true);
-      else if(h==this.opt.hashCancel) this.closeDialog(n, null);
+      //else if(h==this.opt.hCancel) this.closeDialog(n, null); // same as esc
       else if(h=='#open') this.openDialog(n, null);
       else if(h=='#clear') this.closeDialog(n, '');
       else if(h.match(/#\d\d?/)) this.closeDialog(n, this.fmt(x, h.substr(1)));
+      toggle.shown = (h=='#open') ? this.win : n;
       e.preventDefault();
       e.stopPropagation();
     }
@@ -105,7 +103,7 @@ module.exports = new(function () {
           let s = this.win.style;
           s.left = s.right = s.top = s.bottom = '';
         }
-        //this.win.vRel = n;//m ? n : null;//m ? null : n;//n;
+        this.win.vRel = n;//m ? n : null;//m ? null : n;//n;
       }
     }
     toggle.toggle(this.win, on);
@@ -215,13 +213,13 @@ module.exports = new(function () {
       app.clr(this.win);
       //buttons
       let p1 = app.ins('p', '', {className: 'c'}, this.win);
-      let now = this.btn(this.opt.hashNow, app.i('ok', '&check;'), p1);
-      let py = this.btn('#prev-year', app.i('prev2', '&laquo;'), p1);
-      let pm = this.btn('#prev-month', app.i('prev', '&lsaquo;'), p1);
+      this.btn(this.opt.hashNow, app.i('ok', '&check;'), p1);
+      this.btn('#prev-year', app.i('prev2', '&laquo;'), p1);
+      this.btn('#prev-month', app.i('prev', '&lsaquo;'), p1);
       this.win.vNodeCur = app.ins('span', '', {className: 'pad'}, p1);
-      let nm = this.btn('#next-month', app.i('next', '&rsaquo;'), p1);
-      let ny = this.btn('#next-year', app.i('next2', '&raquo;'), p1);
-      let cls = this.btn(this.opt.hashCancel, app.i('close', '&#x2715;'), p1);
+      this.btn('#next-month', app.i('next', '&rsaquo;'), p1);
+      this.btn('#next-year', app.i('next2', '&raquo;'), p1);
+      this.btn(this.opt.hCancel, app.i('close', '&#x2715;'), p1);
       app.ins('hr', '', {}, this.win);
       //dates
       this.win.vDays = app.ins('div', '', {}, this.win);

@@ -162,6 +162,7 @@ module.exports = new (function(){
 
   // add event listener
   this.b = function(q, et, f, capt){
+    if(!et) this.e(q, f);
     if(f) this.nn(q).forEach(n => et instanceof Array
         ? et.forEach(ett => n.addEventListener(ett, e => f(e), capt))
         : n.addEventListener(et, e => f(e) /*f.bind(this)*/, capt)
