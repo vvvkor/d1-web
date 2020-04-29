@@ -13,7 +13,7 @@ module.exports = new(function () {
   this.opt = {
     cBtn: 'pad hover',
     dateFormat: 'd', //y=Y-m-d, d=d.m.Y, m=m/d Y
-    hCancel: '#cancel',
+    hCancel: '#close',
     hashNow: '#now',
     addIcons: [['date', '#', '#open'], ['ok', '&check;', '#now'], ['delete', '&#x2715;', '#clear']],
     idPicker: 'pick-date',
@@ -81,7 +81,7 @@ module.exports = new(function () {
       if(dy || dm) this.switchMonths(n, x.getFullYear()+dy, x.getMonth()+dm, x.getDate());
       else if(dh || di) this.setTime(n, dh, di);
       else if(h==this.opt.hashNow) this.closeDialog(n, true);
-      //else if(h==this.opt.hCancel) this.closeDialog(n, null); // same as esc
+      else if(h==this.opt.hCancel) this.closeDialog(n, null); // same as esc
       else if(h=='#open') this.openDialog(n, null);
       else if(h=='#clear') this.closeDialog(n, '');
       else if(h.match(/#\d\d?/)) this.closeDialog(n, this.fmt(x, h.substr(1)));

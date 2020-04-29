@@ -1,4 +1,4 @@
-/*! d1-web v1.2.68 */
+/*! d1-web v1.2.69 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -499,7 +499,10 @@ module.exports = new function () {
 
     var q = this.opt;
     this.opt.qTgl = this.opt.mediaSuffixes.concat(['']).map(function (x) {
-      return '[id].' + app.opt.cToggle + x;
+      return (
+        /*'[id]' + */
+        '.' + app.opt.cToggle + x
+      );
     }).join(', ');
     var togglers = [q.qTrg, q.qPop, q.qNav, q.qDlg, q.qTab, q.qTre, q.qDrw
     /*, q.qMedia/*, q.qGal*/
@@ -639,13 +642,19 @@ module.exports = new function () {
 
   this.onLink = function (e) {
     var a = e.recv;
-    if (a && a.hash === app.opt.hClose) app.fire('esc', e);else {
-      var d = app.q(a.hash);
 
-      if (d && d.matches(this.opt.qTgl)) {
+    if (a && a.hash === app.opt.hClose) {
+      e.preventDefault();
+      var d = a.closest(this.opt.qTgl);
+      app.dbg(['close', this.opt.qTgl, a, d]);
+      if (d) this.tgl(d, false);else app.fire('esc', e);
+    } else {
+      var _d = app.q(a.hash);
+
+      if (_d && _d.matches(this.opt.qTgl)) {
         e.preventDefault();
-        d = this.toggle(d);
-        if (app.vis(d) && this.opt.keepHash) this.addHistory(a.hash);else this.unhash();
+        _d = this.toggle(_d);
+        if (app.vis(_d) && this.opt.keepHash) this.addHistory(a.hash);else this.unhash();
       }
     }
   };

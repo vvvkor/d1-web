@@ -29,7 +29,7 @@ module.exports = new(function () {
     s.bottom = s.left = 'auto';
     s.margin = 0;
     //drawer
-    this.drw = app.ins('div', '', {id: this.opt.idTheme, className: app.opt.cToggle + ' ' + app.opt.cOff + ' drawer pad shift theme-drawer'}, document.body);
+    this.drw = app.ins('div', '', {id: this.opt.idTheme, className: app.opt.cToggle + ' ' + app.opt.cOff + ' drawer pad small shift theme-drawer'}, document.body);
     app.ins('a', '&#x2715;', {href: '#cancel', className: 'pad hover close'}, this.drw);
     
     //menu

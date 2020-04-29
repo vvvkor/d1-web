@@ -1,4 +1,4 @@
-/*! d1-web v1.2.68 */
+/*! d1-web v1.2.69 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -497,7 +497,10 @@ module.exports = new function () {
 
     var q = this.opt;
     this.opt.qTgl = this.opt.mediaSuffixes.concat(['']).map(function (x) {
-      return '[id].' + app.opt.cToggle + x;
+      return (
+        /*'[id]' + */
+        '.' + app.opt.cToggle + x
+      );
     }).join(', ');
     var togglers = [q.qTrg, q.qPop, q.qNav, q.qDlg, q.qTab, q.qTre, q.qDrw
     /*, q.qMedia/*, q.qGal*/
@@ -637,13 +640,19 @@ module.exports = new function () {
 
   this.onLink = function (e) {
     var a = e.recv;
-    if (a && a.hash === app.opt.hClose) app.fire('esc', e);else {
-      var d = app.q(a.hash);
 
-      if (d && d.matches(this.opt.qTgl)) {
+    if (a && a.hash === app.opt.hClose) {
+      e.preventDefault();
+      var d = a.closest(this.opt.qTgl);
+      app.dbg(['close', this.opt.qTgl, a, d]);
+      if (d) this.tgl(d, false);else app.fire('esc', e);
+    } else {
+      var _d = app.q(a.hash);
+
+      if (_d && _d.matches(this.opt.qTgl)) {
         e.preventDefault();
-        d = this.toggle(d);
-        if (app.vis(d) && this.opt.keepHash) this.addHistory(a.hash);else this.unhash();
+        _d = this.toggle(_d);
+        if (app.vis(_d) && this.opt.keepHash) this.addHistory(a.hash);else this.unhash();
       }
     }
   };
@@ -1477,7 +1486,7 @@ module.exports = new function () {
     cBtn: 'pad hover',
     dateFormat: 'd',
     //y=Y-m-d, d=d.m.Y, m=m/d Y
-    hCancel: '#cancel',
+    hCancel: '#close',
     hashNow: '#now',
     addIcons: [['date', '#', '#open'], ['ok', '&check;', '#now'], ['delete', '&#x2715;', '#clear']],
     idPicker: 'pick-date',
@@ -1556,7 +1565,7 @@ module.exports = new function () {
       var dh = h == '#prev-hour' ? -1 : h == '#next-hour' ? 1 : 0;
       var di = h == '#prev-min' ? -this.opt.stepMinutes : h == '#next-min' ? this.opt.stepMinutes : 0; //actions
 
-      if (dy || dm) this.switchMonths(n, x.getFullYear() + dy, x.getMonth() + dm, x.getDate());else if (dh || di) this.setTime(n, dh, di);else if (h == this.opt.hashNow) this.closeDialog(n, true); //else if(h==this.opt.hCancel) this.closeDialog(n, null); // same as esc
+      if (dy || dm) this.switchMonths(n, x.getFullYear() + dy, x.getMonth() + dm, x.getDate());else if (dh || di) this.setTime(n, dh, di);else if (h == this.opt.hashNow) this.closeDialog(n, true);else if (h == this.opt.hCancel) this.closeDialog(n, null); // same as esc
       else if (h == '#open') this.openDialog(n, null);else if (h == '#clear') this.closeDialog(n, '');else if (h.match(/#\d\d?/)) this.closeDialog(n, this.fmt(x, h.substr(1)));
       toggle.shown = h == '#open' ? this.win : n;
       e.preventDefault();
@@ -3614,7 +3623,7 @@ module.exports = new function () {
 
     this.drw = app.ins('div', '', {
       id: this.opt.idTheme,
-      className: app.opt.cToggle + ' ' + app.opt.cOff + ' drawer pad shift theme-drawer'
+      className: app.opt.cToggle + ' ' + app.opt.cOff + ' drawer pad small shift theme-drawer'
     }, document.body);
     app.ins('a', '&#x2715;', {
       href: '#cancel',

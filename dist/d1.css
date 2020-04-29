@@ -1,4 +1,4 @@
-/*! d1-web v1.2.68 */
+/*! d1-web v1.2.69 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -635,6 +635,7 @@ ul.nav, .nav ul {
     height: 100vh;
     box-shadow: inset 0 3em 3em -1.5em rgba(0, 0, 0, .3);
     border-bottom: 10em solid #000;
+    box-sizing: content-box;
     outline: none;
 }
 

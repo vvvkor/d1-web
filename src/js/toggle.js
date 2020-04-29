@@ -52,7 +52,7 @@ module.exports = new(function () {
     app.listen('after', e => (!e || ['click', 'keydown', 'hashchange'].indexOf(e.type) != -1) ? (this.shown = null) : null);
     //toggle
     let q = this.opt;
-    this.opt.qTgl = this.opt.mediaSuffixes.concat(['']).map(x => '[id].' + app.opt.cToggle + x).join(', ')
+    this.opt.qTgl = this.opt.mediaSuffixes.concat(['']).map(x => /*'[id]' + */ '.' + app.opt.cToggle + x).join(', ')
     let togglers = [q.qTrg, q.qPop, q.qNav, q.qDlg, q.qTab, q.qTre, q.qDrw/*, q.qMedia/*, q.qGal*/].join(', ');
     this.opt.qUnpop = [q.qPop, q.qNav, q.qDlg, q.qDrw/*, q.qGal*/].join(', ');
     this.opt.qUnpopOn = [q.qPop, q.qNav, q.qDlg, q.qDrw/*, q.qGal*/].map(n => n + ':not(.' + app.opt.cOff + ')').join(', ');
@@ -145,7 +145,13 @@ module.exports = new(function () {
 
   this.onLink = function(e){
     let a = e.recv;
-    if(a && a.hash===app.opt.hClose) app.fire('esc', e);
+    if(a && a.hash===app.opt.hClose){
+      e.preventDefault();
+      let d = a.closest(this.opt.qTgl);
+      app.dbg(['close', this.opt.qTgl, a, d]);
+      if(d) this.tgl(d, false);
+      else app.fire('esc', e);
+    }
     else{
       let d = app.q(a.hash);
       if(d && d.matches(this.opt.qTgl)){
