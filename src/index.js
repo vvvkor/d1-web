@@ -6,7 +6,8 @@ let app = require('./js/app.js');
   'code', 'icons',
   'toggle', 'dialog', 'gallery', 'tablex', 'scroll',
   'calendar', 'lookup', 'edit', 'valid',
-  'tools', 'form', 'items', 'filter', 'fliptable', 'fetch', 'theme'
+  'tools', 'form', 'items', 'filter', 'fliptable', 'fetch', // 'swipe',
+  'theme'
 ]
 .forEach(p => app.plug(require('./js/'+p+'.js')));
 

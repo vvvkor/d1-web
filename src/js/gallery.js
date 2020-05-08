@@ -31,6 +31,8 @@ module.exports = new(function () {
   }
   
   this.next = function(e){
+    console.log(e.defaultPrevented);
+    if(e.defaultPrevented) return;
     let n = e.recv;
     if(e.clientX > 0 /* not Enter key */ && e.clientX < n.clientWidth / 3){
       if(this.prevImg(n)) e.preventDefault();

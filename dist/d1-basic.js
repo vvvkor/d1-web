@@ -82,7 +82,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 25);
+/******/ 	return __webpack_require__(__webpack_require__.s = 26);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -662,7 +662,7 @@ module.exports = new function () {
   this.onClick = function (e) {
     this.nEsc = 0;
     if (!e.target.closest('a, input, select, textarea')) this.unhash();
-    if (e.clientX <= 5 && e.clientY > 5 && this.opt.qDrawer) this.toggle(this.opt.qDrawer);
+    if (e.clientX >= 0 && e.clientX <= 10 && e.clientY > 5 && this.opt.qDrawer) this.toggle(this.opt.qDrawer);
   };
 
   this.initToggler = function (n, suffix) {
@@ -870,7 +870,7 @@ if (!Element.prototype.closest) {
 
 /***/ }),
 
-/***/ 25:
+/***/ 26:
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(2);
@@ -1139,6 +1139,8 @@ module.exports = new function () {
   };
 
   this.next = function (e) {
+    console.log(e.defaultPrevented);
+    if (e.defaultPrevented) return;
     var n = e.recv;
 
     if (e.clientX > 0

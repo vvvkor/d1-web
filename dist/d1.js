@@ -660,7 +660,7 @@ module.exports = new function () {
   this.onClick = function (e) {
     this.nEsc = 0;
     if (!e.target.closest('a, input, select, textarea')) this.unhash();
-    if (e.clientX <= 5 && e.clientY > 5 && this.opt.qDrawer) this.toggle(this.opt.qDrawer);
+    if (e.clientX >= 0 && e.clientX <= 10 && e.clientY > 5 && this.opt.qDrawer) this.toggle(this.opt.qDrawer);
   };
 
   this.initToggler = function (n, suffix) {
@@ -1158,6 +1158,8 @@ module.exports = new function () {
   };
 
   this.next = function (e) {
+    console.log(e.defaultPrevented);
+    if (e.defaultPrevented) return;
     var n = e.recv;
 
     if (e.clientX > 0
@@ -1407,7 +1409,8 @@ __webpack_require__(2);
 
 var app = __webpack_require__(0);
 
-['code', 'icons', 'toggle', 'dialog', 'gallery', 'tablex', 'scroll', 'calendar', 'lookup', 'edit', 'valid', 'tools', 'form', 'items', 'filter', 'fliptable', 'fetch', 'theme'].forEach(function (p) {
+['code', 'icons', 'toggle', 'dialog', 'gallery', 'tablex', 'scroll', 'calendar', 'lookup', 'edit', 'valid', 'tools', 'form', 'items', 'filter', 'fliptable', 'fetch', // 'swipe',
+'theme'].forEach(function (p) {
   return app.plug(__webpack_require__(9)("./" + p + ".js"));
 }); //let opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}};
 
@@ -1440,11 +1443,12 @@ var map = {
 	"./lookup.js": 19,
 	"./polyfill.js": 2,
 	"./scroll.js": 20,
-	"./tablex.js": 21,
-	"./theme.js": 22,
+	"./swipe.js": 21,
+	"./tablex.js": 22,
+	"./theme.js": 23,
 	"./toggle.js": 1,
-	"./tools.js": 23,
-	"./valid.js": 24
+	"./tools.js": 24,
+	"./valid.js": 25
 };
 
 
@@ -3166,6 +3170,172 @@ module.exports = new function () {
 /* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
+/*! swipe - detect touch swipe */
+var app = __webpack_require__(0);
+
+module.exports = new function () {
+  "use strict";
+
+  var _this3 = this;
+
+  this.name = 'swipe';
+  this.moved = null;
+  this.c = {};
+  this.opt = {
+    qSwipe: '.swipe, .gal>a[id]',
+    qDrag: '.drag, .gal>a[id]',
+    qKeepDrag: '.drawer',
+    maxClick: 20,
+    minSwipe: 50
+  };
+
+  this.init = function () {
+    var _this = this;
+
+    console.log('swipe init');
+    /*
+    events order:
+      touchstart
+      touchmove(s)
+      touchend
+      if(!defaultPrevented){
+        mousemove
+        mousedown
+        mouseup & click
+      }
+    */
+
+    /*
+    el.addEventListener('touchstart',onStart,false);
+    el.addEventListener('touchmove',onMove,false);
+    el.addEventListener('touchend',onEnd,false);  
+    */
+
+    app.b([document], 'mousedown', function (e) {
+      return _this.onStart(e);
+    });
+    app.b([document], 'mousemove', function (e) {
+      return _this.onMove(e);
+    });
+    app.b([document], ['click'
+    /*, 'mouseleave'/*, 'blur', 'keydown', 'contextmenu'*/
+    ], function (e) {
+      return _this.onEnd(e);
+    }, true);
+    app.listen('swipe', function (e) {
+      return _this.swipe(e);
+    }); //el.addEventListener('dragend',onEnd,false);  
+  };
+
+  this.swipe = function (e) {
+    var _this2 = this;
+
+    app.dbg(['swipe', e]);
+
+    if (app.plugins.toggle) {
+      if (e.n.matches(app.plugins.toggle.opt.qDrw)) {
+        app.plugins.toggle.tgl(e.n, false);
+        setTimeout(function () {
+          return _this2.undrag(e.n);
+        }, 500);
+      }
+    }
+
+    if (app.plugins.gallery) {
+      if (e.n.matches(app.plugins.gallery.opt.qGal)) {
+        //console.log(e);
+        if (e.dir == 4) location.hash = e.n.hash; //e.n.click();
+        else if (e.dir == 2) app.plugins.gallery.prevImg(e.n); //this.undrag(e.n);
+      }
+    }
+  };
+
+  this.onStart = function (e) {
+    //console.log('swipe start', e.button, e.which);
+    if (e.button > 0) {
+      this.moved = null;
+      return;
+    }
+
+    this.moved = e.target.closest(this.opt.qSwipe);
+
+    if (this.moved) {
+      var t = e.touches ? e.touches[0] : e;
+      this.c.sX = this.c.eX = t.screenX;
+      this.c.sY = this.c.eY = t.screenY;
+    }
+  };
+
+  this.onMove = function (e) {
+    if (this.moved) {
+      e.preventDefault();
+      this.drag_(e);
+    }
+  };
+
+  this.drag = function (e) {
+    //console.log('swipe drag');
+    var t = e.touches ? e.touches[0] : e;
+    this.c.eX = t.screenX;
+    this.c.eY = t.screenY;
+
+    if (this.moved && this.moved.matches(this.opt.qDrag)) {
+      var xy = this.shift();
+      this.moved.style.transform = 'translate(' + xy[0] + 'px, ' + xy[1] + 'px)'; //this.moved.style.zIndex = 100;
+    }
+  };
+
+  this.drag_ = app.throttle(function (e) {
+    return _this3.drag(e);
+  }, 30);
+
+  this.onEnd = function (e) {
+    //console.log('swipe end', this.moved, e.which, e.button, e);
+    if (this.moved) {
+      if (!this.moved.matches(this.opt.qKeepDrag)) this.undrag();
+      var xy = this.shift(); //after touch event: handle mouse events only on A nodes without swipe
+      //if(e.type.indexOf('touch')!=-1 && (dir || trg.tagName!='A')) e.preventDefault();
+
+      if (xy[2]) {
+        app.fire('swipe', {
+          n: this.moved,
+          x: xy[0],
+          y: xy[1],
+          dir: xy[2]
+        });
+        e.preventDefault();
+      }
+
+      this.moved = null;
+    }
+  };
+
+  this.shift = function () {
+    var dirs = app.attr(this.moved, 'data-swipe', '1234');
+    var dx = this.c.eX - this.c.sX;
+    var dy = this.c.eY - this.c.sY;
+    var adx = Math.abs(dx);
+    var ady = Math.abs(dy);
+    var r = [0, 0, 0];
+
+    if (adx >= this.opt.minSwipe || ady >= this.opt.minSwipe) {
+      r = adx > ady ? [dx, 0, dx > 0 ? 2 : 4] : [0, dy, dy > 0 ? 3 : 1];
+    }
+
+    if (dirs.indexOf(r[2]) === -1) r = [0, 0, 0];
+    return r;
+  };
+
+  this.undrag = function (n) {
+    if (!n) n = this.moved;
+    n.style.transform = ''; //n.style.zIndex = '';
+  };
+}();
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 /*! tablex - filter and sort HTML table */
@@ -3586,7 +3756,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! theme - live theme configurator */
@@ -3709,7 +3879,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! tools - miscellaneous utilities */
@@ -3889,7 +4059,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! valid - custom form validation messages */

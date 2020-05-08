@@ -166,7 +166,7 @@ module.exports = new(function () {
   this.onClick = function(e){
     this.nEsc = 0;
     if(!e.target.closest('a, input, select, textarea')) this.unhash();
-    if(e.clientX<=5 && e.clientY>5 && this.opt.qDrawer) this.toggle(this.opt.qDrawer);
+    if(e.clientX>=0 && e.clientX<=10 && e.clientY>5 && this.opt.qDrawer) this.toggle(this.opt.qDrawer);
   }
   
   this.initToggler = function(n, suffix){
