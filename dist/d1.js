@@ -1,4 +1,4 @@
-/*! d1-web v1.2.70 */
+/*! d1-web v1.2.71 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -3789,7 +3789,8 @@ module.exports = new function () {
 
     this.drw = app.ins('div', '', {
       id: this.opt.idTheme,
-      className: app.opt.cToggle + ' ' + app.opt.cOff + ' drawer pad small shift theme-drawer'
+      className: app.opt.cToggle + ' ' + app.opt.cOff + ' drawer swipe drag pad small shift theme-drawer',
+      'data-swipe': '2'
     }, document.body);
     app.ins('a', '&#x2715;', {
       href: '#cancel',
