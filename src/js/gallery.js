@@ -33,6 +33,19 @@ module.exports = new(function () {
   
   this.swipe = function(e){
     if(e.n.matches(this.opt.qGal)){
+      /*
+      if(e.dir==2 || e.dir==4){
+        let x = app.next(e.n, this.opt.qGal, e.dir==2);
+        if(!x) x = e.dir==4 ? app.q(this.opt.qGal, e.n.parentNode) : app.qq(this.opt.qGal, e.n.parentNode).pop();
+        if(x && x.id){
+          location.hash = '#' + x.id;
+          e.n.classList.add('fade');
+          e.n.classList.add('fade-out');
+          x.classList.add('fade-in');
+          setTimeout(() => app.qq(this.opt.qGal, x.parentNode).forEach(m => m.classList.remove('fade', 'fade-out', 'fade-in')), 1000);
+        }
+      }
+      */
       if(e.dir==4) location.hash = e.n.hash;//e.n.click();
       else if(e.dir==2) this.prevImg(e.n);
       else if(e.dir==3) app.fire('esc');
