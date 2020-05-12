@@ -6,8 +6,8 @@
     <meta name="viewport" 
       content="width=device-width, initial-scale=1">
 	<!-- CDN -->
-	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.2.69/dist/d1.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.2.69/dist/d1.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.2.70/dist/d1.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.2.70/dist/d1.min.js"></script>
 	<!-- local-npm-src ->
 	<link href="../src/index.css" rel="stylesheet">
 	<script src="../dist/d1.min.js"></script>
@@ -53,10 +53,10 @@
   <header class="bg -bg-n -topbar -toggle">
 	  <div class="hide-desktop">
 		<a href="#nav" class="pad hover ico-menu" title="Menu">&equiv;</a>
-		<a href="?" class="pad"><b>d1</b> <span class="text-n">v1.2.69</span></a>
+		<a href="?" class="pad"><b>d1</b> <span class="text-n">v1.2.70</span></a>
 	</div>
 	  <ul class="nav flip hover target-mobile" id="nav">
-		<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v1.2.69</span></a></li>
+		<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v1.2.70</span></a></li>
 		<li><a href="index.html" class="icon-text">Docs</a>
 		<!--li><a class="icon-pin"><span class="hide-desktop">Hide</span></a-->
 		<li>
@@ -168,7 +168,7 @@
 				<a id="gal3" href="#gal1" style="--img:url(https://picsum.photos/id/830/1000/700.jpg)" data-caption="3/3 - Blue"></a>
 				<a class="close ico-close" href="#cancel">&times;</a>
 			</div>
-			<div class="drawer pad" id="menu">
+			<div class="drawer pad swipe drag" id="menu" data-swipe="4">
 				<a class="close pad ico-close" href="#cancel">&times;</a>
 				<h3 class="icon-flag">Languages</h3>
 				<ul class="tree accordion mem fit">
@@ -256,14 +256,14 @@
 	
 		<h1 class="mar">Overview</h1>
 		
-		<p class="pad bg-e text-e icon-ban">Alert</p>
-		<p class="pad bg-w text-w icon-warning">Warning</p>
-		<p class="pad bg-y text-y stick item shade bord icon-ok">
+		<p class="swipe drag pad bg-e text-e icon-ban">Alert</p>
+		<p class="swipe drag pad bg-w text-w icon-warning">Warning</p>
+		<p class="swipe drag pad bg-y text-y stick item shade bord icon-ok">
 			<a href="#delete" class="pad close ico-close">&times;</a>
 			Sticky success message
 		</p>
-		<p class="pad bg-i text-i icon-info">Info</p>
-		<p class="pad bg-n text-n icon-text">Note</p>
+		<p class="swipe drag pad bg-i text-i icon-info">Info</p>
+		<p class="swipe drag pad bg-n text-n icon-text">Note</p>
 		
 		<h2 class="mem" id="typo">Typography</h2>
 		

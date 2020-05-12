@@ -69,6 +69,7 @@ module.exports = new(function () {
     app.e(this.opt.qTab + ':first-child', n => app.a(n.parentNode.children).filter(m => app.vis(m)).length ? null : this.tgl(app.q(app.q('a[href^="#"]', n.parentNode.previousElementSibling).hash), 1));//inactive tabs: show first
     app.e('.' + app.opt.cToggle + '[id]', n => this.hiliteLinks(n));//init links state
     app.e(this.opt.qTip, n => { n.setAttribute('data-tip', n.title.replace(/\s\s+/g, '\n')); n.title = ''; });//init tooltips
+    app.listen('swipe', e => this.swipe(e));
     /*
     app.e(this.opt.qTip, n => {
       let p = app.ins('div',app.ins('div', n.title.replace(/\s\s+/g, '<br>'), {className: 'btn bg-n'}), {className: 'pop'}, n, 1);
@@ -76,6 +77,13 @@ module.exports = new(function () {
       p.insertBefore(n, p.firstChild);
     });//init tooltips as popup
     */
+  }
+
+  this.swipe = function(e){
+    if(e.n.matches(this.opt.qDrw)){
+      this.tgl(e.n, false);
+      setTimeout(() => e.n.style.transform = '', 500);
+    }
   }
 
   this.modalStyle = function(e){

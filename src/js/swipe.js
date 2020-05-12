@@ -10,9 +10,10 @@ module.exports = new(function () {
   this.moved = null;
   this.c = {};
   this.opt = {
-    qSwipe: '.swipe, .gal>a[id]',
-    qDrag: '.drag, .gal>a[id]',
+    qSwipe: '.swipe',
+    qDrag: '.drag',
     qKeepDrag: '.drawer',
+    cDragging: 'dragging',
     maxClick: 20,
     minSwipe: 50
   };
@@ -30,38 +31,13 @@ module.exports = new(function () {
         mouseup & click
       }
     */
-    /*
-    el.addEventListener('touchstart',onStart,false);
-    el.addEventListener('touchmove',onMove,false);
-    el.addEventListener('touchend',onEnd,false);  
-    */
-    app.b([document], 'mousedown', e => this.onStart(e));
-    app.b([document], 'mousemove', e => this.onMove(e));
-    app.b([document], ['click'/*, 'mouseleave'/*, 'blur', 'keydown', 'contextmenu'*/], e => this.onEnd(e), true);
-    app.listen('swipe', e => this.swipe(e));
-    //el.addEventListener('dragend',onEnd,false);  
-  }
-  
-  this.swipe = function(e){
-    app.dbg(['swipe', e]);
-    if(app.plugins.toggle){
-      if(e.n.matches(app.plugins.toggle.opt.qDrw)){
-        app.plugins.toggle.tgl(e.n, false);
-        setTimeout(() => this.undrag(e.n), 500);
-      }
-    }
-    if(app.plugins.gallery){
-      if(e.n.matches(app.plugins.gallery.opt.qGal)){
-        //console.log(e);
-        if(e.dir==4) location.hash = e.n.hash;//e.n.click();
-        else if(e.dir==2) app.plugins.gallery.prevImg(e.n);
-        //this.undrag(e.n);
-      }
-    }
+    app.b([document], ['mousedown', 'touchstart'], e => this.onStart(e));
+    app.b([document], ['mousemove', 'touchmove'], e => this.onMove(e));
+    app.b([document], ['click', 'mouseleave', 'touchend', 'touchcancel'/*, 'mouseleave'/*, 'blur', 'keydown', 'contextmenu'*/], e => this.onEnd(e), true);
   }
 
   this.onStart = function(e){
-    //console.log('swipe start', e.button, e.which);
+    //console.log('swipe start', e.type, e.button, e.which);
     if(e.button > 0){
       this.moved = null;
       return;
@@ -89,6 +65,7 @@ module.exports = new(function () {
     if(this.moved && this.moved.matches(this.opt.qDrag)){
       let xy = this.shift();
       this.moved.style.transform = 'translate(' + xy[0] + 'px, ' + xy[1] + 'px)';
+      this.moved.classList.add(this.opt.cDragging);
       //this.moved.style.zIndex = 100;
     }
   }
@@ -98,14 +75,18 @@ module.exports = new(function () {
   this.onEnd = function(e){
     //console.log('swipe end', this.moved, e.which, e.button, e);
     if(this.moved){
-      if(!this.moved.matches(this.opt.qKeepDrag)) this.undrag();
-      let xy = this.shift();
-      //after touch event: handle mouse events only on A nodes without swipe
-      //if(e.type.indexOf('touch')!=-1 && (dir || trg.tagName!='A')) e.preventDefault();
-      if(xy[2]){
-        app.fire('swipe', {n: this.moved, x: xy[0], y: xy[1], dir: xy[2]});
-        e.preventDefault();
+      let undo = (e.type == 'mouseleave' || e.type == 'touchcancel');
+      if(undo || !this.moved.matches(this.opt.qKeepDrag)) this.undrag();
+      if(!undo){
+        let xy = this.shift();
+        //after touch event: handle mouse events only on A nodes without swipe
+        //if(e.type.indexOf('touch')!=-1 && (dir || trg.tagName!='A')) e.preventDefault();
+        if(xy[2]){
+          app.fire('swipe', {n: this.moved, x: xy[0], y: xy[1], dir: xy[2]});
+          e.preventDefault(); //if(e.type.indexOf('touch')!=-1)
+        }
       }
+      this.moved.classList.remove(this.opt.cDragging);
       this.moved = null;
     }
   }
@@ -127,7 +108,6 @@ module.exports = new(function () {
   this.undrag = function(n){
     if(!n) n = this.moved;
     n.style.transform = '';
-    //n.style.zIndex = '';
   }
 
 })();

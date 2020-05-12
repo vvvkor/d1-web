@@ -1,4 +1,4 @@
-/*! d1-web v1.2.69 */
+/*! d1-web v1.2.70 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -562,6 +562,9 @@ module.exports = new function () {
       n.title = '';
     }); //init tooltips
 
+    app.listen('swipe', function (e) {
+      return _this.swipe(e);
+    });
     /*
     app.e(this.opt.qTip, n => {
       let p = app.ins('div',app.ins('div', n.title.replace(/\s\s+/g, '<br>'), {className: 'btn bg-n'}), {className: 'pop'}, n, 1);
@@ -569,6 +572,15 @@ module.exports = new function () {
       p.insertBefore(n, p.firstChild);
     });//init tooltips as popup
     */
+  };
+
+  this.swipe = function (e) {
+    if (e.n.matches(this.opt.qDrw)) {
+      this.tgl(e.n, false);
+      setTimeout(function () {
+        return e.n.style.transform = '';
+      }, 500);
+    }
   };
 
   this.modalStyle = function (e) {
@@ -1127,6 +1139,9 @@ module.exports = new function () {
     app.h('click', this.opt.qGal, function (e) {
       return _this.next(e);
     });
+    app.listen('swipe', function (e) {
+      return _this.swipe(e);
+    });
     this.prepareAll();
   };
 
@@ -1136,6 +1151,13 @@ module.exports = new function () {
     app.e(app.qq(this.opt.qGallery, d), function (n) {
       return _this2.prepare(n);
     });
+  };
+
+  this.swipe = function (e) {
+    if (e.n.matches(this.opt.qGal)) {
+      if (e.dir == 4) location.hash = e.n.hash; //e.n.click();
+      else if (e.dir == 2) this.prevImg(e.n);else if (e.dir == 3) app.fire('esc');
+    }
   };
 
   this.next = function (e) {
@@ -1185,7 +1207,7 @@ module.exports = new function () {
         var s = app.seq();
         if (!i) first = s;
         var p = app.ins('a', '', {
-          className: 'gallery-pic',
+          className: 'gallery-pic swipe drag',
           id: this.opt.idPrefix + s,
           href: '#' + this.opt.idPrefix + (i == z - 1 ? first : s + 1)
         }, g); //p.style.setProperty('--img', 'url("' + app.attr(a[i], 'href', '') + '")');

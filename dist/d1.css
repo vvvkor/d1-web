@@ -1,4 +1,4 @@
-/*! d1-web v1.2.69 */
+/*! d1-web v1.2.70 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -606,7 +606,7 @@ ul.nav, .nav ul {
     max-width: 20em;
     box-sizing: border-box;
     overflow-y: auto;
-    transition: left .3s;
+    transition: left .2s;
 }
 
 .drawer:not(:target):not([class*="toggle"]), .drawer.off {
@@ -636,7 +636,7 @@ ul.nav, .nav ul {
     box-shadow: inset 0 3em 3em -1.5em rgba(0, 0, 0, .3);
     border-bottom: 10em solid #000;
     box-sizing: content-box;
-    outline: none;
+    outline: 100em solid #000;
 }
 
 .gal a:target+a {
@@ -661,6 +661,10 @@ ul.nav, .nav ul {
 
 .gal a:not([id]) {
     right: 0;
+}
+
+.gal a.dragging:after {
+    content: "";
 }
 
 .topbar {

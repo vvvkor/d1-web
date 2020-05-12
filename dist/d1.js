@@ -1,4 +1,4 @@
-/*! d1-web v1.2.69 */
+/*! d1-web v1.2.70 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -560,6 +560,9 @@ module.exports = new function () {
       n.title = '';
     }); //init tooltips
 
+    app.listen('swipe', function (e) {
+      return _this.swipe(e);
+    });
     /*
     app.e(this.opt.qTip, n => {
       let p = app.ins('div',app.ins('div', n.title.replace(/\s\s+/g, '<br>'), {className: 'btn bg-n'}), {className: 'pop'}, n, 1);
@@ -567,6 +570,15 @@ module.exports = new function () {
       p.insertBefore(n, p.firstChild);
     });//init tooltips as popup
     */
+  };
+
+  this.swipe = function (e) {
+    if (e.n.matches(this.opt.qDrw)) {
+      this.tgl(e.n, false);
+      setTimeout(function () {
+        return e.n.style.transform = '';
+      }, 500);
+    }
   };
 
   this.modalStyle = function (e) {
@@ -1146,6 +1158,9 @@ module.exports = new function () {
     app.h('click', this.opt.qGal, function (e) {
       return _this.next(e);
     });
+    app.listen('swipe', function (e) {
+      return _this.swipe(e);
+    });
     this.prepareAll();
   };
 
@@ -1155,6 +1170,13 @@ module.exports = new function () {
     app.e(app.qq(this.opt.qGallery, d), function (n) {
       return _this2.prepare(n);
     });
+  };
+
+  this.swipe = function (e) {
+    if (e.n.matches(this.opt.qGal)) {
+      if (e.dir == 4) location.hash = e.n.hash; //e.n.click();
+      else if (e.dir == 2) this.prevImg(e.n);else if (e.dir == 3) app.fire('esc');
+    }
   };
 
   this.next = function (e) {
@@ -1204,7 +1226,7 @@ module.exports = new function () {
         var s = app.seq();
         if (!i) first = s;
         var p = app.ins('a', '', {
-          className: 'gallery-pic',
+          className: 'gallery-pic swipe drag',
           id: this.opt.idPrefix + s,
           href: '#' + this.opt.idPrefix + (i == z - 1 ? first : s + 1)
         }, g); //p.style.setProperty('--img', 'url("' + app.attr(a[i], 'href', '') + '")');
@@ -1409,8 +1431,7 @@ __webpack_require__(2);
 
 var app = __webpack_require__(0);
 
-['code', 'icons', 'toggle', 'dialog', 'gallery', 'tablex', 'scroll', 'calendar', 'lookup', 'edit', 'valid', 'tools', 'form', 'items', 'filter', 'fliptable', 'fetch', // 'swipe',
-'theme'].forEach(function (p) {
+['code', 'icons', 'toggle', 'dialog', 'gallery', 'tablex', 'scroll', 'calendar', 'lookup', 'edit', 'valid', 'tools', 'form', 'items', 'filter', 'fliptable', 'fetch', 'swipe', 'theme'].forEach(function (p) {
   return app.plug(__webpack_require__(9)("./" + p + ".js"));
 }); //let opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}};
 
@@ -3176,15 +3197,16 @@ var app = __webpack_require__(0);
 module.exports = new function () {
   "use strict";
 
-  var _this3 = this;
+  var _this2 = this;
 
   this.name = 'swipe';
   this.moved = null;
   this.c = {};
   this.opt = {
-    qSwipe: '.swipe, .gal>a[id]',
-    qDrag: '.drag, .gal>a[id]',
+    qSwipe: '.swipe',
+    qDrag: '.drag',
     qKeepDrag: '.drawer',
+    cDragging: 'dragging',
     maxClick: 20,
     minSwipe: 50
   };
@@ -3205,53 +3227,21 @@ module.exports = new function () {
       }
     */
 
-    /*
-    el.addEventListener('touchstart',onStart,false);
-    el.addEventListener('touchmove',onMove,false);
-    el.addEventListener('touchend',onEnd,false);  
-    */
-
-    app.b([document], 'mousedown', function (e) {
+    app.b([document], ['mousedown', 'touchstart'], function (e) {
       return _this.onStart(e);
     });
-    app.b([document], 'mousemove', function (e) {
+    app.b([document], ['mousemove', 'touchmove'], function (e) {
       return _this.onMove(e);
     });
-    app.b([document], ['click'
+    app.b([document], ['click', 'mouseleave', 'touchend', 'touchcancel'
     /*, 'mouseleave'/*, 'blur', 'keydown', 'contextmenu'*/
     ], function (e) {
       return _this.onEnd(e);
     }, true);
-    app.listen('swipe', function (e) {
-      return _this.swipe(e);
-    }); //el.addEventListener('dragend',onEnd,false);  
-  };
-
-  this.swipe = function (e) {
-    var _this2 = this;
-
-    app.dbg(['swipe', e]);
-
-    if (app.plugins.toggle) {
-      if (e.n.matches(app.plugins.toggle.opt.qDrw)) {
-        app.plugins.toggle.tgl(e.n, false);
-        setTimeout(function () {
-          return _this2.undrag(e.n);
-        }, 500);
-      }
-    }
-
-    if (app.plugins.gallery) {
-      if (e.n.matches(app.plugins.gallery.opt.qGal)) {
-        //console.log(e);
-        if (e.dir == 4) location.hash = e.n.hash; //e.n.click();
-        else if (e.dir == 2) app.plugins.gallery.prevImg(e.n); //this.undrag(e.n);
-      }
-    }
   };
 
   this.onStart = function (e) {
-    //console.log('swipe start', e.button, e.which);
+    //console.log('swipe start', e.type, e.button, e.which);
     if (e.button > 0) {
       this.moved = null;
       return;
@@ -3281,31 +3271,37 @@ module.exports = new function () {
 
     if (this.moved && this.moved.matches(this.opt.qDrag)) {
       var xy = this.shift();
-      this.moved.style.transform = 'translate(' + xy[0] + 'px, ' + xy[1] + 'px)'; //this.moved.style.zIndex = 100;
+      this.moved.style.transform = 'translate(' + xy[0] + 'px, ' + xy[1] + 'px)';
+      this.moved.classList.add(this.opt.cDragging); //this.moved.style.zIndex = 100;
     }
   };
 
   this.drag_ = app.throttle(function (e) {
-    return _this3.drag(e);
+    return _this2.drag(e);
   }, 30);
 
   this.onEnd = function (e) {
     //console.log('swipe end', this.moved, e.which, e.button, e);
     if (this.moved) {
-      if (!this.moved.matches(this.opt.qKeepDrag)) this.undrag();
-      var xy = this.shift(); //after touch event: handle mouse events only on A nodes without swipe
-      //if(e.type.indexOf('touch')!=-1 && (dir || trg.tagName!='A')) e.preventDefault();
+      var undo = e.type == 'mouseleave' || e.type == 'touchcancel';
+      if (undo || !this.moved.matches(this.opt.qKeepDrag)) this.undrag();
 
-      if (xy[2]) {
-        app.fire('swipe', {
-          n: this.moved,
-          x: xy[0],
-          y: xy[1],
-          dir: xy[2]
-        });
-        e.preventDefault();
+      if (!undo) {
+        var xy = this.shift(); //after touch event: handle mouse events only on A nodes without swipe
+        //if(e.type.indexOf('touch')!=-1 && (dir || trg.tagName!='A')) e.preventDefault();
+
+        if (xy[2]) {
+          app.fire('swipe', {
+            n: this.moved,
+            x: xy[0],
+            y: xy[1],
+            dir: xy[2]
+          });
+          e.preventDefault(); //if(e.type.indexOf('touch')!=-1)
+        }
       }
 
+      this.moved.classList.remove(this.opt.cDragging);
       this.moved = null;
     }
   };
@@ -3328,7 +3324,7 @@ module.exports = new function () {
 
   this.undrag = function (n) {
     if (!n) n = this.moved;
-    n.style.transform = ''; //n.style.zIndex = '';
+    n.style.transform = '';
   };
 }();
 

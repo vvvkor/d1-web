@@ -23,11 +23,20 @@ module.exports = new(function () {
     app.listen('hashchange', e => this.onHash(e));
     app.listen('keydown', e => this.onKey(e));
     app.h('click', this.opt.qGal, e => this.next(e));
+    app.listen('swipe', e => this.swipe(e));
     this.prepareAll();
   }
   
   this.prepareAll = function(d){
     app.e(app.qq(this.opt.qGallery, d), n => this.prepare(n));
+  }
+  
+  this.swipe = function(e){
+    if(e.n.matches(this.opt.qGal)){
+      if(e.dir==4) location.hash = e.n.hash;//e.n.click();
+      else if(e.dir==2) this.prevImg(e.n);
+      else if(e.dir==3) app.fire('esc');
+    }
   }
   
   this.next = function(e){
@@ -69,7 +78,7 @@ module.exports = new(function () {
       let s = app.seq();
       if(!i) first = s;
       let p = app.ins('a', '', {
-          className: 'gallery-pic',
+          className: 'gallery-pic swipe drag',
           id: this.opt.idPrefix + s,
           href: '#' + this.opt.idPrefix + (i==z-1 ? first : s+1)
           }, g);
