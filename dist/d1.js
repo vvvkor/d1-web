@@ -1,4 +1,4 @@
-/*! d1-web v1.2.72 */
+/*! d1-web v1.2.73 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -3233,7 +3233,8 @@ module.exports = new function () {
   this.init = function () {
     var _this = this;
 
-    console.log('swipe init');
+    //console.log('swipe init');
+
     /*
     events order:
       touchstart
@@ -3245,7 +3246,6 @@ module.exports = new function () {
         mouseup & click
       }
     */
-
     app.b([document], ['mousedown', 'touchstart'], function (e) {
       return _this.onStart(e);
     });

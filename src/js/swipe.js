@@ -19,7 +19,7 @@ module.exports = new(function () {
   };
 
   this.init = function(){
-    console.log('swipe init');
+    //console.log('swipe init');
     /*
     events order:
       touchstart
