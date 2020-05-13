@@ -1,4 +1,4 @@
-/*! d1-web v1.2.71 */
+/*! d1-web v1.2.72 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -623,11 +623,10 @@ ul.nav, .nav ul {
     right: -21em;
 }
 
-.gal a:target {
+.gal a[id] {
     z-index: 110;
     color: #fff;
     background: #000 50% 50% / contain no-repeat;
-    background-image: var(--img);
     position: fixed;
     left: 0;
     top: 0;
@@ -637,6 +636,10 @@ ul.nav, .nav ul {
     border-bottom: 10em solid #000;
     box-sizing: content-box;
     outline: 100em solid #000;
+}
+
+.gal a:target {
+    background-image: var(--img);
 }
 
 .gal a:target+a {

@@ -38,33 +38,40 @@ module.exports = new(function () {
         let x = app.next(e.n, this.opt.qGal, e.dir==2);
         if(!x) x = e.dir==4 ? app.q(this.opt.qGal, e.n.parentNode) : app.qq(this.opt.qGal, e.n.parentNode).pop();
         if(x && x.id){
-          location.hash = '#' + x.id;
           e.n.classList.add('fade');
-          e.n.classList.add('fade-out');
+          location.hash = '#' + x.id;
+          e.n.classList.add('fade-out', 'fade-' + e.dir);
           x.classList.add('fade-in');
-          setTimeout(() => app.qq(this.opt.qGal, x.parentNode).forEach(m => m.classList.remove('fade', 'fade-out', 'fade-in')), 1000);
+          setTimeout(() => app.qq(this.opt.qGal, x.parentNode).forEach(m => {
+            m.classList.remove('fade', 'fade-out', 'fade-in', 'fade-2', 'fade-4');
+            m.style.transform = '';
+          }), 500);
         }
       }
       */
-      if(e.dir==4) location.hash = e.n.hash;//e.n.click();
-      else if(e.dir==2) this.prevImg(e.n);
+      if(e.dir==4) this.browse(e.n);
+      else if(e.dir==2) this.browse(e.n, true);
       else if(e.dir==3) app.fire('esc');
     }
   }
   
   this.next = function(e){
-    console.log(e.defaultPrevented);
+    //console.log(e.defaultPrevented);
     if(e.defaultPrevented) return;
     let n = e.recv;
     if(e.clientX > 0 /* not Enter key */ && e.clientX < n.clientWidth / 3){
-      if(this.prevImg(n)) e.preventDefault();
+      this.browse(n, true);
+      e.preventDefault();
     }
   }
   
-  this.prevImg = function(n) {
-    let p = n.previousElementSibling || app.qq('a[id]', n.parentNode).pop();
-    if(p.id) location.hash = '#' + p.id;
-    return p.id;
+  this.browse = function(n, back) {
+    if(back){
+      let p = n.previousElementSibling || app.qq('a[id]', n.parentNode).pop();
+      if(p.id) location.hash = '#' + p.id;
+    }
+    else location.hash = n.hash;
+    //return p.id;
   }
   
   this.onHash = function() {
@@ -112,8 +119,8 @@ module.exports = new(function () {
       let a = app.q(location.hash);
       if(a && a.hash){
         let k = e.keyCode;
-        if (k==37 || k==38) this.prevImg(a);
-        else if (k==39 || k==40) location.hash = a.hash;//a.click();
+        if (k==37 || k==38) this.browse(a, true);
+        else if (k==39 || k==40) this.browse(a);//a.click();
         else if(k==8){
           let h = a.vLink;
           if(!h){

@@ -12,7 +12,7 @@ module.exports = new(function () {
   this.opt = {
     qSwipe: '.swipe',
     qDrag: '.drag',
-    qKeepDrag: '.drawer',
+    qKeepDrag: '.drawer',//', .gal a[id]',
     cDragging: 'dragging',
     maxClick: 20,
     minSwipe: 50
