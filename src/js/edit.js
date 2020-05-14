@@ -72,6 +72,7 @@ module.exports = new(function () {
     app.h('click', 'label[for]', e => this.setFocus(e.recv));
     app.h('click', 'a[data-cmd]', e => this.cmd(e));
     app.h(['input', 'blur'], '.edit-wysiwyg', e => this.up(0, e.target));//for validation
+    app.b([window], 'paste', e => this.onPaste(e), true);
     //adjust
     app.h('input', this.opt.qAdjust, e => this.adjust(e.target));
     app.h('mouseup', this.opt.qAdjust, e => this.resized(e.target));
@@ -125,7 +126,7 @@ module.exports = new(function () {
     let b = bb || this.btn[n.getAttribute('data-cmd')];
     let z = bb ? e : app.next(n.closest('nav'), '.edit-wysiwyg');
     app.dbg(['cmd', z, b, n, e]);
-    if(e){
+    if(e && !bb){
       e.preventDefault();
       e.stopPropagation();
     }
@@ -208,6 +209,21 @@ module.exports = new(function () {
       .reduce(function(v, r){ return r + v; });
     n.style.height = Math.min(1.5 * (2 + a), parseFloat(this.opt.height)) + 'em';
     this.storeSize(n);
+  }
+
+  // https://stackoverflow.com/questions/6333814/how-does-the-paste-image-from-clipboard-functionality-work-in-gmail-and-google-c
+  this.onPaste = function (e) {
+    let n = e.target.closest('.edit-wysiwyg');
+    if(!n) return;
+    //app.a(e.clipboardData.items).forEach(i => console.log(i)); // kind: 'file', type: 'image/...'
+    let img = app.a(e.clipboardData.items).filter(i => i.type.indexOf('image') === 0).shift();
+    if(img){
+      e.preventDefault();
+      let reader = new FileReader();
+      reader.onload = e => this.cmd(n, ['insertimage', e.target.result]);
+      reader.readAsDataURL(img.getAsFile());//get blob as data url
+      // to upload, use readAsBinaryString, or put it into an XHR using FormData
+    }
   }
 
 })();
