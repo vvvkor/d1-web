@@ -1,4 +1,4 @@
-/*! d1-web v1.2.74 */
+/*! d1-web v1.2.75 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -1449,7 +1449,7 @@ __webpack_require__(2);
 
 var app = __webpack_require__(0);
 
-['code', 'icons', 'toggle', 'dialog', 'gallery', 'tablex', 'scroll', 'calendar', 'lookup', 'edit', 'valid', 'tools', 'form', 'items', 'filter', 'fliptable', 'fetch', 'swipe', 'theme'].forEach(function (p) {
+['toggle', 'dialog', 'gallery', 'fetch', 'icons', 'tablex', 'code', 'calendar', 'lookup', 'edit', 'valid', 'tools', 'form', 'keepform', 'items', 'filter', 'fliptable', 'swipe', 'scroll', 'theme'].forEach(function (p) {
   return app.plug(__webpack_require__(9)("./" + p + ".js"));
 }); //let opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}};
 
@@ -1479,15 +1479,16 @@ var map = {
 	"./icons.js": 17,
 	"./iconset.js": 7,
 	"./items.js": 18,
-	"./lookup.js": 19,
+	"./keepform.js": 19,
+	"./lookup.js": 20,
 	"./polyfill.js": 2,
-	"./scroll.js": 20,
-	"./swipe.js": 21,
-	"./tablex.js": 22,
-	"./theme.js": 23,
+	"./scroll.js": 21,
+	"./swipe.js": 22,
+	"./tablex.js": 23,
+	"./theme.js": 24,
 	"./toggle.js": 1,
-	"./tools.js": 24,
-	"./valid.js": 25
+	"./tools.js": 25,
+	"./valid.js": 26
 };
 
 
@@ -2802,6 +2803,122 @@ module.exports = new function () {
 /* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
+/*! keepform - store and restore user input */
+var app = __webpack_require__(0);
+
+module.exports = new function () {
+  "use strict";
+
+  this.name = 'keepform';
+  this.opt = {
+    cKeep: 'keep',
+    cRestore: 'restore'
+  };
+
+  this.init = function () {
+    var _this = this;
+
+    if (Object.fromEntries && FormData) {
+      var q = '.' + this.opt.cKeep + '[id]';
+      app.e(q, function (f) {
+        return _this.addControls(f);
+      });
+      app.e(q + '.' + this.opt.cRestore, function (f) {
+        return _this.restoreForm(f);
+      });
+      app.h(['change', 'input'], q, function (e) {
+        return _this.store(e);
+      });
+      app.h('click', q + ' a[href="#restore"]', function (e) {
+        return _this.restore(e);
+      });
+      app.h('click', q + ' a[href="#reset"]', function (e) {
+        return _this.reset(e);
+      });
+      app.h('click', q + ' a[href="#unstore"]', function (e) {
+        return _this.unstore(e);
+      });
+    }
+  };
+
+  this.addControls = function (f) {
+    var d = app.ins('div', '', {
+      className: 'pad r keepform-tools'
+    }, f, false);
+    app.ins('a', app.i('energy', '[^]'), {
+      href: '#restore'
+    }, d);
+    app.ins('', ' ', {}, d);
+    app.ins('a', app.i('refresh', '[-]'), {
+      href: '#reset'
+    }, d);
+    app.ins('', ' ', {}, d);
+    app.ins('a', app.i('ban', '[x]'), {
+      href: '#unstore'
+    }, d);
+  };
+
+  this.reset = function (e) {
+    e.preventDefault();
+    e.target.closest('form').reset();
+  };
+
+  this.unstore = function (e) {
+    e.preventDefault();
+    localStorage.removeItem(this.formId(e.target.closest('form')));
+  };
+
+  this.restore = function (e) {
+    e.preventDefault();
+    this.restoreForm(e.target.closest('form'));
+  };
+
+  this.restoreForm = function (f) {
+    var _this2 = this;
+
+    var id = this.formId(f);
+    var d = localStorage.getItem(id);
+
+    if (d) {
+      d = JSON.parse(d);
+      if (d) Object.keys(d).forEach(function (k) {
+        var i = f.elements[k];
+        if (i) _this2.restoreInput(i, d[k]);
+      });
+    }
+  };
+
+  this.restoreInput = function (i, v) {
+    var _this3 = this;
+
+    if (i instanceof NodeList) i.forEach(function (j) {
+      return _this3.restoreInput(j, v);
+    });else if (i.type.match(/file|submit|password/)) ;else if (i.type.match(/checkbox|radio/)) i.checked = Array.isArray(v) ? v.indexOf(i.value) != -1 : i.value === v;else i.value = v;
+  };
+
+  this.store = function (e) {
+    var f = new FormData(e.recv); //let d = JSON.stringify(Object.fromEntries(f)); // does not support multiple
+
+    var d = {};
+    f.forEach(function (v, k) {
+      if (!d.hasOwnProperty(k)) d[k] = v;else {
+        // multiple
+        if (!Array.isArray(d[k])) d[k] = [d[k]];
+        d[k].push(v);
+      }
+    });
+    localStorage.setItem(this.formId(e.recv), JSON.stringify(d));
+  };
+
+  this.formId = function (f) {
+    return 'form#' + f.id + '@' + location.pathname;
+  };
+}();
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
 /*! lookup - autocomplete lookups with data from XHTTP request */
 var app = __webpack_require__(0);
 
@@ -3118,7 +3235,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! scroll - scrolling behaviours (topbar, drawer) */
@@ -3233,7 +3350,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! swipe - detect touch swipe */
@@ -3375,7 +3492,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -3798,7 +3915,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! theme - live theme configurator */
@@ -3922,7 +4039,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! tools - miscellaneous utilities */
@@ -4102,7 +4219,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! valid - custom form validation messages */

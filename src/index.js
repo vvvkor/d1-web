@@ -3,10 +3,11 @@ require('./js/polyfill.js');
 let app = require('./js/app.js');
 
 [
-  'code', 'icons',
-  'toggle', 'dialog', 'gallery', 'tablex', 'scroll',
+  'toggle', 'dialog', 'gallery',
+  'fetch', 'icons', 'tablex', 'code',
   'calendar', 'lookup', 'edit', 'valid',
-  'tools', 'form', 'items', 'filter', 'fliptable', 'fetch', 'swipe',
+  'tools', 'form', 'keepform', 'items', 'filter',
+  'fliptable', 'swipe', 'scroll',
   'theme'
 ]
 .forEach(p => app.plug(require('./js/'+p+'.js')));
