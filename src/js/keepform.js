@@ -8,15 +8,15 @@ module.exports = new(function () {
 
   this.name = 'keepform';
   this.opt = {
-    cKeep: 'keep',
-    cRestore: 'restore'
+    qStore: 'form.store[id]',
+    qRestore: 'form.restore[id]'
   };
 
   this.init = function(){
     if(Object.fromEntries && FormData){
-      let q = '.' + this.opt.cKeep + '[id]';
+      let q = this.opt.qStore;
       app.e(q, f => this.addControls(f));
-      app.e(q + '.' + this.opt.cRestore, f => this.restoreForm(f));
+      app.e(this.opt.qRestore, f => this.restoreForm(f, true));
       app.h(['change', 'input'], q, e => this.store(e));
       app.h('click', q + ' a[href="#restore"]', e => this.restore(e));
       app.h('click', q + ' a[href="#reset"]', e => this.reset(e));
@@ -35,7 +35,12 @@ module.exports = new(function () {
   
   this.reset = function(e){
     e.preventDefault();
-    e.target.closest('form').reset();
+    let f = e.target.closest('form');
+    f.reset();
+    if(app.plugins.edit){
+      app.e(app.qq(app.plugins.edit.opt.qEdit, f), a => a.theWys.innerHTML = a.value);
+    }
+    
   }
   
   this.unstore = function(e){
@@ -48,23 +53,29 @@ module.exports = new(function () {
     this.restoreForm(e.target.closest('form'));
   }
   
-  this.restoreForm = function(f){
+  this.restoreForm = function(f, mode){
     let id = this.formId(f);
     let d = localStorage.getItem(id);
     if(d){
       d = JSON.parse(d);
       if(d) Object.keys(d).forEach(k => {
         let i = f.elements[k];
-        if(i) this.restoreInput(i, d[k]);
+        if(i) this.restoreInput(i, d[k], mode);
       });
     }
   }
   
-  this.restoreInput = function(i, v){
-    if(i instanceof NodeList) i.forEach(j => this.restoreInput(j, v));
+  this.restoreInput = function(i, v, mode){
+    if(i instanceof NodeList) i.forEach(j => this.restoreInput(j, v, mode));
     else if(i.type.match(/file|submit|password/)) ;
     else if(i.type.match(/checkbox|radio/)) i.checked = Array.isArray(v) ? (v.indexOf(i.value) != -1) : (i.value === v);
     else i.value = v;
+    if(app.plugins.edit && i.theWys){
+      //app.dispatch(i, 'input');
+      i.theWys.innerHTML = i.value;
+      if(mode) app.plugins.edit.modeAuto(i);
+    }
+    
   }
   
   this.store = function(e){

@@ -1,4 +1,4 @@
-/*! d1-web v1.2.75 */
+/*! d1-web v1.2.76 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -1428,7 +1428,7 @@ module.exports = {
   storage: [9, 'M1 1h7v3h-7zm0 4h7v3h-7zm4-3v1h2v-1zm0 4v1h2v-1z'],
   settings: [11, 'M1 2h9v1h-9zm0 3h9v1h-9zm0 3h9v1h-9zm2-7h1v3h-1zm4 3h1v3h-1zm-3 3h1v3h-1z'],
   power: [18, 'M6 3a6.7 6.7 0 1 0 6 0v2a4.9 4.9 0 1 1 -6 0zm2-1.5h2v8h-2z'],
-  energy: [11, 'M5 1l-2 4h2l-2 5 5-6h-2l2-3z'],
+  energy: [11, 'M5 1.5l-2 4h2l-2 5 5-6h-2l2-3z'],
   sound: [9, 'M3 6h-2v-3h2l3-2v7zm3.7-3q2 1.5 0 3z'],
   mic: [20, 'M7 5 a3 3 0 1 1 6 0v4a3 3 0 1 1 -6 0zm-2 4a5 5 0 1 0 10 0zm4 4v3h-3v2h8v-2h-3v-3z'],
   photo: [10, 'M1 3h2l1-1h2l1 1h2v5h-8zm4 .5a1.8 1.8 0 1 0 .01 0z'],
@@ -2811,20 +2811,20 @@ module.exports = new function () {
 
   this.name = 'keepform';
   this.opt = {
-    cKeep: 'keep',
-    cRestore: 'restore'
+    qStore: 'form.store[id]',
+    qRestore: 'form.restore[id]'
   };
 
   this.init = function () {
     var _this = this;
 
     if (Object.fromEntries && FormData) {
-      var q = '.' + this.opt.cKeep + '[id]';
+      var q = this.opt.qStore;
       app.e(q, function (f) {
         return _this.addControls(f);
       });
-      app.e(q + '.' + this.opt.cRestore, function (f) {
-        return _this.restoreForm(f);
+      app.e(this.opt.qRestore, function (f) {
+        return _this.restoreForm(f, true);
       });
       app.h(['change', 'input'], q, function (e) {
         return _this.store(e);
@@ -2860,7 +2860,14 @@ module.exports = new function () {
 
   this.reset = function (e) {
     e.preventDefault();
-    e.target.closest('form').reset();
+    var f = e.target.closest('form');
+    f.reset();
+
+    if (app.plugins.edit) {
+      app.e(app.qq(app.plugins.edit.opt.qEdit, f), function (a) {
+        return a.theWys.innerHTML = a.value;
+      });
+    }
   };
 
   this.unstore = function (e) {
@@ -2873,7 +2880,7 @@ module.exports = new function () {
     this.restoreForm(e.target.closest('form'));
   };
 
-  this.restoreForm = function (f) {
+  this.restoreForm = function (f, mode) {
     var _this2 = this;
 
     var id = this.formId(f);
@@ -2883,17 +2890,23 @@ module.exports = new function () {
       d = JSON.parse(d);
       if (d) Object.keys(d).forEach(function (k) {
         var i = f.elements[k];
-        if (i) _this2.restoreInput(i, d[k]);
+        if (i) _this2.restoreInput(i, d[k], mode);
       });
     }
   };
 
-  this.restoreInput = function (i, v) {
+  this.restoreInput = function (i, v, mode) {
     var _this3 = this;
 
     if (i instanceof NodeList) i.forEach(function (j) {
-      return _this3.restoreInput(j, v);
+      return _this3.restoreInput(j, v, mode);
     });else if (i.type.match(/file|submit|password/)) ;else if (i.type.match(/checkbox|radio/)) i.checked = Array.isArray(v) ? v.indexOf(i.value) != -1 : i.value === v;else i.value = v;
+
+    if (app.plugins.edit && i.theWys) {
+      //app.dispatch(i, 'input');
+      i.theWys.innerHTML = i.value;
+      if (mode) app.plugins.edit.modeAuto(i);
+    }
   };
 
   this.store = function (e) {

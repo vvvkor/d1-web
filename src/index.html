@@ -121,6 +121,7 @@
 			<li><a href="#edit">Edit</a>
 			<li><a href="#lookup">Lookup</a>
 			<li><a href="#validate">Validation</a>
+			<li><a href="#keepform">Form storage</a>
 			<!--li><a href="#form-validate">Validation</a-->
 			</ul>
 		<li><a href="#n-components">Components</a> &rsaquo;
@@ -701,7 +702,7 @@ In this case, <code>table</code> must be a direct descendant of <code>form</code
 Table will become stacked on small screen.
 
 <div class="code">
-	<form method="post" class="keep restore" id="form-table">
+	<form method="post" class="store restore" id="form-table">
 		<table class="flip">
 		<tr>
 			<td><label for="nm">Name</label>
@@ -1118,6 +1119,56 @@ Table will become stacked on small screen.
   &lt;p class="small text-e">Value required&lt;/p&gt;</pre>
 -->
   
+<h3 id="keepform">Form inputs storage</h3>
+
+<p>To store user input in local storage, add <code>.store</code> class to the form.<br>
+Buttons will be shown above the form: to restore inputs, to reset inputs to initial values, and to clear stored vaolues.
+<p>To restore inputs on page reload, add <code>.store</code> class to the form.
+
+<div class="code">
+	<form method="post" class="store restore" id="form-keep">
+		<table>
+		<tbody>
+		<tr>
+			<td><label for="kf-text">Text</label>
+			<td><input type="text" name="kf-text" id="kf-text">
+		<tr>
+			<td><label for="kf-pass">Pass</label>
+			<td><input type="password" name="pass" id="kf-pass">
+		<tr>
+			<td><label for="kf-dt">Datetime</label>
+			<td><input type="datetime-local" name="dt" id="kf-dt">
+		<tr>
+			<td>Boxes
+			<td>
+				<label><input type="checkbox" name="box[]" value="one"> Box [1]</label>
+				<br>
+				<label><input type="checkbox" name="box[]" value="two"> Box [2]</label>
+				<br>
+				<label><input type="checkbox" name="box-other" value="three"> Box other</label>
+		<tr>
+			<td>Radios
+			<td>
+				<label><input type="radio" name="rad" value="one"> Radio 1</label>
+				<br>
+				<label><input type="radio" name="rad" value="two"> Radio 2</label>
+		<tr>
+			<td><label for="kf-sel">Select</label>
+			<td><select name="sel" id="kf-sel">
+					<option value="" selected>-</option>
+					<option value="1">Uno</option>
+					<option value="2">Dos</option>
+				</select>
+		<tr>
+			<td><label for="kf-area">Textarea</label>
+			<td><textarea class="edit" name="area" id="kf-area"></textarea>
+		<tr>
+			<td>
+			<td><input type="submit" name="sub" value="OK">
+		</tbody>
+		</table>
+	</form>
+</div>
 
 
 <h2 id="components">Components</h2>
