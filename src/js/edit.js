@@ -72,6 +72,7 @@ module.exports = new(function () {
     app.h('click', 'label[for]', e => this.setFocus(e.recv));
     app.h('click', 'a[data-cmd]', e => this.cmd(e));
     app.h(['input', 'blur'], '.edit-wysiwyg', e => this.up(0, e.target));//for validation
+    app.listen('value', e => e.n.theWys ? (e.modeAuto ? this.modeAuto(e.n) : this.up(1, e.n.theWys)) : null);
     app.b([window], 'paste', e => this.onPaste(e), true);
     //adjust
     app.h('input', this.opt.qAdjust, e => this.adjust(e.target));
@@ -118,7 +119,7 @@ module.exports = new(function () {
     let t = app.attr(n, 'data-tools', this.opt.tools).split('');
     let wys = app.attr(n, 'data-wys');
     if(wys===null) wys = (t.indexOf('/')==-1) || (n.value.match(/(>|&\w+;)/) && !n.value.match(/<script/i));
-    this.mode(n.theWys, wys);
+    this.mode(wys, n.theWys);
   }
 
   this.cmd = function (e, bb, nn) { // (e) or (z, b)
@@ -131,7 +132,7 @@ module.exports = new(function () {
       e.stopPropagation();
     }
     //let b = this.btn[n.hash.substr(4)];
-    if (b[0] == 'src') this.mode(z, !app.vis(z));
+    if (b[0] == 'src') this.mode(!app.vis(z), z);
     else if (b[0] == 'tools'){
       let mm = app.q('div', n.parentNode);
       if(mm) toggle.toggle(mm);
@@ -162,7 +163,7 @@ module.exports = new(function () {
     if(!w) app.dispatch(z.theArea, ['input', 'change']);
   }
 
-  this.mode = function (z, w) {
+  this.mode = function (w, z) {
     toggle.toggle(z, w);
     toggle.toggle(z.theArea, !w);
     if(!w){

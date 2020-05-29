@@ -1,4 +1,4 @@
-/*! d1-web v1.2.77 */
+/*! d1-web v1.2.79 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -2073,6 +2073,9 @@ module.exports = new function () {
       return _this.up(0, e.target);
     }); //for validation
 
+    app.listen('value', function (e) {
+      return e.n.theWys ? e.modeAuto ? _this.modeAuto(e.n) : _this.up(1, e.n.theWys) : null;
+    });
     app.b([window], 'paste', function (e) {
       return _this.onPaste(e);
     }, true); //adjust
@@ -2146,7 +2149,7 @@ module.exports = new function () {
     var t = app.attr(n, 'data-tools', this.opt.tools).split('');
     var wys = app.attr(n, 'data-wys');
     if (wys === null) wys = t.indexOf('/') == -1 || n.value.match(/(>|&\w+;)/) && !n.value.match(/<script/i);
-    this.mode(n.theWys, wys);
+    this.mode(wys, n.theWys);
   };
 
   this.cmd = function (e, bb, nn) {
@@ -2162,7 +2165,7 @@ module.exports = new function () {
     } //let b = this.btn[n.hash.substr(4)];
 
 
-    if (b[0] == 'src') this.mode(z, !app.vis(z));else if (b[0] == 'tools') {
+    if (b[0] == 'src') this.mode(!app.vis(z), z);else if (b[0] == 'tools') {
       var mm = app.q('div', n.parentNode);
       if (mm) toggle.toggle(mm);
     } else {
@@ -2191,7 +2194,7 @@ module.exports = new function () {
     if (!w) app.dispatch(z.theArea, ['input', 'change']);
   };
 
-  this.mode = function (z, w) {
+  this.mode = function (w, z) {
     toggle.toggle(z, w);
     toggle.toggle(z.theArea, !w);
 
@@ -2862,12 +2865,11 @@ module.exports = new function () {
     e.preventDefault();
     var f = e.target.closest('form');
     f.reset();
-
-    if (app.plugins.edit) {
-      app.e(app.qq(app.plugins.edit.opt.qEdit, f), function (a) {
-        return a.theWys.innerHTML = a.value;
+    app.e(app.qq('[name]', f), function (n) {
+      return app.fire('value', {
+        n: n
       });
-    }
+    });
   };
 
   this.unstore = function (e) {
@@ -2900,12 +2902,12 @@ module.exports = new function () {
 
     if (i instanceof NodeList) i.forEach(function (j) {
       return _this3.restoreInput(j, v, mode);
-    });else if (i.type.match(/file|submit|password/)) ;else if (i.type.match(/checkbox|radio/)) i.checked = Array.isArray(v) ? v.indexOf(i.value) != -1 : i.value === v;else i.value = v;
-
-    if (app.plugins.edit && i.theWys) {
-      //app.dispatch(i, 'input');
-      i.theWys.innerHTML = i.value;
-      if (mode) app.plugins.edit.modeAuto(i);
+    });else {
+      if (i.type.match(/file|submit|password/)) ;else if (i.type.match(/checkbox|radio/)) i.checked = Array.isArray(v) ? v.indexOf(i.value) != -1 : i.value === v;else i.value = v;
+      app.fire('value', {
+        n: i,
+        modeAuto: mode
+      });
     }
   };
 

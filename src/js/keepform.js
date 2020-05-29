@@ -37,10 +37,7 @@ module.exports = new(function () {
     e.preventDefault();
     let f = e.target.closest('form');
     f.reset();
-    if(app.plugins.edit){
-      app.e(app.qq(app.plugins.edit.opt.qEdit, f), a => a.theWys.innerHTML = a.value);
-    }
-    
+    app.e(app.qq('[name]', f), n => app.fire('value', {n: n}));
   }
   
   this.unstore = function(e){
@@ -67,15 +64,12 @@ module.exports = new(function () {
   
   this.restoreInput = function(i, v, mode){
     if(i instanceof NodeList) i.forEach(j => this.restoreInput(j, v, mode));
-    else if(i.type.match(/file|submit|password/)) ;
-    else if(i.type.match(/checkbox|radio/)) i.checked = Array.isArray(v) ? (v.indexOf(i.value) != -1) : (i.value === v);
-    else i.value = v;
-    if(app.plugins.edit && i.theWys){
-      //app.dispatch(i, 'input');
-      i.theWys.innerHTML = i.value;
-      if(mode) app.plugins.edit.modeAuto(i);
+    else{
+      if(i.type.match(/file|submit|password/)) ;
+      else if(i.type.match(/checkbox|radio/)) i.checked = Array.isArray(v) ? (v.indexOf(i.value) != -1) : (i.value === v);
+      else i.value = v;
+      app.fire('value', {n: i, modeAuto: mode});
     }
-    
   }
   
   this.store = function(e){
