@@ -1,4 +1,4 @@
-/*! d1-web v1.2.79 */
+/*! d1-web v1.2.80 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -313,7 +313,9 @@ module.exports = new function () {
 
     if (attrs) {
       for (var i in attrs) {
-        if (i.match(/-/)) c.setAttribute(i.replace(/^-/, ''), attrs[i]);else c[i] = attrs[i];
+        if (attrs[i] !== null && attrs[i] !== undefined) {
+          if (i.match(/-/)) c.setAttribute(i.replace(/^-/, ''), attrs[i]);else c[i] = attrs[i];
+        }
       }
     }
 

@@ -187,8 +187,10 @@ module.exports = new (function(){
     else if (t) c.innerHTML = t;
     if (attrs) {
       for (let i in attrs) {
-        if(i.match(/-/)) c.setAttribute(i.replace(/^-/, ''), attrs[i]);
-        else c[i] = attrs[i];
+        if(attrs[i] !== null && attrs[i] !== undefined){
+          if(i.match(/-/)) c.setAttribute(i.replace(/^-/, ''), attrs[i]);
+          else c[i] = attrs[i];
+        }
       }
     }
     return n

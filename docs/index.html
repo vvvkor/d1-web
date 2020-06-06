@@ -6,8 +6,8 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 
 	<!-- CDN -->
-	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.2.79/dist/d1.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.2.79/dist/d1.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.2.80/dist/d1.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.2.80/dist/d1.min.js"></script>
 	<!-- local-npm-src ->
 	<link href="../src/index.css" rel="stylesheet">
 	<script src="../dist/d1.min.js"></script>
@@ -66,7 +66,7 @@
 	<a href="#top" class="pad -let"><b>d1</b></a>
 	<code class="pad nobr">npm i d1-web</code>
 	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1-web" title="GitHub" class="pad -let">GitHub</a>
-	<a class="shift pad text-n">v1.2.79</a>
+	<a class="shift pad text-n">v1.2.80</a>
 	<a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="pad -let" data-ico="download" title="Download">Download</a>
 </div>
 
@@ -565,6 +565,10 @@ Automatic dynamic totals (<i>sum</i> for numbers, <i>max</i> for dates) <code>ta
 decimal digits <code>[data-dec]</code> (default 2),
 mode <code>[data-mode="s|n|b|i|d"]</code> (default "n"),
 where "s" is string, "n" is numeric, "b" is byte size, "i" is time interval, "d" is datetime.
+<p>To enable page navigation set <code>[data-limit]</code> to number of rows per page
+and optionally set <code>[data-pages]</code> to maximum number of page links to show (default is 10).
+Page navigation is placed before table by default.
+To place it after table add <code>[data-pages-after]</code> without value.
 
 <div class="code">
 <p>
@@ -572,7 +576,7 @@ where "s" is string, "n" is numeric, "b" is byte size, "i" is time interval, "d"
 	<span id="rep"></span>
 </p>
 <div class="roll">
-<table class="sort totals bord" data-filter="#srch" data-filter-report="#rep" data-filter-cols="0 2 4" data-case>
+<table class="sort totals bord" data-filter="#srch" data-filter-report="#rep" data-filter-cols="0 2 4" data-case data-limit="2" data-pages="10">
 	<thead>
 	<tr><th>String<th>Number<th>Bytes<th>Interval<th>Date
 	</thead>

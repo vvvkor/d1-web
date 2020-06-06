@@ -1,4 +1,4 @@
-/*! d1-web v1.2.79 */
+/*! d1-web v1.2.80 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -312,7 +312,9 @@ module.exports = new function () {
 
     if (attrs) {
       for (var i in attrs) {
-        if (i.match(/-/)) c.setAttribute(i.replace(/^-/, ''), attrs[i]);else c[i] = attrs[i];
+        if (attrs[i] !== null && attrs[i] !== undefined) {
+          if (i.match(/-/)) c.setAttribute(i.replace(/^-/, ''), attrs[i]);else c[i] = attrs[i];
+        }
       }
     }
 
@@ -3555,6 +3557,9 @@ module.exports = new function () {
     aFilter: 'data-filter',
     aRep: 'data-filter-report',
     aTotal: 'data-total',
+    aLimit: 'data-limit',
+    aPages: 'data-pages',
+    aPageNavAfter: 'data-pages-after',
     cFilter: 'filter',
     cFiltered: 'bg-w',
     // filter-on - non-empty filter field
@@ -3575,9 +3580,20 @@ module.exports = new function () {
   };
 
   this.init = function () {
+    var _this = this;
+
     this.lang = app.attr(document.documentElement, 'lang') || 'en';
     this.skipComma = this.lang == 'en';
     app.e('table.' + this.opt.cSort + ', table.' + this.opt.cFilter + ', table.' + this.opt.cTotals + ', table[' + this.opt.aFilter + ']', this.prepare.bind(this));
+    app.h('click', '.tablex-pagenav a', function (e) {
+      return _this.page(e);
+    });
+  };
+
+  this.page = function (e) {
+    e.preventDefault();
+    var nav = e.recv.closest('.tablex-pagenav');
+    this.paginate(nav.vTable, 1 * e.recv.hash.substr(1));
   };
 
   this.prepare = function (n) {
@@ -3614,7 +3630,10 @@ module.exports = new function () {
     var fq = app.attr(n, this.opt.aFilter);
     n.vInp = fq ? document.querySelector(fq) : n.querySelector('[name="_q"]');
     n.vRep = app.q(app.attr(n, this.opt.aRep, ''));
+    n.vLimit = 1 * app.attr(n, this.opt.aLimit, 0);
+    n.vPage = 1;
     if (!n.vInp && !n.vRep && n.classList.contains(this.opt.cFilter)) this.addFilter(n);
+    if (n.vLimit && tb.rows.length > n.vLimit) this.addPageNav(n);
 
     if (n.vInp) {
       //n.vInp.onsearch = n.vInp.onkeyup = this.doFilter.bind(this,n);
@@ -3651,6 +3670,7 @@ module.exports = new function () {
       });
     }
 
+    n.vCount = a.length;
     n.vData = a;
     n.vHead = h;
     n.vTypes = types.map(function (t) {
@@ -3664,7 +3684,7 @@ module.exports = new function () {
       if (!n.vInp) this.updateTotals(n, a.length);
     }
 
-    if (n.vInp) this.doFilter(n);
+    if (n.vInp) this.doFilter(n);else if (n.vLimit) this.paginate(n, 1);
 
     if (n.classList.contains(this.opt.cSort)) {
       for (j = 0; j < h.length; j++) {
@@ -3672,6 +3692,28 @@ module.exports = new function () {
           if (this.opt.cSortable) h[j].classList.add(this.opt.cSortable);
           if (!h[j].vListen) h[j].addEventListener('click', this.doSort.bind(this, n, h[j]), false);
           h[j].vListen = 1;
+        }
+      }
+    }
+  };
+
+  this.paginate = function (n, page) {
+    n.vPage = page;
+
+    if (n.vLimit && n.vPage) {
+      this.setPageNav(n);
+      var skip = n.vLimit * (page - 1);
+      var last = skip + n.vLimit - 1; //console.log('paginate', page, n.vCount, skip, last, n.vPageNav.children.length);
+
+      var j = 0;
+
+      for (var i = 0; i < n.vData.length; i++) {
+        var hide = n.vData[i].n.classList.contains(app.opt.cHide);
+
+        if (!hide) {
+          var on = j >= skip && j <= last;
+          n.vData[i].n.classList[on ? 'remove' : 'add'](app.opt.cToggle, app.opt.cOff);
+          j++;
         }
       }
     }
@@ -3686,8 +3728,54 @@ module.exports = new function () {
     n.vRep = app.ins('span', '', {}, p);
   };
 
+  this.addPageNav = function (n) {
+    var t = n.parentNode.classList.contains('roll') ? n.parentNode : n;
+    n.vPageNav = app.ins('ul', '', {
+      className: 'nav hover tablex-pagenav'
+    });
+    n.vPageNav.vTable = n;
+    app.ins('div', n.vPageNav, {
+      className: 'mar small'
+    }, t, app.attr(n, this.opt.aPageNavAfter) === null ? -1 : 1);
+  };
+
+  this.setPageNav = function (n) {
+    var m = 1 * app.attr(n, this.opt.aPages, 10);
+    var h = Math.ceil((m - 1) / 2);
+    var ul = n.vPageNav;
+    var last = Math.ceil(n.vCount / n.vLimit);
+    var min = Math.max(1, Math.min(n.vPage - h, last - m + 1));
+    var max = Math.min(last, min + m - 1);
+    var cur = Math.max(Math.min(n.vPage, last), 1);
+    app.clr(ul); //console.log('pagenav', m, min, max, last, min + m - 1);
+
+    if (max > 1) {
+      if (last > m) app.ins('li', app.ins('a', app.i('first', '&laquo;'), {
+        href: '#1'
+      }), {}, ul);
+      app.ins('li', app.ins('a', app.i('west', '&lsaquo;'), {
+        href: '#' + Math.max(1, cur - 1)
+      }), {}, ul);
+
+      for (var i = min; i <= max; i++) {
+        var a = app.ins('a', i, {
+          href: '#' + i,
+          className: i == cur ? 'act bg' : ''
+        });
+        app.ins('li', a, {}, ul);
+      }
+
+      app.ins('li', app.ins('a', app.i('east', '&rsaquo;'), {
+        href: '#' + Math.min(cur + 1, last)
+      }), {}, ul);
+      if (last > m) app.ins('li', app.ins('a', app.i('last', '&raquo;'), {
+        href: '#' + last
+      }), {}, ul);
+    }
+  };
+
   this.addFooter = function (n, rh) {
-    var _this = this;
+    var _this2 = this;
 
     var f = app.ins('tfoot', app.ins('tr'), {
       className: 'nobr'
@@ -3697,7 +3785,7 @@ module.exports = new function () {
 
       var t = n.vTypes[h.cellIndex];
       var func = t == 's' ? 'count' : t == 'd' ? 'max' : 'sum';
-      app.ins('th', app.ins(t == 's' ? 'i' : 'span', '', (_app$ins = {}, _defineProperty(_app$ins, _this.opt.aTotal, func), _defineProperty(_app$ins, "className", t == 's' ? 'text-n' : ''), _app$ins)), {
+      app.ins('th', app.ins(t == 's' ? 'i' : 'span', '', (_app$ins = {}, _defineProperty(_app$ins, _this2.opt.aTotal, func), _defineProperty(_app$ins, "className", t == 's' ? 'text-n' : ''), _app$ins)), {
         title: func
       }, f.firstChild);
     });
@@ -3769,22 +3857,24 @@ module.exports = new function () {
     } //update state
 
 
+    n.vCount = cnt;
     this.updateTotals(n, cnt);
     var x = cnt + '/' + n.vData.length;
     if (n.vInp) n.vInp.title = x;
     if (n.vRep) n.vRep.textContent = x;
+    if (n.vLimit) this.paginate(n, 1);
   };
 
   this.updateTotals = function (n, cnt) {
-    var _this2 = this;
+    var _this3 = this;
 
     app.e(app.qq('[' + this.opt.aTotal + ']', n), function (m) {
-      return m.textContent = _this2.countTotal(n, m, cnt);
+      return m.textContent = _this3.countTotal(n, m, cnt);
     });
   };
 
   this.countTotal = function (n, m, cnt) {
-    var _this3 = this;
+    var _this4 = this;
 
     var d = n.vData;
     var j = m.closest('th, td').cellIndex;
@@ -3799,13 +3889,13 @@ module.exports = new function () {
       return acc + (cur.v && cur.x[j][0] !== '' ? 1 : 0);
     }, 0);else if (!cnt || mode == 'x') r = NaN;else if (a == 'sum' || a == 'avg') {
       r = mode == 's' ? NaN : d.reduce(function (acc, cur) {
-        return acc + (cur.v ? _this3.numVal(cur.x[j]) : 0);
+        return acc + (cur.v ? _this4.numVal(cur.x[j]) : 0);
       }, 0) / (a == 'avg' ? cnt : 1);
     } // only for numbers
     else if (a == 'min') r = d.reduce(function (acc, cur) {
-        return Math.min(acc, cur.v ? _this3.numVal(cur.x[j]) : Infinity);
+        return Math.min(acc, cur.v ? _this4.numVal(cur.x[j]) : Infinity);
       }, Infinity);else if (a == 'max') r = d.reduce(function (acc, cur) {
-        return Math.max(acc, cur.v ? _this3.numVal(cur.x[j]) : -Infinity);
+        return Math.max(acc, cur.v ? _this4.numVal(cur.x[j]) : -Infinity);
       }, -Infinity);
     return isNaN(r) ? '-' : this.strVal(r, mode, dec);
   };
@@ -3833,6 +3923,7 @@ module.exports = new function () {
     }
 
     this.build(n);
+    if (n.vLimit) this.paginate(n, 1);
   };
 
   this.build = function (n) {

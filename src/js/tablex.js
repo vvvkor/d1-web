@@ -44,6 +44,9 @@ module.exports = new(function() {
     aFilter: 'data-filter',
     aRep: 'data-filter-report',
     aTotal: 'data-total',
+    aLimit: 'data-limit',
+    aPages: 'data-pages',
+    aPageNavAfter: 'data-pages-after',
     cFilter: 'filter',
     cFiltered: 'bg-w', // filter-on - non-empty filter field
     cScan: 'text-i', // col-scan - searchable columns' header (used if "data-filter-cols" is set)
@@ -60,6 +63,13 @@ module.exports = new(function() {
     this.lang = app.attr(document.documentElement, 'lang') || 'en';
     this.skipComma = (this.lang=='en');
     app.e('table.' + this.opt.cSort + ', table.' + this.opt.cFilter + ', table.' + this.opt.cTotals + ', table[' + this.opt.aFilter + ']', this.prepare.bind(this));
+    app.h('click', '.tablex-pagenav a', e => this.page(e));
+  }
+  
+  this.page = function(e){
+    e.preventDefault();
+    let nav = e.recv.closest('.tablex-pagenav');
+    this.paginate(nav.vTable, 1 * e.recv.hash.substr(1))
   }
 
   this.prepare = function(n) {
@@ -84,7 +94,10 @@ module.exports = new(function() {
       ? document.querySelector(fq)
       : n.querySelector('[name="_q"]');
     n.vRep = app.q(app.attr(n, this.opt.aRep, ''));
+    n.vLimit = 1 * app.attr(n, this.opt.aLimit, 0);
+    n.vPage = 1;
     if(!n.vInp && !n.vRep && n.classList.contains(this.opt.cFilter)) this.addFilter(n);
+    if(n.vLimit && tb.rows.length>n.vLimit) this.addPageNav(n);
     
     if (n.vInp) {
       //n.vInp.onsearch = n.vInp.onkeyup = this.doFilter.bind(this,n);
@@ -115,6 +128,8 @@ module.exports = new(function() {
         v: true //visible
       });
     }
+    
+    n.vCount = a.length;
     n.vData = a;
     n.vHead = h;
     n.vTypes = types.map(t => Object.keys(t).reduce((acc, cur) => t[cur] > acc[1] ? [cur, t[cur]] : acc, ['s', 0])[0]);
@@ -123,6 +138,7 @@ module.exports = new(function() {
       if(!n.vInp) this.updateTotals(n, a.length);
     }
     if(n.vInp) this.doFilter(n);
+    else if(n.vLimit) this.paginate(n, 1);
     if(n.classList.contains(this.opt.cSort)) {
       for (j = 0; j < h.length; j++)
         if (this.isSortable(h[j])) {
@@ -133,11 +149,59 @@ module.exports = new(function() {
     }
   }
   
+  this.paginate = function(n, page){
+    n.vPage = page;
+    if(n.vLimit && n.vPage){
+      this.setPageNav(n);
+      let skip = n.vLimit * (page - 1);
+      let last = skip + n.vLimit - 1;
+      //console.log('paginate', page, n.vCount, skip, last, n.vPageNav.children.length);
+      let j = 0;
+      for (let i = 0; i < n.vData.length; i++) {
+        let hide = n.vData[i].n.classList.contains(app.opt.cHide);
+        if(!hide){
+          let on = (j >= skip && j <= last);
+          n.vData[i].n.classList[on ? 'remove' : 'add'](app.opt.cToggle, app.opt.cOff);
+          j++;
+        }
+      }
+    }
+  }
+  
   this.addFilter = function(n){
     let t = n.parentNode.classList.contains('roll') ? n.parentNode : n;
     let p = app.ins('p', ' ', {}, t, -1);
     n.vInp = app.ins('input', '', {type: 'search'}, p, false);
     n.vRep = app.ins('span', '', {}, p);
+  }
+  
+  this.addPageNav = function(n){
+    let t = n.parentNode.classList.contains('roll') ? n.parentNode : n;
+    n.vPageNav = app.ins('ul', '', {className: 'nav hover tablex-pagenav'});
+    n.vPageNav.vTable = n;
+    app.ins('div', n.vPageNav, {className: 'mar small'}, t, app.attr(n, this.opt.aPageNavAfter)===null ? -1 : 1);
+  }
+  
+  this.setPageNav = function(n){
+    let m = 1 * app.attr(n, this.opt.aPages, 10);
+    let h = Math.ceil((m - 1) / 2);
+    let ul = n.vPageNav;
+    let last = Math.ceil(n.vCount / n.vLimit);
+    let min = Math.max(1, Math.min(n.vPage - h, last - m + 1));
+    let max = Math.min(last, min + m - 1);
+    let cur = Math.max(Math.min(n.vPage, last), 1);
+    app.clr(ul);
+    //console.log('pagenav', m, min, max, last, min + m - 1);
+    if(max>1){
+      if(last>m) app.ins('li', app.ins('a', app.i('first', '&laquo;'), {href: '#1'}), {}, ul);
+      app.ins('li', app.ins('a', app.i('west', '&lsaquo;'), {href: '#' + Math.max(1, cur-1)}), {}, ul);
+      for(var i=min; i<=max; i++){
+        let a = app.ins('a', i, {href: '#' + i, className: (i==cur ? 'act bg' : '')});
+        app.ins('li', a, {}, ul);
+      }
+      app.ins('li', app.ins('a', app.i('east', '&rsaquo;'), {href: '#' + Math.min(cur+1, last)}), {}, ul);
+      if(last>m) app.ins('li', app.ins('a', app.i('last', '&raquo;'), {href: '#' + last}), {}, ul);
+    }
   }
 
   this.addFooter = function(n, rh){
@@ -217,10 +281,12 @@ module.exports = new(function() {
       if (!hide) cnt++;
     }
     //update state
+    n.vCount = cnt;
     this.updateTotals(n, cnt);
     let x = cnt + '/' + n.vData.length;
     if (n.vInp) n.vInp.title = x;
     if (n.vRep) n.vRep.textContent = x;
+    if (n.vLimit) this.paginate(n, 1);
   }
   
   this.updateTotals = function(n, cnt){
@@ -268,6 +334,7 @@ module.exports = new(function() {
     if (desc) n.vData.reverse();
     for (let j = 0; j < n.vHead.length; j++) this.mark(n.vHead[j], j == col ? (desc ? -1 : 1) : 0);
     this.build(n);
+    if (n.vLimit) this.paginate(n, 1);
   }
 
   this.build = function(n) {
