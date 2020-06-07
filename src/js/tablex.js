@@ -64,7 +64,8 @@ module.exports = new(function() {
   this.init = function() {
     this.lang = app.attr(document.documentElement, 'lang') || 'en';
     this.skipComma = (this.lang=='en');
-    app.e('table.' + this.opt.cSort + ', table.' + this.opt.cFilter + ', table.' + this.opt.cTotals + ', table[' + this.opt.aFilter + ']', this.prepare.bind(this));
+    let q = 'table.' + this.opt.cSort + ', table.' + this.opt.cFilter + ', table.' + this.opt.cTotals + ', table[' + this.opt.aFilter + ']' + ', table[' + this.opt.aLimit + ']';
+    app.e(q, this.prepare.bind(this));
     app.h('click', '.tablex-pagenav a', e => this.page(e));
   }
   

@@ -1,4 +1,4 @@
-/*! d1-web v1.2.82 */
+/*! d1-web v1.2.83 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -3590,7 +3590,8 @@ module.exports = new function () {
 
     this.lang = app.attr(document.documentElement, 'lang') || 'en';
     this.skipComma = this.lang == 'en';
-    app.e('table.' + this.opt.cSort + ', table.' + this.opt.cFilter + ', table.' + this.opt.cTotals + ', table[' + this.opt.aFilter + ']', this.prepare.bind(this));
+    var q = 'table.' + this.opt.cSort + ', table.' + this.opt.cFilter + ', table.' + this.opt.cTotals + ', table[' + this.opt.aFilter + ']' + ', table[' + this.opt.aLimit + ']';
+    app.e(q, this.prepare.bind(this));
     app.h('click', '.tablex-pagenav a', function (e) {
       return _this.page(e);
     });

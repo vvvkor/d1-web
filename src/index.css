@@ -184,7 +184,7 @@ button,[type="submit"],[type="search"]{-webkit-appearance:none;}
 button::-moz-focus-inner, [type="submit"]::-moz-focus-inner{border:none;}
 
 /* reset */
-input,button,select,textarea{font:inherit;} 
+input,button,select,textarea,table{font:inherit;} 
 
 
 /* typo */

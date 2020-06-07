@@ -1,4 +1,4 @@
-/*! d1-web v1.2.82 */
+/*! d1-web v1.2.83 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -135,7 +135,7 @@ button::-moz-focus-inner, [type="submit"]::-moz-focus-inner {
     border: none;
 }
 
-input, button, select, textarea {
+input, button, select, textarea, table {
     font: inherit;
 }
 
