@@ -53,6 +53,8 @@ module.exports = new(function() {
     cShow: '', // row-show - matching row
     //cHide: 'hide', // row-hide - non-matching row (if not set the "display:none" is used)
     cSortable: '', // col-sort - sortable column's header
+    cUnmatch: 'unmatch',
+    cUnpage: 'unpage',
     cAsc:  'bg-y', // col-asc - !non-empty! - header of currently sorted column (ascending)
     cDesc: 'bg-w', // col-desc - header of currently sorted column (descending)
     dateFormat: 'd', //y=Y-m-d, d=d.m.Y, m=m/d Y
@@ -118,7 +120,7 @@ module.exports = new(function() {
         vals[j] = this.convert(row[j]);
         let type = (vals[j][0] === '') ? 'x' : vals[j][1];
         types[j][type]++;
-        //c[j].title = type+': '+vals[j][0];
+        if(app.isDebug()) c[j].title = type+': '+vals[j][0];
         //c[j].setAttribute('data-cell', row[j]);
       }
       a.push({
@@ -158,10 +160,10 @@ module.exports = new(function() {
       //console.log('paginate', page, n.vCount, skip, last, n.vPageNav.children.length);
       let j = 0;
       for (let i = 0; i < n.vData.length; i++) {
-        let hide = n.vData[i].n.classList.contains(app.opt.cHide);
+        let hide = n.vData[i].n.classList.contains(this.opt.cUnmatch);
         if(!hide){
           let on = (j >= skip && j <= last);
-          n.vData[i].n.classList[on ? 'remove' : 'add'](app.opt.cToggle, app.opt.cOff);
+          n.vData[i].n.classList[on ? 'remove' : 'add'](app.opt.cHide, this.opt.cUnpage);
           j++;
         }
       }
@@ -274,7 +276,7 @@ module.exports = new(function() {
         s = '|' + data.join('|') + '|';
         hide = !this.matches(s, q, n.vCase);
       }
-      if(app.opt.cHide) n.vData[i].n.classList[hide ? 'add' : 'remove'](app.opt.cHide);
+      if(app.opt.cHide) n.vData[i].n.classList[hide ? 'add' : 'remove'](app.opt.cHide, this.opt.cUnmatch);
       else n.vData[i].n.style.display = hide ? 'none' : '';
       if(this.opt.cShow) n.vData[i].n.classList[hide ? 'remove' : 'add'](this.opt.cShow);
       n.vData[i].v = !hide;
@@ -405,7 +407,7 @@ module.exports = new(function() {
     s = this.skipComma
       ? s.replace(/(\$|,|\s)/g, '')
       : s.replace(/(\$|\s)/g, '').replace(',', '.');
-    s = parseFloat(s);
+    s = parseFloat(s.replace(/\u2212/g, '-')); // unicode minus
     if(isNaN(s) && nanToZero) s = 0;
     return s;
   }

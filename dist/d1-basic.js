@@ -1,4 +1,4 @@
-/*! d1-web v1.2.80 */
+/*! d1-web v1.2.82 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -232,8 +232,12 @@ module.exports = new function () {
   // debug
 
 
+  this.isDebug = function (l) {
+    return this.opt.debug >= (l || 1) || location.href.indexOf('d1debug') != -1;
+  };
+
   this.dbg = function (s, l, e) {
-    if (this.opt.debug >= (l || 1) || location.href.indexOf('d1debug') != -1) console[e ? 'error' : 'log'](s);
+    if (this.isDebug(l)) console[e ? 'error' : 'log'](s);
   }; // sequence for IDs of generated nodes
 
 

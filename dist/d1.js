@@ -1,4 +1,4 @@
-/*! d1-web v1.2.80 */
+/*! d1-web v1.2.82 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -231,8 +231,12 @@ module.exports = new function () {
   // debug
 
 
+  this.isDebug = function (l) {
+    return this.opt.debug >= (l || 1) || location.href.indexOf('d1debug') != -1;
+  };
+
   this.dbg = function (s, l, e) {
-    if (this.opt.debug >= (l || 1) || location.href.indexOf('d1debug') != -1) console[e ? 'error' : 'log'](s);
+    if (this.isDebug(l)) console[e ? 'error' : 'log'](s);
   }; // sequence for IDs of generated nodes
 
 
@@ -1091,7 +1095,7 @@ module.exports = new function () {
 
   this.parse = function (s) {
     var d = '';
-    var m = (s || '').match(/^(\d+)(\D)(\d+)\D(\d+)(\D(\d+))?(\D(\d+))?(\D(\d+))?(\D(\d+))?$/);
+    var m = (s || '').match(/^(\d+)([\-\.\/\s])(\d+)[\-\.\/\s](\d+)(\D(\d+))?(\D(\d+))?(\D(\d+))?(\D(\d+))?$/);
 
     if (m) {
       var x;
@@ -3570,6 +3574,8 @@ module.exports = new function () {
     //cHide: 'hide', // row-hide - non-matching row (if not set the "display:none" is used)
     cSortable: '',
     // col-sort - sortable column's header
+    cUnmatch: 'unmatch',
+    cUnpage: 'unpage',
     cAsc: 'bg-y',
     // col-asc - !non-empty! - header of currently sorted column (ascending)
     cDesc: 'bg-w',
@@ -3654,8 +3660,8 @@ module.exports = new function () {
         row[j] = this.val(c[j], n.vCase);
         vals[j] = this.convert(row[j]);
         var type = vals[j][0] === '' ? 'x' : vals[j][1];
-        types[j][type]++; //c[j].title = type+': '+vals[j][0];
-        //c[j].setAttribute('data-cell', row[j]);
+        types[j][type]++;
+        if (app.isDebug()) c[j].title = type + ': ' + vals[j][0]; //c[j].setAttribute('data-cell', row[j]);
       }
 
       a.push({
@@ -3708,11 +3714,11 @@ module.exports = new function () {
       var j = 0;
 
       for (var i = 0; i < n.vData.length; i++) {
-        var hide = n.vData[i].n.classList.contains(app.opt.cHide);
+        var hide = n.vData[i].n.classList.contains(this.opt.cUnmatch);
 
         if (!hide) {
           var on = j >= skip && j <= last;
-          n.vData[i].n.classList[on ? 'remove' : 'add'](app.opt.cToggle, app.opt.cOff);
+          n.vData[i].n.classList[on ? 'remove' : 'add'](app.opt.cHide, this.opt.cUnpage);
           j++;
         }
       }
@@ -3850,7 +3856,7 @@ module.exports = new function () {
         hide = !this.matches(s, q, n.vCase);
       }
 
-      if (app.opt.cHide) n.vData[i].n.classList[hide ? 'add' : 'remove'](app.opt.cHide);else n.vData[i].n.style.display = hide ? 'none' : '';
+      if (app.opt.cHide) n.vData[i].n.classList[hide ? 'add' : 'remove'](app.opt.cHide, this.opt.cUnmatch);else n.vData[i].n.style.display = hide ? 'none' : '';
       if (this.opt.cShow) n.vData[i].n.classList[hide ? 'remove' : 'add'](this.opt.cShow);
       n.vData[i].v = !hide;
       if (!hide) cnt++;
@@ -3988,7 +3994,8 @@ module.exports = new function () {
   this.nr = function (s, nanToZero) {
     //use Number instead of parseFloat for more strictness
     s = this.skipComma ? s.replace(/(\$|,|\s)/g, '') : s.replace(/(\$|\s)/g, '').replace(',', '.');
-    s = parseFloat(s);
+    s = parseFloat(s.replace(/\u2212/g, '-')); // unicode minus
+
     if (isNaN(s) && nanToZero) s = 0;
     return s;
   };
