@@ -23,8 +23,8 @@
 				var i, icons = Object.keys(d1.plugins.icons.icons);
 				for(i=0; i<icons.length; i++){
 					var dd = d1.ins('a', icons[i], {title: 1+i, className: 'pad hover'}, d);
-					dd.style.width = '6.4em';
-					dd.style.margin = '.1em';
+					dd.style.width = '8em';
+					dd.style.margin = '0';//'.1em';
 					d1.plugins.icons.addIcon(icons[i], dd, 0);
 				}
 			}
