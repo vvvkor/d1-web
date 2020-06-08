@@ -197,12 +197,12 @@ module.exports = new(function() {
     //console.log('pagenav', m, min, max, last, min + m - 1);
     if(max>1){
       if(last>m) app.ins('li', app.ins('a', app.i('first', '&laquo;'), {href: '#1'}), {}, ul);
-      app.ins('li', app.ins('a', app.i('west', '&lsaquo;'), {href: '#' + Math.max(1, cur-1)}), {}, ul);
+      app.ins('li', app.ins('a', app.i('left', '&lsaquo;'), {href: '#' + Math.max(1, cur-1)}), {}, ul);
       for(var i=min; i<=max; i++){
         let a = app.ins('a', i, {href: '#' + i, className: (i==cur ? 'act bg' : '')});
         app.ins('li', a, {}, ul);
       }
-      app.ins('li', app.ins('a', app.i('east', '&rsaquo;'), {href: '#' + Math.min(cur+1, last)}), {}, ul);
+      app.ins('li', app.ins('a', app.i('right', '&rsaquo;'), {href: '#' + Math.min(cur+1, last)}), {}, ul);
       if(last>m) app.ins('li', app.ins('a', app.i('last', '&raquo;'), {href: '#' + last}), {}, ul);
     }
   }

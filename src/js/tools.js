@@ -110,9 +110,9 @@ module.exports = new(function () {
     n.appendChild(d);
     d.style.position = 'relative';
     d.style.paddingRight = '1em';
-    let a = app.ins('a', app.i('up', '&uarr;'), {href:'#', className: 'small close text-n hide-print'}, d  );
+    let a = app.ins('a', app.i('asc', '&uarr;'), {href:'#', className: 'small close text-n hide-print'}, d  );
     //n.style.position = 'relative';
-    //let a = app.ins('a', app.i('up', '&uarr;'), {href:'#', className: 'small close text-n hide-print'}, n);
+    //let a = app.ins('a', app.i('asc', '&uarr;'), {href:'#', className: 'small close text-n hide-print'}, n);
   }
 
   this.onResize = function() {

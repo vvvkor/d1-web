@@ -1,4 +1,4 @@
-/*! d1-web v1.2.84 */
+/*! d1-web v1.2.85 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -3036,7 +3036,7 @@ module.exports = new function () {
         className: 'input-tools nobr'
       }, this.opt.inPop ? pop : m, 1); //icons container
 
-      i = app.ins('a', app.i('right', '&rarr;'), {
+      i = app.ins('a', app.i('forward', '&rarr;'), {
         href: '#goto',
         className: 'let lookup-goto'
       }, ic);
@@ -3760,7 +3760,7 @@ module.exports = new function () {
       if (last > m) app.ins('li', app.ins('a', app.i('first', '&laquo;'), {
         href: '#1'
       }), {}, ul);
-      app.ins('li', app.ins('a', app.i('west', '&lsaquo;'), {
+      app.ins('li', app.ins('a', app.i('left', '&lsaquo;'), {
         href: '#' + Math.max(1, cur - 1)
       }), {}, ul);
 
@@ -3772,7 +3772,7 @@ module.exports = new function () {
         app.ins('li', a, {}, ul);
       }
 
-      app.ins('li', app.ins('a', app.i('east', '&rsaquo;'), {
+      app.ins('li', app.ins('a', app.i('right', '&rsaquo;'), {
         href: '#' + Math.min(cur + 1, last)
       }), {}, ul);
       if (last > m) app.ins('li', app.ins('a', app.i('last', '&raquo;'), {
@@ -4315,11 +4315,11 @@ module.exports = new function () {
     n.appendChild(d);
     d.style.position = 'relative';
     d.style.paddingRight = '1em';
-    var a = app.ins('a', app.i('up', '&uarr;'), {
+    var a = app.ins('a', app.i('asc', '&uarr;'), {
       href: '#',
       className: 'small close text-n hide-print'
     }, d); //n.style.position = 'relative';
-    //let a = app.ins('a', app.i('up', '&uarr;'), {href:'#', className: 'small close text-n hide-print'}, n);
+    //let a = app.ins('a', app.i('asc', '&uarr;'), {href:'#', className: 'small close text-n hide-print'}, n);
   };
 
   this.onResize = function () {

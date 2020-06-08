@@ -63,7 +63,7 @@ module.exports = new(function () {
     let i = null;
     if(app.attr(n, this.opt.aUrl)){
       let ic = app.ins('span', '', {className:'input-tools nobr'}, this.opt.inPop ? pop : m, 1);//icons container
-      i = app.ins('a', app.i('right', '&rarr;'), {href: '#goto', className: 'let lookup-goto'}, ic);
+      i = app.ins('a', app.i('forward', '&rarr;'), {href: '#goto', className: 'let lookup-goto'}, ic);
       i.style.cursor = 'pointer';
       app.ins('', ' ', {}, ic, -1);
     }
