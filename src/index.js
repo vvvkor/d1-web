@@ -3,8 +3,10 @@ require('./js/polyfill.js');
 let app = require('./js/app.js');
 
 [
+  'code', /* should be first */
+  'icons', 
   'toggle', 'dialog', 'gallery',
-  'fetch', 'icons', 'tablex', 'code',
+  'fetch', 'tablex',
   'calendar', 'lookup', 'edit', 'valid',
   'tools', 'form', 'keepform', 'items', 'filter',
   'fliptable', 'swipe', 'scroll',

@@ -1,4 +1,4 @@
-/*! d1-web v1.2.85 */
+/*! d1-web v1.2.86 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -1455,7 +1455,9 @@ __webpack_require__(2);
 
 var app = __webpack_require__(0);
 
-['toggle', 'dialog', 'gallery', 'fetch', 'icons', 'tablex', 'code', 'calendar', 'lookup', 'edit', 'valid', 'tools', 'form', 'keepform', 'items', 'filter', 'fliptable', 'swipe', 'scroll', 'theme'].forEach(function (p) {
+['code',
+/* should be first */
+'icons', 'toggle', 'dialog', 'gallery', 'fetch', 'tablex', 'calendar', 'lookup', 'edit', 'valid', 'tools', 'form', 'keepform', 'items', 'filter', 'fliptable', 'swipe', 'scroll', 'theme'].forEach(function (p) {
   return app.plug(__webpack_require__(9)("./" + p + ".js"));
 }); //let opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}};
 
