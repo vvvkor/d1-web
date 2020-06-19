@@ -1,4 +1,4 @@
-/*! d1-web v1.2.87 */
+/*! d1-web v1.2.88 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -909,8 +909,8 @@ mark {
     }
 
     .topbar.off {
-        top: -2.6rem;
-        top: calc(-0.1rem - var(--topbar));
+        top: -2.8rem;
+        top: calc(-0.3rem - var(--topbar));
     }
 
     .topbar:not(.hide)+* {

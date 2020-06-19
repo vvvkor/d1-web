@@ -468,7 +468,7 @@ mark{background-color:var(--bg-warning);}
 
 	/* topbar */
 	
-	.topbar.off{top:calc(-.1rem - var(--topbar));}
+	.topbar.off{top:calc(-.3rem - var(--topbar));}
 	.topbar:not(.hide)+*{margin-top:var(--topbar);}/*?*/
 	/* option 1. covers previous if position is relative */
 	/*
