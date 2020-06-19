@@ -1,6 +1,6 @@
 {
   "name": "d1-web",
-  "version": "1.2.88",
+  "version": "1.2.89",
   "description": "Lightweight responsive front-end framework",
   "main": "dist/d1.js",
   "directories": {
