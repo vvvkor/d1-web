@@ -1,4 +1,4 @@
-/*! d1-web v1.2.86 */
+/*! d1-web v1.2.87 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -913,12 +913,12 @@ mark {
         top: calc(-0.1rem - var(--topbar));
     }
 
-    .topbar+* {
+    .topbar:not(.hide)+* {
         margin-top: 2.5rem;
         margin-top: var(--topbar);
     }
 
-    .topbar~* [id] {
+    .topbar:not(.hide)~* [id] {
         scroll-margin-top: 3.5rem;
         scroll-margin-top: calc(1rem + var(--topbar));
     }
@@ -933,7 +933,7 @@ mark {
         box-sizing: border-box;
     }
 
-    .topbar~* .stick {
+    .topbar:not(.hide)~* .stick {
         top: 2.5rem;
         top: var(--topbar);
         max-height: calc(100vh - 2.5rem);
