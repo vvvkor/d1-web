@@ -42,6 +42,7 @@ module.exports = new(function () {
   };
 
   this.init = function () {
+    app.e('a[data-href]', n => n.href = app.attr(n, 'data-href'));
     app.listen('esc', e => this.esc(e));
     app.listen('hashchange', e => this.onHash(e));
     app.listen('keydown', e => this.onKey(e));

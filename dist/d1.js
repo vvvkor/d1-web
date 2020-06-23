@@ -1,4 +1,4 @@
-/*! d1-web v1.2.89 */
+/*! d1-web v1.2.90 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -475,6 +475,9 @@ module.exports = new function () {
   this.init = function () {
     var _this = this;
 
+    app.e('a[data-href]', function (n) {
+      return n.href = app.attr(n, 'data-href');
+    });
     app.listen('esc', function (e) {
       return _this.esc(e);
     });

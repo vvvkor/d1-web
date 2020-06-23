@@ -6,8 +6,8 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 
 	<!-- CDN -->
-	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.2.89/dist/d1.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.2.89/dist/d1.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.2.90/dist/d1.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.2.90/dist/d1.min.js"></script>
 	<!-- local-npm-src ->
 	<link href="../src/index.css" rel="stylesheet">
 	<script src="../dist/d1.min.js"></script>
@@ -58,6 +58,7 @@
 </head>
 <body class="js-theme" data-d1='{"hOk":"#yes","debug":false,"disable":[
 "-scroll","-theme","-valid","-icons"],"plug":{"toggle":{"keepHash":true},"gallery":{"idPrefix":"image-"},"theme":{"fonts":["sans-serif","serif","monospace","PT Sans","Roboto Slab"]},"-scroll":{"qHideOnScroll":".drawer[id]"},"-icons":{"pSvg":"icon-"}}}'>
+<a href="#no-js" data-href="#js">if-js</a>
 <div
   class="topbar toggle shade  row let center fit hide-print"
   id="topline"
@@ -66,7 +67,7 @@
 	<a href="#top" class="pad -let"><b>d1</b></a>
 	<code class="pad nobr">npm i d1-web</code>
 	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1-web" title="GitHub" class="pad -let">GitHub</a>
-	<a class="shift pad text-n">v1.2.89</a>
+	<a class="shift pad text-n">v1.2.90</a>
 	<a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="pad -let" data-ico="download" title="Download">Download</a>
 </div>
 
@@ -143,6 +144,7 @@
 			<ul id="n-util" class="-toggle">
 			<li><a href="#fetch">Fetch</a>
 			<li><a href="#responsive-class">Responsive class</a>
+			<li><a href="#conditional-link">Conditional link</a>
 			<li><a href="#toggle-class">Toggle class</a>
 			<li><a href="#filters">Filter</a>
 			<li><a href="#items">Items</a>
@@ -1522,6 +1524,14 @@ Toggles on resize.
 	</div>
 </div>
  
+<h3 id="conditional-link">Conditional link</h3>
+
+<p>To make link change its URL when Javascript is enabled, use <code>[data-href]</code> attribute.</p>
+
+<div class="code" id="demo-toggle-class">
+  <a href="#no-js" data-href="#with-js">link</a>
+</div>
+
 
 <h3 id="toggle-class">Toggle class</h3>
 
