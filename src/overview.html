@@ -56,38 +56,39 @@
 
 <!-- container -->
 <div class="-wrap">
-  <!-- menu -->
-  <header class="bg -bg-n -topbar -toggle">
-	  <div class="hide-desktop">
-		<a href="#nav" class="pad hover ico-menu" title="Menu">&equiv;</a>
-		<a href="?" class="pad"><b>d1</b> <span class="text-n">v0.0.0</span></a>
-	</div>
-	  <ul class="nav flip hover target-mobile" id="nav">
-		<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v0.0.0</span></a></li>
-		<li><a href="index.html" class="icon-text">Docs</a>
-		<!--li><a class="icon-pin"><span class="hide-desktop">Hide</span></a-->
-		<li>
-			<a>Parent</a>
-			<ul>
-				<li><a>Subitem<small class="text-n"><br>info</small></a>
-					<ul>
-						<li><a href="#n2" class="bg-y text-y">Deep</a></li>
-					</ul>
-				</li>
-			</ul>
-		</li>
-		<li id="navi-search" class="shift">
-			<form>
-				<input name="q" type="search" size="5" title="search string" class="rad">&nbsp;<input type="submit" value="Find">
-			</form>
-		</li>
-		<li>
-			<a>Last</a>
-			<ul>
-				<li><a href="#n3">Subitem</a></li>
-			</ul>
-		</li>
-	  </ul>
+	<!-- menu -->
+	<header class="bg -bg-n -topbar -toggle">
+		<div class="hide-desktop">
+			<a href="#nav" class="pad hover ico-menu" title="Menu">&equiv;</a>
+			<a href="?" class="pad"><b>d1</b> <span class="text-n">v0.0.0</span></a>
+		</div>
+		
+		<ul class="nav flip hover target-mobile" id="nav">
+			<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v0.0.0</span></a></li>
+			<li><a href="index.html" class="icon-text">Docs</a>
+			<!--li><a class="icon-pin"><span class="hide-desktop">Hide</span></a-->
+			<li>
+				<a>Parent</a>
+				<ul>
+					<li><a>Subitem<small class="text-n"><br>info</small></a>
+						<ul>
+							<li><a href="#n2" class="bg-y text-y">Deep</a></li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+			<li id="navi-search" class="shift">
+				<form>
+					<input name="q" type="search" size="5" title="search string" class="rad">&nbsp;<input type="submit" value="Find">
+				</form>
+			</li>
+			<li>
+				<a>Last</a>
+				<ul>
+					<li><a href="#n3">Subitem</a></li>
+				</ul>
+			</li>
+		</ul>
 	</header>
 
   <!-- row -->
@@ -107,8 +108,8 @@
 		<div class="pad mar shade">
 			<h3 class="mar">Page setup <b class="small btn bg-e hide-js" title="Requires Javascript">JS</b></h3>
 			<p>
-			<label><input type="checkbox" data-nodes="#topbar" data-set="topbar toggle shade  row let center fit" data-unset="topbar hide off"> Topbar</label><br>
-			<label><input type="checkbox" data-nodes="body" data-set="invert"> Invert</label>
+			<label><input type="checkbox" data-nodes="#topbar" data-set="topbar toggle shade  row let center fit" data-unset="topbar hide off" id="setup-topbar" class="mem"> Topbar</label><br>
+			<label><input type="checkbox" data-nodes="body" data-set="invert" id="setup-invert" class="mem"> Invert</label>
 				<span class="text-i tip ico-info" title="Not supported in  IE and Edge 15-">[!]</span>
 				<br>
 			<label><input type="checkbox" data-nodes="html" data-set="scroller" id="custom-scroll" class="mem"> Custom scroll</label>
