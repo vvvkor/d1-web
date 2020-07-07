@@ -6,8 +6,8 @@
     <meta name="viewport" 
       content="width=device-width, initial-scale=1">
 	<!-- CDN -->
-	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.2.92/dist/d1.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.2.92/dist/d1.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.2.93/dist/d1.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.2.93/dist/d1.min.js"></script>
 	<!-- local-npm-src ->
 	<link href="../src/index.css" rel="stylesheet">
 	<script src="../dist/d1.min.js"></script>
@@ -49,45 +49,46 @@
   <body id="body" class="js-theme trans" data-d1='{"debug":false,"plug":{"toggle":{"keepHash":true},"theme":{"fonts":["sans-serif","serif","monospace","PT Sans","Roboto Slab"]}}}'>
 
 
-<div class="topbar toggle shade  row let" id="topbar">
+<div class="topbar toggle shade  row let hide off" id="topbar">
 	<a href="#x" class="pad hover">Topbar</a>
 	<a href="#x" class="pad hover shift">Right</a>
 </div>
 
 <!-- container -->
 <div class="-wrap">
-  <!-- menu -->
-  <header class="bg -bg-n -topbar -toggle">
-	  <div class="hide-desktop">
-		<a href="#nav" class="pad hover ico-menu" title="Menu">&equiv;</a>
-		<a href="?" class="pad"><b>d1</b> <span class="text-n">v1.2.92</span></a>
-	</div>
-	  <ul class="nav flip hover target-mobile" id="nav">
-		<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v1.2.92</span></a></li>
-		<li><a href="index.html" class="icon-text">Docs</a>
-		<!--li><a class="icon-pin"><span class="hide-desktop">Hide</span></a-->
-		<li>
-			<a>Parent</a>
-			<ul>
-				<li><a>Subitem<small class="text-n"><br>info</small></a>
-					<ul>
-						<li><a href="#n2" class="bg-y text-y">Deep</a></li>
-					</ul>
-				</li>
-			</ul>
-		</li>
-		<li id="navi-search" class="shift">
-			<form>
-				<input name="q" type="search" size="5" title="search string" class="rad">&nbsp;<input type="submit" value="Find">
-			</form>
-		</li>
-		<li>
-			<a>Last</a>
-			<ul>
-				<li><a href="#n3">Subitem</a></li>
-			</ul>
-		</li>
-	  </ul>
+	<!-- menu -->
+	<header class="bg -bg-n -topbar -toggle">
+		<div class="hide-desktop">
+			<a href="#nav" class="pad hover ico-menu" title="Menu">&equiv;</a>
+			<a href="?" class="pad"><b>d1</b> <span class="text-n">v1.2.93</span></a>
+		</div>
+		
+		<ul class="nav flip hover target-mobile" id="nav">
+			<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v1.2.93</span></a></li>
+			<li><a href="index.html" class="icon-text">Docs</a>
+			<!--li><a class="icon-pin"><span class="hide-desktop">Hide</span></a-->
+			<li>
+				<a>Parent</a>
+				<ul>
+					<li><a>Subitem<small class="text-n"><br>info</small></a>
+						<ul>
+							<li><a href="#n2" class="bg-y text-y">Deep</a></li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+			<li id="navi-search" class="shift">
+				<form>
+					<input name="q" type="search" size="5" title="search string" class="rad">&nbsp;<input type="submit" value="Find">
+				</form>
+			</li>
+			<li>
+				<a>Last</a>
+				<ul>
+					<li><a href="#n3">Subitem</a></li>
+				</ul>
+			</li>
+		</ul>
 	</header>
 
   <!-- row -->
@@ -107,8 +108,8 @@
 		<div class="pad mar shade">
 			<h3 class="mar">Page setup <b class="small btn bg-e hide-js" title="Requires Javascript">JS</b></h3>
 			<p>
-			<label><input type="checkbox" data-nodes="#topbar" data-set="topbar toggle shade  row let center fit" data-unset="topbar hide off"> Topbar</label><br>
-			<label><input type="checkbox" data-nodes="body" data-set="invert"> Invert</label>
+			<label><input type="checkbox" data-nodes="#topbar" data-set="topbar toggle shade  row let center fit" data-unset="topbar hide off" id="setup-topbar" class="mem"> Topbar</label><br>
+			<label><input type="checkbox" data-nodes="body" data-set="invert" id="setup-invert" class="mem"> Invert</label>
 				<span class="text-i tip ico-info" title="Not supported in  IE and Edge 15-">[!]</span>
 				<br>
 			<label><input type="checkbox" data-nodes="html" data-set="scroller" id="custom-scroll" class="mem"> Custom scroll</label>
