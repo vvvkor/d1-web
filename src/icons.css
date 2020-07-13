@@ -1,0 +1,14 @@
+/*! d1-web icons v0.0.0 */
+
+[class*="icon-"]:before{content:"";margin-right:var(--gap-s);display:inline-block;width:1em;height:1em;overflow:hidden;transform:translate(0,.15em) scale(1.2);background-position:50% 50%;background-size:contain;background-repeat:no-repeat;}
+
+[class*="icon-"]:before{filter:invert(1) sepia(1) grayscale(1) brightness(.6);}
+.btn[class*="icon-"]:before, button[class*="icon-"]:before,
+.btn [class*="icon-"]:before, button [class*="icon-"]:before{filter:invert(1);}
+
+/* add contrast(10) if originals not entirely black */
+[class*="icon-"].text-e:before{filter:invert(1) sepia(1) saturate(100) hue-rotate(300deg) saturate(100) brightness(.7);}
+[class*="icon-"].text-w:before{filter:invert(1) sepia(1) saturate(100) hue-rotate(320deg) saturate(80) brightness(.9);}
+[class*="icon-"].text-y:before{filter:invert(1) sepia(1) saturate(60) hue-rotate(60deg) saturate(100) brightness(.55);}
+[class*="icon-"].text-i:before{filter:invert(1) sepia(1) saturate(100) hue-rotate(178.3deg) saturate(30) brightness(.65);}
+[class*="icon-"].text-n:before{filter:invert(1) sepia(1) grayscale(1) brightness(.6);}
