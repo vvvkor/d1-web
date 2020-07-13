@@ -2,7 +2,7 @@
   "name": "d1-web",
   "version": "1.4.1",
   "description": "Lightweight responsive front-end framework",
-  "main": "dist/d1.js",
+  "main": "dist/d1.css",
   "directories": {
     "doc": "docs"
   },
