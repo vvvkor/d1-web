@@ -1,4 +1,4 @@
-/*! d1-web v1.4.1 */
+/*! d1-web v1.4.2 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
