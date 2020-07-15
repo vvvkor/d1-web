@@ -565,7 +565,7 @@ mark{background-color:var(--bg-warning);}
 /* helpers */
 
 .fit{margin:0;padding:0;border-radius:0;box-shadow:none;}
-	.fit:not(hr){border:none;}
+	.fit:not(hr):not(.bord){border:none;}
 	ul.fit li{list-style:none;}
 	a.let{color:inherit;}
 	img.fit{display:block;}

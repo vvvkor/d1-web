@@ -1,4 +1,4 @@
-/*! d1-web v1.4.2 */
+/*! d1-web v1.4.3 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -1264,7 +1264,7 @@ mark {
     box-shadow: none;
 }
 
-.fit:not(hr) {
+.fit:not(hr):not(.bord) {
     border: none;
 }
 
