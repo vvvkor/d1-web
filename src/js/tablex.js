@@ -187,22 +187,23 @@ module.exports = new(function() {
   
   this.setPageNav = function(n){
     let m = 1 * app.attr(n, this.opt.aPages, 10);
-    let h = Math.ceil((m - 1) / 2);
+    let h = Math.floor((m + 1) / 2); // shift to first
+    //let h = Math.ceil((m + 1) / 2); // shift to last
     let ul = n.vPageNav;
     let last = Math.ceil(n.vCount / n.vLimit);
-    let min = Math.max(1, Math.min(n.vPage - h, last - m + 1));
+    let min = Math.max(1, Math.min(n.vPage - h + 1, last - m + 1));
     let max = Math.min(last, min + m - 1);
     let cur = Math.max(Math.min(n.vPage, last), 1);
     app.clr(ul);
     //console.log('pagenav', m, min, max, last, min + m - 1);
     if(max>1){
       if(last>m) app.ins('li', app.ins('a', app.i('first', '&laquo;'), {href: '#1'}), {}, ul);
-      app.ins('li', app.ins('a', app.i('left', '&lsaquo;'), {href: '#' + Math.max(1, cur-1)}), {}, ul);
+      app.ins('li', app.ins('a', app.i('left', '&lsaquo;'), {href: '#' + Math.max(1, cur-1), className: cur==1 ? 'inact' : ''}), {}, ul);
       for(var i=min; i<=max; i++){
         let a = app.ins('a', i, {href: '#' + i, className: (i==cur ? 'act bg' : '')});
         app.ins('li', a, {}, ul);
       }
-      app.ins('li', app.ins('a', app.i('right', '&rsaquo;'), {href: '#' + Math.min(cur+1, last)}), {}, ul);
+      app.ins('li', app.ins('a', app.i('right', '&rsaquo;'), {href: '#' + Math.min(cur+1, last), className: cur==last ? 'inact' : ''}), {}, ul);
       if(last>m) app.ins('li', app.ins('a', app.i('last', '&raquo;'), {href: '#' + last}), {}, ul);
     }
   }

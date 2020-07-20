@@ -1,4 +1,4 @@
-/*! d1-web v1.4.4 */
+/*! d1-web v1.4.6 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -269,8 +269,8 @@ a.pad, a.btn {
     line-height: normal;
 }
 
-.hover:not(table) a:hover, .hover:not(table) .act, a.hover:hover, a.hover.act,
-table.hover tr:hover {
+.hover:not(table) a:not(.inact):hover, .hover:not(table) .act, a.hover:hover,
+a.hover.act, table.hover tr:hover {
     color: inherit;
     color: var(--text-hilite);
     background-color: rgba(0, 0, 0, .05);
@@ -997,7 +997,7 @@ mark {
         outline: none;
     }
 
-    button[disabled], [type="submit"][disabled] {
+    button[disabled], [type="submit"][disabled], .inact {
         opacity: .5;
     }
 

@@ -1,4 +1,4 @@
-/*! d1-web v1.4.4 */
+/*! d1-web v1.4.6 */
 
 /* @import url("css/columns.css"); */
 
@@ -50,7 +50,7 @@ x .unpop
 - .gallery
 - .pic
 - .item, .over
-+ (.act)
++ (.act, .inact)
 - (.is-on)
 - (.is-off)
 - .not-, .or, .or-
@@ -233,7 +233,7 @@ abbr, a /*, .nav a, a.close, a.pad, a.btn,*/{text-decoration:none;}
 a.pad, a.btn{display:inline-block;line-height:normal;}
 
 /* hilite */
-.hover:not(table) a:hover, .hover:not(table) .act, a.hover:hover, a.hover.act, table.hover tr:hover{color:var(--text-hilite);background-color:var(--bg-hilite);}
+.hover:not(table) a:not(.inact):hover, .hover:not(table) .act, a.hover:hover, a.hover.act, table.hover tr:hover{color:var(--text-hilite);background-color:var(--bg-hilite);}
 table.hover tr:hover a{color:var(--text-hilite);}
 
 /* image */
@@ -496,7 +496,7 @@ mark{background-color:var(--bg-warning);}
 		.btn:not(a):not(input):not(button):not(.pad), a.btn.fit,button.fit,[type="submit"].fit{padding:0 var(--gap-s);}
 	a.btn:hover, button:hover:not([disabled]), [type="submit"]:hover:not([disabled]),
 	a.btn:focus, button:focus, input:focus, select:focus, textarea:focus, [contenteditable]:focus{box-shadow:0 0 0 .15em var(--focus);outline:none;}
-	button[disabled],[type="submit"][disabled]{opacity:.5;}
+	button[disabled],[type="submit"][disabled],.inact{opacity:.5;}
 	input[readonly]{background-color:var(--bg-lite);}
 	/*form:focus-within*/ [name]:invalid, [name]:invalid~.subinput{/*box-shadow:0 0 0 .08em rgba(255,200,80,.8);*/border-color:var(--text-danger);}
 		[type="checkbox"]:invalid+span, [type="radio"]:invalid+span{color:var(--text-danger);}

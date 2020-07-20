@@ -1,4 +1,4 @@
-/*! d1-web v1.4.4 */
+/*! d1-web v1.4.6 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -2303,15 +2303,15 @@ module.exports = new function () {
   this.name = 'example';
   this.opt = {};
 
-  this.init = function () {} //app.h('click', 'a.example', e => this.onClick(e));
-
+  this.init = function () {//app.h('click', 'a.example', e => this.onClick(e));
+  };
   /*
   this.onClick = function(e){
     let n = e.target; //e.recv
   }
   */
   //app.plug(this);
-  ;
+
 }();
 
 /***/ }),
@@ -3754,10 +3754,12 @@ module.exports = new function () {
 
   this.setPageNav = function (n) {
     var m = 1 * app.attr(n, this.opt.aPages, 10);
-    var h = Math.ceil((m - 1) / 2);
+    var h = Math.floor((m + 1) / 2); // shift to first
+    //let h = Math.ceil((m + 1) / 2); // shift to last
+
     var ul = n.vPageNav;
     var last = Math.ceil(n.vCount / n.vLimit);
-    var min = Math.max(1, Math.min(n.vPage - h, last - m + 1));
+    var min = Math.max(1, Math.min(n.vPage - h + 1, last - m + 1));
     var max = Math.min(last, min + m - 1);
     var cur = Math.max(Math.min(n.vPage, last), 1);
     app.clr(ul); //console.log('pagenav', m, min, max, last, min + m - 1);
@@ -3767,7 +3769,8 @@ module.exports = new function () {
         href: '#1'
       }), {}, ul);
       app.ins('li', app.ins('a', app.i('left', '&lsaquo;'), {
-        href: '#' + Math.max(1, cur - 1)
+        href: '#' + Math.max(1, cur - 1),
+        className: cur == 1 ? 'inact' : ''
       }), {}, ul);
 
       for (var i = min; i <= max; i++) {
@@ -3779,7 +3782,8 @@ module.exports = new function () {
       }
 
       app.ins('li', app.ins('a', app.i('right', '&rsaquo;'), {
-        href: '#' + Math.min(cur + 1, last)
+        href: '#' + Math.min(cur + 1, last),
+        className: cur == last ? 'inact' : ''
       }), {}, ul);
       if (last > m) app.ins('li', app.ins('a', app.i('last', '&raquo;'), {
         href: '#' + last
