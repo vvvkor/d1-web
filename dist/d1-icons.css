@@ -1,4 +1,4 @@
-/*! d1-web icons v1.4.3 */
+/*! d1-web icons v1.4.4 */
 
 [class*="icon-"]:before {
     content: "";
@@ -11,6 +11,10 @@
     background-position: 50% 50%;
     background-size: contain;
     background-repeat: no-repeat;
+}
+
+[class*=icon-].ico:before {
+    margin: 0;
 }
 
 [class*="icon-"]:before {
