@@ -6,8 +6,8 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 
 	<!-- CDN -->
-	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.4.6/dist/d1.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.4.6/dist/d1.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/d1-web@1.4.8/dist/d1.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/d1-web@1.4.8/dist/d1.min.js"></script>
 	<!-- local-npm-src ->
 	<link href="../src/index.css" rel="stylesheet">
 	<script src="../dist/d1.min.js"></script>
@@ -65,9 +65,9 @@
 >
 	<a href="#menu" class="pad -let hide-desktop" data-ico="menu" title="Menu">&equiv;</a>
 	<a href="#top" class="pad -let"><b>d1</b></a>
-	<code class="pad nobr">npm i d1-web</code>
+	<code class="pad nobr hide-mobile">npm i d1-web</code>
+	<a class="shift pad text-n">v1.4.8</a>
 	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1-web" title="GitHub" class="pad -let">GitHub</a>
-	<a class="shift pad text-n">v1.4.6</a>
 	<a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="pad -let" data-ico="download" title="Download">Download</a>
 </div>
 
@@ -1216,7 +1216,8 @@ Use link pointing at element with <code>.target</code> class.
 
 <p>
 Inside <code>div</code> with <code>.pop</code> class, use link pointing at sibling <code>div</code> element.<br>
-Optionally add <code>.shift</code> class to the target element to pop up leftwards.<br>
+Add <code>.shift</code> class to the target element to pop up leftwards.<br>
+Add <code>.fit</code> class to the target element to allow its small width.<br>
 Popups can be nested.
 </p>
 
@@ -1276,7 +1277,8 @@ and expand it to dropdown navbar on large screen.
 <label><input name="nav-let" type="checkbox" data-nodes="#navi" data-set="let"> Stack items on any screen <code>.let</code></label><br>
 <label><input name="nav-center" type="checkbox" data-nodes="#navi" data-set="center"> Center items vertically <code>.center</code></label><br>
 <label><input name="nav-subtitles" type="checkbox" data-nodes="#navi small" data-set="text-n" data-unset="hide" checked> Show subtitles</label><br>
-<label><input name="nav-shift" type="checkbox" data-nodes="#navi-search" data-set="shift" checked> Shift some list item(s) to the right <code>li.shift</code></label>
+<label><input name="nav-shift" type="checkbox" data-nodes="#navi-search" data-set="shift" checked> Shift some list item(s) to the right <code>li.shift</code></label><br>
+<label><input name="nav-fit" type="checkbox" data-nodes="#navi" data-set="fit"> Allow small width of dropdowns <code>.fit</code></label>
 </fieldset>
 
 

@@ -1,4 +1,4 @@
-/*! d1-web v1.4.6 */
+/*! d1-web v0.0.0 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -550,13 +550,21 @@ ul.nav, .nav ul {
     position: absolute;
     left: 0;
     top: 100%;
-    min-width: 12em;
     max-width: 80vw;
+}
+
+.nav:not(.fit) ul:not(.fit), .pop>div:not(.fit) {
+    min-width: 12em;
 }
 
 .nav ul ul {
     left: 100%;
     top: 0;
+}
+
+.pop>div.shift {
+    left: auto;
+    right: 0;
 }
 
 .dlg {
@@ -875,7 +883,7 @@ mark {
         padding: var(--gaps-l);
     }
 
-    .nav:not(.let)>li.shift>ul, .nav:not(.let)>li.shift~li>ul, .pop>div.shift {
+    .nav:not(.let)>li.shift>ul, .nav:not(.let)>li.shift~li>ul {
         left: auto;
         right: 0;
     }

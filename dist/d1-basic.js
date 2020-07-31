@@ -1,4 +1,4 @@
-/*! d1-web v1.4.6 */
+/*! d1-web v1.4.7 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -307,13 +307,19 @@ module.exports = new function () {
 
   this.attr = function (n, a, def) {
     return n && n.hasAttribute(a) ? n.getAttribute(a) : def !== undefined ? def : null;
+  };
+
+  this.typeOf = function (v) {
+    return Object.prototype.toString.call(v).slice(8, -1).toLowerCase();
   }; // insert node
   //pos: -1=before, false=prepend, 0=append(default), 1=after
 
 
   this.ins = function (tag, t, attrs, n, pos) {
     var c = document.createElement(tag || 'span');
-    if (t && t.nodeType) c.appendChild(t);else if (t) c.innerHTML = t;
+    if (this.typeOf(t) === 'array') t.forEach(function (m) {
+      return m.nodeType ? c.appendChild(m) : c.innerHTML += m;
+    });else if (t && t.nodeType) c.appendChild(t);else if (t) c.innerHTML = t;
 
     if (attrs) {
       for (var i in attrs) {

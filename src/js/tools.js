@@ -14,7 +14,7 @@ module.exports = new(function () {
     aUnset: 'data-unset',
     aAttr: 'data-attr',
     cMem: 'mem',
-    qTop: 'h2[id], h3[id], h4[id], h5[id], h6[id]', // h1[id],
+    qHeading: 'h2[id], h3[id], h4[id], h5[id], h6[id]', // h1[id],
     minDesktop: 900
   };
 
@@ -26,7 +26,7 @@ module.exports = new(function () {
     app.e(this.opt.qSet, n => this.restore(n));
     app.e(this.opt.qSet, n => this.toggleClass(n));
     app.h('change', this.opt.qSetChange, e => this.toggleClass(e.target));
-    app.e(this.opt.qTop, n => this.addTopLink(n));
+    app.e(this.opt.qHeading, n => this.smartHeading(n));
     app.h('click', this.opt.qSetClick, e => this.toggleClass(e.recv, e));
     this.onResize();
     app.b([window], 'resize', e => this.onResize(e));
@@ -104,13 +104,15 @@ module.exports = new(function () {
     }
   }
 
-  this.addTopLink = function(n){
+  this.smartHeading = function(n){
     let d = app.ins('div', '', {});
     while(n.firstChild) d.appendChild(n.firstChild);
     n.appendChild(d);
     d.style.position = 'relative';
     d.style.paddingRight = '1em';
-    let a = app.ins('a', app.i('asc', '&uarr;'), {href:'#', className: 'small close text-n hide-print'}, d  );
+    app.ins('', ' ', {}, d);
+    app.ins('a', '#', {href: '#' + n.id, className: 'small text-n inact  hide-print'}, d);
+    app.ins('a', app.i('asc', '&uarr;'), {href: '#', className: 'small close text-n inact hide-print'}, d);
     //n.style.position = 'relative';
     //let a = app.ins('a', app.i('asc', '&uarr;'), {href:'#', className: 'small close text-n hide-print'}, n);
   }

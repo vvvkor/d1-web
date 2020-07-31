@@ -184,11 +184,16 @@ module.exports = new (function(){
     return (n && n.hasAttribute(a)) ? n.getAttribute(a) : (def !== undefined ? def : null);
   }
 
+  this.typeOf = function(v){
+    return Object.prototype.toString.call(v).slice(8, -1).toLowerCase();
+  }
+  
   // insert node
   //pos: -1=before, false=prepend, 0=append(default), 1=after
   this.ins = function(tag, t, attrs, n, pos) {
     let c = document.createElement(tag || 'span');
-    if (t && t.nodeType) c.appendChild(t);
+    if (this.typeOf(t) === 'array') t.forEach(m => m.nodeType ? c.appendChild(m) : c.innerHTML += m);
+    else if (t && t.nodeType) c.appendChild(t);
     else if (t) c.innerHTML = t;
     if (attrs) {
       for (let i in attrs) {

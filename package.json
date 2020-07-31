@@ -1,6 +1,6 @@
 {
   "name": "d1-web",
-  "version": "1.4.6",
+  "version": "1.4.8",
   "description": "Lightweight responsive front-end framework",
   "main": "dist/d1.css",
   "directories": {
@@ -55,7 +55,7 @@
     "postcss-discard-comments": "^2.0.4",
     "replace-in-file": "^3.4.4",
     "terser": "^4.8.0",
-    "webpack": "^4.43.0",
+    "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12"
   }
 }

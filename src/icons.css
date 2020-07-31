@@ -1,7 +1,8 @@
 /*! d1-web icons v0.0.0 */
 
 [class*="icon-"]:before{content:"";margin-right:var(--gap-s);display:inline-block;width:1em;height:1em;overflow:hidden;transform:translate(0,.15em) scale(1.2);background-position:50% 50%;background-size:contain;background-repeat:no-repeat;}
-[class*=icon-].ico:before{margin:0;}
+[class*=icon-]:empty:before{margin:0;}
+/*[class*=icon-].ico:before{margin:0;}*/
 
 [class*="icon-"]:before{filter:grayscale(1) brightness(8);}
 .btn[class*="icon-"]:before, button[class*="icon-"]:before,

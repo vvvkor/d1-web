@@ -1,4 +1,4 @@
-/*! d1-web v1.4.6 */
+/*! d1-web v1.4.7 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -306,13 +306,19 @@ module.exports = new function () {
 
   this.attr = function (n, a, def) {
     return n && n.hasAttribute(a) ? n.getAttribute(a) : def !== undefined ? def : null;
+  };
+
+  this.typeOf = function (v) {
+    return Object.prototype.toString.call(v).slice(8, -1).toLowerCase();
   }; // insert node
   //pos: -1=before, false=prepend, 0=append(default), 1=after
 
 
   this.ins = function (tag, t, attrs, n, pos) {
     var c = document.createElement(tag || 'span');
-    if (t && t.nodeType) c.appendChild(t);else if (t) c.innerHTML = t;
+    if (this.typeOf(t) === 'array') t.forEach(function (m) {
+      return m.nodeType ? c.appendChild(m) : c.innerHTML += m;
+    });else if (t && t.nodeType) c.appendChild(t);else if (t) c.innerHTML = t;
 
     if (attrs) {
       for (var i in attrs) {
@@ -4179,7 +4185,7 @@ module.exports = new function () {
     aUnset: 'data-unset',
     aAttr: 'data-attr',
     cMem: 'mem',
-    qTop: 'h2[id], h3[id], h4[id], h5[id], h6[id]',
+    qHeading: 'h2[id], h3[id], h4[id], h5[id], h6[id]',
     // h1[id],
     minDesktop: 900
   };
@@ -4202,8 +4208,8 @@ module.exports = new function () {
     app.h('change', this.opt.qSetChange, function (e) {
       return _this.toggleClass(e.target);
     });
-    app.e(this.opt.qTop, function (n) {
-      return _this.addTopLink(n);
+    app.e(this.opt.qHeading, function (n) {
+      return _this.smartHeading(n);
     });
     app.h('click', this.opt.qSetClick, function (e) {
       return _this.toggleClass(e.recv, e);
@@ -4315,7 +4321,7 @@ module.exports = new function () {
     }
   };
 
-  this.addTopLink = function (n) {
+  this.smartHeading = function (n) {
     var d = app.ins('div', '', {});
 
     while (n.firstChild) {
@@ -4325,9 +4331,14 @@ module.exports = new function () {
     n.appendChild(d);
     d.style.position = 'relative';
     d.style.paddingRight = '1em';
-    var a = app.ins('a', app.i('asc', '&uarr;'), {
+    app.ins('', ' ', {}, d);
+    app.ins('a', '#', {
+      href: '#' + n.id,
+      className: 'small text-n inact  hide-print'
+    }, d);
+    app.ins('a', app.i('asc', '&uarr;'), {
       href: '#',
-      className: 'small close text-n hide-print'
+      className: 'small close text-n inact hide-print'
     }, d); //n.style.position = 'relative';
     //let a = app.ins('a', app.i('asc', '&uarr;'), {href:'#', className: 'small close text-n hide-print'}, n);
   };

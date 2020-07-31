@@ -1,4 +1,4 @@
-/*! d1-web icons v1.4.6 */
+/*! d1-web icons v0.0.0 */
 
 [class*="icon-"]:before {
     content: "";
@@ -13,7 +13,7 @@
     background-repeat: no-repeat;
 }
 
-[class*=icon-].ico:before {
+[class*=icon-]:empty:before {
     margin: 0;
 }
 
