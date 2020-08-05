@@ -1,9 +1,9 @@
-/*! d1-web v1.4.9 */
+/*! d1-web v1.4.10 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
     --font-cap: var(--font);
-    --font-mono: monospace;
+    --font-mono: "PT Mono", monospace;
     --font-print: serif;
     --text: #000;
     --bg: #fff;
@@ -215,9 +215,9 @@ pre, code {
 }
 
 pre, code, kbd, samp {
-    font-family: monospace, monospace;
+    font-family: "PT Mono", monospace, monospace;
     font-family: var(--font-mono), monospace;
-    font-size: 1em;
+    font-size: 90%;
 }
 
 pre {
@@ -227,13 +227,24 @@ pre {
     padding: var(--gap-n);
 }
 
-code {
-    padding: 0 .2em;
-    padding: 0 var(--gap-xs);
+code, kbd {
+    padding: .2em .5em;
+    padding: var(--gap-xs) var(--gap-s);
 }
 
 pre code {
     padding: 0;
+    font-size: 100%;
+}
+
+code, kbd {
+    border-radius: .2em;
+    border-radius: var(--radius);
+}
+
+kbd {
+    border: thin solid rgba(0, 0, 0, .16);
+    border: var(--border);
 }
 
 abbr {
