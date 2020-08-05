@@ -76,10 +76,6 @@ Add the [distributed](https://github.com/vvvkor/d1-web/archive/master.zip) CSS a
 
 ## Todo
 
-- Overview page for demo and testing
-- Docs: describe options of modules, how to pass them
-- Docs: unify style of components description
-- Iconset as separate package
 - Add components: scrollspy, notify, sortable/dragsort, slides, scroll-into-view, count
 
 

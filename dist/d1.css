@@ -1,4 +1,4 @@
-/*! d1-web v1.4.8 */
+/*! d1-web v1.4.9 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -211,9 +211,13 @@ blockquote, pre, fieldset {
 }
 
 pre, code {
-    font-family: monospace;
-    font-family: var(--font-mono);
     white-space: pre-wrap;
+}
+
+pre, code, kbd, samp {
+    font-family: monospace, monospace;
+    font-family: var(--font-mono), monospace;
+    font-size: 1em;
 }
 
 pre {
@@ -234,6 +238,10 @@ pre code {
 
 abbr {
     border-bottom: thin dotted;
+}
+
+sub, sup {
+    line-height: 0;
 }
 
 a {

@@ -205,11 +205,13 @@ h1,h2,h3,h4,h5,h6{margin:3rem 0 1.5rem 0;line-height:1.3;font-family:var(--font-
 	h5{font-size:83%;}
 	h6{font-size:67%;}
 blockquote,pre,fieldset{padding:var(--gaps-n);}
-pre,code{font-family:var(--font-mono);white-space:pre-wrap;}
+pre,code{white-space:pre-wrap;}
+	pre,code,kbd,samp{font-family:var(--font-mono),monospace;font-size:1em;} /* normalize */
 pre{overflow:auto;max-height:80vh;padding:var(--gap-n);/*max-width:100%;*/}
 	code{padding:0 var(--gap-xs);}
 	pre code{padding:0;}
 abbr{border-bottom:thin dotted;}
+sub,sup{line-height:0em;} /* normalize line height */
 /* q{quotes:"`" "`";} */
 
 /* link */
