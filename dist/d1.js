@@ -1,4 +1,4 @@
-/*! d1-web v1.4.12 */
+/*! d1-web v1.4.14 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -82,7 +82,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 8);
+/******/ 	return __webpack_require__(__webpack_require__.s = 10);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1304,6 +1304,111 @@ module.exports = new function () {
 
 /***/ }),
 /* 6 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _default; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/*
+export default function(name){
+  this.name = name
+  this.echo = function () {
+    console.log('SUB', this.name)
+  }
+}
+*/
+var _default = /*#__PURE__*/function () {
+  function _default(app, name) {
+    _classCallCheck(this, _default);
+
+    this.app = app;
+    this.name = name;
+  }
+
+  _createClass(_default, [{
+    key: "echo",
+    value: function echo() {
+      this.app.log('PLUGIN', this.name);
+    }
+  }]);
+
+  return _default;
+}();
+
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _default; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/*
+export default function(name){
+  this.name = name
+  this.plugins = []
+  this.plug = function(p, n = ''){
+    this.plugins.push(new p(n))
+  }
+  this.echo = function () {
+    console.log(this.name, this.plugins)
+    this.plugins.forEach(p => p.echo())
+  }
+}
+*/
+var _default = /*#__PURE__*/function () {
+  function _default(name) {
+    _classCallCheck(this, _default);
+
+    this.name = name;
+    this.plugins = [];
+  }
+
+  _createClass(_default, [{
+    key: "plug",
+    value: function plug(p) {
+      var n = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+      this.plugins.push(new p(this, n));
+    }
+  }, {
+    key: "echo",
+    value: function echo() {
+      this.log('MAIN', this.name, this.plugins);
+      this.plugins.forEach(function (p) {
+        return p.echo();
+      });
+    }
+  }, {
+    key: "log",
+    value: function log() {
+      var _console;
+
+      (_console = console).log.apply(_console, arguments);
+
+      document.body.innerHTML += '<pre>' + Array.prototype.slice.call(arguments).join(', ') + '</pre>';
+    }
+  }]);
+
+  return _default;
+}();
+
+
+
+/***/ }),
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! fetch - asynchronous requests */
@@ -1368,7 +1473,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 7 */
+/* 9 */
 /***/ (function(module, exports) {
 
 /*! iconset - svg paths for building icons */
@@ -1459,7 +1564,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 8 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(2);
@@ -1469,7 +1574,7 @@ var app = __webpack_require__(0);
 ['code',
 /* should be first */
 'icons', 'toggle', 'dialog', 'gallery', 'fetch', 'tablex', 'calendar', 'lookup', 'edit', 'valid', 'tools', 'form', 'keepform', 'items', 'filter', 'fliptable', 'swipe', 'scroll', 'theme'].forEach(function (p) {
-  return app.plug(__webpack_require__(9)("./" + p + ".js"));
+  return app.plug(__webpack_require__(11)("./" + p + ".js"));
 }); //let opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}};
 
 app.b([document], 'DOMContentLoaded', function (e) {
@@ -1479,35 +1584,37 @@ if (true) module.exports = app;
 if (window) window.d1 = app;
 
 /***/ }),
-/* 9 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
 	"./app.js": 0,
-	"./calendar.js": 10,
-	"./code.js": 11,
+	"./calendar.js": 12,
+	"./code.js": 13,
 	"./date.js": 4,
 	"./dialog.js": 3,
-	"./edit.js": 12,
-	"./example.js": 13,
-	"./fetch.js": 6,
-	"./filter.js": 14,
-	"./fliptable.js": 15,
-	"./form.js": 16,
+	"./edit.js": 14,
+	"./example.js": 15,
+	"./fetch.js": 8,
+	"./filter.js": 16,
+	"./fliptable.js": 17,
+	"./form.js": 18,
 	"./gallery.js": 5,
-	"./icons.js": 17,
-	"./iconset.js": 7,
-	"./items.js": 18,
-	"./keepform.js": 19,
-	"./lookup.js": 20,
+	"./icons.js": 19,
+	"./iconset.js": 9,
+	"./items.js": 20,
+	"./keepform.js": 21,
+	"./lookup.js": 22,
 	"./polyfill.js": 2,
-	"./scroll.js": 21,
-	"./swipe.js": 22,
-	"./tablex.js": 23,
-	"./theme.js": 24,
+	"./scroll.js": 23,
+	"./swipe.js": 24,
+	"./tablex.js": 25,
+	"./test-plugin.js": 6,
+	"./test.js": 7,
+	"./theme.js": 26,
 	"./toggle.js": 1,
-	"./tools.js": 25,
-	"./valid.js": 26
+	"./tools.js": 27,
+	"./valid.js": 28
 };
 
 
@@ -1528,10 +1635,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 9;
+webpackContext.id = 11;
 
 /***/ }),
-/* 10 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! calendar - replacement of standard date and datetime-local inputs */
@@ -1872,7 +1979,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 11 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! code - source code sample */
@@ -2002,7 +2109,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 12 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! edit - wysiwyg text editor */
@@ -2298,7 +2405,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 13 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! example - plugin template */
@@ -2322,7 +2429,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 14 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! filter - filter items */
@@ -2480,7 +2587,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 15 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! fliptable - responsive table */
@@ -2537,7 +2644,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 16 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! form - utilities for form inputs */
@@ -2597,13 +2704,13 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 17 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! icons - include svg icons */
 var app = __webpack_require__(0);
 
-var iconset = __webpack_require__(7);
+var iconset = __webpack_require__(9);
 
 module.exports = new function () {
   "use strict";
@@ -2711,7 +2818,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 18 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! items - copy, hide, delete items */
@@ -2822,7 +2929,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 19 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! keepform - store and restore user input */
@@ -2950,7 +3057,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 20 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! lookup - autocomplete lookups with data from XHTTP request */
@@ -2958,7 +3065,7 @@ var app = __webpack_require__(0);
 
 var toggle = __webpack_require__(1);
 
-var fetch = __webpack_require__(6);
+var fetch = __webpack_require__(8);
 
 module.exports = new function () {
   "use strict";
@@ -3269,7 +3376,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 21 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! scroll - scrolling behaviours (topbar, drawer) */
@@ -3384,7 +3491,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 22 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! swipe - detect touch swipe */
@@ -3526,7 +3633,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 23 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -4046,7 +4153,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 24 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! theme - live theme configurator */
@@ -4170,7 +4277,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 25 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! tools - miscellaneous utilities */
@@ -4355,7 +4462,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 26 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! valid - custom form validation messages */
