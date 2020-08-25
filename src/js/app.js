@@ -104,7 +104,7 @@ module.exports = new (function(){
   
   this.dispatch = function(n, et, p){
     // {view: window, bubbles: true, cancelable: true, composed: false}
-    if(!p) p = {bubbles: true, view: window};
+    if(!p) p = {bubbles: true, cancelable: true, view: window};
     if(typeof(Event) === 'function'){ //-ie
       if(et instanceof Array) et.forEach(ett => n.dispatchEvent(new Event(ett, p)));
       else n.dispatchEvent(new Event(et, p));

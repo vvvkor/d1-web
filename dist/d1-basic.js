@@ -1,4 +1,4 @@
-/*! d1-web v1.4.10 */
+/*! d1-web v1.4.11 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -219,6 +219,7 @@ module.exports = new function () {
     // {view: window, bubbles: true, cancelable: true, composed: false}
     if (!p) p = {
       bubbles: true,
+      cancelable: true,
       view: window
     };
 
