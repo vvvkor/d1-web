@@ -123,353 +123,413 @@ var _default = /*#__PURE__*/function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _default; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 /*! app - core of d1-web */
 // (() => {
 //let main = new (function(){
-/* harmony default export */ __webpack_exports__["a"] = (function () {
-  this.sequence = 0;
-  this.plugins = {};
-  this.handlers = {};
-  this.opt = {
-    debug: 0,
-    aCaption: 'data-caption',
-    cAct: 'act',
-    cHide: 'hide',
-    cToggle: 'toggle',
-    cOff: 'off',
-    cClose: 'close',
-    cJs: 'js',
-    hClose: '#cancel',
-    hOk: '#ok',
-    sCancel: 'Cancel',
-    sOk: 'OK'
-  };
+var _default = /*#__PURE__*/function () {
+  function _default() {
+    _classCallCheck(this, _default);
 
-  this.init = function (opt) {
-    var _this = this;
+    this.sequence = 0;
+    this.plugins = {};
+    this.handlers = {};
+    this.opt = {
+      debug: 0,
+      aCaption: 'data-caption',
+      cAct: 'act',
+      cHide: 'hide',
+      cToggle: 'toggle',
+      cOff: 'off',
+      cClose: 'close',
+      cJs: 'js',
+      hClose: '#cancel',
+      hOk: '#ok',
+      sCancel: 'Cancel',
+      sOk: 'OK'
+    };
+  }
 
-    document.body.classList.add(this.opt.cJs); // prepare body: anti-hover, anti-target
+  _createClass(_default, [{
+    key: "init",
+    value: function init(opt) {
+      var _this = this;
 
-    this.fire('beforeopt'); //options
+      document.body.classList.add(this.opt.cJs); // prepare body: anti-hover, anti-target
 
-    if (!opt) {
-      opt = this.attr(document.body, 'data-d1');
-      if (opt) opt = JSON.parse(opt);
+      this.fire('beforeopt'); //options
+
+      if (!opt) {
+        opt = this.attr(document.body, 'data-d1');
+        if (opt) opt = JSON.parse(opt);
+      }
+
+      this.setOpt(this, opt);
+      this.dbg(['opt', this.opt]);
+      this.initPlugins(opt); // plugins
+      // bind events
+
+      this.b([window], 'hashchange', function (e) {
+        return _this.on('hashchange', e);
+      }); // on window
+
+      this.b([document], ['invalid', 'focus', 'blur'], function (e) {
+        return _this.on(e.type, e);
+      }, true); //useCapture
+
+      this.b([document], ['click', 'keydown', 'input', 'change', 'submit'], function (e) {
+        return _this.on(e.type, e);
+      });
+      if (location.hash) this.on('hashchange');
+      this.fire('after');
+      this.fire('ready');
+    } // event delegation
+    // https://gomakethings.com/why-event-delegation-is-a-better-way-to-listen-for-events-in-vanilla-js/
+
+  }, {
+    key: "on",
+    value: function on(t, e) {
+      this.fire('before', e);
+      this.fire(t, e); //this.fire(t + 'ed', e);
+      //if(!e || !e.defaultPrevented) ;
+
+      this.fire('after', e);
+    } //plugins
+
+  }, {
+    key: "setOpt",
+    value: function setOpt(obj, opt) {
+      var i;
+      if (opt) for (i in opt) {
+        if (i != 'plug') obj.opt[i] = opt[i];
+      }
     }
-
-    this.setOpt(this, opt);
-    this.dbg(['opt', this.opt]);
-    this.initPlugins(opt); // plugins
-    // bind events
-
-    this.b([window], 'hashchange', function (e) {
-      return _this.on('hashchange', e);
-    }); // on window
-
-    this.b([document], ['invalid', 'focus', 'blur'], function (e) {
-      return _this.on(e.type, e);
-    }, true); //useCapture
-
-    this.b([document], ['click', 'keydown', 'input', 'change', 'submit'], function (e) {
-      return _this.on(e.type, e);
-    });
-    if (location.hash) this.on('hashchange');
-    this.fire('after');
-    this.fire('ready');
-  }; // event delegation
-  // https://gomakethings.com/why-event-delegation-is-a-better-way-to-listen-for-events-in-vanilla-js/
-
-
-  this.on = function (t, e) {
-    this.fire('before', e);
-    this.fire(t, e); //this.fire(t + 'ed', e);
-    //if(!e || !e.defaultPrevented) ;
-
-    this.fire('after', e);
-  }; //plugins
-
-
-  this.setOpt = function (obj, opt) {
-    var i;
-    if (opt) for (i in opt) {
-      if (i != 'plug') obj.opt[i] = opt[i];
+  }, {
+    key: "plug",
+    value: function plug(c, n) {
+      var p = new c();
+      this.plugins[n || p.name] = p;
     }
-  };
+  }, {
+    key: "initPlugins",
+    value: function initPlugins(opt) {
+      var _this2 = this;
 
-  this.plug = function (c, n) {
-    var p = new c();
-    this.plugins[n || p.name] = p;
-  };
+      if (this.opt.disable) this.opt.disable.forEach(function (p) {
+        return delete _this2.plugins[p];
+      });
+      this.dbg(['plugins', this.plugins]);
+      Object.keys(this.plugins).forEach(function (k) {
+        _this2.plugins[k].app = _this2;
+        if (opt && opt.plug && opt.plug[k]) _this2.setOpt(_this2.plugins[k], opt.plug[k]);
+      });
+      this.fire('beforeinit');
+      Object.keys(this.plugins).forEach(function (k) {
+        return _this2.plugins[k].init();
+      });
+      this.fire('afterinit');
+    } // call method of plugin
 
-  this.initPlugins = function (opt) {
-    var _this2 = this;
+  }, {
+    key: "pf",
+    value: function pf(p, f) {
+      var _this$plugins$p;
 
-    if (this.opt.disable) this.opt.disable.forEach(function (p) {
-      return delete _this2.plugins[p];
-    });
-    this.dbg(['plugins', this.plugins]);
-    Object.keys(this.plugins).forEach(function (k) {
-      _this2.plugins[k].app = _this2;
-      if (opt && opt.plug && opt.plug[k]) _this2.setOpt(_this2.plugins[k], opt.plug[k]);
-    });
-    this.fire('beforeinit');
-    Object.keys(this.plugins).forEach(function (k) {
-      return _this2.plugins[k].init();
-    });
-    this.fire('afterinit');
-  }; //events
+      for (var _len = arguments.length, a = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+        a[_key - 2] = arguments[_key];
+      }
 
+      if (this.plugins[p] && this.plugins[p][f]) (_this$plugins$p = this.plugins[p])[f].apply(_this$plugins$p, a);else this.dbg(['no plugin function', p + '.' + f + '()']);
+    } //events
 
-  this.fire = function (et, e) {
-    var _this3 = this;
+  }, {
+    key: "fire",
+    value: function fire(et, e) {
+      var _this3 = this;
 
-    this.dbg(['fire ' + et, e]);
-    if (this.handlers[et]) this.handlers[et].forEach(function (h) {
-      return h.call(_this3, e);
-    });
-  };
-
-  this.listen = function (et, f) {
-    //if(!this.handlers[et]) this.handlers[et] = [];
-    //this.handlers[et].push(f);
-    this.h(et, '', f);
-  }; //handle
-
-
-  this.h = function (et, s, f, before) {
-    var _this4 = this;
-
-    if (et instanceof Array) et.forEach(function (ett) {
-      return _this4.h(ett, s, f, before);
-    });else {
-      if (!this.handlers[et]) this.handlers[et] = [];
-      this.handlers[et][before ? 'unshift' : 'push'](function (e) {
-        if (s) e.recv = e.target.closest(s);
-        if (!s || e.recv) f(e);
+      this.dbg(['fire ' + et, e]);
+      if (this.handlers[et]) this.handlers[et].forEach(function (h) {
+        return h.call(_this3, e);
       });
     }
-  };
+  }, {
+    key: "listen",
+    value: function listen(et, f) {
+      //if(!this.handlers[et]) this.handlers[et] = [];
+      //this.handlers[et].push(f);
+      this.h(et, '', f);
+    } //handle
 
-  this.dispatch = function (n, et, p) {
-    // {view: window, bubbles: true, cancelable: true, composed: false}
-    if (!p) p = {
-      bubbles: true,
-      cancelable: true,
-      view: window
-    };
+  }, {
+    key: "h",
+    value: function h(et, s, f, before) {
+      var _this4 = this;
 
-    if (typeof Event === 'function') {
-      //-ie
       if (et instanceof Array) et.forEach(function (ett) {
-        return n.dispatchEvent(new Event(ett, p));
-      });else n.dispatchEvent(new Event(et, p));
-    }
-  }; //utils
-  // debug
-
-
-  this.isDebug = function (l) {
-    return this.opt.debug >= (l || 1) || location.href.indexOf('d1debug') != -1;
-  };
-
-  this.dbg = function (s, l, e) {
-    if (this.isDebug(l)) console[e ? 'error' : 'log'](s);
-  }; // sequence for IDs of generated nodes
-
-
-  this.seq = function () {
-    return ++this.sequence;
-  }; // convert to array
-
-
-  this.a = function (c) {
-    return c ? Array.prototype.slice.call(c) : c;
-  }; // find node
-
-
-  this.q = function (s, n) {
-    try {
-      return (n || document).querySelector(s);
-    } catch (e) {
-      return null;
-    }
-  }; // find nodes
-
-
-  this.qq = function (s, n) {
-    try {
-      var r = (n || document).querySelectorAll(s);
-      return this.a(r);
-    } catch (e) {
-      return [];
-    }
-  };
-
-  this.next = function (n, s, prev) {
-    while (n = n[prev ? 'previousElementSibling' : 'nextElementSibling']) {
-      if (n.matches(s)) return n;
-    }
-  };
-
-  this.nn = function (q) {
-    if (!q) return [];else if (typeof q === 'string') return this.qq(q);else if (q.tagName) return [q];else return this.a(q);
-  }; // add event listener
-
-
-  this.b = function (q, et, f, capt) {
-    if (!et) this.e(q, f);
-    if (f) this.nn(q).forEach(function (n) {
-      return et instanceof Array ? et.forEach(function (ett) {
-        return n.addEventListener(ett, function (e) {
-          return f(e);
-        }, capt);
-      }) : n.addEventListener(et, function (e) {
-        return f(e);
+        return _this4.h(ett, s, f, before);
+      });else {
+        if (!this.handlers[et]) this.handlers[et] = [];
+        this.handlers[et][before ? 'unshift' : 'push'](function (e) {
+          if (s) e.recv = e.target.closest(s);
+          if (!s || e.recv) f(e);
+        });
       }
-      /*f.bind(this)*/
-      , capt);
-    });
-  }; // execute for each node
+    }
+  }, {
+    key: "dispatch",
+    value: function dispatch(n, et, p) {
+      // {view: window, bubbles: true, cancelable: true, composed: false}
+      if (!p) p = {
+        bubbles: true,
+        cancelable: true,
+        view: window
+      };
 
+      if (typeof Event === 'function') {
+        //-ie
+        if (et instanceof Array) et.forEach(function (ett) {
+          return n.dispatchEvent(new Event(ett, p));
+        });else n.dispatchEvent(new Event(et, p));
+      }
+    } //utils
+    // debug
 
-  this.e = function (q, f) {
-    var _this5 = this;
+  }, {
+    key: "isDebug",
+    value: function isDebug(l) {
+      return this.opt.debug >= (l || 1) || location.href.indexOf('d1debug') != -1;
+    }
+  }, {
+    key: "dbg",
+    value: function dbg(s, l, e) {
+      if (this.isDebug(l)) console[e ? 'error' : 'log'](s);
+    } // sequence for IDs of generated nodes
 
-    if (f) this.nn(q).forEach(function (n) {
-      return f.call(_this5, n);
-    });
-  }; // get attribute of node
+  }, {
+    key: "seq",
+    value: function seq() {
+      return ++this.sequence;
+    } // convert to array
 
+  }, {
+    key: "a",
+    value: function a(c) {
+      return c ? Array.prototype.slice.call(c) : c;
+    } // find node
 
-  this.attr = function (n, a, def) {
-    return n && n.hasAttribute(a) ? n.getAttribute(a) : def !== undefined ? def : null;
-  };
+  }, {
+    key: "q",
+    value: function q(s, n) {
+      try {
+        return (n || document).querySelector(s);
+      } catch (e) {
+        return null;
+      }
+    } // find nodes
 
-  this.typeOf = function (v) {
-    return Object.prototype.toString.call(v).slice(8, -1).toLowerCase();
-  }; // insert node
-  //pos: -1=before, false=prepend, 0=append(default), 1=after
+  }, {
+    key: "qq",
+    value: function qq(s, n) {
+      try {
+        var r = (n || document).querySelectorAll(s);
+        return this.a(r);
+      } catch (e) {
+        return [];
+      }
+    }
+  }, {
+    key: "next",
+    value: function next(n, s, prev) {
+      while (n = n[prev ? 'previousElementSibling' : 'nextElementSibling']) {
+        if (n.matches(s)) return n;
+      }
+    }
+  }, {
+    key: "nn",
+    value: function nn(q) {
+      if (!q) return [];else if (typeof q === 'string') return this.qq(q);else if (q.tagName) return [q];else return this.a(q);
+    } // add event listener
 
+  }, {
+    key: "b",
+    value: function b(q, et, f, capt) {
+      if (!et) this.e(q, f);
+      if (f) this.nn(q).forEach(function (n) {
+        return et instanceof Array ? et.forEach(function (ett) {
+          return n.addEventListener(ett, function (e) {
+            return f(e);
+          }, capt);
+        }) : n.addEventListener(et, function (e) {
+          return f(e);
+        }
+        /*f.bind(this)*/
+        , capt);
+      });
+    } // execute for each node
 
-  this.ins = function (tag, t, attrs, n, pos) {
-    var c = document.createElement(tag || 'span');
-    if (this.typeOf(t) === 'array') t.forEach(function (m) {
-      return m.nodeType ? c.appendChild(m) : c.innerHTML += m;
-    });else if (t && t.nodeType) c.appendChild(t);else if (t) c.innerHTML = t;
+  }, {
+    key: "e",
+    value: function e(q, f) {
+      var _this5 = this;
 
-    if (attrs) {
-      for (var i in attrs) {
-        if (attrs[i] !== null && attrs[i] !== undefined) {
-          if (i.match(/-/)) c.setAttribute(i.replace(/^-/, ''), attrs[i]);else c[i] = attrs[i];
+      if (f) this.nn(q).forEach(function (n) {
+        return f.call(_this5, n);
+      });
+    } // get attribute of node
+
+  }, {
+    key: "attr",
+    value: function attr(n, a, def) {
+      return n && n.hasAttribute(a) ? n.getAttribute(a) : def !== undefined ? def : null;
+    }
+  }, {
+    key: "typeOf",
+    value: function typeOf(v) {
+      return Object.prototype.toString.call(v).slice(8, -1).toLowerCase();
+    } // insert node
+    //pos: -1=before, false=prepend, 0=append(default), 1=after
+
+  }, {
+    key: "ins",
+    value: function ins(tag, t, attrs, n, pos) {
+      var c = document.createElement(tag || 'span');
+      if (this.typeOf(t) === 'array') t.forEach(function (m) {
+        return m.nodeType ? c.appendChild(m) : c.innerHTML += m;
+      });else if (t && t.nodeType) c.appendChild(t);else if (t) c.innerHTML = t;
+
+      if (attrs) {
+        for (var i in attrs) {
+          if (attrs[i] !== null && attrs[i] !== undefined) {
+            if (i.match(/-/)) c.setAttribute(i.replace(/^-/, ''), attrs[i]);else c[i] = attrs[i];
+          }
         }
       }
-    }
 
-    return n ? pos ? n.parentNode.insertBefore(c, pos < 0 ? n : n.nextSibling) : pos === false ? n.insertBefore(c, n.firstChild) : n.appendChild(c) : c;
-  }; // remove all children
+      return n ? pos ? n.parentNode.insertBefore(c, pos < 0 ? n : n.nextSibling) : pos === false ? n.insertBefore(c, n.firstChild) : n.appendChild(c) : c;
+    } // remove all children
 
-
-  this.clr = function (n) {
-    if (n) while (n.firstChild) {
-      n.removeChild(n.firstChild);
-    }
-  }; // insert close link with icon
-
-
-  this.x = function (d, pos, cls) {
-    return this.ins('a', this.i('close', '&#x2715;'), {
-      href: this.opt.hClose,
-      className: cls || ''
-    }, d, pos);
-  }; // insert icon
-
-
-  this.i = function (ico, alt) {
-    return this.plugins.icons ? this.plugins.icons.i(ico, alt) : this.ins('span', alt || ico);
-  }; // get node toggle status
-
-
-  this.vis = function (n) {
-    return !n.classList.contains(this.opt.cOff);
-  }; // function
-
-
-  this.throttle = function (f, ms) {
-    var p = false,
-        c,
-        a;
-    return function ff() {
-      if (p) {
-        //2
-        c = this;
-        a = arguments;
-      } else {
-        f.apply(this, arguments); //1
-
-        p = true;
-        setTimeout(function () {
-          //3
-          p = false;
-
-          if (a) {
-            ff.apply(c, a);
-            a = c = null;
-          }
-        }, ms);
+  }, {
+    key: "clr",
+    value: function clr(n) {
+      if (n) while (n.firstChild) {
+        n.removeChild(n.firstChild);
       }
-    };
-  };
+    } // insert close link with icon
 
-  this.delay = function (f, ms, skip) {
-    var p = null;
-    return function ff() {
-      var _arguments = arguments,
-          _this6 = this;
+  }, {
+    key: "x",
+    value: function x(d, pos, cls) {
+      return this.ins('a', this.i('close', '&#x2715;'), {
+        href: this.opt.hClose,
+        className: cls || ''
+      }, d, pos);
+    } // insert icon
 
-      if (skip && p) clearTimeout(p);
-      p = setTimeout(function () {
-        f.apply(_this6, _arguments);
-        p = null;
-      }, ms);
-    };
-  }; // url
-  // get url parameter(s) from link node
+  }, {
+    key: "i",
+    value: function i(ico, alt) {
+      return this.plugins.icons ? this.plugins.icons.i(ico, alt) : this.ins('span', alt || ico);
+    } // get node toggle status
 
+  }, {
+    key: "vis",
+    value: function vis(n) {
+      return !n.classList.contains(this.opt.cOff);
+    } // function
 
-  this.get = function (a, g) {
-    if (!a || a.tagName != 'A') return null;
-    var i,
-        gets = {};
-    var args = a.search ? a.search.replace(/^\?/, '').split('&') : [];
+  }, {
+    key: "throttle",
+    value: function throttle(f, ms) {
+      var p = false,
+          c,
+          a;
+      return function ff() {
+        if (p) {
+          //2
+          c = this;
+          a = arguments;
+        } else {
+          f.apply(this, arguments); //1
 
-    for (i = 0; i < args.length; i++) {
-      var v = args[i].split('=');
-      gets[v[0]] = decodeURIComponent(v[1]).replace(/\+/, ' ');
+          p = true;
+          setTimeout(function () {
+            //3
+            p = false;
+
+            if (a) {
+              ff.apply(c, a);
+              a = c = null;
+            }
+          }, ms);
+        }
+      };
     }
+  }, {
+    key: "delay",
+    value: function delay(f, ms, skip) {
+      var p = null;
+      return function ff() {
+        var _arguments = arguments,
+            _this6 = this;
 
-    return g ? gets[g] : gets; //protocol, host (hostname, port), pathname, search, hash
-  }; // compose url from link node or string, with additional parameters
+        if (skip && p) clearTimeout(p);
+        p = setTimeout(function () {
+          f.apply(_this6, _arguments);
+          p = null;
+        }, ms);
+      };
+    } // url
+    // get url parameter(s) from link node
 
+  }, {
+    key: "get",
+    value: function get(a, g) {
+      if (!a || a.tagName != 'A') return null;
+      var i,
+          gets = {};
+      var args = a.search ? a.search.replace(/^\?/, '').split('&') : [];
 
-  this.makeUrl = function (a, args) {
-    if (!a.tagName) a = this.ins('a', '', {
-      href: a
-    });
-    var g = this.get(a);
-    Object.keys(args).forEach(function (k) {
-      return g[encodeURIComponent(k)] = encodeURIComponent(args[k]);
-    });
-    var q = Object.keys(g).map(function (k) {
-      return k + '=' + g[k];
-    }).join('&');
-    return a.host ? a.protocol + '//' + a.host + a.pathname + (q ? '?' + q : '') + a.hash : a.href.replace(/[\?#].*$/, '') + (q ? '?' + q : '') + a.hash; //ie
-  };
-});
+      for (i = 0; i < args.length; i++) {
+        var v = args[i].split('=');
+        gets[v[0]] = decodeURIComponent(v[1]).replace(/\+/, ' ');
+      }
+
+      return g ? gets[g] : gets; //protocol, host (hostname, port), pathname, search, hash
+    } // compose url from link node or string, with additional parameters
+
+  }, {
+    key: "makeUrl",
+    value: function makeUrl(a, args) {
+      if (!a.tagName) a = this.ins('a', '', {
+        href: a
+      });
+      var g = this.get(a);
+      Object.keys(args).forEach(function (k) {
+        return g[encodeURIComponent(k)] = encodeURIComponent(args[k]);
+      });
+      var q = Object.keys(g).map(function (k) {
+        return k + '=' + g[k];
+      }).join('&');
+      return a.host ? a.protocol + '//' + a.host + a.pathname + (q ? '?' + q : '') + a.hash : a.href.replace(/[\?#].*$/, '') + (q ? '?' + q : '') + a.hash; //ie
+    }
+  }]);
+
+  return _default;
+}();
 /*
 if (this.window === this) window[main.name] = main;
 else module.exports = main;
 })();
 */
+
+
+
 
 /***/ }),
 /* 2 */
@@ -479,18 +539,6 @@ else module.exports = main;
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _default; });
 /* harmony import */ var _plugin_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -573,12 +621,6 @@ var _default = /*#__PURE__*/function (_Plugin) {
       app.listen('esc', function (e) {
         return _this2.esc(e);
       });
-      app.listen('unpop', function (e) {
-        return _this2.unpop.apply(_this2, _toConsumableArray(e));
-      });
-      app.listen('toggle', function (e) {
-        return _this2.toggle.apply(_this2, _toConsumableArray(e));
-      });
       app.listen('hashchange', function (e) {
         return _this2.onHash(e);
       });
@@ -599,7 +641,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
         return !e || ['click', 'keydown', 'hashchange'].indexOf(e.type) != -1 ? _this2.modalStyle(e) : null;
       });
       app.listen('after', function (e) {
-        return !e || ['click', 'keydown', 'hashchange'].indexOf(e.type) != -1 ? _this2.shown = null : null;
+        return !e || ['click', 'keydown', 'hashchange'].indexOf(e.type) != -1 ? _this2.setShown(null) : null;
       }); //toggle
 
       var q = this.opt;
@@ -691,7 +733,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "modalStyle",
     value: function modalStyle(e) {
-      var n = e ? e.target : null; //this.shown = null;//do it just once when dialog is opened
+      var n = e ? e.target : null; //this.setShown(null);//do it just once when dialog is opened
       //let modal = this.app.q(this.opt.qDlg+':not(.'+this.app.opt.cOff+'), '+this.opt.qGal+':target'); // :target not updated after Esc key
       //styles
 
@@ -810,6 +852,11 @@ var _default = /*#__PURE__*/function (_Plugin) {
         if (!n.id) n.id = 'ul-' + this.app.seq();
         a.href = '#' + n.id;
       }
+    }
+  }, {
+    key: "setShown",
+    value: function setShown(n) {
+      this.shown = n;
     } //deep: -1=prepare, 0=click|hash, 1=deps|clo
 
   }, {
@@ -831,7 +878,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
         if (this.app.vis(d)) {
           this.fixPosition(d);
-          if (!deep) this.shown = d;
+          if (!deep) this.setShown(d);
         }
 
         if (deep != -1) {
@@ -998,18 +1045,6 @@ var _default = /*#__PURE__*/function (_Plugin) {
 /* harmony import */ var _plugin_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -1072,9 +1107,6 @@ var _default = /*#__PURE__*/function (_Plugin) {
       }, document.body);
       this.app.h('click', this.opt.qAlert + ', ' + this.opt.qDialog, function (e) {
         return _this2.onClick(e);
-      });
-      this.app.listen('dialog', function (e) {
-        return _this2.openDialog.apply(_this2, _toConsumableArray(e));
       });
     }
   }, {
@@ -1147,12 +1179,12 @@ var _default = /*#__PURE__*/function (_Plugin) {
         });
       }
 
-      this.app.fire('toggle', [this.dlg, true]);
+      this.app.pf('toggle', 'toggle', this.dlg, true);
     }
   }, {
     key: "closeDialog",
     value: function closeDialog() {
-      this.app.fire('unpop', []);
+      this.app.pf('toggle', 'unpop');
     }
   }, {
     key: "callback",
@@ -1945,8 +1977,8 @@ function fetch_isNativeReflectConstruct() { if (typeof Reflect === "undefined" |
 function fetch_getPrototypeOf(o) { fetch_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return fetch_getPrototypeOf(o); }
 
 /*! fetch - asynchronous requests */
-// let toggle = require('./toggle.js');
-// let dialog = require('./dialog.js');
+// import toggle from './toggle.js'
+// import dialog from './dialog.js'
 
 
 var fetch_default = /*#__PURE__*/function (_Plugin) {
@@ -2008,9 +2040,9 @@ var fetch_default = /*#__PURE__*/function (_Plugin) {
         if (d) {
           d.innerHTML = req.responseText;
           var dlg = d.closest('.dlg[id]');
-          if (dlg) this.app.fire('toggle', [dlg, true]);
+          if (dlg) this.app.pf('toggle', 'toggle', dlg, true);
         } else {
-          this.app.fire('dialog', [n, req.responseText]);
+          this.app.pf('dialog', 'openDialog', n, req.responseText);
         }
       } else console.error('XHTTP request failed', req); //this.app.fire('after', e);
 
@@ -2662,6 +2694,771 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
 }(plugins_plugin["a" /* default */]);
 
 
+// CONCATENATED MODULE: ./src/js/plugins/calendar.js
+function calendar_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { calendar_typeof = function _typeof(obj) { return typeof obj; }; } else { calendar_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return calendar_typeof(obj); }
+
+function calendar_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function calendar_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function calendar_createClass(Constructor, protoProps, staticProps) { if (protoProps) calendar_defineProperties(Constructor.prototype, protoProps); if (staticProps) calendar_defineProperties(Constructor, staticProps); return Constructor; }
+
+function calendar_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) calendar_setPrototypeOf(subClass, superClass); }
+
+function calendar_setPrototypeOf(o, p) { calendar_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return calendar_setPrototypeOf(o, p); }
+
+function calendar_createSuper(Derived) { var hasNativeReflectConstruct = calendar_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = calendar_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = calendar_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return calendar_possibleConstructorReturn(this, result); }; }
+
+function calendar_possibleConstructorReturn(self, call) { if (call && (calendar_typeof(call) === "object" || typeof call === "function")) { return call; } return calendar_assertThisInitialized(self); }
+
+function calendar_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function calendar_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function calendar_getPrototypeOf(o) { calendar_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return calendar_getPrototypeOf(o); }
+
+/*! calendar - replacement of standard date and datetime-local inputs */
+// import toggle from './toggle.js'
+
+
+
+var calendar_default = /*#__PURE__*/function (_Plugin) {
+  calendar_inherits(_default, _Plugin);
+
+  var _super = calendar_createSuper(_default);
+
+  function _default() {
+    var _this;
+
+    calendar_classCallCheck(this, _default);
+
+    _this = _super.call(this, 'calendar');
+    _this.opt = {
+      cBtn: 'pad hover',
+      dateFormat: 'd',
+      //y=Y-m-d, d=d.m.Y, m=m/d Y
+      hCancel: '#close',
+      hashNow: '#now',
+      addIcons: [['date', '#', '#open'], ['ok', '&check;', '#now'], ['delete', '&#x2715;', '#clear']],
+      idPicker: 'pick-date',
+      minWidth: 801,
+      qsCalendar: 'input.calendar',
+      showModal: 0,
+      // ! avoid modal calendar inside modal dialog
+      sizeLimit: 801,
+      stepMinutes: 1,
+      inPop: 0
+    };
+    _this.win = null;
+    return _this;
+  }
+
+  calendar_createClass(_default, [{
+    key: "init",
+    value: function init()
+    /*opt*/
+    {
+      var _this2 = this;
+
+      //let i;
+      //for(i in opt) this.opt[i] = opt[i];
+      if (window.innerWidth < this.opt.minWidth) return;
+      this.win = this.app.ins('div', '', {
+        id: this.opt.idPicker,
+        className: this.app.opt.cToggle + ' ' + this.app.opt.cOff + ' pad'
+      }); //dlg hide pad
+
+      this.win.style.whiteSpace = 'nowrap';
+      document.body.appendChild(this.win);
+      this.app.e(this.opt.qsCalendar, function (n) {
+        return _this2.preparePick(n);
+      });
+      this.app.h('click', this.opt.qsCalendar, function (e) {
+        return _this2.openDialog(e.target, null, e);
+      });
+      this.app.h('input', this.opt.qsCalendar, function (e) {
+        return _this2.validate(e.target, 0);
+      }); //this.app.h('keydown', this.opt.qsCalendar, e => this.key(e));
+      //this.app.h('click', '#' + this.opt.idPicker, e => app.pf('toggle', 'setShown', e.recv.vRel));
+
+      this.app.h('click', '#' + this.opt.idPicker + ' a', function (e) {
+        return _this2.onClick(e);
+      });
+      this.app.h('click', '.calendar-tools a', function (e) {
+        return _this2.onClick(e, true);
+      });
+    }
+    /*
+    key (e){
+      if(e.keyCode == 40 && !this.app.vis(this.win)) this.openDialog(e.target, null, e);
+    }
+    */
+
+  }, {
+    key: "onClick",
+    value: function onClick(e, tool) {
+      var a = e.recv;
+      var h = a.hash;
+
+      if (h) {
+        //nodes
+        var n;
+        var c = this.opt.qsCalendar;
+
+        if (tool) {
+          n = this.opt.inPop ? this.app.q(c, this.app.next(a.parentNode, '.pop', true)) : this.app.next(a.parentNode, c, true);
+        } else if (this.win.vRel) n = this.win.vRel;else {
+          var p = a.closest('#' + this.opt.idPicker);
+          n = this.opt.inPop ? this.app.next(p, c, true) : this.app.next(p.parentNode, c);
+        } //data
+
+
+        var x = this.win.vCur;
+        var dy = h == '#prev-year' ? -1 : h == '#next-year' ? 1 : 0;
+        var dm = h == '#prev-month' ? -1 : h == '#next-month' ? 1 : 0;
+        var dh = h == '#prev-hour' ? -1 : h == '#next-hour' ? 1 : 0;
+        var di = h == '#prev-min' ? -this.opt.stepMinutes : h == '#next-min' ? this.opt.stepMinutes : 0; //actions
+
+        if (dy || dm) this.switchMonths(n, x.getFullYear() + dy, x.getMonth() + dm, x.getDate());else if (dh || di) this.setTime(n, dh, di);else if (h == this.opt.hashNow) this.closeDialog(n, true);else if (h == this.opt.hCancel) this.closeDialog(n, null); // same as esc
+        else if (h == '#open') this.openDialog(n, null);else if (h == '#clear') this.closeDialog(n, '');else if (h.match(/#\d\d?/)) this.closeDialog(n, this.fmt(x, h.substr(1)));
+        this.app.pf('toggle', 'setShown', h == '#open' ? this.win : n);
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    }
+  }, {
+    key: "toggle",
+    value: function toggle(on, n) {
+      if (n) {
+        var m = this.app.attr(n, 'data-modal');
+        if (m !== null) m = parseInt(m, 10);else m = this.opt.showModal || Math.min(window.innerWidth, window.innerHeight) < this.opt.sizeLimit;
+
+        if (on) {
+          this.win.className = this.app.opt.cToggle + ' ' + this.app.opt.cOff + ' pad ' + (m ? 'dlg' : '');
+          (m ? document.body : n.thePop).appendChild(this.win);
+
+          if (m) {
+            var s = this.win.style;
+            s.left = s.right = s.top = s.bottom = '';
+          }
+
+          this.win.vRel = n; //m ? n : null;//m ? null : n;//n;
+        }
+      }
+
+      this.app.pf('toggle', 'toggle', this.win, on); //if(!on) this.win.tabindex = -1;
+
+      if (!on) document.body.appendChild(this.win); //this.app.fire('after');
+    }
+  }, {
+    key: "preparePick",
+    value: function preparePick(n) {
+      n.vTime = n.type == 'datetime-local' || n.classList.contains('datetime');
+      n.type = 'text';
+      n.autocomplete = 'off';
+      if (n.value) n.value = this.fmt(this.parse(n.value), 0, n.vTime);
+      var pop = this.app.ins('div', '', {
+        className: 'pop l'
+      }, n, -1); //''
+
+      if (!this.opt.inPop) pop.style.verticalAlign = 'bottom';
+      n.thePop = pop;
+
+      if (this.opt.addIcons.length > 0) {
+        var ic = this.app.ins('span', '', {
+          className: 'input-tools calendar-tools nobr'
+        }, n, 1); //icons container
+
+        for (var i in this.opt.addIcons) {
+          this.app.ins('', ' ', {}, ic);
+          this.app.ins('a', this.app.i.apply(this.app, this.opt.addIcons[i].slice(0, 2)), {
+            href: this.opt.addIcons[i][2],
+            className: 'let'
+          }, ic);
+        }
+      }
+
+      if (this.opt.inPop) pop.appendChild(n);
+    }
+  }, {
+    key: "openDialog",
+    value: function openDialog(n, d, e) {
+      if (e) e.preventDefault();
+      this.build(n, d || n.value);
+      this.toggle(true, n); //let f = (this.app.q('.bg-w', this.win) || this.app.q('#1', this.win));
+      //if(f) f.focus();
+    }
+  }, {
+    key: "closeDialog",
+    value: function closeDialog(n, d) {
+      if (n) {
+        this.setValue(n, d);
+        n.focus();
+      }
+
+      this.toggle(false);
+    }
+  }, {
+    key: "n",
+    value: function n(v, l) {
+      return ('000' + v).substr(-(l || 2));
+    }
+  }, {
+    key: "getLimit",
+    value: function getLimit(n, a, t) {
+      var r = this.app.attr(n, a);
+      return r ? this.fmt(this.parse(r), 0, t, 'y') : a == 'max' ? '9999' : '0000';
+    }
+  }, {
+    key: "errLimits",
+    value: function errLimits(n) {
+      var min = this.getLimit(n, 'min', n.vTime);
+      var max = this.getLimit(n, 'max', n.vTime);
+      var v = this.fmt(this.parse(n.value), 0, n.vTime, 'y');
+      return min && v < min || max && v > max ? min + ' .. ' + max : '';
+    }
+  }, {
+    key: "validate",
+    value: function validate(n, re) {
+      n.setCustomValidity(re || n.value == '' ? '' : this.errLimits(n));
+      n.checkValidity();
+      if (n.reportValidity) n.reportValidity();
+    }
+  }, {
+    key: "update",
+    value: function update(n, x) {
+      var rows = this.win.vDays;
+      this.app.clr(rows);
+      var y = x.getFullYear();
+      var m = x.getMonth();
+      var d = x.getDate();
+      var min = this.getLimit(n, 'min', 0);
+      var max = this.getLimit(n, 'max', 0); //y,m,h,mi
+
+      this.win.vNodeCur.textContent = this.n(m + 1) + '.' + y;
+      this.win.vHours.textContent = this.n(n.vTime ? x.getHours() : 0);
+      this.win.vMinutes.textContent = this.n(n.vTime ? x.getMinutes() : 0); //days
+
+      var days = new Date(y, m + 1, 0).getDate(); //days in month
+
+      var skip = (new Date(y, m, 1).getDay() + 6) % 7; //skip weekdays
+
+      var maxd = Math.ceil((skip + days) / 7) * 7 - skip;
+      var c, vv, sel, today, off, wd;
+      var cd = this.fmt(new Date());
+      var xd = this.fmt(x);
+      var row;
+
+      for (var i = -skip + 1; i <= maxd; i++) {
+        wd = (skip + i - 1) % 7 + 1;
+        if (wd == 1) row = this.app.ins('div', '', {
+          className: 'row'
+        }, rows);
+        if (i < 1 || i > days) c = this.app.ins('a', '', {
+          className: 'pad c center'
+        }, row);else {
+          vv = this.fmt(x, i, 0, 'y');
+          sel = i == d;
+          today = false; //(this.fmt(x, i) == cd);
+
+          off = min && vv < min || max && vv > max;
+          c = this.app.ins('a', i, {
+            className: 'pad c center ' + (sel ? 'bg-w ' : '') + (today ? 'bg-y ' : '') + (off ? 'text-n ' : 'hover ') + (wd > 5 ? 'text-e ' : '')
+          }, row);
+          if (!off) c.href = '#' + i;
+        }
+      } //time
+
+
+      this.win.vNodeTime.classList[n.vTime ? 'remove' : 'add'](this.app.opt.cHide);
+    }
+  }, {
+    key: "build",
+    value: function build(n, x) {
+      var app = this.app;
+      if (typeof x === 'string') x = this.parse(x || app.attr(n, 'data-def', ''));
+      this.win.vCur = x;
+
+      if (!this.win.vDays) {
+        app.clr(this.win); //buttons
+
+        var p1 = app.ins('p', '', {
+          className: 'c'
+        }, this.win);
+        this.btn(this.opt.hashNow, app.i('ok', '&check;'), p1);
+        this.btn('#prev-year', app.i('prev2', '&laquo;'), p1);
+        this.btn('#prev-month', app.i('prev', '&lsaquo;'), p1);
+        this.win.vNodeCur = app.ins('span', '', {
+          className: 'pad'
+        }, p1);
+        this.btn('#next-month', app.i('next', '&rsaquo;'), p1);
+        this.btn('#next-year', app.i('next2', '&raquo;'), p1);
+        this.btn(this.opt.hCancel, app.i('close', '&#x2715;'), p1);
+        app.ins('hr', '', {}, this.win); //dates
+
+        this.win.vDays = app.ins('div', '', {}, this.win); //time
+
+        var hm = app.ins('div', '', {}, this.win);
+        this.win.vNodeTime = hm;
+        app.ins('hr', '', {}, hm);
+        var p2 = app.ins('p', '', {
+          className: 'c'
+        }, hm);
+        this.btn('#prev-hour', app.i('prev', '&lsaquo;'), p2);
+        this.win.vHours = app.ins('span', '', {
+          className: 'pad'
+        }, p2);
+        this.btn('#next-hour', app.i('next', '&rsaquo;'), p2);
+        app.ins('span', ':', {
+          className: 'pad'
+        }, p2);
+        this.btn('#prev-min', app.i('prev', '&lsaquo;'), p2);
+        this.win.vMinutes = app.ins('span', '', {
+          className: 'pad'
+        }, p2);
+        this.btn('#next-min', app.i('next', '&rsaquo;'), p2);
+      }
+
+      this.update(n, x);
+    }
+  }, {
+    key: "switchMonths",
+    value: function switchMonths(n, y, m, d) {
+      if (d > 28) {
+        var days = new Date(y, m + 1, 0).getDate(); //days in month
+
+        d = Math.min(d, days);
+      }
+
+      var h = parseInt(this.win.vHours.textContent, 10);
+      var i = parseInt(this.win.vMinutes.textContent, 10);
+      this.build(n, new Date(y, m, d, h, i));
+    }
+  }, {
+    key: "setTime",
+    value: function setTime(n, dh, di) {
+      var step = dh || di;
+      var max = dh ? 24 : 60;
+      var m = this.win[dh ? 'vHours' : 'vMinutes'];
+      var v = parseInt(m.textContent, 10);
+      var x = v % Math.abs(step);
+      v += x ? step > 0 ? step - x : -x : max + step;
+      m.textContent = this.n(v % max);
+      this.setValue(n, this.fmt(this.parse(n.value)));
+    }
+  }, {
+    key: "setValue",
+    value: function setValue(n, d) {
+      if (d !== null) {
+        n.value = d === true ? this.fmt(0, 0, n.vTime) : d;
+        var h = this.win.vHours;
+        var m = this.win.vMinutes;
+        if (n.vTime && d !== true && d !== '' && h && m) n.value += ' ' + this.n(h.textContent) + ':' + this.n(m.textContent);
+        this.validate(n, 0);
+      }
+    }
+  }, {
+    key: "parse",
+    value: function parse(d) {
+      return dt_default.parse(d) || new Date();
+    }
+  }, {
+    key: "fmt",
+    value: function fmt(x, i, t, f) {
+      if (!x) x = new Date();
+      if (i) x = new Date(x.getFullYear(), x.getMonth(), i);
+      return dt_default.fmt(x, t, f);
+    }
+  }, {
+    key: "btn",
+    value: function btn(h, s, p) {
+      return this.app.ins('a', s, {
+        href: h,
+        className: this.opt.cBtn
+      }, p);
+    }
+  }]);
+
+  return _default;
+}(plugins_plugin["a" /* default */]);
+
+
+// CONCATENATED MODULE: ./src/js/plugins/lookup.js
+function lookup_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { lookup_typeof = function _typeof(obj) { return typeof obj; }; } else { lookup_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return lookup_typeof(obj); }
+
+function lookup_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function lookup_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function lookup_createClass(Constructor, protoProps, staticProps) { if (protoProps) lookup_defineProperties(Constructor.prototype, protoProps); if (staticProps) lookup_defineProperties(Constructor, staticProps); return Constructor; }
+
+function lookup_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) lookup_setPrototypeOf(subClass, superClass); }
+
+function lookup_setPrototypeOf(o, p) { lookup_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return lookup_setPrototypeOf(o, p); }
+
+function lookup_createSuper(Derived) { var hasNativeReflectConstruct = lookup_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = lookup_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = lookup_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return lookup_possibleConstructorReturn(this, result); }; }
+
+function lookup_possibleConstructorReturn(self, call) { if (call && (lookup_typeof(call) === "object" || typeof call === "function")) { return call; } return lookup_assertThisInitialized(self); }
+
+function lookup_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function lookup_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function lookup_getPrototypeOf(o) { lookup_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return lookup_getPrototypeOf(o); }
+
+/*! lookup - autocomplete lookups with data from XHTTP request */
+// import toggle from './toggle.js'
+// import fetch from './fetch.js'
+
+
+var lookup_default = /*#__PURE__*/function (_Plugin) {
+  lookup_inherits(_default, _Plugin);
+
+  var _super = lookup_createSuper(_default);
+
+  function _default() {
+    var _this;
+
+    lookup_classCallCheck(this, _default);
+
+    _this = _super.call(this, 'lookup');
+    _this.opt = {
+      aLabel: 'data-label',
+      aLookup: 'data-lookup',
+      aCap: 'data-cap',
+      aList: 'data-list',
+      aUrl: 'data-url',
+      aGoto: 'data-goto',
+      cacheLimit: 0,
+      pList: 'lookup-list-',
+      max: 10,
+      wait: 300,
+      inPop: 0
+    };
+    _this.win = null;
+    return _this;
+  }
+
+  lookup_createClass(_default, [{
+    key: "init",
+    value: function init() {
+      var _this2 = this;
+
+      var app = this.app;
+      this.win = app.ins('div', '', {
+        id: this.opt.pList + app.seq(),
+        className: app.opt.cToggle + ' ' + app.opt.cOff
+      });
+      this.closeList();
+      document.body.appendChild(this.win);
+      app.e('input[' + this.opt.aLookup + ']', function (n) {
+        return _this2.prepare(n);
+      });
+      app.e('[data-chain]', function (n) {
+        return _this2.updateChain(n);
+      });
+      app.h('input', '.lookup-input', function (e) {
+        return app.delay(function (i) {
+          return _this2.find(i);
+        }, _this2.opt.wait, true)(e);
+      });
+      app.h('keydown', '.lookup-input', function (e) {
+        return _this2.key(e);
+      });
+      app.h('click', '.lookup-item', function (e) {
+        return _this2.choose(e);
+      });
+      app.h('click', '.lookup-goto', function (e) {
+        return _this2.go(e);
+      });
+      app.h('change', '[data-chain]', function (e) {
+        return _this2.updateChain(e.target);
+      });
+    }
+  }, {
+    key: "prepare",
+    value: function prepare(n) {
+      var app = this.app;
+      if (this.cap(n)) return;
+      var cap = app.attr(n, this.opt.aLabel);
+      n.vLabel = cap || n.value || '';
+      var pop = app.ins('div', '', {
+        className: 'pop l lookup-pop'
+      }, n, 1);
+      if (!this.opt.inPop) pop.style.verticalAlign = 'bottom';
+      n.classList.add('bg-n', 'lookup-id');
+      n.classList.add(app.opt.cHide); //n.type = 'hidden';
+
+      var m = app.ins('input', '', {
+        type: 'text',
+        value: n.vLabel,
+        className: 'lookup-input subinput'
+      }, pop, this.opt.inPop ? 0 : 1);
+      m.name = 'lookup-' + n.name; //m.required = n.required;
+      //n.required = false;
+
+      if (n.id) {
+        m.id = 'lookup-' + n.id;
+        if (n.title) m.title = n.title;
+        app.e('[for="' + n.id + '"]', function (lbl) {
+          return lbl.htmlFor = m.id;
+        });
+      }
+
+      if (n.placeholder) m.placeholder = n.placeholder;
+      m.autocomplete = 'off';
+      var i = null;
+
+      if (app.attr(n, this.opt.aUrl)) {
+        var ic = app.ins('span', '', {
+          className: 'input-tools nobr'
+        }, this.opt.inPop ? pop : m, 1); //icons container
+
+        i = app.ins('a', app.i('forward', '&rarr;'), {
+          href: '#goto',
+          className: 'let lookup-goto'
+        }, ic);
+        i.style.cursor = 'pointer';
+        app.ins('', ' ', {}, ic, -1);
+      }
+
+      this.initCaption(n);
+    }
+  }, {
+    key: "initCaption",
+    value: function initCaption(n) {
+      var _this3 = this;
+
+      var cap = this.app.attr(n, this.opt.aLabel);
+      var uc = this.app.attr(n, this.opt.aCap, '');
+
+      if (n.value && !cap && uc) {
+        var u = encodeURI(decodeURI(this.app.makeUrl(uc, {
+          time: new Date().getTime()
+        })).replace(/\{q\}/, n.value));
+        this.app.pf('fetch', 'fetch', u, function (req) {
+          var d = JSON.parse(req.responseText);
+
+          _this3.fix(n, n.value, d.data);
+        });
+      }
+    }
+  }, {
+    key: "ident",
+    value: function ident(n, mode) {
+      if (mode != 't' && (mode == 'i' || this.opt.inPop)) n = n.closest('.lookup-pop');
+      return this.app.next(n, '.lookup-id', true);
+    }
+  }, {
+    key: "cap",
+    value: function cap(n) {
+      return this.opt.inPop ? this.app.q('.lookup-input', this.pop(n)) : this.app.next(n, '.lookup-input');
+    }
+  }, {
+    key: "pop",
+    value: function pop(n) {
+      return this.app.next(n, '.lookup-pop');
+    }
+  }, {
+    key: "find",
+    value: function find(e) {
+      var c = e.target;
+      var n = this.ident(c);
+      if (!n) return;
+      var v = c.value;
+      if (v === '') this.fix(n, '', ''); //empty
+      else if (n.vCache && n.vCache[v]) this.openList(n, n.vCache[v]); //cached
+        else {
+            var u = encodeURI(decodeURI(this.app.makeUrl(this.app.attr(n, this.opt.aLookup, ''), {
+              //value: v,
+              time: new Date().getTime()
+            })).replace(/\{q\}/, v));
+            n.vCur = null;
+            this.app.pf('fetch', 'fetch', u, this.list.bind(this, v, n));
+          }
+    }
+  }, {
+    key: "list",
+    value: function list(u, n, req) {
+      var d = JSON.parse(req.responseText);
+      if (u === this.cap(n).value) this.openList(n, d.data);
+      this.store(n, u, d);
+    }
+  }, {
+    key: "openList",
+    value: function openList(n, d, e) {
+      if (e) e.stopPropagation();
+      this.closeList();
+      var pop = this.pop(n);
+      pop.appendChild(this.win); //this.win.vRel = n.vCap;
+
+      this.app.pf('toggle', 'toggle', this.win, true);
+      this.build(n, d); //toggle.shown = null;
+    }
+  }, {
+    key: "closeList",
+    value: function closeList() {
+      this.app.pf('toggle', 'toggle', this.win, false);
+    }
+  }, {
+    key: "build",
+    value: function build(n, d) {
+      var app = this.app;
+      app.clr(this.win);
+      var ul = app.ins('ul', '', {
+        className: 'nav let hover'
+      }, this.win);
+      var w,
+          j = 0;
+      var go = app.attr(n, this.opt.aGoto, '');
+
+      for (var i in d) {
+        w = app.ins('li', '', {}, ul);
+        var a = app.ins('a', '', {
+          href: go ? go.replace(/\{id\}/, d[i].id) : '#' + d[i].id,
+          className: '-pad -hover' + (go ? '' : ' lookup-item')
+        }, w);
+        app.ins('span', d[i].nm, {}, a);
+
+        if (d[i].info) {
+          app.ins('br', '', {}, a);
+          app.ins('small', d[i].info, {
+            className: 'text-n'
+          }, a);
+        }
+
+        j++;
+        if (j >= this.opt.max) break;
+      }
+
+      if (ul.firstChild) this.hilite(n, ul.firstChild.firstChild);
+    }
+  }, {
+    key: "hilite",
+    value: function hilite(n, a) {
+      if (n.vCur) n.vCur.classList.remove(this.app.opt.cAct);
+      a.classList.add(this.app.opt.cAct);
+      n.vCur = a;
+    }
+  }, {
+    key: "hiliteNext",
+    value: function hiliteNext(n, prev) {
+      if (n.vCur) {
+        var a = n.vCur.parentNode[prev ? 'previousSibling' : 'nextSibling'];
+        if (!a) a = n.vCur.parentNode.parentNode[prev ? 'lastChild' : 'firstChild'];
+        a = a.firstChild;
+        this.hilite(n, a);
+      }
+    }
+  }, {
+    key: "choose",
+    value: function choose(e) {
+      if (e) e.preventDefault();
+      var a = e.recv;
+      var n = this.ident(a, 'i');
+      n.vCur = a;
+      this.fix(n, a.hash.substr(1), a.firstChild.textContent);
+    }
+  }, {
+    key: "fix",
+    value: function fix(n, v, c) {
+      n.vCur = null;
+      if (n.vWait) clearTimeout(n.vWait);
+      n.value = v;
+      n.vLabel = this.cap(n).value = c;
+      this.app.dispatch(n, ['input', 'change']);
+      this.closeList();
+    }
+  }, {
+    key: "key",
+    value: function key(e) {
+      var n = e.target ? this.ident(e.target) : null;
+      ;
+
+      if (n) {
+        if (e.keyCode == 27) this.fix(n, n.value, n.vLabel);else if (e.keyCode == 40 && !this.app.vis(this.win)) this.find(e);else if (e.keyCode == 38 || e.keyCode == 40) this.hiliteNext(n, e.keyCode == 38);else if (e.keyCode == 13 && n.vCur) {
+          if (this.app.vis(this.win)) e.preventDefault();
+          n.vCur.click();
+        }
+      }
+    }
+  }, {
+    key: "go",
+    value: function go(e) {
+      var n = e.recv ? this.ident(e.recv.parentNode, 't') : null;
+
+      if (n) {
+        e.preventDefault();
+        var u = this.app.attr(n, this.opt.aUrl, '');
+        if (n.value.length > 0 && u) location.href = encodeURI(decodeURI(u).replace(/\{id\}/, n.value));
+      }
+    } // update chain
+
+  }, {
+    key: "updateChain",
+    value: function updateChain(n) {
+      var m = this.app.q(this.app.attr(n, 'data-chain', ''), 0);
+
+      if (m) {
+        if (!n.value) this.setOptions(m, []);else {
+          var u = this.app.attr(m, this.opt.aList, '').replace(/\{q\}/, n.value);
+          if (m.vCache && m.vCache[u]) this.setOptions(m, m.vCache[u]);else this.app.pf('fetch', 'fetch', u, this.onChainData.bind(this, u, m));
+        }
+      }
+    }
+  }, {
+    key: "onChainData",
+    value: function onChainData(u, n, req) {
+      var d = JSON.parse(req.responseText);
+      this.setOptions(n, d.data);
+      this.store(n, u, d);
+    }
+  }, {
+    key: "setOptions",
+    value: function setOptions(n, a) {
+      var _this4 = this;
+
+      if (n.list) {
+        if (n.list) {
+          this.app.clr(n.list);
+          n.value = '';
+          if (a) a.forEach(function (v) {
+            return _this4.app.ins('option', '', {
+              value: v.nm
+            }, n.list);
+          });
+        }
+      } else {
+        this.app.clr(n);
+        var z = this.app.attr(n, 'data-placeholder', '');
+        if (!a || a.length == 0 || z) this.app.ins('option', z || '-', {
+          value: ''
+        }, n);
+        if (a) a.forEach(function (v) {
+          return _this4.app.ins('option', v.nm, {
+            value: v.id
+          }, n);
+        });
+      }
+    }
+  }, {
+    key: "store",
+    value: function store(n, u, d) {
+      var c = this.app.attr(n, 'data-cache');
+      if (c === null) c = this.opt.cacheLimit;
+      c = parseInt(c, 10);
+
+      if (c) {
+        if (!n.vCache || Object.keys(n.vCache).length >= c) n.vCache = {};
+        if (d) n.vCache[u] = d.data;
+      }
+    }
+  }]);
+
+  return _default;
+}(plugins_plugin["a" /* default */]);
+
+
 // CONCATENATED MODULE: ./src/index.js
 
 
@@ -2671,6 +3468,22 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
 
 
 
+
+
+
+/*
+import Edit from './js/plugins/edit.js'
+import Valid from './js/plugins/valid.js'
+import Tools from './js/plugins/tools.js'
+import Form from './js/plugins/form.js'
+import Keepform from './js/plugins/keepform.js'
+import Items from './js/plugins/items.js'
+import Filter from './js/plugins/filter.js'
+import Fliptable from './js/plugins/fliptable.js'
+import Swipe from './js/plugins/swipe.js'
+import Scroll from './js/plugins/scroll.js'
+import Theme from './js/plugins/theme.js'
+*/
 
 var src_app = new app["a" /* default */](); //console.log('app', app)
 
@@ -2694,7 +3507,23 @@ src_app.plug(toggle["a" /* default */]);
 src_app.plug(dialog["a" /* default */]);
 src_app.plug(gallery["a" /* default */]);
 src_app.plug(fetch_default);
-src_app.plug(tablex_default); // let opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}}
+src_app.plug(tablex_default);
+src_app.plug(calendar_default);
+src_app.plug(lookup_default);
+/*
+app.plug(Edit)
+app.plug(Valid)
+app.plug(Tools)
+app.plug(Form)
+app.plug(Keepform)
+app.plug(Items)
+app.plug(Filter)
+app.plug(Fliptable)
+app.plug(Swipe)
+app.plug(Scroll)
+app.plug(Theme)
+*/
+// let opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}}
 
 src_app.b([document], 'DOMContentLoaded', function (e) {
   return src_app.init();

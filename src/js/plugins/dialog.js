@@ -30,7 +30,6 @@ export default class extends Plugin {
     this.opt.ccDlg = this.app.opt.cToggle + ' ' + this.app.opt.cOff + ' ' + this.opt.ccDlg;
     if(!this.dlg) this.dlg = this.app.ins('div', '', {className: this.opt.ccDlg}, document.body);
     this.app.h('click', this.opt.qAlert+', '+this.opt.qDialog, e => this.onClick(e));
-    this.app.listen('dialog', e => this.openDialog(...e));
   }
   
   onClick (e){
@@ -68,11 +67,11 @@ export default class extends Plugin {
       app.b([yes], 'click', e => { e.preventDefault(); this.callback(f, inp.value, e); });
       if(inp.tagName) app.b([inp], 'keyup', e => e.keyCode==13 ? this.callback(f, inp.value, e) : null);
     }
-    this.app.fire('toggle', [this.dlg, true])
+    this.app.pf('toggle', 'toggle', this.dlg, true)
   }
   
   closeDialog () {
-    this.app.fire('unpop', [])
+    this.app.pf('toggle', 'unpop')
   }
   
   callback (f, v, e){

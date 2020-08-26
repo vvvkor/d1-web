@@ -45,15 +45,13 @@ export default class extends Plugin{
     const app = this.app
     app.e('a[data-href]', n => n.href = this.app.attr(n, 'data-href'));
     app.listen('esc', e => this.esc(e));
-    app.listen('unpop', e => this.unpop(...e));
-    app.listen('toggle', e => this.toggle(...e));
     app.listen('hashchange', e => this.onHash(e));
     app.listen('keydown', e => this.onKey(e));
     app.h('click', 'a[href^="#"]', e => this.onLink(e));
     app.listen('click', e => this.onClick(e));
     app.listen('after', e => (e && e.type == 'click') ? this.unpop(e.target) : null); // click out
     app.listen('after', e => (!e || ['click', 'keydown', 'hashchange'].indexOf(e.type) != -1) ? this.modalStyle(e) : null);
-    app.listen('after', e => (!e || ['click', 'keydown', 'hashchange'].indexOf(e.type) != -1) ? (this.shown = null) : null);
+    app.listen('after', e => (!e || ['click', 'keydown', 'hashchange'].indexOf(e.type) != -1) ? (this.setShown(null)) : null);
     //toggle
     let q = this.opt;
     this.opt.qTgl = this.opt.mediaSuffixes.concat(['']).map(x => /*'[id]' + */ '.' + app.opt.cToggle + x).join(', ')
@@ -92,7 +90,7 @@ export default class extends Plugin{
 
   modalStyle (e) {
     let n = e ? e.target : null;
-    //this.shown = null;//do it just once when dialog is opened
+    //this.setShown(null);//do it just once when dialog is opened
     //let modal = this.app.q(this.opt.qDlg+':not(.'+this.app.opt.cOff+'), '+this.opt.qGal+':target'); // :target not updated after Esc key
     
     //styles
@@ -197,6 +195,10 @@ export default class extends Plugin{
       a.href = '#' + n.id;
     }
   }
+  
+  setShown (n) {
+    this.shown = n
+  }
 
   //deep: -1=prepare, 0=click|hash, 1=deps|clo
   toggle (h, on, deep) {
@@ -209,7 +211,7 @@ export default class extends Plugin{
       this.app.dbg(['toggle' + (deep ? ' deep' : ''), on, d], deep ? 2 : 1);
       if(this.app.vis(d)){
         this.fixPosition(d);
-        if(!deep) this.shown = d;
+        if(!deep) this.setShown(d);
       }
       if(deep!=-1){
         if(!deep) this.toggleDependent(d);

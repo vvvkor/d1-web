@@ -1,9 +1,9 @@
 /*! fetch - asynchronous requests */
 
-// let toggle = require('./toggle.js');
-// let dialog = require('./dialog.js');
+// import toggle from './toggle.js'
+// import dialog from './dialog.js'
 
-import Plugin from './plugin.js';
+import Plugin from './plugin.js'
 
 export default class extends Plugin {
 
@@ -39,10 +39,10 @@ export default class extends Plugin {
       if (d) {
         d.innerHTML = req.responseText;
         let dlg = d.closest('.dlg[id]');
-        if (dlg) this.app.fire('toggle', [dlg, true])
+        if (dlg) this.app.pf('toggle', 'toggle', dlg, true)
       }
       else {
-        this.app.fire('dialog', [n, req.responseText])
+        this.app.pf('dialog', 'openDialog', n, req.responseText)
       }
     }
     else console.error('XHTTP request failed', req);

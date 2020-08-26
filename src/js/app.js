@@ -3,28 +3,30 @@
 // (() => {
 //let main = new (function(){
 
-export default function () {
+export default class {
 
-  this.sequence = 0;
-  this.plugins = {};
-  this.handlers = {};
-  
-  this.opt = {
-    debug: 0,
-    aCaption: 'data-caption',
-    cAct: 'act',
-    cHide: 'hide',
-    cToggle: 'toggle',
-    cOff: 'off',
-    cClose: 'close',
-    cJs: 'js',
-    hClose: '#cancel',
-    hOk: '#ok',
-    sCancel: 'Cancel',
-    sOk: 'OK'
-  };
+  constructor () {
+    this.sequence = 0;
+    this.plugins = {};
+    this.handlers = {};
+    
+    this.opt = {
+      debug: 0,
+      aCaption: 'data-caption',
+      cAct: 'act',
+      cHide: 'hide',
+      cToggle: 'toggle',
+      cOff: 'off',
+      cClose: 'close',
+      cJs: 'js',
+      hClose: '#cancel',
+      hOk: '#ok',
+      sCancel: 'Cancel',
+      sOk: 'OK'
+    };
+  }
 
-  this.init = function(opt){
+  init (opt){
     document.body.classList.add(this.opt.cJs); // prepare body: anti-hover, anti-target
     this.fire('beforeopt');
     //options
@@ -49,7 +51,7 @@ export default function () {
 
   // event delegation
   // https://gomakethings.com/why-event-delegation-is-a-better-way-to-listen-for-events-in-vanilla-js/
-  this.on = function(t, e){
+  on (t, e){
     this.fire('before', e);
     this.fire(t, e);
     //this.fire(t + 'ed', e);
@@ -59,17 +61,17 @@ export default function () {
 
   //plugins
 
-  this.setOpt = function(obj, opt){
+  setOpt (obj, opt){
     let i;
     if(opt) for(i in opt) if(i != 'plug') obj.opt[i] = opt[i];
   }
 
-  this.plug = function(c, n) {
+  plug (c, n) {
     let p = new c()
     this.plugins[n || p.name] = p
   }
 
-  this.initPlugins = function(opt){
+  initPlugins (opt){
     if(this.opt.disable) this.opt.disable.forEach(p => delete this.plugins[p]);
     this.dbg(['plugins', this.plugins]);
     Object.keys(this.plugins).forEach(k => {
@@ -80,22 +82,28 @@ export default function () {
     Object.keys(this.plugins).forEach(k => this.plugins[k].init());
     this.fire('afterinit');
   }
+  
+  // call method of plugin
+  pf (p, f, ...a) {
+    if (this.plugins[p] && this.plugins[p][f]) this.plugins[p][f](...a)
+    else this.dbg(['no plugin function', p + '.' + f + '()'])
+  }
 
   //events
 
-  this.fire = function(et, e){
+  fire (et, e){
     this.dbg(['fire ' + et, e]);
     if(this.handlers[et]) this.handlers[et].forEach(h => h.call(this, e));
   }
   
-  this.listen = function(et, f){
+  listen (et, f){
     //if(!this.handlers[et]) this.handlers[et] = [];
     //this.handlers[et].push(f);
     this.h(et, '', f);
   }
 
   //handle
-  this.h = function(et, s, f, before){
+  h (et, s, f, before){
     if(et instanceof Array) et.forEach(ett => this.h(ett, s, f, before));
     else{
       if(!this.handlers[et]) this.handlers[et] = [];
@@ -106,7 +114,7 @@ export default function () {
     }
   }
   
-  this.dispatch = function(n, et, p){
+  dispatch (n, et, p){
     // {view: window, bubbles: true, cancelable: true, composed: false}
     if(!p) p = {bubbles: true, cancelable: true, view: window};
     if(typeof(Event) === 'function'){ //-ie
@@ -119,26 +127,26 @@ export default function () {
 
   // debug
   
-  this.isDebug = function(l){
+  isDebug (l){
     return (this.opt.debug >= (l || 1) || location.href.indexOf('d1debug') != -1);
   }
   
-  this.dbg = function(s, l, e){
+  dbg (s, l, e){
     if(this.isDebug(l)) console[e ? 'error' : 'log'](s);
   }
 
   // sequence for IDs of generated nodes
-  this.seq = function(){
+  seq (){
     return ++this.sequence;
   }
 
   // convert to array
-  this.a = function(c){
+  a (c){
     return c ? Array.prototype.slice.call(c) : c;
   }
 
   // find node
-  this.q = function(s, n){
+  q (s, n){
     try{
       return (n || document).querySelector(s);
     }
@@ -148,7 +156,7 @@ export default function () {
   }
 
   // find nodes
-  this.qq = function(s, n){
+  qq (s, n){
     try{
       let r = (n || document).querySelectorAll(s);
       return this.a(r);
@@ -158,11 +166,11 @@ export default function () {
     }
   }
   
-  this.next = function(n, s, prev){
+  next (n, s, prev){
     while(n = n[prev ? 'previousElementSibling' : 'nextElementSibling']) if(n.matches(s)) return n;
   }
   
-  this.nn = function(q){
+  nn (q){
     if(!q) return [];
     else if(typeof q === 'string') return this.qq(q);
     else if(q.tagName) return [q];
@@ -170,7 +178,7 @@ export default function () {
   }
 
   // add event listener
-  this.b = function(q, et, f, capt){
+  b (q, et, f, capt){
     if(!et) this.e(q, f);
     if(f) this.nn(q).forEach(n => et instanceof Array
         ? et.forEach(ett => n.addEventListener(ett, e => f(e), capt))
@@ -179,22 +187,22 @@ export default function () {
   }
 
   // execute for each node
-  this.e = function(q, f){
+  e (q, f){
     if(f) this.nn(q).forEach(n => f.call(this, n));
   }
 
   // get attribute of node
-  this.attr = function(n, a, def){
+  attr (n, a, def){
     return (n && n.hasAttribute(a)) ? n.getAttribute(a) : (def !== undefined ? def : null);
   }
 
-  this.typeOf = function(v){
+  typeOf (v){
     return Object.prototype.toString.call(v).slice(8, -1).toLowerCase();
   }
   
   // insert node
   //pos: -1=before, false=prepend, 0=append(default), 1=after
-  this.ins = function(tag, t, attrs, n, pos) {
+  ins (tag, t, attrs, n, pos) {
     let c = document.createElement(tag || 'span');
     if (this.typeOf(t) === 'array') t.forEach(m => m.nodeType ? c.appendChild(m) : c.innerHTML += m);
     else if (t && t.nodeType) c.appendChild(t);
@@ -216,30 +224,30 @@ export default function () {
   }
   
   // remove all children
-  this.clr = function(n){
+  clr (n){
     if(n) while(n.firstChild) n.removeChild(n.firstChild);
   }
 
   // insert close link with icon
-  this.x = function(d, pos, cls){
+  x (d, pos, cls){
     return this.ins('a', this.i('close', '&#x2715;'), {href: this.opt.hClose, className: (cls || '')}, d, pos);
   }
 
   // insert icon
-  this.i = function(ico, alt){
+  i (ico, alt){
     return this.plugins.icons
       ? this.plugins.icons.i(ico, alt)
       : this.ins('span', alt || ico);
   }
   
   // get node toggle status
-  this.vis = function(n){
+  vis (n){
     return !n.classList.contains(this.opt.cOff);
   }
 
   // function
 
-  this.throttle = function(f, ms){
+  throttle (f, ms){
     let p = false, c, a;
     return function ff(){
       if (p) { //2
@@ -260,7 +268,7 @@ export default function () {
     }
   }
 
-  this.delay = function(f, ms, skip){
+  delay (f, ms, skip){
     let p = null;
     return function ff(){
       if(skip && p) clearTimeout(p);
@@ -274,7 +282,7 @@ export default function () {
   // url
 
   // get url parameter(s) from link node
-  this.get = function(a, g){
+  get (a, g){
     if(!a || a.tagName!='A') return null;
     let i, gets={};
     let args = a.search ? a.search.replace(/^\?/, '').split('&') : [];
@@ -287,7 +295,7 @@ export default function () {
   }
 
   // compose url from link node or string, with additional parameters
-  this.makeUrl = function(a, args){
+  makeUrl (a, args){
     if(!a.tagName) a = this.ins('a', '', {href: a});
     let g = this.get(a);
     Object.keys(args).forEach(k => g[encodeURIComponent(k)] = encodeURIComponent(args[k]));

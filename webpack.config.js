@@ -7,7 +7,6 @@ var banner = pkg.name + ' v' + pkg.version;
 
 module.exports = {
   entry:{
-    'tester': './src/tester.js',
     'd1': './src/index.js',
     'd1-basic': './src/basic.js',
     'd1.min': './src/index.js',

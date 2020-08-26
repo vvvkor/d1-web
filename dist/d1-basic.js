@@ -123,353 +123,413 @@ var _default = /*#__PURE__*/function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _default; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 /*! app - core of d1-web */
 // (() => {
 //let main = new (function(){
-/* harmony default export */ __webpack_exports__["a"] = (function () {
-  this.sequence = 0;
-  this.plugins = {};
-  this.handlers = {};
-  this.opt = {
-    debug: 0,
-    aCaption: 'data-caption',
-    cAct: 'act',
-    cHide: 'hide',
-    cToggle: 'toggle',
-    cOff: 'off',
-    cClose: 'close',
-    cJs: 'js',
-    hClose: '#cancel',
-    hOk: '#ok',
-    sCancel: 'Cancel',
-    sOk: 'OK'
-  };
+var _default = /*#__PURE__*/function () {
+  function _default() {
+    _classCallCheck(this, _default);
 
-  this.init = function (opt) {
-    var _this = this;
+    this.sequence = 0;
+    this.plugins = {};
+    this.handlers = {};
+    this.opt = {
+      debug: 0,
+      aCaption: 'data-caption',
+      cAct: 'act',
+      cHide: 'hide',
+      cToggle: 'toggle',
+      cOff: 'off',
+      cClose: 'close',
+      cJs: 'js',
+      hClose: '#cancel',
+      hOk: '#ok',
+      sCancel: 'Cancel',
+      sOk: 'OK'
+    };
+  }
 
-    document.body.classList.add(this.opt.cJs); // prepare body: anti-hover, anti-target
+  _createClass(_default, [{
+    key: "init",
+    value: function init(opt) {
+      var _this = this;
 
-    this.fire('beforeopt'); //options
+      document.body.classList.add(this.opt.cJs); // prepare body: anti-hover, anti-target
 
-    if (!opt) {
-      opt = this.attr(document.body, 'data-d1');
-      if (opt) opt = JSON.parse(opt);
+      this.fire('beforeopt'); //options
+
+      if (!opt) {
+        opt = this.attr(document.body, 'data-d1');
+        if (opt) opt = JSON.parse(opt);
+      }
+
+      this.setOpt(this, opt);
+      this.dbg(['opt', this.opt]);
+      this.initPlugins(opt); // plugins
+      // bind events
+
+      this.b([window], 'hashchange', function (e) {
+        return _this.on('hashchange', e);
+      }); // on window
+
+      this.b([document], ['invalid', 'focus', 'blur'], function (e) {
+        return _this.on(e.type, e);
+      }, true); //useCapture
+
+      this.b([document], ['click', 'keydown', 'input', 'change', 'submit'], function (e) {
+        return _this.on(e.type, e);
+      });
+      if (location.hash) this.on('hashchange');
+      this.fire('after');
+      this.fire('ready');
+    } // event delegation
+    // https://gomakethings.com/why-event-delegation-is-a-better-way-to-listen-for-events-in-vanilla-js/
+
+  }, {
+    key: "on",
+    value: function on(t, e) {
+      this.fire('before', e);
+      this.fire(t, e); //this.fire(t + 'ed', e);
+      //if(!e || !e.defaultPrevented) ;
+
+      this.fire('after', e);
+    } //plugins
+
+  }, {
+    key: "setOpt",
+    value: function setOpt(obj, opt) {
+      var i;
+      if (opt) for (i in opt) {
+        if (i != 'plug') obj.opt[i] = opt[i];
+      }
     }
-
-    this.setOpt(this, opt);
-    this.dbg(['opt', this.opt]);
-    this.initPlugins(opt); // plugins
-    // bind events
-
-    this.b([window], 'hashchange', function (e) {
-      return _this.on('hashchange', e);
-    }); // on window
-
-    this.b([document], ['invalid', 'focus', 'blur'], function (e) {
-      return _this.on(e.type, e);
-    }, true); //useCapture
-
-    this.b([document], ['click', 'keydown', 'input', 'change', 'submit'], function (e) {
-      return _this.on(e.type, e);
-    });
-    if (location.hash) this.on('hashchange');
-    this.fire('after');
-    this.fire('ready');
-  }; // event delegation
-  // https://gomakethings.com/why-event-delegation-is-a-better-way-to-listen-for-events-in-vanilla-js/
-
-
-  this.on = function (t, e) {
-    this.fire('before', e);
-    this.fire(t, e); //this.fire(t + 'ed', e);
-    //if(!e || !e.defaultPrevented) ;
-
-    this.fire('after', e);
-  }; //plugins
-
-
-  this.setOpt = function (obj, opt) {
-    var i;
-    if (opt) for (i in opt) {
-      if (i != 'plug') obj.opt[i] = opt[i];
+  }, {
+    key: "plug",
+    value: function plug(c, n) {
+      var p = new c();
+      this.plugins[n || p.name] = p;
     }
-  };
+  }, {
+    key: "initPlugins",
+    value: function initPlugins(opt) {
+      var _this2 = this;
 
-  this.plug = function (c, n) {
-    var p = new c();
-    this.plugins[n || p.name] = p;
-  };
+      if (this.opt.disable) this.opt.disable.forEach(function (p) {
+        return delete _this2.plugins[p];
+      });
+      this.dbg(['plugins', this.plugins]);
+      Object.keys(this.plugins).forEach(function (k) {
+        _this2.plugins[k].app = _this2;
+        if (opt && opt.plug && opt.plug[k]) _this2.setOpt(_this2.plugins[k], opt.plug[k]);
+      });
+      this.fire('beforeinit');
+      Object.keys(this.plugins).forEach(function (k) {
+        return _this2.plugins[k].init();
+      });
+      this.fire('afterinit');
+    } // call method of plugin
 
-  this.initPlugins = function (opt) {
-    var _this2 = this;
+  }, {
+    key: "pf",
+    value: function pf(p, f) {
+      var _this$plugins$p;
 
-    if (this.opt.disable) this.opt.disable.forEach(function (p) {
-      return delete _this2.plugins[p];
-    });
-    this.dbg(['plugins', this.plugins]);
-    Object.keys(this.plugins).forEach(function (k) {
-      _this2.plugins[k].app = _this2;
-      if (opt && opt.plug && opt.plug[k]) _this2.setOpt(_this2.plugins[k], opt.plug[k]);
-    });
-    this.fire('beforeinit');
-    Object.keys(this.plugins).forEach(function (k) {
-      return _this2.plugins[k].init();
-    });
-    this.fire('afterinit');
-  }; //events
+      for (var _len = arguments.length, a = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+        a[_key - 2] = arguments[_key];
+      }
 
+      if (this.plugins[p] && this.plugins[p][f]) (_this$plugins$p = this.plugins[p])[f].apply(_this$plugins$p, a);else this.dbg(['no plugin function', p + '.' + f + '()']);
+    } //events
 
-  this.fire = function (et, e) {
-    var _this3 = this;
+  }, {
+    key: "fire",
+    value: function fire(et, e) {
+      var _this3 = this;
 
-    this.dbg(['fire ' + et, e]);
-    if (this.handlers[et]) this.handlers[et].forEach(function (h) {
-      return h.call(_this3, e);
-    });
-  };
-
-  this.listen = function (et, f) {
-    //if(!this.handlers[et]) this.handlers[et] = [];
-    //this.handlers[et].push(f);
-    this.h(et, '', f);
-  }; //handle
-
-
-  this.h = function (et, s, f, before) {
-    var _this4 = this;
-
-    if (et instanceof Array) et.forEach(function (ett) {
-      return _this4.h(ett, s, f, before);
-    });else {
-      if (!this.handlers[et]) this.handlers[et] = [];
-      this.handlers[et][before ? 'unshift' : 'push'](function (e) {
-        if (s) e.recv = e.target.closest(s);
-        if (!s || e.recv) f(e);
+      this.dbg(['fire ' + et, e]);
+      if (this.handlers[et]) this.handlers[et].forEach(function (h) {
+        return h.call(_this3, e);
       });
     }
-  };
+  }, {
+    key: "listen",
+    value: function listen(et, f) {
+      //if(!this.handlers[et]) this.handlers[et] = [];
+      //this.handlers[et].push(f);
+      this.h(et, '', f);
+    } //handle
 
-  this.dispatch = function (n, et, p) {
-    // {view: window, bubbles: true, cancelable: true, composed: false}
-    if (!p) p = {
-      bubbles: true,
-      cancelable: true,
-      view: window
-    };
+  }, {
+    key: "h",
+    value: function h(et, s, f, before) {
+      var _this4 = this;
 
-    if (typeof Event === 'function') {
-      //-ie
       if (et instanceof Array) et.forEach(function (ett) {
-        return n.dispatchEvent(new Event(ett, p));
-      });else n.dispatchEvent(new Event(et, p));
-    }
-  }; //utils
-  // debug
-
-
-  this.isDebug = function (l) {
-    return this.opt.debug >= (l || 1) || location.href.indexOf('d1debug') != -1;
-  };
-
-  this.dbg = function (s, l, e) {
-    if (this.isDebug(l)) console[e ? 'error' : 'log'](s);
-  }; // sequence for IDs of generated nodes
-
-
-  this.seq = function () {
-    return ++this.sequence;
-  }; // convert to array
-
-
-  this.a = function (c) {
-    return c ? Array.prototype.slice.call(c) : c;
-  }; // find node
-
-
-  this.q = function (s, n) {
-    try {
-      return (n || document).querySelector(s);
-    } catch (e) {
-      return null;
-    }
-  }; // find nodes
-
-
-  this.qq = function (s, n) {
-    try {
-      var r = (n || document).querySelectorAll(s);
-      return this.a(r);
-    } catch (e) {
-      return [];
-    }
-  };
-
-  this.next = function (n, s, prev) {
-    while (n = n[prev ? 'previousElementSibling' : 'nextElementSibling']) {
-      if (n.matches(s)) return n;
-    }
-  };
-
-  this.nn = function (q) {
-    if (!q) return [];else if (typeof q === 'string') return this.qq(q);else if (q.tagName) return [q];else return this.a(q);
-  }; // add event listener
-
-
-  this.b = function (q, et, f, capt) {
-    if (!et) this.e(q, f);
-    if (f) this.nn(q).forEach(function (n) {
-      return et instanceof Array ? et.forEach(function (ett) {
-        return n.addEventListener(ett, function (e) {
-          return f(e);
-        }, capt);
-      }) : n.addEventListener(et, function (e) {
-        return f(e);
+        return _this4.h(ett, s, f, before);
+      });else {
+        if (!this.handlers[et]) this.handlers[et] = [];
+        this.handlers[et][before ? 'unshift' : 'push'](function (e) {
+          if (s) e.recv = e.target.closest(s);
+          if (!s || e.recv) f(e);
+        });
       }
-      /*f.bind(this)*/
-      , capt);
-    });
-  }; // execute for each node
+    }
+  }, {
+    key: "dispatch",
+    value: function dispatch(n, et, p) {
+      // {view: window, bubbles: true, cancelable: true, composed: false}
+      if (!p) p = {
+        bubbles: true,
+        cancelable: true,
+        view: window
+      };
 
+      if (typeof Event === 'function') {
+        //-ie
+        if (et instanceof Array) et.forEach(function (ett) {
+          return n.dispatchEvent(new Event(ett, p));
+        });else n.dispatchEvent(new Event(et, p));
+      }
+    } //utils
+    // debug
 
-  this.e = function (q, f) {
-    var _this5 = this;
+  }, {
+    key: "isDebug",
+    value: function isDebug(l) {
+      return this.opt.debug >= (l || 1) || location.href.indexOf('d1debug') != -1;
+    }
+  }, {
+    key: "dbg",
+    value: function dbg(s, l, e) {
+      if (this.isDebug(l)) console[e ? 'error' : 'log'](s);
+    } // sequence for IDs of generated nodes
 
-    if (f) this.nn(q).forEach(function (n) {
-      return f.call(_this5, n);
-    });
-  }; // get attribute of node
+  }, {
+    key: "seq",
+    value: function seq() {
+      return ++this.sequence;
+    } // convert to array
 
+  }, {
+    key: "a",
+    value: function a(c) {
+      return c ? Array.prototype.slice.call(c) : c;
+    } // find node
 
-  this.attr = function (n, a, def) {
-    return n && n.hasAttribute(a) ? n.getAttribute(a) : def !== undefined ? def : null;
-  };
+  }, {
+    key: "q",
+    value: function q(s, n) {
+      try {
+        return (n || document).querySelector(s);
+      } catch (e) {
+        return null;
+      }
+    } // find nodes
 
-  this.typeOf = function (v) {
-    return Object.prototype.toString.call(v).slice(8, -1).toLowerCase();
-  }; // insert node
-  //pos: -1=before, false=prepend, 0=append(default), 1=after
+  }, {
+    key: "qq",
+    value: function qq(s, n) {
+      try {
+        var r = (n || document).querySelectorAll(s);
+        return this.a(r);
+      } catch (e) {
+        return [];
+      }
+    }
+  }, {
+    key: "next",
+    value: function next(n, s, prev) {
+      while (n = n[prev ? 'previousElementSibling' : 'nextElementSibling']) {
+        if (n.matches(s)) return n;
+      }
+    }
+  }, {
+    key: "nn",
+    value: function nn(q) {
+      if (!q) return [];else if (typeof q === 'string') return this.qq(q);else if (q.tagName) return [q];else return this.a(q);
+    } // add event listener
 
+  }, {
+    key: "b",
+    value: function b(q, et, f, capt) {
+      if (!et) this.e(q, f);
+      if (f) this.nn(q).forEach(function (n) {
+        return et instanceof Array ? et.forEach(function (ett) {
+          return n.addEventListener(ett, function (e) {
+            return f(e);
+          }, capt);
+        }) : n.addEventListener(et, function (e) {
+          return f(e);
+        }
+        /*f.bind(this)*/
+        , capt);
+      });
+    } // execute for each node
 
-  this.ins = function (tag, t, attrs, n, pos) {
-    var c = document.createElement(tag || 'span');
-    if (this.typeOf(t) === 'array') t.forEach(function (m) {
-      return m.nodeType ? c.appendChild(m) : c.innerHTML += m;
-    });else if (t && t.nodeType) c.appendChild(t);else if (t) c.innerHTML = t;
+  }, {
+    key: "e",
+    value: function e(q, f) {
+      var _this5 = this;
 
-    if (attrs) {
-      for (var i in attrs) {
-        if (attrs[i] !== null && attrs[i] !== undefined) {
-          if (i.match(/-/)) c.setAttribute(i.replace(/^-/, ''), attrs[i]);else c[i] = attrs[i];
+      if (f) this.nn(q).forEach(function (n) {
+        return f.call(_this5, n);
+      });
+    } // get attribute of node
+
+  }, {
+    key: "attr",
+    value: function attr(n, a, def) {
+      return n && n.hasAttribute(a) ? n.getAttribute(a) : def !== undefined ? def : null;
+    }
+  }, {
+    key: "typeOf",
+    value: function typeOf(v) {
+      return Object.prototype.toString.call(v).slice(8, -1).toLowerCase();
+    } // insert node
+    //pos: -1=before, false=prepend, 0=append(default), 1=after
+
+  }, {
+    key: "ins",
+    value: function ins(tag, t, attrs, n, pos) {
+      var c = document.createElement(tag || 'span');
+      if (this.typeOf(t) === 'array') t.forEach(function (m) {
+        return m.nodeType ? c.appendChild(m) : c.innerHTML += m;
+      });else if (t && t.nodeType) c.appendChild(t);else if (t) c.innerHTML = t;
+
+      if (attrs) {
+        for (var i in attrs) {
+          if (attrs[i] !== null && attrs[i] !== undefined) {
+            if (i.match(/-/)) c.setAttribute(i.replace(/^-/, ''), attrs[i]);else c[i] = attrs[i];
+          }
         }
       }
-    }
 
-    return n ? pos ? n.parentNode.insertBefore(c, pos < 0 ? n : n.nextSibling) : pos === false ? n.insertBefore(c, n.firstChild) : n.appendChild(c) : c;
-  }; // remove all children
+      return n ? pos ? n.parentNode.insertBefore(c, pos < 0 ? n : n.nextSibling) : pos === false ? n.insertBefore(c, n.firstChild) : n.appendChild(c) : c;
+    } // remove all children
 
-
-  this.clr = function (n) {
-    if (n) while (n.firstChild) {
-      n.removeChild(n.firstChild);
-    }
-  }; // insert close link with icon
-
-
-  this.x = function (d, pos, cls) {
-    return this.ins('a', this.i('close', '&#x2715;'), {
-      href: this.opt.hClose,
-      className: cls || ''
-    }, d, pos);
-  }; // insert icon
-
-
-  this.i = function (ico, alt) {
-    return this.plugins.icons ? this.plugins.icons.i(ico, alt) : this.ins('span', alt || ico);
-  }; // get node toggle status
-
-
-  this.vis = function (n) {
-    return !n.classList.contains(this.opt.cOff);
-  }; // function
-
-
-  this.throttle = function (f, ms) {
-    var p = false,
-        c,
-        a;
-    return function ff() {
-      if (p) {
-        //2
-        c = this;
-        a = arguments;
-      } else {
-        f.apply(this, arguments); //1
-
-        p = true;
-        setTimeout(function () {
-          //3
-          p = false;
-
-          if (a) {
-            ff.apply(c, a);
-            a = c = null;
-          }
-        }, ms);
+  }, {
+    key: "clr",
+    value: function clr(n) {
+      if (n) while (n.firstChild) {
+        n.removeChild(n.firstChild);
       }
-    };
-  };
+    } // insert close link with icon
 
-  this.delay = function (f, ms, skip) {
-    var p = null;
-    return function ff() {
-      var _arguments = arguments,
-          _this6 = this;
+  }, {
+    key: "x",
+    value: function x(d, pos, cls) {
+      return this.ins('a', this.i('close', '&#x2715;'), {
+        href: this.opt.hClose,
+        className: cls || ''
+      }, d, pos);
+    } // insert icon
 
-      if (skip && p) clearTimeout(p);
-      p = setTimeout(function () {
-        f.apply(_this6, _arguments);
-        p = null;
-      }, ms);
-    };
-  }; // url
-  // get url parameter(s) from link node
+  }, {
+    key: "i",
+    value: function i(ico, alt) {
+      return this.plugins.icons ? this.plugins.icons.i(ico, alt) : this.ins('span', alt || ico);
+    } // get node toggle status
 
+  }, {
+    key: "vis",
+    value: function vis(n) {
+      return !n.classList.contains(this.opt.cOff);
+    } // function
 
-  this.get = function (a, g) {
-    if (!a || a.tagName != 'A') return null;
-    var i,
-        gets = {};
-    var args = a.search ? a.search.replace(/^\?/, '').split('&') : [];
+  }, {
+    key: "throttle",
+    value: function throttle(f, ms) {
+      var p = false,
+          c,
+          a;
+      return function ff() {
+        if (p) {
+          //2
+          c = this;
+          a = arguments;
+        } else {
+          f.apply(this, arguments); //1
 
-    for (i = 0; i < args.length; i++) {
-      var v = args[i].split('=');
-      gets[v[0]] = decodeURIComponent(v[1]).replace(/\+/, ' ');
+          p = true;
+          setTimeout(function () {
+            //3
+            p = false;
+
+            if (a) {
+              ff.apply(c, a);
+              a = c = null;
+            }
+          }, ms);
+        }
+      };
     }
+  }, {
+    key: "delay",
+    value: function delay(f, ms, skip) {
+      var p = null;
+      return function ff() {
+        var _arguments = arguments,
+            _this6 = this;
 
-    return g ? gets[g] : gets; //protocol, host (hostname, port), pathname, search, hash
-  }; // compose url from link node or string, with additional parameters
+        if (skip && p) clearTimeout(p);
+        p = setTimeout(function () {
+          f.apply(_this6, _arguments);
+          p = null;
+        }, ms);
+      };
+    } // url
+    // get url parameter(s) from link node
 
+  }, {
+    key: "get",
+    value: function get(a, g) {
+      if (!a || a.tagName != 'A') return null;
+      var i,
+          gets = {};
+      var args = a.search ? a.search.replace(/^\?/, '').split('&') : [];
 
-  this.makeUrl = function (a, args) {
-    if (!a.tagName) a = this.ins('a', '', {
-      href: a
-    });
-    var g = this.get(a);
-    Object.keys(args).forEach(function (k) {
-      return g[encodeURIComponent(k)] = encodeURIComponent(args[k]);
-    });
-    var q = Object.keys(g).map(function (k) {
-      return k + '=' + g[k];
-    }).join('&');
-    return a.host ? a.protocol + '//' + a.host + a.pathname + (q ? '?' + q : '') + a.hash : a.href.replace(/[\?#].*$/, '') + (q ? '?' + q : '') + a.hash; //ie
-  };
-});
+      for (i = 0; i < args.length; i++) {
+        var v = args[i].split('=');
+        gets[v[0]] = decodeURIComponent(v[1]).replace(/\+/, ' ');
+      }
+
+      return g ? gets[g] : gets; //protocol, host (hostname, port), pathname, search, hash
+    } // compose url from link node or string, with additional parameters
+
+  }, {
+    key: "makeUrl",
+    value: function makeUrl(a, args) {
+      if (!a.tagName) a = this.ins('a', '', {
+        href: a
+      });
+      var g = this.get(a);
+      Object.keys(args).forEach(function (k) {
+        return g[encodeURIComponent(k)] = encodeURIComponent(args[k]);
+      });
+      var q = Object.keys(g).map(function (k) {
+        return k + '=' + g[k];
+      }).join('&');
+      return a.host ? a.protocol + '//' + a.host + a.pathname + (q ? '?' + q : '') + a.hash : a.href.replace(/[\?#].*$/, '') + (q ? '?' + q : '') + a.hash; //ie
+    }
+  }]);
+
+  return _default;
+}();
 /*
 if (this.window === this) window[main.name] = main;
 else module.exports = main;
 })();
 */
+
+
+
 
 /***/ }),
 /* 2 */
@@ -479,18 +539,6 @@ else module.exports = main;
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _default; });
 /* harmony import */ var _plugin_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -573,12 +621,6 @@ var _default = /*#__PURE__*/function (_Plugin) {
       app.listen('esc', function (e) {
         return _this2.esc(e);
       });
-      app.listen('unpop', function (e) {
-        return _this2.unpop.apply(_this2, _toConsumableArray(e));
-      });
-      app.listen('toggle', function (e) {
-        return _this2.toggle.apply(_this2, _toConsumableArray(e));
-      });
       app.listen('hashchange', function (e) {
         return _this2.onHash(e);
       });
@@ -599,7 +641,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
         return !e || ['click', 'keydown', 'hashchange'].indexOf(e.type) != -1 ? _this2.modalStyle(e) : null;
       });
       app.listen('after', function (e) {
-        return !e || ['click', 'keydown', 'hashchange'].indexOf(e.type) != -1 ? _this2.shown = null : null;
+        return !e || ['click', 'keydown', 'hashchange'].indexOf(e.type) != -1 ? _this2.setShown(null) : null;
       }); //toggle
 
       var q = this.opt;
@@ -691,7 +733,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "modalStyle",
     value: function modalStyle(e) {
-      var n = e ? e.target : null; //this.shown = null;//do it just once when dialog is opened
+      var n = e ? e.target : null; //this.setShown(null);//do it just once when dialog is opened
       //let modal = this.app.q(this.opt.qDlg+':not(.'+this.app.opt.cOff+'), '+this.opt.qGal+':target'); // :target not updated after Esc key
       //styles
 
@@ -810,6 +852,11 @@ var _default = /*#__PURE__*/function (_Plugin) {
         if (!n.id) n.id = 'ul-' + this.app.seq();
         a.href = '#' + n.id;
       }
+    }
+  }, {
+    key: "setShown",
+    value: function setShown(n) {
+      this.shown = n;
     } //deep: -1=prepare, 0=click|hash, 1=deps|clo
 
   }, {
@@ -831,7 +878,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
         if (this.app.vis(d)) {
           this.fixPosition(d);
-          if (!deep) this.shown = d;
+          if (!deep) this.setShown(d);
         }
 
         if (deep != -1) {
@@ -998,18 +1045,6 @@ var _default = /*#__PURE__*/function (_Plugin) {
 /* harmony import */ var _plugin_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -1072,9 +1107,6 @@ var _default = /*#__PURE__*/function (_Plugin) {
       }, document.body);
       this.app.h('click', this.opt.qAlert + ', ' + this.opt.qDialog, function (e) {
         return _this2.onClick(e);
-      });
-      this.app.listen('dialog', function (e) {
-        return _this2.openDialog.apply(_this2, _toConsumableArray(e));
       });
     }
   }, {
@@ -1147,12 +1179,12 @@ var _default = /*#__PURE__*/function (_Plugin) {
         });
       }
 
-      this.app.fire('toggle', [this.dlg, true]);
+      this.app.pf('toggle', 'toggle', this.dlg, true);
     }
   }, {
     key: "closeDialog",
     value: function closeDialog() {
-      this.app.fire('unpop', []);
+      this.app.pf('toggle', 'unpop');
     }
   }, {
     key: "callback",
