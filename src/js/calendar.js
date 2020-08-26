@@ -27,9 +27,9 @@ module.exports = new(function () {
 
   this.win = null;
 
-  this.init = function(opt) {
-    let i;
-    for(i in opt) this.opt[i] = opt[i];
+  this.init = function(/*opt*/) {
+    //let i;
+    //for(i in opt) this.opt[i] = opt[i];
 
     if(window.innerWidth < this.opt.minWidth) return;
     this.win = app.ins('div', '', {id: this.opt.idPicker, className: app.opt.cToggle + ' ' + app.opt.cOff + ' pad'});//dlg hide pad

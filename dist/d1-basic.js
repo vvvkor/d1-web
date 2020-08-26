@@ -1,4 +1,4 @@
-/*! d1-web v1.4.16 */
+/*! d1-web v2.0.0 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -82,18 +82,51 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 29);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
-/******/ ({
+/******/ ([
+/* 0 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-/***/ 0:
-/***/ (function(module, exports) {
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _default; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var _default = /*#__PURE__*/function () {
+  function _default(name) {
+    _classCallCheck(this, _default);
+
+    this.app = null;
+    this.name = name || 'plugin';
+    this.opt = {};
+  }
+
+  _createClass(_default, [{
+    key: "init",
+    value: function init() {
+      console.log('plugin.init()');
+    }
+  }]);
+
+  return _default;
+}();
+
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /*! app - core of d1-web */
 // (() => {
 //let main = new (function(){
-module.exports = new function () {
+/* harmony default export */ __webpack_exports__["a"] = (function () {
   this.sequence = 0;
   this.plugins = {};
   this.handlers = {};
@@ -163,8 +196,9 @@ module.exports = new function () {
     }
   };
 
-  this.plug = function (p) {
-    this.plugins[p.name] = p;
+  this.plug = function (c, n) {
+    var p = new c();
+    this.plugins[n || p.name] = p;
   };
 
   this.initPlugins = function (opt) {
@@ -176,8 +210,13 @@ module.exports = new function () {
     this.dbg(['plugins', this.plugins]);
     Object.keys(this.plugins).forEach(function (k) {
       return opt && opt.plug && opt.plug[k] ? _this2.setOpt(_this2.plugins[k], opt.plug[k]) : null;
-    });
+    }); //@@
+
     this.fire('beforeinit');
+    Object.keys(this.plugins).forEach(function (k) {
+      return _this2.plugins[k].app = _this2;
+    }); //@@
+
     Object.keys(this.plugins).forEach(function (k) {
       return _this2.plugins[k].init();
     });
@@ -429,7 +468,7 @@ module.exports = new function () {
     }).join('&');
     return a.host ? a.protocol + '//' + a.host + a.pathname + (q ? '?' + q : '') + a.hash : a.href.replace(/[\?#].*$/, '') + (q ? '?' + q : '') + a.hash; //ie
   };
-}();
+});
 /*
 if (this.window === this) window[main.name] = main;
 else module.exports = main;
@@ -437,446 +476,508 @@ else module.exports = main;
 */
 
 /***/ }),
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-/***/ 1:
-/***/ (function(module, exports, __webpack_require__) {
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _default; });
+/* harmony import */ var _plugin_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 /*! toggle - togglable interactive components */
 // Interface components: dropdown, popup, toggle, modal dialog, tabs, drawer, tree, gallery
 // .nav, .pop, .toggle, .dlg, .tabs, .drawer, .tree, .gal
-var app = __webpack_require__(0);
+//let app = require('./app.js');
 
-module.exports = new function () {
-  "use strict";
 
-  this.name = 'toggle';
-  this.shown = null;
-  this.nEsc = 0;
-  this.opt = {
-    keepHash: true,
-    mediaSuffixes: ['-mobile', '-desktop'],
-    dlgUnscroll: true,
-    //qTgl: '.toggle[id]',
-    qTrg: '[id].target',
-    qPop: '.pop>div[id]',
-    qNav: '.nav ul',
-    //auto [id]
-    qDlg: '.dlg',
-    //generated dialogs may have no [id]
-    qTab: '.tabs+div>div[id]',
-    qTre: 'ul.tree ul',
-    //auto [id]
-    qDrw: '.drawer[id]',
-    qAccRoot: 'ul.tree.accordion',
-    qAcc: 'ul.tree.accordion ul',
-    qGal: '.gal>a[id]',
-    // dup of gallery.opt.qGal
-    qSubMem: '.tabs.mem+div>div[id], ul.mem:not(.nav) ul',
-    //qMedia: '[id].target-mobile, [id].target-desktop',
-    qDrawer: '.drawer[id]:not(.shift)',
-    qTip: '[data-tip=""][title], .tip[title]',
-    cMem: 'mem',
-    cFade: 'fade',
-    cTarget: 'target' //cToggle: 'toggle',
+var _default = /*#__PURE__*/function (_Plugin) {
+  _inherits(_default, _Plugin);
 
-  };
+  var _super = _createSuper(_default);
 
-  this.init = function () {
-    var _this = this;
+  function _default() {
+    var _this;
 
-    app.e('a[data-href]', function (n) {
-      return n.href = app.attr(n, 'data-href');
-    });
-    app.listen('esc', function (e) {
-      return _this.esc(e);
-    });
-    app.listen('hashchange', function (e) {
-      return _this.onHash(e);
-    });
-    app.listen('keydown', function (e) {
-      return _this.onKey(e);
-    });
-    app.h('click', 'a[href^="#"]', function (e) {
-      return _this.onLink(e);
-    });
-    app.listen('click', function (e) {
-      return _this.onClick(e);
-    });
-    app.listen('after', function (e) {
-      return e && e.type == 'click' ? _this.unpop(e.target) : null;
-    }); // click out
+    _classCallCheck(this, _default);
 
-    app.listen('after', function (e) {
-      return !e || ['click', 'keydown', 'hashchange'].indexOf(e.type) != -1 ? _this.modalStyle(e) : null;
-    });
-    app.listen('after', function (e) {
-      return !e || ['click', 'keydown', 'hashchange'].indexOf(e.type) != -1 ? _this.shown = null : null;
-    }); //toggle
+    _this = _super.call(this, 'toggle');
+    _this.shown = null;
+    _this.nEsc = 0;
+    _this.opt = {
+      keepHash: true,
+      mediaSuffixes: ['-mobile', '-desktop'],
+      dlgUnscroll: true,
+      //qTgl: '.toggle[id]',
+      qTrg: '[id].target',
+      qPop: '.pop>div[id]',
+      qNav: '.nav ul',
+      //auto [id]
+      qDlg: '.dlg',
+      //generated dialogs may have no [id]
+      qTab: '.tabs+div>div[id]',
+      qTre: 'ul.tree ul',
+      //auto [id]
+      qDrw: '.drawer[id]',
+      qAccRoot: 'ul.tree.accordion',
+      qAcc: 'ul.tree.accordion ul',
+      qGal: '.gal>a[id]',
+      // dup of gallery.opt.qGal
+      qSubMem: '.tabs.mem+div>div[id], ul.mem:not(.nav) ul',
+      //qMedia: '[id].target-mobile, [id].target-desktop',
+      qDrawer: '.drawer[id]:not(.shift)',
+      qTip: '[data-tip=""][title], .tip[title]',
+      cMem: 'mem',
+      cFade: 'fade',
+      cTarget: 'target' //cToggle: 'toggle',
 
-    var q = this.opt;
-    this.opt.qTgl = this.opt.mediaSuffixes.concat(['']).map(function (x) {
-      return (
-        /*'[id]' + */
-        '.' + app.opt.cToggle + x
-      );
-    }).join(', ');
-    var togglers = [q.qTrg, q.qPop, q.qNav, q.qDlg, q.qTab, q.qTre, q.qDrw
-    /*, q.qMedia/*, q.qGal*/
-    ].join(', ');
-    this.opt.qUnpop = [q.qPop, q.qNav, q.qDlg, q.qDrw
-    /*, q.qGal*/
-    ].join(', ');
-    this.opt.qUnpopOn = [q.qPop, q.qNav, q.qDlg, q.qDrw
-    /*, q.qGal*/
-    ].map(function (n) {
-      return n + ':not(.' + app.opt.cOff + ')';
-    }).join(', ');
-    app.e(this.opt.qNav + ', ' + this.opt.qTre, function (n) {
-      return _this.attachSubNav(n);
-    }); //nav, tree: attach to links
+    };
+    return _this;
+  }
 
-    app.e(togglers, function (n) {
-      return _this.initToggler(n);
-    }); //initialize togglers
+  _createClass(_default, [{
+    key: "init",
+    value: function init() {
+      var _this2 = this;
 
-    this.opt.mediaSuffixes.forEach(function (x) {
-      return app.e(_this.opt.qTrg + x, function (n) {
-        return _this.initToggler(n, x);
+      var app = this.app;
+      app.e('a[data-href]', function (n) {
+        return n.href = _this2.app.attr(n, 'data-href');
       });
-    }); //initialize togglers by media
-    //let autohide = [        q.qPop, q.qNav, q.qDlg, q.qTab, q.qAcc, q.qDrw, q.qMedia/*, q.qGal*/].join(', ');
-    //app.e(autohide, n => this.tgl(n, 0)); //autohide
+      app.listen('esc', function (e) {
+        return _this2.esc(e);
+      });
+      app.listen('hashchange', function (e) {
+        return _this2.onHash(e);
+      });
+      app.listen('keydown', function (e) {
+        return _this2.onKey(e);
+      });
+      app.h('click', 'a[href^="#"]', function (e) {
+        return _this2.onLink(e);
+      });
+      app.listen('click', function (e) {
+        return _this2.onClick(e);
+      });
+      app.listen('after', function (e) {
+        return e && e.type == 'click' ? _this2.unpop(e.target) : null;
+      }); // click out
 
-    app.e(this.opt.qGal + ':last-child', function (n) {
-      return app.x(n, 1);
-    }); //gal: auto add close link
+      app.listen('after', function (e) {
+        return !e || ['click', 'keydown', 'hashchange'].indexOf(e.type) != -1 ? _this2.modalStyle(e) : null;
+      });
+      app.listen('after', function (e) {
+        return !e || ['click', 'keydown', 'hashchange'].indexOf(e.type) != -1 ? _this2.shown = null : null;
+      }); //toggle
 
-    app.e(this.opt.qSubMem, function (n) {
-      return n.classList.add(_this.opt.cMem);
-    }); //initialize sub mem
+      var q = this.opt;
+      this.opt.qTgl = this.opt.mediaSuffixes.concat(['']).map(function (x) {
+        return (
+          /*'[id]' + */
+          '.' + app.opt.cToggle + x
+        );
+      }).join(', ');
+      var togglers = [q.qTrg, q.qPop, q.qNav, q.qDlg, q.qTab, q.qTre, q.qDrw
+      /*, q.qMedia/*, q.qGal*/
+      ].join(', ');
+      this.opt.qUnpop = [q.qPop, q.qNav, q.qDlg, q.qDrw
+      /*, q.qGal*/
+      ].join(', ');
+      this.opt.qUnpopOn = [q.qPop, q.qNav, q.qDlg, q.qDrw
+      /*, q.qGal*/
+      ].map(function (n) {
+        return n + ':not(.' + app.opt.cOff + ')';
+      }).join(', ');
+      app.e(this.opt.qNav + ', ' + this.opt.qTre, function (n) {
+        return _this2.attachSubNav(n);
+      }); //nav, tree: attach to links
 
-    app.e('[id]', function (n) {
-      return _this.restoreVisibility(n);
-    }); //restore visibility
+      app.e(togglers, function (n) {
+        return _this2.initToggler(n);
+      }); //initialize togglers
 
-    app.e(this.opt.qTab + ':not(.' + app.opt.cOff + ') ~ [id]:not(.' + app.opt.cOff + ')', function (n) {
-      return _this.tgl(n, 0);
-    }); //undup tabs
+      this.opt.mediaSuffixes.forEach(function (x) {
+        return app.e(_this2.opt.qTrg + x, function (n) {
+          return _this2.initToggler(n, x);
+        });
+      }); //initialize togglers by media
+      //let autohide = [        q.qPop, q.qNav, q.qDlg, q.qTab, q.qAcc, q.qDrw, q.qMedia/*, q.qGal*/].join(', ');
+      //app.e(autohide, n => this.tgl(n, 0)); //autohide
 
-    app.e(this.opt.qTab + ':first-child', function (n) {
-      return app.a(n.parentNode.children).filter(function (m) {
-        return app.vis(m);
-      }).length ? null : _this.tgl(app.q(app.q('a[href^="#"]', n.parentNode.previousElementSibling).hash), 1);
-    }); //inactive tabs: show first
+      app.e(this.opt.qGal + ':last-child', function (n) {
+        return app.x(n, 1);
+      }); //gal: auto add close link
 
-    app.e('.' + app.opt.cToggle + '[id]', function (n) {
-      return _this.hiliteLinks(n);
-    }); //init links state
+      app.e(this.opt.qSubMem, function (n) {
+        return n.classList.add(_this2.opt.cMem);
+      }); //initialize sub mem
 
-    app.e(this.opt.qTip, function (n) {
-      n.setAttribute('data-tip', n.title.replace(/\s\s+/g, '\n'));
-      n.title = '';
-    }); //init tooltips
+      app.e('[id]', function (n) {
+        return _this2.restoreVisibility(n);
+      }); //restore visibility
 
-    app.listen('swipe', function (e) {
-      return _this.swipe(e);
-    });
-    /*
-    app.e(this.opt.qTip, n => {
-      let p = app.ins('div',app.ins('div', n.title.replace(/\s\s+/g, '<br>'), {className: 'btn bg-n'}), {className: 'pop'}, n, 1);
-      n.title = '';
-      p.insertBefore(n, p.firstChild);
-    });//init tooltips as popup
-    */
-  };
+      app.e(this.opt.qTab + ':not(.' + app.opt.cOff + ') ~ [id]:not(.' + app.opt.cOff + ')', function (n) {
+        return _this2.tgl(n, 0);
+      }); //undup tabs
 
-  this.swipe = function (e) {
-    if (e.n.matches(this.opt.qDrw)) {
-      this.tgl(e.n, false);
-      setTimeout(function () {
-        return e.n.style.transform = '';
-      }, 500);
+      app.e(this.opt.qTab + ':first-child', function (n) {
+        return app.a(n.parentNode.children).filter(function (m) {
+          return app.vis(m);
+        }).length ? null : _this2.tgl(app.q(app.q('a[href^="#"]', n.parentNode.previousElementSibling).hash), 1);
+      }); //inactive tabs: show first
+
+      app.e('.' + app.opt.cToggle + '[id]', function (n) {
+        return _this2.hiliteLinks(n);
+      }); //init links state
+
+      app.e(this.opt.qTip, function (n) {
+        n.setAttribute('data-tip', n.title.replace(/\s\s+/g, '\n'));
+        n.title = '';
+      }); //init tooltips
+
+      app.listen('swipe', function (e) {
+        return _this2.swipe(e);
+      });
+      /*
+      app.e(this.opt.qTip, n => {
+        let p = app.ins('div',app.ins('div', n.title.replace(/\s\s+/g, '<br>'), {className: 'btn bg-n'}), {className: 'pop'}, n, 1);
+        n.title = '';
+        p.insertBefore(n, p.firstChild);
+      });//init tooltips as popup
+      */
     }
-  };
-
-  this.modalStyle = function (e) {
-    var n = e ? e.target : null; //this.shown = null;//do it just once when dialog is opened
-    //let modal = app.q(this.opt.qDlg+':not(.'+app.opt.cOff+'), '+this.opt.qGal+':target'); // :target not updated after Esc key
-    //styles
-
-    var modal = app.q(this.opt.qDlg + ':not(.' + app.opt.cOff + '), ' + this.opt.qGal + '[id="' + location.hash.substr(1) + '"]');
-    var bar = window.innerWidth - document.documentElement.clientWidth; //scroll bar width
-
-    var s = document.body.style;
-    document.body.classList[modal ? 'add' : 'remove'](this.opt.cFade);
-
-    if (this.opt.dlgUnscroll) {
-      //hide scroll
-      s.overflow = modal ? 'hidden' : '';
-      if (!(modal && s.paddingRight)) s.paddingRight = modal ? '' + bar + 'px' : ''; // avoid width reflow
-    }
-
-    app.dbg(['modalStyle', n, modal, s.paddingRight]); //focus first input
-
-    if (modal) {
-      //let f1 = app.q('input, a:not(.' + app.opt.cClose + ')', modal);
-      var f1 = app.q('input:not([type="hidden"]), select, textarea, a.btn, a:not([href="' + app.opt.hClose + '"])', modal);
-      var f = app.q(':focus', modal);
-
-      if (f1 && !f && (!n || !n.nodeType || !modal.contains(n))) {
-        app.dbg(['focus', n, modal, f1, f]);
-        f1.focus(); //focus just once when dialog is opened
-
-        if (f1.type == 'text') f1.select();
+  }, {
+    key: "swipe",
+    value: function swipe(e) {
+      if (e.n.matches(this.opt.qDrw)) {
+        this.tgl(e.n, false);
+        setTimeout(function () {
+          return e.n.style.transform = '';
+        }, 500);
       }
     }
-  };
+  }, {
+    key: "modalStyle",
+    value: function modalStyle(e) {
+      var n = e ? e.target : null; //this.shown = null;//do it just once when dialog is opened
+      //let modal = this.app.q(this.opt.qDlg+':not(.'+this.app.opt.cOff+'), '+this.opt.qGal+':target'); // :target not updated after Esc key
+      //styles
 
-  this.esc = function (e) {
-    app.dbg(['esc', e]);
-    if (e) e.preventDefault();
-    this.unpop(null, true);
-    this.unhash();
-    this.modalStyle();
-  };
+      var modal = this.app.q(this.opt.qDlg + ':not(.' + this.app.opt.cOff + '), ' + this.opt.qGal + '[id="' + location.hash.substr(1) + '"]');
+      var bar = window.innerWidth - document.documentElement.clientWidth; //scroll bar width
 
-  this.onHash = function (e) {
-    app.dbg(['hashchange', location.hash]);
-    this.nEsc = 0;
-    if (location.hash === app.opt.hClose) app.fire('esc', e);else if (location.hash) {
-      var d = app.q(location.hash);
+      var s = document.body.style;
+      document.body.classList[modal ? 'add' : 'remove'](this.opt.cFade);
+
+      if (this.opt.dlgUnscroll) {
+        //hide scroll
+        s.overflow = modal ? 'hidden' : '';
+        if (!(modal && s.paddingRight)) s.paddingRight = modal ? '' + bar + 'px' : ''; // avoid width reflow
+      }
+
+      this.app.dbg(['modalStyle', n, modal, s.paddingRight]); //focus first input
+
+      if (modal) {
+        //let f1 = this.app.q('input, a:not(.' + this.app.opt.cClose + ')', modal);
+        var f1 = this.app.q('input:not([type="hidden"]), select, textarea, a.btn, a:not([href="' + this.app.opt.hClose + '"])', modal);
+        var f = this.app.q(':focus', modal);
+
+        if (f1 && !f && (!n || !n.nodeType || !modal.contains(n))) {
+          this.app.dbg(['focus', n, modal, f1, f]);
+          f1.focus(); //focus just once when dialog is opened
+
+          if (f1.type == 'text') f1.select();
+        }
+      }
+    }
+  }, {
+    key: "esc",
+    value: function esc(e) {
+      this.app.dbg(['esc', e]);
+      if (e) e.preventDefault();
+      this.unpop(null, true);
+      this.unhash();
+      this.modalStyle();
+    }
+  }, {
+    key: "onHash",
+    value: function onHash(e) {
+      this.app.dbg(['hashchange', location.hash]);
+      this.nEsc = 0;
+      if (location.hash === this.app.opt.hClose) this.app.fire('esc', e);else if (location.hash) {
+        var d = this.app.q(location.hash);
+
+        if (d) {
+          var t = d.matches(this.opt.qTgl);
+          var g = d.matches(this.opt.qGal);
+
+          if (t) {
+            this.unpop();
+            this.toggle(d, true);
+            if (!this.opt.keepHash) this.unhash();
+          }
+
+          if (t || g) this.modalStyle();else this.unpop(); //this.app.fire('esc', e);
+        }
+      }
+    }
+  }, {
+    key: "onKey",
+    value: function onKey(e) {
+      var k = e.keyCode;
+      this.app.dbg(['keydown', k, this.nEsc]);
+      if (k == 27 && this.nEsc >= 2) localStorage.clear();else if (k == 27) this.app.fire('esc', e);
+      this.nEsc = k == 27 && this.nEsc < 2 ? this.nEsc + 1 : 0;
+    }
+  }, {
+    key: "onLink",
+    value: function onLink(e) {
+      var a = e.recv;
+
+      if (a && a.hash === this.app.opt.hClose) {
+        e.preventDefault();
+        var d = a.closest(this.opt.qTgl);
+        this.app.dbg(['close', this.opt.qTgl, a, d]);
+        if (d) this.tgl(d, false);else this.app.fire('esc', e);
+      } else {
+        var _d = this.app.q(a.hash);
+
+        if (_d && _d.matches(this.opt.qTgl)) {
+          e.preventDefault();
+          _d = this.toggle(_d);
+          if (this.app.vis(_d) && this.opt.keepHash) this.addHistory(a.hash);else this.unhash();
+        }
+      }
+    }
+  }, {
+    key: "onClick",
+    value: function onClick(e) {
+      this.nEsc = 0;
+      if (!e.target.closest('a, input, select, textarea')) this.unhash();
+      if (e.clientX >= 0 && e.clientX <= 10 && e.clientY > 5 && this.opt.qDrawer) this.toggle(this.opt.qDrawer);
+    }
+  }, {
+    key: "initToggler",
+    value: function initToggler(n, suffix) {
+      n.classList.remove(this.opt.cTarget + (suffix || ''));
+      n.classList.add(this.app.opt.cToggle + (suffix || ''));
+      this.tgl(n, 0);
+    }
+  }, {
+    key: "attachSubNav",
+    value: function attachSubNav(n) {
+      //let a = n.previousElementSibling;
+      var aa = this.app.a(n.parentNode.children).filter(function (v) {
+        return v.tagName == 'A';
+      });
+      var a = aa.filter(function (v) {
+        return !v.href;
+      })[0] || aa[0] || this.app.ins('', ' ', {}, n.parentNode, false) && this.app.ins('a', this.app.i('toggle', '[+]'), {}, n.parentNode, false);
+
+      if (a) {
+        if (!n.id) n.id = 'ul-' + this.app.seq();
+        a.href = '#' + n.id;
+      }
+    } //deep: -1=prepare, 0=click|hash, 1=deps|clo
+
+  }, {
+    key: "toggle",
+    value: function toggle(h, on, deep) {
+      var d = h ? h.tagName ? h : this.app.q(h) : null;
 
       if (d) {
-        var t = d.matches(this.opt.qTgl);
-        var g = d.matches(this.opt.qGal);
+        if (d.matches(this.opt.qTab) && on === undefined) on = true; //tabs: show instead of toggle
+        //console.log('toggle '+d.id, on, deep);
 
-        if (t) {
-          this.unpop();
-          this.toggle(d, true);
-          if (!this.opt.keepHash) this.unhash();
+        this.app.fire('beforetoggle', {
+          n: d,
+          on: on,
+          deep: deep
+        });
+        this.tgl(d, on);
+        this.app.dbg(['toggle' + (deep ? ' deep' : ''), on, d], deep ? 2 : 1);
+
+        if (this.app.vis(d)) {
+          this.fixPosition(d);
+          if (!deep) this.shown = d;
         }
 
-        if (t || g) this.modalStyle();else this.unpop(); //app.fire('esc', e);
+        if (deep != -1) {
+          if (!deep) this.toggleDependent(d);
+          this.hiliteLinks(d);
+          this.storeVisibility(d); //if(!deep) this.modalStyle(d);
+        }
+
+        this.app.fire('aftertoggle', {
+          n: d,
+          on: on,
+          deep: deep
+        });
+      }
+
+      return d;
+    }
+  }, {
+    key: "tgl",
+    value: function tgl(d, on) {
+      if (d) d.classList[on ? 'remove' : on === undefined ? 'toggle' : 'add'](this.app.opt.cOff);
+    }
+  }, {
+    key: "toggleDependent",
+    value: function toggleDependent(d) {
+      var _this3 = this;
+
+      if (this.app.vis(d)) {
+        if (d.matches(this.opt.qDlg)) ; //this.app.e(this.opt.qDlg, n => n==d ? null : this.toggle(n, false, 1)); //hide other dialogs
+        else if (d.matches(this.opt.qTab)) this.app.e(d.parentNode.children, function (n) {
+            return n == d ? null : _this3.toggle(n, false, 1);
+          }); //hide sibling tabs
+          else if (d.matches(this.opt.qAcc)) this.app.e(this.app.qq(this.opt.qAcc, d.closest(this.opt.qAccRoot)), function (n) {
+              return n.contains(d) ? null : _this3.toggle(n, false, 1);
+            }); //hide other ul
       }
     }
-  };
+  }, {
+    key: "unpop",
+    value: function unpop(x, seq) {
+      var _this4 = this;
 
-  this.onKey = function (e) {
-    var k = e.keyCode;
-    app.dbg(['keydown', k, this.nEsc]);
-    if (k == 27 && this.nEsc >= 2) localStorage.clear();else if (k == 27) app.fire('esc', e);
-    this.nEsc = k == 27 && this.nEsc < 2 ? this.nEsc + 1 : 0;
-  };
+      var keep = [x];
+      keep.push(this.shown); // click out: keep
 
-  this.onLink = function (e) {
-    var a = e.recv;
+      if (x) {
+        var a = x.closest('a');
 
-    if (a && a.hash === app.opt.hClose) {
-      e.preventDefault();
-      var d = a.closest(this.opt.qTgl);
-      app.dbg(['close', this.opt.qTgl, a, d]);
-      if (d) this.tgl(d, false);else app.fire('esc', e);
-    } else {
-      var _d = app.q(a.hash);
-
-      if (_d && _d.matches(this.opt.qTgl)) {
-        e.preventDefault();
-        _d = this.toggle(_d);
-        if (app.vis(_d) && this.opt.keepHash) this.addHistory(a.hash);else this.unhash();
-      }
-    }
-  };
-
-  this.onClick = function (e) {
-    this.nEsc = 0;
-    if (!e.target.closest('a, input, select, textarea')) this.unhash();
-    if (e.clientX >= 0 && e.clientX <= 10 && e.clientY > 5 && this.opt.qDrawer) this.toggle(this.opt.qDrawer);
-  };
-
-  this.initToggler = function (n, suffix) {
-    n.classList.remove(this.opt.cTarget + (suffix || ''));
-    n.classList.add(app.opt.cToggle + (suffix || ''));
-    this.tgl(n, 0);
-  };
-
-  this.attachSubNav = function (n) {
-    //let a = n.previousElementSibling;
-    var aa = app.a(n.parentNode.children).filter(function (v) {
-      return v.tagName == 'A';
-    });
-    var a = aa.filter(function (v) {
-      return !v.href;
-    })[0] || aa[0] || app.ins('', ' ', {}, n.parentNode, false) && app.ins('a', app.i('toggle', '[+]'), {}, n.parentNode, false);
-
-    if (a) {
-      if (!n.id) n.id = 'ul-' + app.seq();
-      a.href = '#' + n.id;
-    }
-  }; //deep: -1=prepare, 0=click|hash, 1=deps|clo
-
-
-  this.toggle = function (h, on, deep) {
-    var d = h ? h.tagName ? h : app.q(h) : null;
-
-    if (d) {
-      if (d.matches(this.opt.qTab) && on === undefined) on = true; //tabs: show instead of toggle
-      //console.log('toggle '+d.id, on, deep);
-
-      app.fire('beforetoggle', {
-        n: d,
-        on: on,
-        deep: deep
-      });
-      this.tgl(d, on);
-      app.dbg(['toggle' + (deep ? ' deep' : ''), on, d], deep ? 2 : 1);
-
-      if (app.vis(d)) {
-        this.fixPosition(d);
-        if (!deep) this.shown = d;
+        if (a && a.hash) {
+          //if(a.hash==this.app.opt.hClose) keep = []; //return this.app.fire('esc'); //to close all, even container
+          //else
+          keep.push(this.app.q(a.hash)); //keep hash target
+        }
       }
 
-      if (deep != -1) {
-        if (!deep) this.toggleDependent(d);
-        this.hiliteLinks(d);
-        this.storeVisibility(d); //if(!deep) this.modalStyle(d);
-      }
+      this.app.dbg(['unpop', keep]); //this.app.e(this.opt.qUnpop, n => (keep && keep.filter(m => m && m.tagName && n.contains(m)).length) ? null : this.toggle(n, false, 1));
 
-      app.fire('aftertoggle', {
-        n: d,
-        on: on,
-        deep: deep
+      var nn = this.app.qq(this.opt.qUnpop).filter(function (n) {
+        return !(keep && keep.filter(function (m) {
+          return m && m.tagName && n.contains(m);
+        }).length);
+      }); // skip if contains one of [keep]
+
+      if (seq) nn = nn.filter(function (n) {
+        return !_this4.app.q(_this4.opt.qUnpopOn, n);
+      }); // to close nested subsequently
+
+      this.app.e(nn, function (n) {
+        return _this4.toggle(n, false, 1);
       });
     }
+  }, {
+    key: "unhash",
+    value: function unhash() {
+      //v1.
+      if (location.hash) location.hash = this.app.opt.hClose; //v2.
 
-    return d;
-  };
-
-  this.tgl = function (d, on) {
-    if (d) d.classList[on ? 'remove' : on === undefined ? 'toggle' : 'add'](app.opt.cOff);
-  };
-
-  this.toggleDependent = function (d) {
-    var _this2 = this;
-
-    if (app.vis(d)) {
-      if (d.matches(this.opt.qDlg)) ; //app.e(this.opt.qDlg, n => n==d ? null : this.toggle(n, false, 1)); //hide other dialogs
-      else if (d.matches(this.opt.qTab)) app.e(d.parentNode.children, function (n) {
-          return n == d ? null : _this2.toggle(n, false, 1);
-        }); //hide sibling tabs
-        else if (d.matches(this.opt.qAcc)) app.e(app.qq(this.opt.qAcc, d.closest(this.opt.qAccRoot)), function (n) {
-            return n.contains(d) ? null : _this2.toggle(n, false, 1);
-          }); //hide other ul
+      this.addHistory(location.pathname + location.search
+      /* + this.app.opt.hClose*/
+      ); //inputs flicker
     }
-  };
-
-  this.unpop = function (x, seq) {
-    var _this3 = this;
-
-    var keep = [x];
-    keep.push(this.shown); // click out: keep
-
-    if (x) {
-      var a = x.closest('a');
-
-      if (a && a.hash) {
-        //if(a.hash==app.opt.hClose) keep = []; //return app.fire('esc'); //to close all, even container
-        //else
-        keep.push(app.q(a.hash)); //keep hash target
+  }, {
+    key: "addHistory",
+    value: function addHistory(h) {
+      history.pushState({}, '', h); //following required to re-render hash changes (test: open gallery, esc)
+      //history.pushState({}, '', h);
+      //history.go(-1);
+    }
+  }, {
+    key: "storeVisibility",
+    value: function storeVisibility(n) {
+      if (n && n.id && n.classList.contains(this.opt.cMem)) {
+        localStorage.setItem('vis#' + n.id, this.app.vis(n) ? 1 : -1);
       }
     }
-
-    app.dbg(['unpop', keep]); //app.e(this.opt.qUnpop, n => (keep && keep.filter(m => m && m.tagName && n.contains(m)).length) ? null : this.toggle(n, false, 1));
-
-    var nn = app.qq(this.opt.qUnpop).filter(function (n) {
-      return !(keep && keep.filter(function (m) {
-        return m && m.tagName && n.contains(m);
-      }).length);
-    }); // skip if contains one of [keep]
-
-    if (seq) nn = nn.filter(function (n) {
-      return !app.q(_this3.opt.qUnpopOn, n);
-    }); // to close nested subsequently
-
-    app.e(nn, function (n) {
-      return _this3.toggle(n, false, 1);
-    });
-  };
-
-  this.unhash = function () {
-    //v1.
-    if (location.hash) location.hash = app.opt.hClose; //v2.
-
-    this.addHistory(location.pathname + location.search
-    /* + app.opt.hClose*/
-    ); //inputs flicker
-  };
-
-  this.addHistory = function (h) {
-    history.pushState({}, '', h); //following required to re-render hash changes (test: open gallery, esc)
-    //history.pushState({}, '', h);
-    //history.go(-1);
-  };
-
-  this.storeVisibility = function (n) {
-    if (n && n.id && n.classList.contains(this.opt.cMem)) {
-      localStorage.setItem('vis#' + n.id, app.vis(n) ? 1 : -1);
-    }
-  };
-
-  this.restoreVisibility = function (n) {
-    if (n && n.id && n.classList && n.classList.contains(this.opt.cMem)) {
-      var v = localStorage.getItem('vis#' + n.id);
-      if (v) this.toggle(n, v > 0, -1);
-    }
-  };
-
-  this.hiliteLinks = function (d) {
-    var op = app.vis(d) ? 'add' : 'remove';
-    app.e('a[href="#' + d.id + '"]', function (a) {
-      return a.classList[op](app.opt.cAct);
-    });
-  };
-
-  this.fixPosition = function (n) {
-    var nav = n.matches(this.opt.qNav);
-    var ss = nav ? window.getComputedStyle(n.parentNode.parentNode) : null;
-    var vert = ss ? ss.display != 'flex' : false;
-
-    if (n.matches(this.opt.qPop) || nav) {
-      var s = n.style;
-      var p = n.parentNode;
-      var i = p.nextElementSibling;
-      i = i && i.tagName == 'INPUT' ? i : null;
-      var r = i || n.parentNode;
-
-      if (r) {
-        s.right = 'auto';
-        s.left = vert ? '100%' : 0;
-        s.top = vert ? 0 : '100%';
-        var qn = n.getBoundingClientRect();
-        var qr = r.getBoundingClientRect();
-        var dx = qn.right > window.innerWidth;
-        var dy = qn.bottom > window.innerHeight;
-        var wide = qr.width > 300; //x
-
-        if (vert) s.left = dx || wide ? '3em' : '100%';else if (dx && qn.width > qr.width && qr.right > qn.width) {
-          //if(overflows-right && wider-then-container && enough-place-on-the-left) pop-left
-          s.left = qr.width - qn.width + 'px';
-        } else s.left = 0; //y
-
-        if (vert) s.top = dx || wide ? '90%' : 0;else if (dy && qr.top > qn.height) {
-          //if(overflows-bottom && enough-place-on-the-top) pop-top
-          s.top = (i ? -qr.height : 0) - qn.height + 'px';
-        } else s.top = '100%';
-        if (i) p.style.verticalAlign = 'bottom';
+  }, {
+    key: "restoreVisibility",
+    value: function restoreVisibility(n) {
+      if (n && n.id && n.classList && n.classList.contains(this.opt.cMem)) {
+        var v = localStorage.getItem('vis#' + n.id);
+        if (v) this.toggle(n, v > 0, -1);
       }
     }
-  };
-}();
+  }, {
+    key: "hiliteLinks",
+    value: function hiliteLinks(d) {
+      var _this5 = this;
+
+      var op = this.app.vis(d) ? 'add' : 'remove';
+      this.app.e('a[href="#' + d.id + '"]', function (a) {
+        return a.classList[op](_this5.app.opt.cAct);
+      });
+    }
+  }, {
+    key: "fixPosition",
+    value: function fixPosition(n) {
+      var nav = n.matches(this.opt.qNav);
+      var ss = nav ? window.getComputedStyle(n.parentNode.parentNode) : null;
+      var vert = ss ? ss.display != 'flex' : false;
+
+      if (n.matches(this.opt.qPop) || nav) {
+        var s = n.style;
+        var p = n.parentNode;
+        var i = p.nextElementSibling;
+        i = i && i.tagName == 'INPUT' ? i : null;
+        var r = i || n.parentNode;
+
+        if (r) {
+          s.right = 'auto';
+          s.left = vert ? '100%' : 0;
+          s.top = vert ? 0 : '100%';
+          var qn = n.getBoundingClientRect();
+          var qr = r.getBoundingClientRect();
+          var dx = qn.right > window.innerWidth;
+          var dy = qn.bottom > window.innerHeight;
+          var wide = qr.width > 300; //x
+
+          if (vert) s.left = dx || wide ? '3em' : '100%';else if (dx && qn.width > qr.width && qr.right > qn.width) {
+            //if(overflows-right && wider-then-container && enough-place-on-the-left) pop-left
+            s.left = qr.width - qn.width + 'px';
+          } else s.left = 0; //y
+
+          if (vert) s.top = dx || wide ? '90%' : 0;else if (dy && qr.top > qn.height) {
+            //if(overflows-bottom && enough-place-on-the-top) pop-top
+            s.top = (i ? -qr.height : 0) - qn.height + 'px';
+          } else s.top = '100%';
+          if (i) p.style.verticalAlign = 'bottom';
+        }
+      }
+    }
+  }]);
+
+  return _default;
+}(_plugin_js__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"]);
+
+
 
 /***/ }),
-
-/***/ 2:
+/* 3 */
 /***/ (function(module, exports) {
 
 if (!Element.prototype.matches) {
@@ -897,392 +998,31 @@ if (!Element.prototype.closest) {
 }
 
 /***/ }),
+/* 4 */,
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-/***/ 29:
-/***/ (function(module, exports, __webpack_require__) {
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _js_polyfill_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
+/* harmony import */ var _js_polyfill_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_js_polyfill_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _js_app_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
+/* harmony import */ var _js_plugins_toggle_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
 
-__webpack_require__(2);
 
-var app = __webpack_require__(0); //['toggle', 'dialog', 'gallery']
-//  .forEach(p => app.plug(require('./js/'+p+'.js')));
+ //import Dialog from './js/plugins/dialog.js'
+//import Gallery from './js/plugins/gallery.js'
 
-
-app.plug(__webpack_require__(1));
-app.plug(__webpack_require__(3));
-app.plug(__webpack_require__(5)); //let opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}};
+var app = new _js_app_js__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"]();
+app.plug(_js_plugins_toggle_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"]); //app.plug(Dialog)
+//app.plug(Gallery)
+// let opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}}
 
 app.b([document], 'DOMContentLoaded', function (e) {
   return app.init();
-});
-if (true) module.exports = app;
+}); // if (typeof module !== 'undefined') module.exports = app
+
 if (window) window.d1 = app;
 
-/***/ }),
-
-/***/ 3:
-/***/ (function(module, exports, __webpack_require__) {
-
-/*! dialog - replacement of standard Javascript dialogs: alert, confirm, prompt */
-// a.alert([title]|[data-caption])
-// a.dialog[href]([title]|[data-caption])[data-prompt] [data-src][data-go][data-ok][data-cancel][data-reverse][data-head][data-pic]
-var app = __webpack_require__(0);
-
-var toggle = __webpack_require__(1);
-
-module.exports = new function () {
-  "use strict";
-
-  this.name = 'dialog';
-  this.dlg = null;
-  this.opt = {
-    ccDlg: 'dlg rad',
-    customDialog: 1,
-    aConfirm: '_confirm',
-    aHead: 'data-head',
-    aPic: 'data-pic',
-    aPrompt: 'data-prompt',
-    cBtn: 'btn pad',
-    qAlert: 'a.alert',
-    qDialog: 'a.dialog, input.dialog'
-  };
-
-  this.init = function () {
-    var _this = this;
-
-    this.opt.ccDlg = app.opt.cToggle + ' ' + app.opt.cOff + ' ' + this.opt.ccDlg;
-    if (!this.dlg) this.dlg = app.ins('div', '', {
-      className: this.opt.ccDlg
-    }, document.body);
-    app.h('click', this.opt.qAlert + ', ' + this.opt.qDialog, function (e) {
-      return _this.onClick(e);
-    });
-  };
-
-  this.onClick = function (e) {
-    e.preventDefault();
-    return this.openByNode(e.recv);
-  }; //setup object keys: [ok, cancel, icon, class, btn, rev, def]
-
-
-  this.open = function (h, t, f, setup) {
-    var _this2 = this;
-
-    setup = setup || {};
-    var d = this.dlg;
-    d.className = this.opt.ccDlg + (setup["class"] ? ' ' + setup["class"] : '');
-    app.clr(d);
-    var hh = app.ins('div', '', {
-      className: 'row bg'
-    }, d);
-    var hhh = app.ins('h3', ' ' + (h || ''), {
-      className: 'fit pad'
-    }, hh);
-
-    if (setup.icon) {
-      var m = setup.icon.match(/(\S+)(\s(.*))?/);
-      if (m) hhh.insertBefore(app.ins('span', app.i(m[1]), {
-        className: m[3] || ''
-      }), hhh.firstChild);
-    }
-
-    app.x(hh, 0, 'pad hover col-0');
-    var b = app.ins('div', '', {
-      className: 'pad'
-    }, d);
-    if (t) app.ins('div', t, {}, b);
-    var inp = {
-      value: true
-    };
-    if (setup.def || setup.def === '') inp = app.ins('input', '', {
-      value: setup.def
-    }, b);
-    var bb = app.ins('p', '', {
-      className: 'r'
-    }, b);
-    var b1 = this.opt.cBtn + ' ' + (setup.btn || (t.substr(0, 1) == ' ' ? 'bg-e' : ''));
-    var b2 = this.opt.cBtn + ' bg-n';
-    var yes = app.ins('a', setup.ok || app.opt.sOk, {
-      href: app.opt.hClose,
-      className: setup.rev ? b2 : b1
-    }, bb);
-
-    if (f) {
-      app.ins('a', setup.cancel || app.opt.sCancel, {
-        href: app.opt.hClose,
-        className: setup.rev ? b1 : b2
-      }, yes, setup.rev ? -1 : 1);
-      app.ins('', ' ', {}, yes, setup.rev ? -1 : 1);
-      yes.href = app.opt.hOk;
-      app.b([yes], 'click', function (e) {
-        e.preventDefault();
-
-        _this2.callback(f, inp.value, e);
-      });
-      if (inp.tagName) app.b([inp], 'keyup', function (e) {
-        return e.keyCode == 13 ? _this2.callback(f, inp.value, e) : null;
-      });
-    }
-
-    toggle.toggle(this.dlg, true);
-  };
-
-  this.callback = function (f, v, e) {
-    if (!f.call(this, v, e)) toggle.unpop(); // close dialog unless callback returns true
-  };
-
-  this.openByNode = function (n, f) {
-    var _this3 = this;
-
-    if (n.form && !n.form.checkValidity()) {
-      if (n.form.reportValidity) n.form.reportValidity();
-      return;
-    }
-
-    var h = app.attr(n, this.opt.aHead, '').replace(/%([\w\-]+)%/g, function (m, a) {
-      return n.getAttribute(a);
-    });
-    var icon = app.attr(n, this.opt.aPic, '');
-    var p = app.attr(n, this.opt.aPrompt, '');
-    var t = app.attr(n, app.opt.aCaption, n.title || p || '!').replace(/%([\w\-]+)%/g, function (m, a) {
-      return n.getAttribute(a);
-    });
-    var rev = app.attr(n, 'data-reverse');
-    var src = app.attr(n, 'data-src');
-    var go = app.attr(n, 'data-go');
-    src = src ? app.q(src) : null;
-    if (!src && n.form) src = n.form.elements[p];
-    var v = null;
-    var al = n.matches(this.opt.qAlert);
-    var def = p ? src ? src.value : app.get(n, p) : null;
-    if (def && go !== null) this.onAnswer(n, def, p); //go with default
-    else if (this.opt.customDialog) {
-        this.open(h, t, al ? null : function (w) {
-          return _this3.onAnswer(n, w, p);
-        }, {
-          ok: app.attr(n, 'data-ok', ''),
-          cancel: app.attr(n, 'data-cancel', ''),
-          icon: icon,
-          //class: '',
-          btn: t.substr(0, 1) == ' ' || n && n.className.match(/-[we]\b/) ? 'bg-e' : 'bg-y',
-          def: def,
-          rev: rev
-        });
-      } else {
-        if (al) v = alert(t); //undef
-        else if (!p) v = confirm(t); //bool
-          else v = prompt(t, def); //null|value
-
-        this.onAnswer(n, v, p);
-      }
-    return this.dlg;
-  };
-
-  this.onAnswer = function (n, v, p, e) {
-    //cancelled
-    if (!v && v !== '') ; //form submit
-    else if (n && n.form) {
-        if (v !== true) {
-          var i = n.form.elements[p] || app.ins('input', '', {
-            type: 'hidden',
-            name: p
-          }, n.form);
-          if (i) i.value = v;
-        }
-
-        if (n.form.reportValidity ? n.form.reportValidity() : n.form.checkValidity()) {
-          app.q('[type="hidden"][name="' + n.name + '"]', n.form) || app.ins('input', '', {
-            type: 'hidden',
-            name: n.name,
-            value: n.value
-          }, n.form);
-          n.form.elements[this.opt.aConfirm] || app.ins('input', '', {
-            type: 'hidden',
-            name: this.opt.aConfirm,
-            value: 1
-          }, n.form);
-          n.form.submit();
-        } else toggle.unpop(); //n.click();
-
-      } //goto link
-      else if (n && n.href) {
-          var ha = app.attr(n, 'href', '').substr(0, 1) == '#';
-          var bl = n.target == '_blank';
-          if (ha || bl) toggle.unpop();
-          var u;
-          if (ha) u = n.hash;else {
-            var a = {};
-            a[this.opt.aConfirm] = 1;
-            if (v !== true) a[p] = v;
-            u = app.makeUrl(n, a);
-          }
-          if (n.target == '_blank') window.open(u, n.target);else location.href = u;
-        }
-  };
-}();
-
-/***/ }),
-
-/***/ 5:
-/***/ (function(module, exports, __webpack_require__) {
-
-/*! gallery - image gallery */
-// .gallery a.pic 
-var app = __webpack_require__(0);
-
-module.exports = new function () {
-  "use strict";
-
-  this.name = 'gallery';
-  this.opt = {
-    idPrefix: 'pic-',
-    num: true,
-    cGal: 'gal',
-    qGal: '.gal>a[id]',
-    // dup of toggle.opt.qGal
-    qGallery: '.gallery',
-    qLinks: 'a.pic'
-  };
-
-  this.init = function () {
-    var _this = this;
-
-    app.listen('hashchange', function (e) {
-      return _this.onHash(e);
-    });
-    app.listen('keydown', function (e) {
-      return _this.onKey(e);
-    });
-    app.h('click', this.opt.qGal, function (e) {
-      return _this.next(e);
-    });
-    app.listen('swipe', function (e) {
-      return _this.swipe(e);
-    });
-    this.prepareAll();
-  };
-
-  this.prepareAll = function (d) {
-    var _this2 = this;
-
-    app.e(app.qq(this.opt.qGallery, d), function (n) {
-      return _this2.prepare(n);
-    });
-  };
-
-  this.swipe = function (e) {
-    if (e.n.matches(this.opt.qGal)) {
-      /*
-      if(e.dir==2 || e.dir==4){
-        let x = app.next(e.n, this.opt.qGal, e.dir==2);
-        if(!x) x = e.dir==4 ? app.q(this.opt.qGal, e.n.parentNode) : app.qq(this.opt.qGal, e.n.parentNode).pop();
-        if(x && x.id){
-          e.n.classList.add('fade');
-          location.hash = '#' + x.id;
-          e.n.classList.add('fade-out', 'fade-' + e.dir);
-          x.classList.add('fade-in');
-          setTimeout(() => app.qq(this.opt.qGal, x.parentNode).forEach(m => {
-            m.classList.remove('fade', 'fade-out', 'fade-in', 'fade-2', 'fade-4');
-            m.style.transform = '';
-          }), 500);
-        }
-      }
-      */
-      if (e.dir == 4) this.browse(e.n);else if (e.dir == 2) this.browse(e.n, true);else if (e.dir == 3) app.fire('esc');
-    }
-  };
-
-  this.next = function (e) {
-    //console.log(e.defaultPrevented);
-    if (e.defaultPrevented) return;
-    var n = e.recv;
-
-    if (e.clientX > 0
-    /* not Enter key */
-    && e.clientX < n.clientWidth / 3) {
-      this.browse(n, true);
-      e.preventDefault();
-    }
-  };
-
-  this.browse = function (n, back) {
-    if (back) {
-      var p = n.previousElementSibling || app.qq('a[id]', n.parentNode).pop();
-      if (p.id) location.hash = '#' + p.id;
-    } else location.hash = n.hash; //return p.id;
-
-  };
-
-  this.onHash = function () {
-    var n = app.q(location.hash);
-
-    if (n) {
-      this.loadImg(n);
-      this.loadImg(app.q(n.hash));
-    }
-  };
-
-  this.loadImg = function (n) {
-    if (n && n.vImg) {
-      n.style.backgroundImage = 'url("' + n.vImg + '")';
-      n.vImg = '';
-    }
-  };
-
-  this.prepare = function (n) {
-    var g = app.ins('div', '', {
-      className: this.opt.cGal
-    });
-    var a = app.qq(this.opt.qLinks, n);
-    var z = a.length;
-    var first = 0;
-
-    for (var i = 0; i < z; i++) {
-      if (!a[i].vDone) {
-        var s = app.seq();
-        if (!i) first = s;
-        var p = app.ins('a', '', {
-          className: 'gallery-pic swipe drag',
-          id: this.opt.idPrefix + s,
-          href: '#' + this.opt.idPrefix + (i == z - 1 ? first : s + 1)
-        }, g); //p.style.setProperty('--img', 'url("' + app.attr(a[i], 'href', '') + '")');
-        //p.style.backgroundImage = 'url("' + app.attr(a[i], 'href', '') + '")';//preload all
-
-        p.vLink = app.attr(a[i], 'href', ''); //real link
-
-        p.vImg = app.attr(a[i], 'href', ''); //preload prev & next
-
-        p.setAttribute(app.opt.aCaption, (this.opt.num ? i + 1 + '/' + z + (a[i].title ? ' - ' : '') : '') + (a[i].title || ''));
-        a[i].href = '#' + p.id;
-        a[i].vDone = 1;
-      }
-    }
-
-    app.x(g);
-    document.body.appendChild(g);
-  };
-
-  this.onKey = function (e) {
-    if (location.hash) {
-      var a = app.q(location.hash);
-
-      if (a && a.hash) {
-        var k = e.keyCode;
-        if (k == 37 || k == 38) this.browse(a, true);else if (k == 39 || k == 40) this.browse(a); //a.click();
-        else if (k == 8) {
-            var h = a.vLink;
-
-            if (!h) {
-              h = window.getComputedStyle(a).backgroundImage;
-              h = h.substring(4, h.length - 1).replace(/^"|"$/g, '');
-            }
-
-            if (h) location.href = h;
-          } //e.preventDefault();
-      }
-    }
-  };
-}();
-
 /***/ })
-
-/******/ });
+/******/ ]);

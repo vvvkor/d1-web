@@ -1,10 +1,15 @@
-require('./js/polyfill.js');
+import './js/polyfill.js'
 
-let app = require('./js/app.js');
-
-[
-  'code', /* should be first */
-  'icons', 
+import App from './js/app.js'
+import Code from './js/plugins/code.js'
+import Icons from './js/plugins/icons.js'
+import Toggle from './js/plugins/toggle.js'
+const app = new App()
+//console.log('app', app)
+/*
+const plugins = [
+  'code', // should be first
+  'icons',
   'toggle', 'dialog', 'gallery',
   'fetch', 'tablex',
   'calendar', 'lookup', 'edit', 'valid',
@@ -12,10 +17,13 @@ let app = require('./js/app.js');
   'fliptable', 'swipe', 'scroll',
   'theme'
 ]
-.forEach(p => app.plug(require('./js/'+p+'.js')));
+*/
+app.plug(Code)
+app.plug(Icons)
+app.plug(Toggle)
 
-//let opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}};
-app.b([document], 'DOMContentLoaded', e => app.init(/*opt*/));
+//let opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}}
+app.b([document], 'DOMContentLoaded', e => app.init(/*opt*/))
 
-if (typeof module !== 'undefined') module.exports = app;
-if (window) window.d1 = app;
+// if (typeof module !== 'undefined') module.exports = app
+if (window) window.d1 = app

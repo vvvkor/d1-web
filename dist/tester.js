@@ -1,4 +1,4 @@
-/*! d1-web v1.4.16 */
+/*! d1-web v2.0.0 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -82,76 +82,19 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 30);
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
 /******/ ({
-
-/***/ 30:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _js_test_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
-/* harmony import */ var _js_test_plugin_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
-
-
-var app = new _js_test_js__WEBPACK_IMPORTED_MODULE_0__["default"]('v1');
-app.plug(_js_test_plugin_js__WEBPACK_IMPORTED_MODULE_1__["default"], 'Plug-1');
-app.plug(_js_test_plugin_js__WEBPACK_IMPORTED_MODULE_1__["default"], 'Plug-2');
-app.echo();
-if (window) window.app = app;
-
-/***/ }),
-
-/***/ 6:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _default; });
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-/*
-export default function(name){
-  this.name = name
-  this.echo = function () {
-    console.log('SUB', this.name)
-  }
-}
-*/
-var _default = /*#__PURE__*/function () {
-  function _default(app, name) {
-    _classCallCheck(this, _default);
-
-    this.app = app;
-    this.name = name;
-  }
-
-  _createClass(_default, [{
-    key: "echo",
-    value: function echo() {
-      this.app.log('PLUGIN', this.name);
-    }
-  }]);
-
-  return _default;
-}();
-
-
-
-/***/ }),
 
 /***/ 7:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+// ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _default; });
+
+// CONCATENATED MODULE: ./src/js/test.js
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -208,6 +151,48 @@ var _default = /*#__PURE__*/function () {
 }();
 
 
+// CONCATENATED MODULE: ./src/js/test-plugin.js
+function test_plugin_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function test_plugin_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function test_plugin_createClass(Constructor, protoProps, staticProps) { if (protoProps) test_plugin_defineProperties(Constructor.prototype, protoProps); if (staticProps) test_plugin_defineProperties(Constructor, staticProps); return Constructor; }
+
+/*
+export default function(name){
+  this.name = name
+  this.echo = function () {
+    console.log('SUB', this.name)
+  }
+}
+*/
+var test_plugin_default = /*#__PURE__*/function () {
+  function _default(app, name) {
+    test_plugin_classCallCheck(this, _default);
+
+    this.app = app;
+    this.name = name;
+  }
+
+  test_plugin_createClass(_default, [{
+    key: "echo",
+    value: function echo() {
+      this.app.log('PLUGIN', this.name);
+    }
+  }]);
+
+  return _default;
+}();
+
+
+// CONCATENATED MODULE: ./src/tester.js
+
+
+var app = new _default('v1');
+app.plug(test_plugin_default, 'Plug-1');
+app.plug(test_plugin_default, 'Plug-2');
+app.echo();
+if (window) window.app = app;
 
 /***/ })
 

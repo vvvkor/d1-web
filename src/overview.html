@@ -23,7 +23,10 @@
 	<script>
 		console.log('d1 = ', d1);
 		//d1.listen('beforeopt', function(){ console.log(d1.plugins.theme.opt); });
-		d1.listen('beforeinit', function(){ d1.plugins.icons.icons['js-inject'] = [5, 'M1 1v3h3z']; });//inject icon
+		if (d1.plugins.icons){
+			//inject icon
+			d1.listen('beforeinit', function(){ d1.plugins.icons.icons['js-inject'] = [5, 'M1 1v3h3z']; });
+		}
 		d1.b([document], 'DOMContentLoaded', function(n){
 			var d = d1.q('#demo-all-icons');
 			if(d && d1.plugins.icons){

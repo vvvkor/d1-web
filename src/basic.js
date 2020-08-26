@@ -1,16 +1,17 @@
-require('./js/polyfill.js');
+import './js/polyfill.js'
 
-let app = require('./js/app.js');
+import App from './js/app.js'
+import Toggle from './js/plugins/toggle.js'
+//import Dialog from './js/plugins/dialog.js'
+//import Gallery from './js/plugins/gallery.js'
+const app = new App()
+app.plug(Toggle)
+//app.plug(Dialog)
+//app.plug(Gallery)
 
-//['toggle', 'dialog', 'gallery']
-//  .forEach(p => app.plug(require('./js/'+p+'.js')));
 
-app.plug(require('./js/toggle.js'))
-app.plug(require('./js/dialog.js'))
-app.plug(require('./js/gallery.js'))
+// let opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}}
+app.b([document], 'DOMContentLoaded', e => app.init(/*opt*/))
 
-//let opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}};
-app.b([document], 'DOMContentLoaded', e => app.init(/*opt*/));
-
-if (typeof module !== 'undefined') module.exports = app;
-if (window) window.d1 = app;
+// if (typeof module !== 'undefined') module.exports = app
+if (window) window.d1 = app

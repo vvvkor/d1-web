@@ -3,7 +3,7 @@
 // (() => {
 //let main = new (function(){
 
-module.exports = new (function(){
+export default function () {
 
   this.sequence = 0;
   this.plugins = {};
@@ -64,15 +64,17 @@ module.exports = new (function(){
     if(opt) for(i in opt) if(i != 'plug') obj.opt[i] = opt[i];
   }
 
-  this.plug = function(p) {
-    this.plugins[p.name] = p;
+  this.plug = function(c, n) {
+    let p = new c()
+    this.plugins[n || p.name] = p
   }
 
   this.initPlugins = function(opt){
     if(this.opt.disable) this.opt.disable.forEach(p => delete this.plugins[p]);
     this.dbg(['plugins', this.plugins]);
-    Object.keys(this.plugins).forEach(k => (opt && opt.plug && opt.plug[k]) ? this.setOpt(this.plugins[k], opt.plug[k]) : null);
+    Object.keys(this.plugins).forEach(k => (opt && opt.plug && opt.plug[k]) ? this.setOpt(this.plugins[k], opt.plug[k]) : null);//@@
     this.fire('beforeinit');
+    Object.keys(this.plugins).forEach(k => this.plugins[k].app = this);//@@
     Object.keys(this.plugins).forEach(k => this.plugins[k].init());
     this.fire('afterinit');
   }
@@ -293,7 +295,7 @@ module.exports = new (function(){
       : a.href.replace(/[\?#].*$/, '') + (q ? '?' + q : '') + a.hash; //ie
   }
 
-})();
+}
 
 /*
 if (this.window === this) window[main.name] = main;
