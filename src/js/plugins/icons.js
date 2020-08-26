@@ -1,13 +1,9 @@
 /*! icons - include svg icons */
 
-// let app = require('./app.js');
-// let iconset = require('./iconset.js');
 import Plugin from './plugin.js';
-import iconset from './iconset.js';
+import iconset from '../util/iconset.js';
 
 export default class extends Plugin {
-
-  // "use strict";
 
   constructor () {
     super('icons')

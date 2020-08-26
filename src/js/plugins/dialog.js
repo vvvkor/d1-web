@@ -3,45 +3,49 @@
 // a.alert([title]|[data-caption])
 // a.dialog[href]([title]|[data-caption])[data-prompt] [data-src][data-go][data-ok][data-cancel][data-reverse][data-head][data-pic]
 
-let app = require('./app.js');
-let toggle = require('./toggle.js');
+import Plugin from './plugin.js';
+// import Toggle from './toggle.js';
 
-module.exports = new(function () {
+export default class extends Plugin {
 
-  "use strict";
-
-  this.name = 'dialog';
-  this.dlg = null;
+  constructor () {
+    super('dialog')
+    
+    this.dlg = null;
   
-  this.opt = {
-    ccDlg: 'dlg rad',
-    customDialog: 1,
-    aConfirm: '_confirm',
-    aHead: 'data-head',
-    aPic: 'data-pic',
-    aPrompt: 'data-prompt',
-    cBtn: 'btn pad',
-    qAlert: 'a.alert',
-    qDialog: 'a.dialog, input.dialog'
-  };
-  
-  this.init = function () {
-    this.opt.ccDlg = app.opt.cToggle + ' ' + app.opt.cOff + ' ' + this.opt.ccDlg;
-    if(!this.dlg) this.dlg = app.ins('div', '', {className: this.opt.ccDlg}, document.body);
-    app.h('click', this.opt.qAlert+', '+this.opt.qDialog, e => this.onClick(e));
+    this.opt = {
+      ccDlg: 'dlg rad',
+      customDialog: true,
+      aConfirm: '_confirm',
+      aHead: 'data-head',
+      aPic: 'data-pic',
+      aPrompt: 'data-prompt',
+      cBtn: 'btn pad',
+      qAlert: 'a.alert',
+      qDialog: 'a.dialog, input.dialog'
+    };
   }
   
-  this.onClick = function(e){
+  init () {
+    this.opt.ccDlg = this.app.opt.cToggle + ' ' + this.app.opt.cOff + ' ' + this.opt.ccDlg;
+    if(!this.dlg) this.dlg = this.app.ins('div', '', {className: this.opt.ccDlg}, document.body);
+    this.app.h('click', this.opt.qAlert+', '+this.opt.qDialog, e => this.onClick(e));
+    this.app.listen('dialog', e => this.openDialog(...e));
+  }
+  
+  onClick (e){
       e.preventDefault();
       return this.openByNode(e.recv);
   }
 
   //setup object keys: [ok, cancel, icon, class, btn, rev, def]
-  this.open = function(h, t, f, setup){
+  openDialog (h, t, f, setup){
     setup = setup || {};
     let d = this.dlg;
+    const app = this.app
     d.className = this.opt.ccDlg + (setup.class ? ' '+setup.class : '');
     app.clr(d);
+    if (h.nodeType) h = app.attr(h, this.opt.aHead, '')
     let hh = app.ins('div', '', {className: 'row bg'}, d);
     let hhh = app.ins('h3', ' ' + (h || ''), {className: 'fit pad'}, hh);
     if(setup.icon){
@@ -64,18 +68,23 @@ module.exports = new(function () {
       app.b([yes], 'click', e => { e.preventDefault(); this.callback(f, inp.value, e); });
       if(inp.tagName) app.b([inp], 'keyup', e => e.keyCode==13 ? this.callback(f, inp.value, e) : null);
     }
-    toggle.toggle(this.dlg, true);
+    this.app.fire('toggle', [this.dlg, true])
   }
   
-  this.callback = function(f, v, e){
-    if(!f.call(this, v, e)) toggle.unpop(); // close dialog unless callback returns true
+  closeDialog () {
+    this.app.fire('unpop', [])
   }
   
-  this.openByNode = function(n, f){
+  callback (f, v, e){
+    if(!f.call(this, v, e)) this.closeDialog(); // close dialog unless callback returns true
+  }
+  
+  openByNode (n, f){
     if (n.form && !n.form.checkValidity()){
       if(n.form.reportValidity) n.form.reportValidity();
       return;
     }
+    const app = this.app
     let h = app.attr(n, this.opt.aHead, '').replace(/%([\w\-]+)%/g, (m, a) => n.getAttribute(a));
     let icon = app.attr(n, this.opt.aPic, '');
     let p = app.attr(n, this.opt.aPrompt, '');
@@ -91,7 +100,7 @@ module.exports = new(function () {
     
     if(def && go!==null) this.onAnswer(n, def, p);//go with default
     else if(this.opt.customDialog){
-      this.open(h, t, al ? null : (w => this.onAnswer(n, w, p)), {
+      this.openDialog(h, t, al ? null : (w => this.onAnswer(n, w, p)), {
         ok: app.attr(n, 'data-ok', ''),
         cancel: app.attr(n, 'data-cancel', ''),
         icon: icon,
@@ -110,7 +119,8 @@ module.exports = new(function () {
     return this.dlg;
   }
   
-  this.onAnswer = function(n, v, p, e){
+  onAnswer (n, v, p, e){
+    const app = this.app
     //cancelled
     if(!v && v!=='') ;
     //form submit
@@ -124,14 +134,14 @@ module.exports = new(function () {
         n.form.elements[this.opt.aConfirm] || app.ins('input', '', {type: 'hidden', name: this.opt.aConfirm, value: 1}, n.form);
         n.form.submit();
       }
-      else toggle.unpop();
+      else this.closeDialog();
       //n.click();
     }
     //goto link
     else if(n && n.href){
       let ha = (app.attr(n, 'href', '').substr(0, 1)=='#');
       let bl = (n.target=='_blank');
-      if(ha || bl) toggle.unpop();
+      if(ha || bl) this.closeDialog();
       let u;
       if(ha) u = n.hash;
       else{
@@ -145,4 +155,4 @@ module.exports = new(function () {
     }
   }
 
-})();
+}

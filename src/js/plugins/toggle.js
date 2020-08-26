@@ -3,7 +3,6 @@
 // Interface components: dropdown, popup, toggle, modal dialog, tabs, drawer, tree, gallery
 // .nav, .pop, .toggle, .dlg, .tabs, .drawer, .tree, .gal
 
-//let app = require('./app.js');
 import Plugin from './plugin.js';
 
 export default class extends Plugin{
@@ -46,6 +45,8 @@ export default class extends Plugin{
     const app = this.app
     app.e('a[data-href]', n => n.href = this.app.attr(n, 'data-href'));
     app.listen('esc', e => this.esc(e));
+    app.listen('unpop', e => this.unpop(...e));
+    app.listen('toggle', e => this.toggle(...e));
     app.listen('hashchange', e => this.onHash(e));
     app.listen('keydown', e => this.onKey(e));
     app.h('click', 'a[href^="#"]', e => this.onLink(e));

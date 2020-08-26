@@ -1,6 +1,5 @@
 /*! code - source code sample */
 
-// let app = require('./app.js');
 import Plugin from './plugin.js';
 
 export default class extends Plugin {

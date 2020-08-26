@@ -72,9 +72,11 @@ export default function () {
   this.initPlugins = function(opt){
     if(this.opt.disable) this.opt.disable.forEach(p => delete this.plugins[p]);
     this.dbg(['plugins', this.plugins]);
-    Object.keys(this.plugins).forEach(k => (opt && opt.plug && opt.plug[k]) ? this.setOpt(this.plugins[k], opt.plug[k]) : null);//@@
+    Object.keys(this.plugins).forEach(k => {
+      this.plugins[k].app = this
+      if (opt && opt.plug && opt.plug[k]) this.setOpt(this.plugins[k], opt.plug[k])
+    });
     this.fire('beforeinit');
-    Object.keys(this.plugins).forEach(k => this.plugins[k].app = this);//@@
     Object.keys(this.plugins).forEach(k => this.plugins[k].init());
     this.fire('afterinit');
   }

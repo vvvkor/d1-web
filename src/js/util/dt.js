@@ -1,10 +1,8 @@
 /*! date - parse and format date */
 
-module.exports = new(function() {
+export default class {
 
-  "use strict"; 
-
-  this.parse = function(s) {
+  static parse (s) {
     let d = '';
     let m = (s || '').match(/^(\d+)([\-\.\/\s])(\d+)[\-\.\/\s](\d+)(\D(\d+))?(\D(\d+))?(\D(\d+))?(\D(\d+))?$/);
     if (m) {
@@ -23,7 +21,7 @@ module.exports = new(function() {
     t: include time
     f: y=Y-m-d (default), d=d.m.Y, m=m/d Y
   */
-  this.fmt = function(x, t, f){
+  static fmt (x, t, f){
     let y = x.getFullYear();
     let m = this.n(x.getMonth()+1);
     let d = this.n(x.getDate());
@@ -34,8 +32,8 @@ module.exports = new(function() {
       + ((t && h+i+s>0) ? ' '+this.n(x.getHours())+':'+this.n(x.getMinutes())+':'+this.n(x.getSeconds()) : '');
   }
 
-  this.n = function(v, l){
+  static n (v, l){
     return ('000'+v).substr(-(l || 2));
   }
   
-})();
+}

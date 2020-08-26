@@ -2,80 +2,81 @@
 
 // table.sort.totals.filter[data-filter][data-filter-report][data-case][data-filter-cols]
 
-let app = require('./app.js');
-let date = require('./date.js');
+import Plugin from './plugin.js';
+import Dt from '../util/dt.js';
 
-module.exports = new(function() {
+export default class extends Plugin {
 
-  "use strict";
+  constructor () {
+    super('tablex')
 
-  this.name = 'tablex';
-  this.lang = '';
-  this.skipComma = 0;
-  this.intervalUnits = {
-    ms: .001,
-    msec: .001,
-    s: 1,
-    sec: 1,
-    mi: 60,
-    min: 60,
-    h: 3600,
-    hr: 3600,
-    d: 86400,
-    w: 604800,
-    m: 2628000,
-    mth: 2628000,
-    y: 31536000,
-    yr: 31536000 
-    // 31556952 = average Gregorian year // 31536000 = common year (365 days)
-  };
-  this.szUnits = {
-    b: 1,
-    kb: 1024,
-    mb: 1048576,
-    gb: 1073741824,
-    tb: 1099511627776,
-    pb: 1125899906842624
-  };
-    
-  this.opt = {
-    cSort: 'sort',
-    cTotals: 'totals',
-    aFilter: 'data-filter',
-    aRep: 'data-filter-report',
-    aTotal: 'data-total',
-    aLimit: 'data-limit',
-    aPages: 'data-pages',
-    aPageNavAfter: 'data-pages-after',
-    cFilter: 'filter',
-    cFiltered: 'bg-w', // filter-on - non-empty filter field
-    cScan: 'text-i', // col-scan - searchable columns' header (used if "data-filter-cols" is set)
-    cShow: '', // row-show - matching row
-    //cHide: 'hide', // row-hide - non-matching row (if not set the "display:none" is used)
-    cSortable: '', // col-sort - sortable column's header
-    cUnmatch: 'unmatch',
-    cUnpage: 'unpage',
-    cAsc:  'bg-y', // col-asc - !non-empty! - header of currently sorted column (ascending)
-    cDesc: 'bg-w', // col-desc - header of currently sorted column (descending)
-    dateFormat: 'd', //y=Y-m-d, d=d.m.Y, m=m/d Y
-    wait: 200
-  };
+    this.lang = '';
+    this.skipComma = 0;
+    this.intervalUnits = {
+      ms: .001,
+      msec: .001,
+      s: 1,
+      sec: 1,
+      mi: 60,
+      min: 60,
+      h: 3600,
+      hr: 3600,
+      d: 86400,
+      w: 604800,
+      m: 2628000,
+      mth: 2628000,
+      y: 31536000,
+      yr: 31536000 
+      // 31556952 = average Gregorian year // 31536000 = common year (365 days)
+    };
+    this.szUnits = {
+      b: 1,
+      kb: 1024,
+      mb: 1048576,
+      gb: 1073741824,
+      tb: 1099511627776,
+      pb: 1125899906842624
+    };
+      
+    this.opt = {
+      cSort: 'sort',
+      cTotals: 'totals',
+      aFilter: 'data-filter',
+      aRep: 'data-filter-report',
+      aTotal: 'data-total',
+      aLimit: 'data-limit',
+      aPages: 'data-pages',
+      aPageNavAfter: 'data-pages-after',
+      cFilter: 'filter',
+      cFiltered: 'bg-w', // filter-on - non-empty filter field
+      cScan: 'text-i', // col-scan - searchable columns' header (used if "data-filter-cols" is set)
+      cShow: '', // row-show - matching row
+      //cHide: 'hide', // row-hide - non-matching row (if not set the "display:none" is used)
+      cSortable: '', // col-sort - sortable column's header
+      cUnmatch: 'unmatch',
+      cUnpage: 'unpage',
+      cAsc:  'bg-y', // col-asc - !non-empty! - header of currently sorted column (ascending)
+      cDesc: 'bg-w', // col-desc - header of currently sorted column (descending)
+      dateFormat: 'd', //y=Y-m-d, d=d.m.Y, m=m/d Y
+      wait: 200
+    };
+  }
 
-  this.init = function() {
-    this.lang = app.attr(document.documentElement, 'lang') || 'en';
+  init () {
+    this.lang = this.app.attr(document.documentElement, 'lang') || 'en';
     this.skipComma = (this.lang=='en');
     let q = 'table.' + this.opt.cSort + ', table.' + this.opt.cFilter + ', table.' + this.opt.cTotals + ', table[' + this.opt.aFilter + ']' + ', table[' + this.opt.aLimit + ']';
-    app.e(q, this.prepare.bind(this));
-    app.h('click', '.tablex-pagenav a', e => this.page(e));
+    this.app.e(q, this.prepare.bind(this));
+    this.app.h('click', '.tablex-pagenav a', e => this.page(e));
   }
   
-  this.page = function(e){
+  page (e){
     e.preventDefault();
     let nav = e.recv.closest('.tablex-pagenav');
     this.paginate(nav.vTable, 1 * e.recv.hash.substr(1))
   }
 
-  this.prepare = function(n) {
+  prepare (n) {
     let i, j, start = 0;
     let tb = n.querySelector('tbody');
     let rh = n.querySelector('thead tr');
@@ -90,14 +91,14 @@ module.exports = new(function() {
       types[j] = {x: 0, s: 0, n: 0, b: 0, i: 0, d: 0};
       //if (this.opt.cSortable && this.isSortable(rh.cells[j])) h[j].classList.add(this.opt.cSortable);
     }
-    //let inp = app.ins('input','',{type:'search',size:4},rh.cells[0]);
+    //let inp = this.app.ins('input','',{type:'search',size:4},rh.cells[0]);
     n.vCase = (n.getAttribute('data-case') !== null);
-    let fq = app.attr(n, this.opt.aFilter);
+    let fq = this.app.attr(n, this.opt.aFilter);
     n.vInp = fq
       ? document.querySelector(fq)
       : n.querySelector('[name="_q"]');
-    n.vRep = app.q(app.attr(n, this.opt.aRep, ''));
-    n.vLimit = 1 * app.attr(n, this.opt.aLimit, 0);
+    n.vRep = this.app.q(this.app.attr(n, this.opt.aRep, ''));
+    n.vLimit = 1 * this.app.attr(n, this.opt.aLimit, 0);
     n.vPage = 1;
     if(!n.vInp && !n.vRep && n.classList.contains(this.opt.cFilter)) this.addFilter(n);
     if(n.vLimit && tb.rows.length>n.vLimit) this.addPageNav(n);
@@ -107,7 +108,7 @@ module.exports = new(function() {
       //1.
       //if(!n.vInp.vListen) n.vInp.addEventListener('input', this.doFilter.bind(this, n), false);
       //2.
-      let f = app.delay(this.doFilter, this.opt.wait, true);
+      let f = this.app.delay(this.doFilter, this.opt.wait, true);
       if(!n.vInp.vListen) n.vInp.addEventListener('input', f.bind(this, n), false);
       n.vInp.vListen = 1;
       //this.doFilter(n);
@@ -121,7 +122,7 @@ module.exports = new(function() {
         vals[j] = this.convert(row[j]);
         let type = (vals[j][0] === '') ? 'x' : vals[j][1];
         types[j][type]++;
-        if(app.isDebug()) c[j].title = type+': '+vals[j][0];
+        if(this.app.isDebug()) c[j].title = type+': '+vals[j][0];
         //c[j].setAttribute('data-cell', row[j]);
       }
       a.push({
@@ -152,7 +153,7 @@ module.exports = new(function() {
     }
   }
   
-  this.paginate = function(n, page){
+  paginate (n, page){
     n.vPage = page;
     if(n.vLimit && n.vPage){
       this.setPageNav(n);
@@ -164,28 +165,29 @@ module.exports = new(function() {
         let hide = n.vData[i].n.classList.contains(this.opt.cUnmatch);
         if(!hide){
           let on = (j >= skip && j <= last);
-          n.vData[i].n.classList[on ? 'remove' : 'add'](app.opt.cHide, this.opt.cUnpage);
+          n.vData[i].n.classList[on ? 'remove' : 'add'](this.app.opt.cHide, this.opt.cUnpage);
           j++;
         }
       }
     }
   }
   
-  this.addFilter = function(n){
+  addFilter (n){
     let t = n.parentNode.classList.contains('roll') ? n.parentNode : n;
-    let p = app.ins('p', ' ', {}, t, -1);
-    n.vInp = app.ins('input', '', {type: 'search'}, p, false);
-    n.vRep = app.ins('span', '', {}, p);
+    let p = this.app.ins('p', ' ', {}, t, -1);
+    n.vInp = this.app.ins('input', '', {type: 'search'}, p, false);
+    n.vRep = this.app.ins('span', '', {}, p);
   }
   
-  this.addPageNav = function(n){
+  addPageNav (n){
     let t = n.parentNode.classList.contains('roll') ? n.parentNode : n;
-    n.vPageNav = app.ins('ul', '', {className: 'nav hover tablex-pagenav'});
+    n.vPageNav = this.app.ins('ul', '', {className: 'nav hover tablex-pagenav'});
     n.vPageNav.vTable = n;
-    app.ins('div', n.vPageNav, {className: 'mar small'}, t, app.attr(n, this.opt.aPageNavAfter)===null ? -1 : 1);
+    this.app.ins('div', n.vPageNav, {className: 'mar small'}, t, this.app.attr(n, this.opt.aPageNavAfter)===null ? -1 : 1);
   }
   
-  this.setPageNav = function(n){
+  setPageNav (n){
+    const app = this.app
     let m = 1 * app.attr(n, this.opt.aPages, 10);
     let h = Math.floor((m + 1) / 2); // shift to first
     //let h = Math.ceil((m + 1) / 2); // shift to last
@@ -208,17 +210,17 @@ module.exports = new(function() {
     }
   }
 
-  this.addFooter = function(n, rh){
-    let f = app.ins('tfoot', app.ins('tr'), {className: 'nobr'}, n);
-    app.a(rh.cells).forEach(h => {
+  addFooter (n, rh){
+    let f = this.app.ins('tfoot', this.app.ins('tr'), {className: 'nobr'}, n);
+    this.app.a(rh.cells).forEach(h => {
       let t = n.vTypes[h.cellIndex];
       let func = t=='s' ? 'count' : (t=='d' ? 'max' : 'sum');
-      app.ins('th', app.ins(t=='s' ? 'i' : 'span', '', {[this.opt.aTotal]: func, className: (t=='s' ? 'text-n' : '')}), {title: func}, f.firstChild);
+      this.app.ins('th', this.app.ins(t=='s' ? 'i' : 'span', '', {[this.opt.aTotal]: func, className: (t=='s' ? 'text-n' : '')}), {title: func}, f.firstChild);
     }
     );
   }
   
-  this.doFilter = function(t, e) {
+  doFilter (t, e) {
     if (t.vPrev !== t.vInp.value || !e) {
       t.vPrev = t.vInp.value;
       if (this.opt.cFiltered) t.vInp.classList[t.vPrev.length > 0 ? 'add' : 'remove'](this.opt.cFiltered);
@@ -230,7 +232,7 @@ module.exports = new(function() {
     }
   }
 
-  this.doSort = function(t, th, e) {
+  doSort (t, th, e) {
     if (e.target.closest
       ? (!e.target.closest('a,input,select,label'))
       : (' A INPUT SELECT LABEL ').indexOf(' ' + e.target.tagName + ' ') == -1)
@@ -240,12 +242,12 @@ module.exports = new(function() {
     }
   }
 
-  this.isSortable = function(th) {
+  isSortable (th) {
     //return this.val(th).length > 0;
     return !th.hasAttribute('data-unsort');
   }
 
-  this.val = function(s, cs) {
+  val (s, cs) {
     let r = s.tagName ? s.innerHTML : '' + s;
     r = r.
     replace(/<!--.*?-->/g, '').
@@ -257,11 +259,11 @@ module.exports = new(function() {
     return r;
   }
 
-  this.filter = function(n, q) {
+  filter (n, q) {
     let cnt = 0;
     let i, j, data, s, hide;
     if (!n.vCols) {
-      n.vCols = app.attr(n, 'data-filter-cols', '');
+      n.vCols = this.app.attr(n, 'data-filter-cols', '');
       n.vCols = n.vCols ? n.vCols.split(/\D+/) : false;
       if (n.vCols && this.opt.cScan)
         for (i = 0; i < n.vCols.length; i++) {
@@ -278,7 +280,7 @@ module.exports = new(function() {
         s = '|' + data.join('|') + '|';
         hide = !this.matches(s, q, n.vCase);
       }
-      if(app.opt.cHide) n.vData[i].n.classList[hide ? 'add' : 'remove'](app.opt.cHide, this.opt.cUnmatch);
+      if(this.app.opt.cHide) n.vData[i].n.classList[hide ? 'add' : 'remove'](this.app.opt.cHide, this.opt.cUnmatch);
       else n.vData[i].n.style.display = hide ? 'none' : '';
       if(this.opt.cShow) n.vData[i].n.classList[hide ? 'remove' : 'add'](this.opt.cShow);
       n.vData[i].v = !hide;
@@ -293,16 +295,16 @@ module.exports = new(function() {
     if (n.vLimit) this.paginate(n, 1);
   }
   
-  this.updateTotals = function(n, cnt){
-    app.e(app.qq('[' + this.opt.aTotal + ']', n), m => m.textContent = this.countTotal(n, m, cnt));
+  updateTotals (n, cnt){
+    this.app.e(this.app.qq('[' + this.opt.aTotal + ']', n), m => m.textContent = this.countTotal(n, m, cnt));
   }
   
-  this.countTotal = function(n, m, cnt){
+  countTotal (n, m, cnt){
     let d = n.vData;
     let j = m.closest('th, td').cellIndex;
-    let a = app.attr(m, 'data-total', '');
-    let dec = parseInt(app.attr(m, 'data-dec', 2), 10);
-    let mode = app.attr(m, 'data-mode', /*'n'*/ n.vTypes[j]);
+    let a = this.app.attr(m, 'data-total', '');
+    let dec = parseInt(this.app.attr(m, 'data-dec', 2), 10);
+    let mode = this.app.attr(m, 'data-mode', /*'n'*/ n.vTypes[j]);
     let r = 0;
     //if(a == 'count' || a == 'cnt') r = cnt;
     if(a == 'count' || a == 'cnt') r = d.reduce((acc, cur) => acc + (cur.v && cur.x[j][0]!=='' ? 1 : 0), 0);
@@ -318,13 +320,13 @@ module.exports = new(function() {
     return isNaN(r) ? '-' : this.strVal(r, mode, dec);
   }
   
-  this.dec = function(x, d){
+  dec (x, d){
     let m = Math.pow(10, d);
     if(d) x = Math.round(x * m) / m;
     return x;
   }
 
-  this.matches = function(s, q, cs) {
+  matches (s, q, cs) {
     if (q.substr(0, 1) == '=') return s.indexOf('|' + q.substr(1).toLowerCase() + '|') != -1;
     else if (q.indexOf('*') != -1) {
       q = '\\|' + q.replace(/\*/g, '.*') + '\\|';
@@ -332,7 +334,7 @@ module.exports = new(function() {
     } else return s.indexOf(cs ? q : q.toLowerCase()) != -1;
   }
 
-  this.sort = function(n, col, desc) {
+  sort (n, col, desc) {
     if (desc === undefined) desc = (this.opt.cAsc && n.vHead[col].classList.contains(this.opt.cAsc));
     n.vData.sort(this.cmp.bind(this, col));
     if (desc) n.vData.reverse();
@@ -341,20 +343,20 @@ module.exports = new(function() {
     if (n.vLimit) this.paginate(n, 1);
   }
 
-  this.build = function(n) {
+  build (n) {
     let tb = n.querySelector('tbody');
     for (let i = 0; i < n.vData.length; i++) {
       tb.appendChild(n.vData[i].n);
     }
   }
 
-  this.mark = function(h, d) {
+  mark (h, d) {
     if (this.opt.cAsc) h.classList[d > 0 ? 'add' : 'remove'](this.opt.cAsc);
     if (this.opt.cDesc) h.classList[d < 0 ? 'add' : 'remove'](this.opt.cDesc);
   }
   
-  this.convert = function(v){
-    let r = date.parse(v);
+  convert (v){
+    let r = Dt.parse(v);
     r = r ? r.getTime() : NaN;
     if(!isNaN(r)) return [r, 'd'];
     r = this.sz(v);
@@ -366,25 +368,25 @@ module.exports = new(function() {
     return [v, 's'];
   }
   
-  this.numVal = function(x){
+  numVal (x){
     return (x[1] == 's') ? this.nr(x[0], 1) : x[0];
   }
 
-  this.strVal = function(x, mode, dec){
+  strVal (x, mode, dec){
     if (mode == 's') return x;
     else if(mode == 'n') return x.toFixed(dec) * 1;//this.dec(x, dec);
     else if(mode == 'b') return this.fmtSz(x, dec);
     else if(mode == 'i') return this.fmtInterval(x, dec);
-    else if(mode == 'd') return date.fmt(new Date(x), dec, this.opt.dateFormat);
+    else if(mode == 'd') return Dt.fmt(new Date(x), dec, this.opt.dateFormat);
     else return x;
   }
 
-  this.fmtSz = function(x, dec){
+  fmtSz (x, dec){
     let i = x ? Math.min(5, Math.floor(Math.log(x) / Math.log(1024))) : 0;
     return (x / Math.pow(1024, i)).toFixed(dec) * 1 + ' ' + ['B', 'KB', 'MB', 'GB', 'TB', 'PB'/*, 'EB', 'ZB', 'YB'*/][i];
   }
   
-  this.fmtInterval = function(x, dec){
+  fmtInterval (x, dec){
     let y = this.intervalUnits.y;
     let m = this.intervalUnits.m;
     var s = [
@@ -398,13 +400,13 @@ module.exports = new(function() {
     return s.map(v => v[0] ? v[0] + v[1] : null).filter(v => v !== null).join(' ');
   }
   
-  this.cmp = function(by, a, b) {
+  cmp (by, a, b) {
     a = a.x[by][0];
     b = b.x[by][0];
     return a < b ? -1 : (a > b ? 1 : 0);
   }
   
-  this.nr = function(s, nanToZero){
+  nr (s, nanToZero){
     //use Number instead of parseFloat for more strictness
     s = this.skipComma
       ? s.replace(/(\$|,|\s)/g, '')
@@ -414,7 +416,7 @@ module.exports = new(function() {
     return s;
   }
 
-  this.interval = function(s) {
+  interval (s) {
     let x = this.intervalUnits;
     let m = s.match(/\d+\s?(y|m|w|d|h|min|mi|sec|s|msec|ms)\b/gi);
     if(m) m = m.map(v => v.match(/^(\d+)\s?(.*)$/));
@@ -422,7 +424,7 @@ module.exports = new(function() {
     return m && m.length>0 ? m.map(cur => x[cur[2]] ? cur[1] * x[cur[2]] : 0).reduce((a, b) => a + b, 0) : NaN;
   }
 
-  this.sz = function(s) {
+  sz (s) {
     let x = this.szUnits;
     let m = s.match(/^((\d*\.)?\d+)\s*(([kmgtp]i?)?b)$/i);
     if (m) {
@@ -432,4 +434,4 @@ module.exports = new(function() {
     return NaN;
   }
 
-})();
+}

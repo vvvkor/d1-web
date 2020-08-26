@@ -1,5 +1,5 @@
 const fs = require('fs');
-const icons = require('./src/js/iconset.js')
+const icons = require('./src/js/util/iconset.js')
 const src = './src/icons.css';
 const dst = './dist/d1-icons.css';
 

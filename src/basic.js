@@ -2,12 +2,12 @@ import './js/polyfill.js'
 
 import App from './js/app.js'
 import Toggle from './js/plugins/toggle.js'
-//import Dialog from './js/plugins/dialog.js'
-//import Gallery from './js/plugins/gallery.js'
+import Dialog from './js/plugins/dialog.js'
+import Gallery from './js/plugins/gallery.js'
 const app = new App()
 app.plug(Toggle)
-//app.plug(Dialog)
-//app.plug(Gallery)
+app.plug(Dialog)
+app.plug(Gallery)
 
 
 // let opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}}

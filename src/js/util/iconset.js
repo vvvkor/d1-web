@@ -1,5 +1,8 @@
 /*! iconset - svg paths for building icons */
 
+// "module.exports" is used over "export default"
+// to work with build step "css-icons.js"
+
 module.exports = {
   
   menu: [7, 'M.5 1h6v1h-6zm0 2h6v1h-6zm0 2h6v1h-6z'],

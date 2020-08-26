@@ -2,60 +2,44 @@
 
 // .gallery a.pic 
 
-let app = require('./app.js');
+import Plugin from './plugin.js';
 
-module.exports = new(function () {
+export default class extends Plugin {
 
-  "use strict";
-
-  this.name = 'gallery';
+  constructor () {
+    super('gallery')
   
-  this.opt = {
-    idPrefix: 'pic-',
-    num: true,
-    cGal: 'gal',
-    qGal: '.gal>a[id]', // dup of toggle.opt.qGal
-    qGallery: '.gallery',
-    qLinks: 'a.pic'
-  };
+    this.opt = {
+      idPrefix: 'pic-',
+      num: true,
+      cGal: 'gal',
+      qGal: '.gal>a[id]', // dup of toggle.opt.qGal
+      qGallery: '.gallery',
+      qLinks: 'a.pic'
+    };
+  }
   
-  this.init = function () {
-    app.listen('hashchange', e => this.onHash(e));
-    app.listen('keydown', e => this.onKey(e));
-    app.h('click', this.opt.qGal, e => this.next(e));
-    app.listen('swipe', e => this.swipe(e));
+  init () {
+    this.app.listen('hashchange', e => this.onHash(e));
+    this.app.listen('keydown', e => this.onKey(e));
+    this.app.h('click', this.opt.qGal, e => this.next(e));
+    this.app.listen('swipe', e => this.swipe(e));
     this.prepareAll();
   }
   
-  this.prepareAll = function(d){
-    app.e(app.qq(this.opt.qGallery, d), n => this.prepare(n));
+  prepareAll (d){
+    this.app.e(this.app.qq(this.opt.qGallery, d), n => this.prepare(n));
   }
   
-  this.swipe = function(e){
+  swipe (e){
     if(e.n.matches(this.opt.qGal)){
-      /*
-      if(e.dir==2 || e.dir==4){
-        let x = app.next(e.n, this.opt.qGal, e.dir==2);
-        if(!x) x = e.dir==4 ? app.q(this.opt.qGal, e.n.parentNode) : app.qq(this.opt.qGal, e.n.parentNode).pop();
-        if(x && x.id){
-          e.n.classList.add('fade');
-          location.hash = '#' + x.id;
-          e.n.classList.add('fade-out', 'fade-' + e.dir);
-          x.classList.add('fade-in');
-          setTimeout(() => app.qq(this.opt.qGal, x.parentNode).forEach(m => {
-            m.classList.remove('fade', 'fade-out', 'fade-in', 'fade-2', 'fade-4');
-            m.style.transform = '';
-          }), 500);
-        }
-      }
-      */
       if(e.dir==4) this.browse(e.n);
       else if(e.dir==2) this.browse(e.n, true);
-      else if(e.dir==3) app.fire('esc');
+      else if(e.dir==3) this.app.fire('esc');
     }
   }
   
-  this.next = function(e){
+  next (e){
     //console.log(e.defaultPrevented);
     if(e.defaultPrevented) return;
     let n = e.recv;
@@ -65,31 +49,32 @@ module.exports = new(function () {
     }
   }
   
-  this.browse = function(n, back) {
+  browse (n, back) {
     if(back){
-      let p = n.previousElementSibling || app.qq('a[id]', n.parentNode).pop();
+      let p = n.previousElementSibling || this.app.qq('a[id]', n.parentNode).pop();
       if(p.id) location.hash = '#' + p.id;
     }
     else location.hash = n.hash;
     //return p.id;
   }
   
-  this.onHash = function() {
-    let n = app.q(location.hash);
+  onHash () {
+    let n = this.app.q(location.hash);
     if(n) {
       this.loadImg(n);
-      this.loadImg(app.q(n.hash));
+      this.loadImg(this.app.q(n.hash));
     }
   }
   
-  this.loadImg = function(n){
+  loadImg (n){
     if(n && n.vImg){
       n.style.backgroundImage = 'url("' + n.vImg + '")';
       n.vImg = '';
     }
   }
   
-  this.prepare = function (n) {
+  prepare (n) {
+    const app = this.app
     let g = app.ins('div', '', {className: this.opt.cGal});
     let a = app.qq(this.opt.qLinks, n);
     let z = a.length;
@@ -114,9 +99,9 @@ module.exports = new(function () {
     document.body.appendChild(g);
   }
 
-  this.onKey = function(e) {
+  onKey (e) {
     if(location.hash) {
-      let a = app.q(location.hash);
+      let a = this.app.q(location.hash);
       if(a && a.hash){
         let k = e.keyCode;
         if (k==37 || k==38) this.browse(a, true);
@@ -134,4 +119,4 @@ module.exports = new(function () {
     }
   }
 
-})();
+}
