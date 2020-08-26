@@ -1,4 +1,4 @@
-/*! d1-web icons v1.4.14 */
+/*! d1-web icons v1.4.15 */
 
 [class*="icon-"]:before {
     content: "";
@@ -15,6 +15,10 @@
 
 [class*=icon-]:empty:before {
     margin: 0;
+}
+
+.alt {
+    display: none;
 }
 
 [class*="icon-"]:before {

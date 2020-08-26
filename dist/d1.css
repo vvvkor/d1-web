@@ -1,4 +1,4 @@
-/*! d1-web v1.4.14 */
+/*! d1-web v1.4.15 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -315,6 +315,10 @@ svg {
 .icon+* {
     margin-left: .5em;
     margin-left: var(--gap-s);
+}
+
+.js .alt {
+    display: none;
 }
 
 ul {
@@ -948,6 +952,15 @@ mark {
     .topbar:not(.hide)~* [id] {
         scroll-margin-top: 3.5rem;
         scroll-margin-top: calc(1rem + var(--topbar));
+    }
+
+    div[id] {
+        scroll-margin-top: 3rem;
+    }
+
+    .topbar:not(.hide)~* div[id] {
+        scroll-margin-top: 6.5rem;
+        scroll-margin-top: calc(4rem + var(--topbar));
     }
 
     .stick {

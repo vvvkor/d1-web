@@ -465,7 +465,7 @@ To remember state, use <code>.mem</code>.
 		<td><code>.fit</code><td>No cell padding
 	<tr><td><input type="checkbox" name="demo-roll" data-set="roll" data-nodes="#demo-roll" checked>
 		<td><code>.roll &gt; table</code><td>Scroll overflowing width
-	<tr><td><!--input type="checkbox" name="demo-table-align" data-set="r1" data-nodes="#demo-table" checked-->
+	<tr><td><!--input type="checkbox" name="demo-table-align" data-set="r2" data-nodes="#demo-table" checked-->
 		<td><code>.l1 .r2 .c3</code><td>Align specific columns to the left/right/center
 </table>
 
@@ -478,7 +478,7 @@ Add <code>r#, l#, c#</code> (where # is any number) classes to align cells of co
 	<table class="hover shift r1 c3 c4 c5" id="demo-table"><!-- data-limit="2" -->
 		<caption>Table caption</caption>
 		<thead>
-		<tr><th>#<th>Component<th>Code<th>Remember state<th>Fix position<th>Close on Escape
+		<tr><th>#<th>Component<th>Code<th>Remember state<th>Fix position<th>Close on Esc
 		</thead>
 		<tbody>
 		<tr><td>1	<th>Dropdown	<td><code>.nav</code>	<td>-					<td>+	<td>+
@@ -533,15 +533,15 @@ By default, <code>table</code> is styled with border, unless it is a direct desc
 </div-->
 		<!--tr>	<th>Tooltip		<td><code></code>		<td>HF	<td>HF	<td>-	<td>+	<td>+	<td-->
 	
-	<p class="pad bg-n">
+	<!--p class="pad bg-n">
 		<b>Legend</b><br>
 		H &mdash; <code>:hover</code><br>
-		<!--F &mdash; <code>:focus</code><br>-->
+		F &mdash; <code>:focus</code><br>
 		T &mdash; <code>:target</code> (t &mdash; with undesirable scroll)<br>
 		J &mdash; javascript toggle<br>
 		V &mdash; visible<br>
 		S &mdash; scroll<br>
-	</p>
+	</p-->
 
 <h3 id="table-responsive">Responsive table</h3>
 
@@ -578,13 +578,18 @@ and optionally set <code>[data-pages]</code> to maximum number of page links to 
 Page navigation is placed before table by default.
 To place it after table add <code>[data-pages-after]</code> without value.
 
-<div class="code">
+<!--
 <p>
 	<input name="q" value="" type="search" id="srch" placeholder="filter table" autocomplete="off">
 	<span id="rep"></span>
 </p>
+<table class="sort totals bord " data-filter="#srch" data-filter-report="#rep" data-filter-cols="0 2 4" data-case data-limit="2" data-pages="10">
+</table>
+-->
+
+<div class="code">
 <div class="roll">
-<table class="sort totals bord" data-filter="#srch" data-filter-report="#rep" data-filter-cols="0 2 4" data-case data-limit="2" data-pages="10">
+<table class="sort totals bord filter" data-filter-cols="0 2 4" data-case data-limit="2" data-pages="10">
 	<thead>
 	<tr><th>String<th>Number<th>Bytes<th>Interval<th>Date
 	</thead>

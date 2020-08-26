@@ -1,4 +1,4 @@
-/*! d1-web v1.4.14 */
+/*! d1-web v1.4.15 */
 
 /* @import url("css/columns.css"); */
 
@@ -245,6 +245,7 @@ svg{fill:currentColor;}
 .icon{display:inline-block;width:1em;height:1em;transform:translate(0,.15em) scale(1.2);}
 	/*.icon:not(:last-child){margin-right:var(--gap-s);}*/
 	.icon+*{margin-left:var(--gap-s);}
+	.js .alt{display:none;}
 	/*
 		[data-ico]>.icon{margin-right:0;}
 		[data-ico]>.icon~*{display:none;}
@@ -377,7 +378,7 @@ a.act>.is-off, a:not(.act)>.is-on,
    /*.drawer:not(:target):not(.toggle), /* .drawer[id] */
   /*.tree ul:not(.toggle):not(:target), /* .tree ul (auto id) */
  .nav li:not(:hover)>ul:not(.toggle), /* .nav ul (auto id) */
-   .pop:not(:hover)>div:not(.toggle), /* .pop>div[id] */
+   .pop:not(:hover)>div:not(.toggle)/*:not(:target)*/, /* .pop>div[id] */
 /* js */
 .js .toggle.off:not(.topbar):not(.drawer),
 /* detect js */
@@ -485,6 +486,8 @@ mark{background-color:var(--bg-warning);}
 	/*.topbar~* h1[id], .topbar~* h2[id], .topbar~* h3[id], .topbar~* h4[id], .topbar~* h5[id], .topbar~* h6[id]{margin-top:0;padding-top:calc(.5rem + var(--topbar));}/*?*/
 	/* option 3. not supported in ie */
 	.topbar:not(.hide)~* [id]{scroll-margin-top:calc(1rem + var(--topbar));}
+		div[id]{scroll-margin-top:3rem;} /* .pop, .target, .tabs (-.tree) */
+		.topbar:not(.hide)~* div[id]{scroll-margin-top:calc(4rem + var(--topbar));}
 	
 	.stick{z-index:3;position:sticky;top:0;max-height:100vh;align-self:flex-start;/*stretch*/overflow:auto;box-sizing:border-box;}
 		.topbar:not(.hide)~* .stick{top:var(--topbar);max-height:calc(100vh - var(--topbar));}/*?*/
