@@ -249,7 +249,7 @@ export default class extends Plugin{
     }
     this.app.dbg(['unpop', keep]);
     //this.app.e(this.opt.qUnpop, n => (keep && keep.filter(m => m && m.tagName && n.contains(m)).length) ? null : this.toggle(n, false, 1));
-    let nn = this.app.qq(this.opt.qUnpop)
+    let nn = this.app.qq(this.opt.qUnpopOn)
       .filter(n => !(keep && keep.filter(m => m && m.tagName && n.contains(m)).length)); // skip if contains one of [keep]
     if(seq) nn = nn.filter(n => !this.app.q(this.opt.qUnpopOn, n)); // to close nested subsequently
     this.app.e(nn, n => this.toggle(n, false, 1));

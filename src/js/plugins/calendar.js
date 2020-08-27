@@ -109,7 +109,7 @@ export default class extends Plugin {
         this.win.vRel = n;//m ? n : null;//m ? null : n;//n;
       }
     }
-    this.app.pf('toggle', 'toggle', this.win, on);
+    this.app.toggle(this.win, on);
     //if(!on) this.win.tabindex = -1;
     if(!on) document.body.appendChild(this.win);
     //this.app.fire('after');

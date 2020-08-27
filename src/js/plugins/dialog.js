@@ -67,7 +67,7 @@ export default class extends Plugin {
       app.b([yes], 'click', e => { e.preventDefault(); this.callback(f, inp.value, e); });
       if(inp.tagName) app.b([inp], 'keyup', e => e.keyCode==13 ? this.callback(f, inp.value, e) : null);
     }
-    this.app.pf('toggle', 'toggle', this.dlg, true)
+    this.app.toggle(this.dlg, true)
   }
   
   closeDialog () {

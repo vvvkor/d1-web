@@ -1,0 +1,10 @@
+{
+	"time": 1540892417715,
+	"seq": 2,
+	"request": {
+		"method": "cap",
+		"table": "sec",
+		"value": "4"
+	},
+	"data": "Four!"
+}

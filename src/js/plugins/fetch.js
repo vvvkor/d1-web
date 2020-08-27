@@ -39,10 +39,10 @@ export default class extends Plugin {
       if (d) {
         d.innerHTML = req.responseText;
         let dlg = d.closest('.dlg[id]');
-        if (dlg) this.app.pf('toggle', 'toggle', dlg, true)
+        if (dlg) this.app.toggle(dlg, true)
       }
       else {
-        this.app.pf('dialog', 'openDialog', n, req.responseText)
+        this.app.dialog(n, req.responseText)
       }
     }
     else console.error('XHTTP request failed', req);

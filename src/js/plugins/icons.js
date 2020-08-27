@@ -1,7 +1,7 @@
 /*! icons - include svg icons */
 
 import Plugin from './plugin.js';
-import iconset from '../util/iconset.js';
+import iconset from '../iconset.js';
 
 export default class extends Plugin {
 

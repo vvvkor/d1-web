@@ -10,7 +10,6 @@ import Fetch from './js/plugins/fetch.js'
 import Tablex from './js/plugins/tablex.js'
 import Calendar from './js/plugins/calendar.js'
 import Lookup from './js/plugins/lookup.js'
-/*
 import Edit from './js/plugins/edit.js'
 import Valid from './js/plugins/valid.js'
 import Tools from './js/plugins/tools.js'
@@ -22,7 +21,7 @@ import Fliptable from './js/plugins/fliptable.js'
 import Swipe from './js/plugins/swipe.js'
 import Scroll from './js/plugins/scroll.js'
 import Theme from './js/plugins/theme.js'
-*/
+
 const app = new App()
 //console.log('app', app)
 /*
@@ -47,7 +46,6 @@ app.plug(Fetch)
 app.plug(Tablex)
 app.plug(Calendar)
 app.plug(Lookup)
-/*
 app.plug(Edit)
 app.plug(Valid)
 app.plug(Tools)
@@ -59,8 +57,7 @@ app.plug(Fliptable)
 app.plug(Swipe)
 app.plug(Scroll)
 app.plug(Theme)
-*/
-// let opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}}
+// const opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}}
 app.b([document], 'DOMContentLoaded', e => app.init(/*opt*/))
 
 // if (typeof module !== 'undefined') module.exports = app

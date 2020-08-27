@@ -6,6 +6,12 @@ export default class {
     this.opt = {}
   }
   
+  install (app, opt) {
+    this.app = app
+    if(opt) Object.keys(opt).forEach(k => this.opt[k] = opt[k])
+    this.init()
+  }
+  
   init () {
     console.log('plugin.init()')
   }

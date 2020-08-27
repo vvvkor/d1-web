@@ -1,19 +1,20 @@
 /*! keepform - store and restore user input */
 
-let app = require('./app.js');
+import Plugin from './plugin.js';
 
-module.exports = new(function () {
+export default class extends Plugin {
 
-  "use strict";
+  constructor () {
+    super('keepform')
+    this.opt = {
+      qStore: 'form.store[id]',
+      qRestore: 'form.restore[id]'
+    };
+  }
 
-  this.name = 'keepform';
-  this.opt = {
-    qStore: 'form.store[id]',
-    qRestore: 'form.restore[id]'
-  };
-
-  this.init = function(){
+  init (){
     if(Object.fromEntries && FormData){
+      const app = this.app
       let q = this.opt.qStore;
       app.e(q, f => this.addControls(f));
       app.e(this.opt.qRestore, f => this.restoreForm(f, true));
@@ -24,7 +25,8 @@ module.exports = new(function () {
     }
   }
   
-  this.addControls = function(f){
+  addControls (f){
+    const app = this.app
     let d = app.ins('div', '', {className: 'pad r keepform-tools'}, f, false);
     app.ins('a', app.i('energy', '[^]'), {href: '#restore'}, d);
     app.ins('', ' ', {}, d);
@@ -33,24 +35,24 @@ module.exports = new(function () {
     app.ins('a', app.i('ban', '[x]'), {href: '#unstore'}, d);
   }
   
-  this.reset = function(e){
+  reset (e){
     e.preventDefault();
     let f = e.target.closest('form');
     f.reset();
-    app.e(app.qq('[name]', f), n => app.fire('value', {n: n}));
+    this.app.e(this.app.qq('[name]', f), n => this.app.fire('value', {n: n}));
   }
   
-  this.unstore = function(e){
+  unstore (e){
     e.preventDefault();
     localStorage.removeItem(this.formId(e.target.closest('form')));
   }
   
-  this.restore = function(e){
+  restore (e){
     e.preventDefault();
     this.restoreForm(e.target.closest('form'));
   }
   
-  this.restoreForm = function(f, mode){
+  restoreForm (f, mode){
     let id = this.formId(f);
     let d = localStorage.getItem(id);
     if(d){
@@ -62,17 +64,17 @@ module.exports = new(function () {
     }
   }
   
-  this.restoreInput = function(i, v, mode){
+  restoreInput (i, v, mode){
     if(i instanceof NodeList) i.forEach(j => this.restoreInput(j, v, mode));
     else{
       if(i.type.match(/file|submit|password/)) ;
       else if(i.type.match(/checkbox|radio/)) i.checked = Array.isArray(v) ? (v.indexOf(i.value) != -1) : (i.value === v);
       else i.value = v;
-      app.fire('value', {n: i, modeAuto: mode});
+      this.app.fire('value', {n: i, modeAuto: mode});
     }
   }
   
-  this.store = function(e){
+  store (e){
     let f = new FormData(e.recv);
     //let d = JSON.stringify(Object.fromEntries(f)); // does not support multiple
     let d = {};
@@ -87,8 +89,8 @@ module.exports = new(function () {
     localStorage.setItem(this.formId(e.recv), JSON.stringify(d));
   }
   
-  this.formId = function(f){
+  formId (f){
     return 'form#' + f.id + '@' + location.pathname;
   }
   
-})();
+}

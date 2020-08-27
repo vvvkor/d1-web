@@ -35,7 +35,8 @@ export default class extends Plugin {
 
     app.e('input[' + this.opt.aLookup + ']', n => this.prepare(n));
     app.e('[data-chain]', n => this.updateChain(n));
-    app.h('input', '.lookup-input', e => app.delay(i => this.find(i), this.opt.wait, true)(e));
+    const f = app.delay(this.find.bind(this), this.opt.wait, true);
+    app.h('input', '.lookup-input', e => f(e));
     app.h('keydown', '.lookup-input', e => this.key(e));
     app.h('click', '.lookup-item', e => this.choose(e));
     app.h('click', '.lookup-goto', e => this.go(e));
@@ -79,7 +80,7 @@ export default class extends Plugin {
     if(n.value && !cap && uc){
       let u = encodeURI(decodeURI(this.app.makeUrl(uc, {time: (new Date()).getTime()}))
         .replace(/\{q\}/, n.value));
-      this.app.pf('fetch', 'fetch', u, req => {
+      this.app.fetch(u, req => {
         let d = JSON.parse(req.responseText);
         this.fix(n, n.value, d.data);
       });
@@ -114,7 +115,7 @@ export default class extends Plugin {
           time: (new Date()).getTime()
       })).replace(/\{q\}/, v));
       n.vCur = null;
-      this.app.pf('fetch', 'fetch', u, this.list.bind(this, v, n));
+      this.app.fetch(u, this.list.bind(this, v, n));
     }
   }
   
@@ -130,13 +131,13 @@ export default class extends Plugin {
     let pop = this.pop(n);
     pop.appendChild(this.win);
     //this.win.vRel = n.vCap;
-    this.app.pf('toggle', 'toggle', this.win, true);
+    this.app.toggle(this.win, true);
     this.build(n, d);
-    //toggle.shown = null;
+    //this.app.pf('toggle', 'setShown', null);
   }
   
   closeList (){
-    this.app.pf('toggle', 'toggle', this.win, false);
+    this.app.toggle(this.win, false);
   }
   
   build (n, d){
@@ -222,7 +223,7 @@ export default class extends Plugin {
       else{
         let u = this.app.attr(m, this.opt.aList, '').replace(/\{q\}/,n.value);
         if(m.vCache && m.vCache[u]) this.setOptions(m,m.vCache[u]);
-        else this.app.pf('fetch', 'fetch', u, this.onChainData.bind(this, u, m));
+        else this.app.fetch(u, this.onChainData.bind(this, u, m));
       }
     }
   }

@@ -1,70 +1,72 @@
 /*! edit - wysiwyg text editor */
 
-let app = require('./app.js');
-let toggle = require('./toggle.js');
+// import toggle from './toggle.js'
 
-module.exports = new(function () {
+import Plugin from './plugin.js';
 
-  "use strict";
+export default class extends Plugin {
 
-  this.name = 'edit';
+  constructor () {
+    super('edit')
 
-  this.opt = {
-    qAdjust: 'textarea.adjust',
-    qEdit: 'textarea.edit',
-    height: 30,//em
-    tools: '/*@xbi_.#123p|c,s^vdqf~T(=)j+-'
-  };
-  
-  this.btn = {
-    // key: [command, html, icon, title]
-    '/': ['src', '', '/', 'Source'], // &lt;/&gt;
-    '*': ['insertimage', '~', '*', 'Image'],
-    '@': ['createlink', '~', '@', 'Link'],
-    'x': ['unlink', '', '&times;', 'Unlink'],
-    'b': ['bold', '', '<b>B</b>', 'Bold'],
-    'i': ['italic', '', '<i>I</i>', 'Italic'],
-    '_': ['removeformat', '', '_', 'Unformat'],
-    '.': ['insertUnorderedList', '', '&bull;', 'List'],
-    '#': ['insertOrderedList', '', '#', 'Ordered'],
-    '1': ['formatblock', '<h1>', 'H1', 'Head 1'],
-    '2': ['formatblock', '<h2>', 'H2', 'Head 2'],
-    '3': ['formatblock', '<h3>', 'H3', 'Head 3'],
-    'p': ['formatblock', '<p>', '&sect;', 'Paragraph'],
-    '|': ['tools', '', '&hellip;', 'Tools'],
-    //more
-    //inline
-    'c': ['inserthtml', '<code>^</code>', '{}', 'Code'],
-    ',': ['inserthtml', '<abbr title="~">^</abbr>', 'A.B.', 'Abbreviation'],
-    's': ['strikeThrough', '', '<s>S</s>', 'Strike through'],
-    '^': ['subscript','','a<sub>x</sub>','Subscript'],
-    'v': ['superscript','','a<sup>x</sup>','Superscript'],
-    //block
-    'd': ['formatblock', '<div>', 'D', 'Div'],
-    'q': ['formatblock', '<blockquote>', '&#8220;', 'Block quote'],
-    'f': ['formatblock', '<pre>', '[]', 'Preformatted'],
-    '~': ['inserthorizontalrule', '', '&minus;', 'Horizontal ruler'],
-    'T': ['inserthtml', '<table><tr><th>#<th>#<tr><td>-<td>-</table>', 'T', 'Table'],
-    //more
-    '(': ['justifyLeft', '', '&lt;', 'Justify left'],
-    '=': ['justifyCenter', '', '=', 'Justify center'],
-    ')': ['justifyRight', '', '&gt;', 'Justify right'],
-    'j': ['justifyFull', '', '&equiv;', 'Justify full'],
-    '+': ['indent', '', '&raquo;', 'Increase indent'],
-    '-': ['outdent', '', '&laquo;', 'Decrease indent']
-    /*
-    'u': ['underline', '', 'U', 'Underline'],
-    'C': ['foreColor','~','TC','Text color','#c00'],
-    'h': ['hiliteColor','~','HC','Hilite color','#ff0'],
-    'B': ['backColor','~','BC','Back color','#eee'],
-    'S': ['fontSize','~','FS','Font size',4],
-    'F': ['fontName','~','FN','Font name','serif'],
-    'L': ['inserthtml','<div class="pad bg left">^</div>','FL','Float left'],
-    'R': ['inserthtml','<div class="pad bg right">^</div>','FR','Float right']
-    */
-  };
+    this.opt = {
+      qAdjust: 'textarea.adjust',
+      qEdit: 'textarea.edit',
+      height: 30,//em
+      tools: '/*@xbi_.#123p|c,s^vdqf~T(=)j+-'
+    };
+    
+    this.btn = {
+      // key: [command, html, icon, title]
+      '/': ['src', '', '/', 'Source'], // &lt;/&gt;
+      '*': ['insertimage', '~', '*', 'Image'],
+      '@': ['createlink', '~', '@', 'Link'],
+      'x': ['unlink', '', '&times;', 'Unlink'],
+      'b': ['bold', '', '<b>B</b>', 'Bold'],
+      'i': ['italic', '', '<i>I</i>', 'Italic'],
+      '_': ['removeformat', '', '_', 'Unformat'],
+      '.': ['insertUnorderedList', '', '&bull;', 'List'],
+      '#': ['insertOrderedList', '', '#', 'Ordered'],
+      '1': ['formatblock', '<h1>', 'H1', 'Head 1'],
+      '2': ['formatblock', '<h2>', 'H2', 'Head 2'],
+      '3': ['formatblock', '<h3>', 'H3', 'Head 3'],
+      'p': ['formatblock', '<p>', '&sect;', 'Paragraph'],
+      '|': ['tools', '', '&hellip;', 'Tools'],
+      //more
+      //inline
+      'c': ['inserthtml', '<code>^</code>', '{}', 'Code'],
+      ',': ['inserthtml', '<abbr title="~">^</abbr>', 'A.B.', 'Abbreviation'],
+      's': ['strikeThrough', '', '<s>S</s>', 'Strike through'],
+      '^': ['subscript','','a<sub>x</sub>','Subscript'],
+      'v': ['superscript','','a<sup>x</sup>','Superscript'],
+      //block
+      'd': ['formatblock', '<div>', 'D', 'Div'],
+      'q': ['formatblock', '<blockquote>', '&#8220;', 'Block quote'],
+      'f': ['formatblock', '<pre>', '[]', 'Preformatted'],
+      '~': ['inserthorizontalrule', '', '&minus;', 'Horizontal ruler'],
+      'T': ['inserthtml', '<table><tr><th>#<th>#<tr><td>-<td>-</table>', 'T', 'Table'],
+      //more
+      '(': ['justifyLeft', '', '&lt;', 'Justify left'],
+      '=': ['justifyCenter', '', '=', 'Justify center'],
+      ')': ['justifyRight', '', '&gt;', 'Justify right'],
+      'j': ['justifyFull', '', '&equiv;', 'Justify full'],
+      '+': ['indent', '', '&raquo;', 'Increase indent'],
+      '-': ['outdent', '', '&laquo;', 'Decrease indent']
+      /*
+      'u': ['underline', '', 'U', 'Underline'],
+      'C': ['foreColor','~','TC','Text color','#c00'],
+      'h': ['hiliteColor','~','HC','Hilite color','#ff0'],
+      'B': ['backColor','~','BC','Back color','#eee'],
+      'S': ['fontSize','~','FS','Font size',4],
+      'F': ['fontName','~','FN','Font name','serif'],
+      'L': ['inserthtml','<div class="pad bg left">^</div>','FL','Float left'],
+      'R': ['inserthtml','<div class="pad bg right">^</div>','FR','Float right']
+      */
+    };
+  }
 
-  this.init = function () {
+  init () {
+    const app = this.app
     app.e(this.opt.qEdit, n => this.prepare(n));
     app.e(this.opt.qAdjust, n => this.setStyle(n));
     this.adjustAll();
@@ -72,7 +74,13 @@ module.exports = new(function () {
     app.h('click', 'label[for]', e => this.setFocus(e.recv));
     app.h('click', 'a[data-cmd]', e => this.cmd(e));
     app.h(['input', 'blur'], '.edit-wysiwyg', e => this.up(0, e.target));//for validation
-    app.listen('value', e => e.n.theWys ? (e.modeAuto ? this.modeAuto(e.n) : this.up(1, e.n.theWys)) : null);
+    //app.listen('value', e => e.n.theWys ? (e.modeAuto ? this.modeAuto(e.n) : this.up(1, e.n.theWys)) : null);
+    app.listen('value', e => {
+      if (e.n.theWys) {
+        this.up(1, e.n.theWys) // update wysiwyg from area
+        if (e.modeAuto) this.modeAuto(e.n)
+      }
+    });
     app.b([window], 'paste', e => this.onPaste(e), true);
     //adjust
     app.h('input', this.opt.qAdjust, e => this.adjust(e.target));
@@ -80,13 +88,14 @@ module.exports = new(function () {
     app.b([window], 'resize', e => this.adjustAll());
   }
   
-  this.setFocus = function(l){
-    let a = app.q('#' + l.htmlFor);
-    if(a && a.theWys && app.vis(a.theWys)) a.theWys.focus();
+  setFocus (l) {
+    let a = this.app.q('#' + l.htmlFor);
+    if(a && a.theWys && this.app.vis(a.theWys)) a.theWys.focus();
   }
 
-  this.prepare = function (n) {
+  prepare (n) {
     if(!n.theWys){
+      const app = this.app
       let m = app.ins('nav', '', {className: 'bg'}, /*d*/ n, -1);
       let mm = app.ins('div', '', {className: app.opt.cToggle + ' ' + app.opt.cOff});
       //let zc = app.ins('div', '', {className:'subinput'}, n, 1)
@@ -115,27 +124,27 @@ module.exports = new(function () {
     this.modeAuto(n);
   }
   
-  this.modeAuto = function(n){
-    let t = app.attr(n, 'data-tools', this.opt.tools).split('');
-    let wys = app.attr(n, 'data-wys');
+  modeAuto (n){
+    let t = this.app.attr(n, 'data-tools', this.opt.tools).split('');
+    let wys = this.app.attr(n, 'data-wys');
     if(wys===null) wys = (t.indexOf('/')==-1) || (n.value.match(/(>|&\w+;)/) && !n.value.match(/<script/i));
     this.mode(wys, n.theWys);
   }
 
-  this.cmd = function (e, bb, nn) { // (e) or (z, b)
+  cmd (e, bb, nn) { // (e) or (z, b)
     let n = e.recv;
     let b = bb || this.btn[n.getAttribute('data-cmd')];
-    let z = bb ? e : app.next(n.closest('nav'), '.edit-wysiwyg');
-    app.dbg(['cmd', z, b, n, e]);
+    let z = bb ? e : this.app.next(n.closest('nav'), '.edit-wysiwyg');
+    this.app.dbg(['cmd', z, b, n, e]);
     if(e && !bb){
       e.preventDefault();
       e.stopPropagation();
     }
     //let b = this.btn[n.hash.substr(4)];
-    if (b[0] == 'src') this.mode(!app.vis(z), z);
+    if (b[0] == 'src') this.mode(!this.app.vis(z), z);
     else if (b[0] == 'tools'){
-      let mm = app.q('div', n.parentNode);
-      if(mm) toggle.toggle(mm);
+      let mm = this.app.q('div', n.parentNode);
+      if(mm) this.app.toggle(mm);
     }
     else {
       let arg = b[1];
@@ -154,29 +163,29 @@ module.exports = new(function () {
     }
   }
 
-  this.up = function (w, z) {
+  up (w, z) {
     if (w) z.innerHTML = z.theArea.value;
     else z.theArea.value = z.innerHTML.
       replace(/(\shref=")!/ig, ' target="_blank"$1').
       replace(/(\ssrc="[^"]+#[a-z]*)(\d+%?)"/ig, ' width="$2"$1"');
       //.replace(/(\ssrc="[^"]+)#([lrc])"/ig,' class="$2"$1"');
-    if(!w) app.dispatch(z.theArea, ['input', 'change']);
+    if(!w) this.app.dispatch(z.theArea, ['input', 'change']);
   }
 
-  this.mode = function (w, z) {
-    toggle.toggle(z, w);
-    toggle.toggle(z.theArea, !w);
+  mode (w, z) {
+    this.app.toggle(z, w);
+    this.app.toggle(z.theArea, !w);
     if(!w){
       if(z.style.height) z.theArea.style.height = z.style.height;
       else this.adjust(z.theArea);
     }
     this.up(w, z);
-    app.e(app.qq('a', z.theNav), n => (n.hash=='#cmd-src') ? null : toggle.toggle(n, w));
+    this.app.e(this.app.qq('a', z.theNav), n => (n.hash=='#cmd-src') ? null : this.app.toggle(n, w));
     z.theArea.theManual = 0;
     z.theArea.style.width = '100%';
   }
 
-  this.setStyle = function(n){
+  setStyle (n) {
     //n.style.resize = 'vertical'; //both
     n.style.overflow = 'auto';
     n.style.minHeight = '3em';
@@ -184,20 +193,20 @@ module.exports = new(function () {
     this.storeSize(n);
   }
   
-  this.storeSize = function(n){
+  storeSize (n) {
     n.theH = n.clientHeight;
     n.theW = n.clientWidth;
   }
   
-  this.resized = function(n){
+  resized (n) {
     if(n.theH !== n.clientHeight || n.theW !== n.clientWidth) n.theManual = 1;
   }
 
-  this.adjustAll = function(){
-    app.e(this.opt.qAdjust, n => this.adjust(n));
+  adjustAll () {
+    this.app.e(this.opt.qAdjust, n => this.adjust(n));
   }
 
-  this.adjust = function(n){
+  adjust (n) {
     if(n.theManual) return;
     //1. jumps
     //n.style.height = 'auto';
@@ -213,11 +222,11 @@ module.exports = new(function () {
   }
 
   // https://stackoverflow.com/questions/6333814/how-does-the-paste-image-from-clipboard-functionality-work-in-gmail-and-google-c
-  this.onPaste = function (e) {
+  onPaste (e) {
     let n = e.target.closest('.edit-wysiwyg');
     if(!n) return;
-    //app.a(e.clipboardData.items).forEach(i => console.log(i)); // kind: 'file', type: 'image/...'
-    let img = app.a(e.clipboardData.items).filter(i => i.type.indexOf('image') === 0).shift();
+    //this.app.a(e.clipboardData.items).forEach(i => console.log(i)); // kind: 'file', type: 'image/...'
+    let img = this.app.a(e.clipboardData.items).filter(i => i.type.indexOf('image') === 0).shift();
     if(img){
       e.preventDefault();
       let reader = new FileReader();
@@ -227,4 +236,4 @@ module.exports = new(function () {
     }
   }
 
-})();
+}

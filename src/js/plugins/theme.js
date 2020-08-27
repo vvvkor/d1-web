@@ -1,26 +1,26 @@
 /*! theme - live theme configurator */
 
-let app = require('./app.js');
+import Plugin from './plugin.js';
 
-module.exports = new(function () {
+export default class extends Plugin {
 
-  "use strict";
+  constructor () {
+    super('theme')
+    this.drw = null;
 
-  this.name = 'theme';
-  this.drw = null;
-
-  this.opt = {
-    cTheme: 'js-theme',
-    idTheme: 'theme-config'
-  };
-
-  this.init = function(){
+    this.opt = {
+      cTheme: 'js-theme',
+      idTheme: 'theme-config'
+    };
+  }
+  
+  init () {
     if(!document.body.classList.contains(this.opt.cTheme)) return;
     this.restore(document.documentElement, 'theme-html');
     //this.restore(document.body, 'theme-body');
 
     //button
-    let a = app.ins('a', 'Theme', {href: '#' + this.opt.idTheme, className: 'fix pad btn theme-btn hide-print'}, document.body);
+    let a = this.app.ins('a', 'Theme', {href: '#' + this.opt.idTheme, className: 'fix pad btn theme-btn hide-print'}, document.body);
     let s = a.style;
     s.transform = 'rotate(-90deg)';
     s.transformOrigin = '100% 100%';
@@ -29,12 +29,12 @@ module.exports = new(function () {
     s.bottom = s.left = 'auto';
     s.margin = 0;
     //drawer
-    this.drw = app.ins('div', '', {id: this.opt.idTheme, className: app.opt.cToggle + ' ' + app.opt.cOff + ' drawer swipe drag pad small shift theme-drawer', 'data-swipe': '2'}, document.body);
-    app.ins('a', '&#x2715;', {href: '#cancel', className: 'pad hover close'}, this.drw);
+    this.drw = this.app.ins('div', '', {id: this.opt.idTheme, className: this.app.opt.cToggle + ' ' + this.app.opt.cOff + ' drawer swipe drag pad small shift theme-drawer', 'data-swipe': '2'}, document.body);
+    this.app.ins('a', '&#x2715;', {href: '#cancel', className: 'pad hover close'}, this.drw);
     
     //menu
     this.hx('Theme', 2);
-    app.b([app.ins('a', 'Reset to default', {href:'#', className: ''}, this.drw)], 'click', e => this.unstyle(e));
+    this.app.b([this.app.ins('a', 'Reset to default', {href:'#', className: ''}, this.drw)], 'click', e => this.unstyle(e));
     this.put('Background', ['#fff', '#eee', '#ffeee6', '#ffe', '#efe', '#e6fcf9', '#e3eeff', '#f9e9ff'], '--bg');
     this.put('Menu', ['rgba(255,255,255,0)', 'rgba(0,0,0,.1)', 'hsla(1,100%,55%,.3)', 'hsla(45,100%,50%,.3)', 'hsla(120,100%,35%,.3)', 'hsla(180,100%,35%,.3)', 'hsla(220,100%,55%,.3)', 'hsla(290,100%,50%,.3)'], ['--bg-pane', '--bg-hilite']);
     this.put('Links', ['#000', '#777', '#c00', '#c60', '#090', '#088', '#00c', '#909'], ['--link', '--visited', '--hover']);
@@ -43,12 +43,12 @@ module.exports = new(function () {
     this.put('Gaps', ['0.5', '0.7', '1', '1.2', '1.5'], '--gap');
   }
   
-  this.restore = function(n, v){
+  restore (n, v){
     let css = localStorage.getItem(v);
     if(css) n.style = css;
   }
   
-  this.style = function(k, v, deep){
+  style (k, v, deep){
     if(k instanceof Array) k.forEach(w => this.style(w, v, 1));
     else{
       //let n = (k.substr(0, 2)=='--') ? document.documentElement : document.body;
@@ -59,7 +59,7 @@ module.exports = new(function () {
     }
   }
   
-  this.unstyle = function(e){
+  unstyle (e){
     e.preventDefault();
     let s = document.documentElement.style;
     for(var i = s.length; i--;) s.removeProperty(s[i]);
@@ -69,21 +69,21 @@ module.exports = new(function () {
     //localStorage.removeItem('theme-body');
   }
   
-  this.hx = function(s, l){
-    app.ins('h'+(l || 1), s, {className: 'mar'}, this.drw);
+  hx (s, l){
+    this.app.ins('h'+(l || 1), s, {className: 'mar'}, this.drw);
   }
   
-  this.put = function(hh, arr, func){
+  put (hh, arr, func){
     this.hx(hh, 3);
     let c = [];
     arr.forEach((v/*, k*/) => {
       let color = v.match(/[#(]/);
-      let a = app.ins('a', color ? '' : v, {href:'#', title: v, className: color ? 'pad hover bord' : 'pad hover'}, this.drw);
+      let a = this.app.ins('a', color ? '' : v, {href:'#', title: v, className: color ? 'pad hover bord' : 'pad hover'}, this.drw);
       if(color) a.style.backgroundColor = v;
       else if(typeof func === 'string') a.style[func] = v;
       c.push(a);
     });
-    app.b(c, 'click', (func instanceof Function
+    this.app.b(c, 'click', (func instanceof Function
       ? func
       : e => {
           e.preventDefault();
@@ -92,4 +92,4 @@ module.exports = new(function () {
     ));
   }
 
-})();
+}

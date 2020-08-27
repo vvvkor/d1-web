@@ -34,7 +34,7 @@ export default class {
       opt = this.attr(document.body, 'data-d1');
       if(opt) opt = JSON.parse(opt);
     }
-    this.setOpt(this, opt);
+    this.setOpt(opt);
     this.dbg(['opt', this.opt]);
 
     this.initPlugins(opt); // plugins
@@ -61,9 +61,8 @@ export default class {
 
   //plugins
 
-  setOpt (obj, opt){
-    let i;
-    if(opt) for(i in opt) if(i != 'plug') obj.opt[i] = opt[i];
+  setOpt (opt){
+    if(opt) Object.keys(opt).filter(k => k != 'plug').forEach(k => this.opt[k] = opt[k])
   }
 
   plug (c, n) {
@@ -74,12 +73,8 @@ export default class {
   initPlugins (opt){
     if(this.opt.disable) this.opt.disable.forEach(p => delete this.plugins[p]);
     this.dbg(['plugins', this.plugins]);
-    Object.keys(this.plugins).forEach(k => {
-      this.plugins[k].app = this
-      if (opt && opt.plug && opt.plug[k]) this.setOpt(this.plugins[k], opt.plug[k])
-    });
     this.fire('beforeinit');
-    Object.keys(this.plugins).forEach(k => this.plugins[k].init());
+    Object.keys(this.plugins).forEach(k => this.plugins[k].install(this, opt?.plug?.[k]));
     this.fire('afterinit');
   }
   
@@ -87,6 +82,18 @@ export default class {
   pf (p, f, ...a) {
     if (this.plugins[p] && this.plugins[p][f]) this.plugins[p][f](...a)
     else this.dbg(['no plugin function', p + '.' + f + '()'])
+  }
+  
+  toggle (...a) {
+    this.pf('toggle', 'toggle', ...a)
+  }
+
+  fetch (...a) {
+    this.pf('fetch', 'fetch', ...a)
+  }
+
+  dialog (...a) {
+    this.pf('dialog', 'openDialog', ...a)
   }
 
   //events

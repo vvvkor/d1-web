@@ -107,6 +107,17 @@ var _default = /*#__PURE__*/function () {
   }
 
   _createClass(_default, [{
+    key: "install",
+    value: function install(app, opt) {
+      var _this = this;
+
+      this.app = app;
+      if (opt) Object.keys(opt).forEach(function (k) {
+        return _this.opt[k] = opt[k];
+      });
+      this.init();
+    }
+  }, {
     key: "init",
     value: function init() {
       console.log('plugin.init()');
@@ -170,7 +181,7 @@ var _default = /*#__PURE__*/function () {
         if (opt) opt = JSON.parse(opt);
       }
 
-      this.setOpt(this, opt);
+      this.setOpt(opt);
       this.dbg(['opt', this.opt]);
       this.initPlugins(opt); // plugins
       // bind events
@@ -204,11 +215,14 @@ var _default = /*#__PURE__*/function () {
 
   }, {
     key: "setOpt",
-    value: function setOpt(obj, opt) {
-      var i;
-      if (opt) for (i in opt) {
-        if (i != 'plug') obj.opt[i] = opt[i];
-      }
+    value: function setOpt(opt) {
+      var _this2 = this;
+
+      if (opt) Object.keys(opt).filter(function (k) {
+        return k != 'plug';
+      }).forEach(function (k) {
+        return _this2.opt[k] = opt[k];
+      });
     }
   }, {
     key: "plug",
@@ -219,19 +233,17 @@ var _default = /*#__PURE__*/function () {
   }, {
     key: "initPlugins",
     value: function initPlugins(opt) {
-      var _this2 = this;
+      var _this3 = this;
 
       if (this.opt.disable) this.opt.disable.forEach(function (p) {
-        return delete _this2.plugins[p];
+        return delete _this3.plugins[p];
       });
       this.dbg(['plugins', this.plugins]);
-      Object.keys(this.plugins).forEach(function (k) {
-        _this2.plugins[k].app = _this2;
-        if (opt && opt.plug && opt.plug[k]) _this2.setOpt(_this2.plugins[k], opt.plug[k]);
-      });
       this.fire('beforeinit');
       Object.keys(this.plugins).forEach(function (k) {
-        return _this2.plugins[k].init();
+        var _opt$plug;
+
+        return _this3.plugins[k].install(_this3, opt === null || opt === void 0 ? void 0 : (_opt$plug = opt.plug) === null || _opt$plug === void 0 ? void 0 : _opt$plug[k]);
       });
       this.fire('afterinit');
     } // call method of plugin
@@ -246,16 +258,43 @@ var _default = /*#__PURE__*/function () {
       }
 
       if (this.plugins[p] && this.plugins[p][f]) (_this$plugins$p = this.plugins[p])[f].apply(_this$plugins$p, a);else this.dbg(['no plugin function', p + '.' + f + '()']);
+    }
+  }, {
+    key: "toggle",
+    value: function toggle() {
+      for (var _len2 = arguments.length, a = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        a[_key2] = arguments[_key2];
+      }
+
+      this.pf.apply(this, ['toggle', 'toggle'].concat(a));
+    }
+  }, {
+    key: "fetch",
+    value: function fetch() {
+      for (var _len3 = arguments.length, a = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+        a[_key3] = arguments[_key3];
+      }
+
+      this.pf.apply(this, ['fetch', 'fetch'].concat(a));
+    }
+  }, {
+    key: "dialog",
+    value: function dialog() {
+      for (var _len4 = arguments.length, a = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+        a[_key4] = arguments[_key4];
+      }
+
+      this.pf.apply(this, ['dialog', 'openDialog'].concat(a));
     } //events
 
   }, {
     key: "fire",
     value: function fire(et, e) {
-      var _this3 = this;
+      var _this4 = this;
 
       this.dbg(['fire ' + et, e]);
       if (this.handlers[et]) this.handlers[et].forEach(function (h) {
-        return h.call(_this3, e);
+        return h.call(_this4, e);
       });
     }
   }, {
@@ -269,10 +308,10 @@ var _default = /*#__PURE__*/function () {
   }, {
     key: "h",
     value: function h(et, s, f, before) {
-      var _this4 = this;
+      var _this5 = this;
 
       if (et instanceof Array) et.forEach(function (ett) {
-        return _this4.h(ett, s, f, before);
+        return _this5.h(ett, s, f, before);
       });else {
         if (!this.handlers[et]) this.handlers[et] = [];
         this.handlers[et][before ? 'unshift' : 'push'](function (e) {
@@ -376,10 +415,10 @@ var _default = /*#__PURE__*/function () {
   }, {
     key: "e",
     value: function e(q, f) {
-      var _this5 = this;
+      var _this6 = this;
 
       if (f) this.nn(q).forEach(function (n) {
-        return f.call(_this5, n);
+        return f.call(_this6, n);
       });
     } // get attribute of node
 
@@ -476,11 +515,11 @@ var _default = /*#__PURE__*/function () {
       var p = null;
       return function ff() {
         var _arguments = arguments,
-            _this6 = this;
+            _this7 = this;
 
         if (skip && p) clearTimeout(p);
         p = setTimeout(function () {
-          f.apply(_this6, _arguments);
+          f.apply(_this7, _arguments);
           p = null;
         }, ms);
       };
@@ -936,7 +975,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
       this.app.dbg(['unpop', keep]); //this.app.e(this.opt.qUnpop, n => (keep && keep.filter(m => m && m.tagName && n.contains(m)).length) ? null : this.toggle(n, false, 1));
 
-      var nn = this.app.qq(this.opt.qUnpop).filter(function (n) {
+      var nn = this.app.qq(this.opt.qUnpopOn).filter(function (n) {
         return !(keep && keep.filter(function (m) {
           return m && m.tagName && n.contains(m);
         }).length);
@@ -1179,7 +1218,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
         });
       }
 
-      this.app.pf('toggle', 'toggle', this.dlg, true);
+      this.app.toggle(this.dlg, true);
     }
   }, {
     key: "closeDialog",

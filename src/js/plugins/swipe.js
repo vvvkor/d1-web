@@ -1,24 +1,25 @@
 /*! swipe - detect touch swipe */
 
-let app = require('./app.js');
+import Plugin from './plugin.js';
 
-module.exports = new(function () {
+export default class extends Plugin {
 
-  "use strict";
+  constructor () {
+    super('swipe')
+    this.moved = null;
+    this.c = {};
+    this.opt = {
+      qSwipe: '.swipe',
+      qDrag: '.drag',
+      qKeepDrag: '.drawer',//', .gal a[id]',
+      cDragging: 'dragging',
+      maxClick: 20,
+      minSwipe: 50
+    };
+  }
 
-  this.name = 'swipe';
-  this.moved = null;
-  this.c = {};
-  this.opt = {
-    qSwipe: '.swipe',
-    qDrag: '.drag',
-    qKeepDrag: '.drawer',//', .gal a[id]',
-    cDragging: 'dragging',
-    maxClick: 20,
-    minSwipe: 50
-  };
-
-  this.init = function(){
+  init (){
+    this.drag_ = this.app.throttle(e => this.drag(e), 30);
     //console.log('swipe init');
     /*
     events order:
@@ -31,12 +32,12 @@ module.exports = new(function () {
         mouseup & click
       }
     */
-    app.b([document], ['mousedown', 'touchstart'], e => this.onStart(e));
-    app.b([document], ['mousemove', 'touchmove'], e => this.onMove(e));
-    app.b([document], ['click', 'mouseleave', 'touchend', 'touchcancel'/*, 'mouseleave'/*, 'blur', 'keydown', 'contextmenu'*/], e => this.onEnd(e), true);
+    this.app.b([document], ['mousedown', 'touchstart'], e => this.onStart(e));
+    this.app.b([document], ['mousemove', 'touchmove'], e => this.onMove(e));
+    this.app.b([document], ['click', 'mouseleave', 'touchend', 'touchcancel'/*, 'mouseleave'/*, 'blur', 'keydown', 'contextmenu'*/], e => this.onEnd(e), true);
   }
 
-  this.onStart = function(e){
+  onStart (e){
     //console.log('swipe start', e.type, e.button, e.which);
     if(e.button > 0){
       this.moved = null;
@@ -50,14 +51,14 @@ module.exports = new(function () {
     }
   }
 
-  this.onMove = function(e){
+  onMove (e){
     if(this.moved){
       e.preventDefault();
       this.drag_(e);
     }
   }
   
-  this.drag = function(e){
+  drag (e){
     //console.log('swipe drag');
     let t = e.touches ? e.touches[0] : e;
     this.c.eX = t.screenX; 
@@ -70,9 +71,7 @@ module.exports = new(function () {
     }
   }
   
-  this.drag_ = app.throttle(e => this.drag(e), 30);
-
-  this.onEnd = function(e){
+  onEnd (e){
     //console.log('swipe end', this.moved, e.which, e.button, e);
     if(this.moved){
       let undo = (e.type == 'mouseleave' || e.type == 'touchcancel');
@@ -82,7 +81,7 @@ module.exports = new(function () {
         //after touch event: handle mouse events only on A nodes without swipe
         //if(e.type.indexOf('touch')!=-1 && (dir || trg.tagName!='A')) e.preventDefault();
         if(xy[2]){
-          app.fire('swipe', {n: this.moved, x: xy[0], y: xy[1], dir: xy[2]});
+          this.app.fire('swipe', {n: this.moved, x: xy[0], y: xy[1], dir: xy[2]});
           e.preventDefault(); //if(e.type.indexOf('touch')!=-1)
         }
       }
@@ -91,8 +90,8 @@ module.exports = new(function () {
     }
   }
   
-  this.shift = function(){
-    let dirs = app.attr(this.moved, 'data-swipe', '1234');
+  shift (){
+    let dirs = this.app.attr(this.moved, 'data-swipe', '1234'); // 1=up
     let dx = this.c.eX - this.c.sX;
     let dy = this.c.eY - this.c.sY;
     let adx = Math.abs(dx);
@@ -105,9 +104,9 @@ module.exports = new(function () {
     return r;
   }
   
-  this.undrag = function(n){
+  undrag (n){
     if(!n) n = this.moved;
     n.style.transform = '';
   }
 
-})();
+}
