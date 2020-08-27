@@ -2100,12 +2100,12 @@ function dt_defineProperties(target, props) { for (var i = 0; i < props.length; 
 function dt_createClass(Constructor, protoProps, staticProps) { if (protoProps) dt_defineProperties(Constructor.prototype, protoProps); if (staticProps) dt_defineProperties(Constructor, staticProps); return Constructor; }
 
 /*! date - parse and format date */
-var dt_default = /*#__PURE__*/function () {
-  function _default() {
-    dt_classCallCheck(this, _default);
+var Dt = /*#__PURE__*/function () {
+  function Dt() {
+    dt_classCallCheck(this, Dt);
   }
 
-  dt_createClass(_default, null, [{
+  dt_createClass(Dt, null, [{
     key: "parse",
     value: function parse(s) {
       var d = '';
@@ -2132,12 +2132,12 @@ var dt_default = /*#__PURE__*/function () {
     key: "fmt",
     value: function fmt(x, t, f) {
       var y = x.getFullYear();
-      var m = this.n(x.getMonth() + 1);
-      var d = this.n(x.getDate());
-      var h = this.n(x.getHours());
-      var i = this.n(x.getMinutes());
-      var s = this.n(x.getSeconds());
-      return (f == 'm' ? m + '/' + d + ' ' + y : f == 'd' ? d + '.' + m + '.' + y : y + '-' + m + '-' + d) + (t && h + i + s > 0 ? ' ' + this.n(x.getHours()) + ':' + this.n(x.getMinutes()) + ':' + this.n(x.getSeconds()) : '');
+      var m = Dt.n(x.getMonth() + 1);
+      var d = Dt.n(x.getDate());
+      var h = Dt.n(x.getHours());
+      var i = Dt.n(x.getMinutes());
+      var s = Dt.n(x.getSeconds());
+      return (f == 'm' ? m + '/' + d + ' ' + y : f == 'd' ? d + '.' + m + '.' + y : y + '-' + m + '-' + d) + (t && h + i + s > 0 ? ' ' + Dt.n(x.getHours()) + ':' + Dt.n(x.getMinutes()) + ':' + Dt.n(x.getSeconds()) : '');
     }
   }, {
     key: "n",
@@ -2146,7 +2146,7 @@ var dt_default = /*#__PURE__*/function () {
     }
   }]);
 
-  return _default;
+  return Dt;
 }();
 
 
@@ -2643,7 +2643,7 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "convert",
     value: function convert(v) {
-      var r = dt_default.parse(v);
+      var r = Dt.parse(v);
       r = r ? r.getTime() : NaN;
       if (!isNaN(r)) return [r, 'd'];
       r = this.sz(v);
@@ -2663,7 +2663,7 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
     key: "strVal",
     value: function strVal(x, mode, dec) {
       if (mode == 's') return x;else if (mode == 'n') return x.toFixed(dec) * 1; //this.dec(x, dec);
-      else if (mode == 'b') return this.fmtSz(x, dec);else if (mode == 'i') return this.fmtInterval(x, dec);else if (mode == 'd') return dt_default.fmt(new Date(x), dec, this.opt.dateFormat);else return x;
+      else if (mode == 'b') return this.fmtSz(x, dec);else if (mode == 'i') return this.fmtInterval(x, dec);else if (mode == 'd') return Dt.fmt(new Date(x), dec, this.opt.dateFormat);else return x;
     }
   }, {
     key: "fmtSz",
@@ -3102,14 +3102,14 @@ var calendar_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "parse",
     value: function parse(d) {
-      return dt_default.parse(d) || new Date();
+      return Dt.parse(d) || new Date();
     }
   }, {
     key: "fmt",
     value: function fmt(x, i, t, f) {
       if (!x) x = new Date();
       if (i) x = new Date(x.getFullYear(), x.getMonth(), i);
-      return dt_default.fmt(x, t, f);
+      return Dt.fmt(x, t, f);
     }
   }, {
     key: "btn",

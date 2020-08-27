@@ -1,6 +1,6 @@
 /*! date - parse and format date */
 
-export default class {
+export default class Dt {
 
   static parse (s) {
     let d = '';
@@ -23,13 +23,13 @@ export default class {
   */
   static fmt (x, t, f){
     let y = x.getFullYear();
-    let m = this.n(x.getMonth()+1);
-    let d = this.n(x.getDate());
-    let h = this.n(x.getHours());
-    let i = this.n(x.getMinutes());
-    let s = this.n(x.getSeconds());
+    let m = Dt.n(x.getMonth()+1);
+    let d = Dt.n(x.getDate());
+    let h = Dt.n(x.getHours());
+    let i = Dt.n(x.getMinutes());
+    let s = Dt.n(x.getSeconds());
     return (f=='m' ? m + '/' + d + ' ' + y : (f=='d' ? d + '.' + m + '.' + y : y + '-' + m + '-' + d))
-      + ((t && h+i+s>0) ? ' '+this.n(x.getHours())+':'+this.n(x.getMinutes())+':'+this.n(x.getSeconds()) : '');
+      + ((t && h+i+s>0) ? ' '+Dt.n(x.getHours())+':'+Dt.n(x.getMinutes())+':'+Dt.n(x.getSeconds()) : '');
   }
 
   static n (v, l){
