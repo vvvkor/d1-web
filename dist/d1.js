@@ -1163,7 +1163,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
       setup = setup || {};
       var d = this.dlg;
       var app = this.app;
-      d.className = this.opt.ccDlg + (setup["class"] ? ' ' + setup["class"] : '');
+      d.className = this.opt.ccDlg + (setup.class ? ' ' + setup.class : '');
       app.clr(d);
       if (h.nodeType) h = app.attr(h, this.opt.aHead, '');
       var hh = app.ins('div', '', {
@@ -1569,7 +1569,7 @@ module.exports = {
   lock: [10, 'M1.5 4h7v5h-7zm1 0c0-4 5-4 5 0h-1c0-3-3-3-3 0zm2 1v2h1v-2z'],
   edit: [10, 'M7 1q1.6 .4 2 2l-5 5-3 1 1-3zM2.3 6.3l-.5 1.5.4.4 1.5-.5z'],
   add: [7, 'M3 1h1v2h2v1h-2v2h-1v-2h-2v-1h2z'],
-  "delete": [20, 'M5 3l5 5 5-5 2 2-5 5 5 5-2 2-5-5-5 5-2-2 5-5-5-5z'],
+  delete: [20, 'M5 3l5 5 5-5 2 2-5 5 5 5-2 2-5-5-5 5-2-2 5-5-5-5z'],
   ok: [100, 'M10 48l11-9 18 22 40-50 11 9-51 65z'],
   up: [10, 'M1 6l4-4 4 4-1 1-3-3-3 3z'],
   down: [10, 'M1 4l4 4 4-4-1-1-3 3-3-3z'],

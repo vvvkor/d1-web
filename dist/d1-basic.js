@@ -1163,7 +1163,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
       setup = setup || {};
       var d = this.dlg;
       var app = this.app;
-      d.className = this.opt.ccDlg + (setup["class"] ? ' ' + setup["class"] : '');
+      d.className = this.opt.ccDlg + (setup.class ? ' ' + setup.class : '');
       app.clr(d);
       if (h.nodeType) h = app.attr(h, this.opt.aHead, '');
       var hh = app.ins('div', '', {
