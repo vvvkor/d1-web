@@ -3101,11 +3101,9 @@ module.exports = new function () {
     app.e('[data-chain]', function (n) {
       return _this.updateChain(n);
     });
-    app.h('input', '.lookup-input', function (e) {
-      return app.delay(function (i) {
-        return _this.find(i);
-      }, _this.opt.wait, true)(e);
-    });
+    var f = app.delay(this.find.bind(this), this.opt.wait, true);
+    app.h('input', '.lookup-input', f); //e => f(e)
+
     app.h('keydown', '.lookup-input', function (e) {
       return _this.key(e);
     });
@@ -3413,7 +3411,7 @@ module.exports = new function () {
       });
       var ons = app.throttle(function () {
         return _this.onScroll();
-      }, 500); //let ons = app.throttle((h) => this.onScroll(h), 500);
+      }, 500); //const ons = app.throttle((h) => this.onScroll(h), 500);
       //ons(); // forces reflow
 
       setTimeout(function () {
@@ -3767,8 +3765,10 @@ module.exports = new function () {
       //1.
       //if(!n.vInp.vListen) n.vInp.addEventListener('input', this.doFilter.bind(this, n), false);
       //2.
-      var f = app.delay(this.doFilter, this.opt.wait, true);
-      if (!n.vInp.vListen) n.vInp.addEventListener('input', f.bind(this, n), false);
+      var f = app.delay(this.doFilter.bind(this), this.opt.wait, true);
+      if (!n.vInp.vListen) app.b([n.vInp], 'input', function (e) {
+        return f(n);
+      });
       n.vInp.vListen = 1; //this.doFilter(n);
     }
 

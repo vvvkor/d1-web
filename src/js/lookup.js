@@ -33,7 +33,8 @@ module.exports = new(function () {
 
     app.e('input[' + this.opt.aLookup + ']', n => this.prepare(n));
     app.e('[data-chain]', n => this.updateChain(n));
-    app.h('input', '.lookup-input', e => app.delay(i => this.find(i), this.opt.wait, true)(e));
+    const f = app.delay(this.find.bind(this), this.opt.wait, true);
+    app.h('input', '.lookup-input', f); //e => f(e)
     app.h('keydown', '.lookup-input', e => this.key(e));
     app.h('click', '.lookup-item', e => this.choose(e));
     app.h('click', '.lookup-goto', e => this.go(e));

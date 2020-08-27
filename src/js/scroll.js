@@ -25,8 +25,8 @@ module.exports = new(function () {
     let t;
     if(app.q(this.opt.qEnable)){
       app.listen('hashchange', e => this.onHash(e));
-      let ons = app.throttle(() => this.onScroll(), 500);
-      //let ons = app.throttle((h) => this.onScroll(h), 500);
+      const ons = app.throttle(() => this.onScroll(), 500);
+      //const ons = app.throttle((h) => this.onScroll(h), 500);
       //ons(); // forces reflow
       setTimeout(() => this.onScroll(), 20);
       app.b([window], 'scroll', e => ons(/*this.hashed*/));
