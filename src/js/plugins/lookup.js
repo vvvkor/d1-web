@@ -81,8 +81,8 @@ export default class extends Plugin {
       let u = encodeURI(decodeURI(this.app.makeUrl(uc, {time: (new Date()).getTime()}))
         .replace(/\{q\}/, n.value));
       this.app.fetch(u, req => {
-        let d = JSON.parse(req.responseText);
-        this.fix(n, n.value, d.data);
+        let d = this.app.parse(req.responseText);
+        if(d) this.fix(n, n.value, d.data);
       });
     }
   }
@@ -120,9 +120,11 @@ export default class extends Plugin {
   }
   
   list (u, n, req){
-    let d = JSON.parse(req.responseText);
-    if(u===this.cap(n).value) this.openList(n, d.data);
-    this.store(n, u, d);
+    let d = this.app.parse(req.responseText);
+    if(d){
+      if(u===this.cap(n).value) this.openList(n, d.data);
+      this.store(n, u, d);
+    }
   }
 
   openList (n, d, e){
@@ -229,9 +231,11 @@ export default class extends Plugin {
   }
   
   onChainData (u, n, req){
-    let d = JSON.parse(req.responseText);
-    this.setOptions(n, d.data);
-    this.store(n, u, d);
+    let d = this.app.parse(req.responseText);
+    if(d){
+      this.setOptions(n, d.data);
+      this.store(n, u, d);
+    }
   }
 
   setOptions (n, a){

@@ -96,8 +96,8 @@ export default class extends Plugin {
   
   toggle (on, n){
     if(n){
-      let m = this.app.attr(n, 'data-modal');
-      if(m!==null) m = parseInt(m, 10);
+      let m
+      if('modal' in n.dataset) m = parseInt(n.dataset.modal || 1, 10);
       else m = this.opt.showModal || (Math.min(window.innerWidth, window.innerHeight) < this.opt.sizeLimit);
       if(on){
         this.win.className = this.app.opt.cToggle + ' ' + this.app.opt.cOff + ' pad ' + (m ? 'dlg' : '');
@@ -154,8 +154,7 @@ export default class extends Plugin {
   }
   
   getLimit (n, a, t){
-    let r = this.app.attr(n, a);
-    return r ? this.fmt(this.parse(r), 0, t, 'y') : (a == 'max' ? '9999' : '0000');
+    return n[a] ? this.fmt(this.parse(n[a]), 0, t, 'y') : (a == 'max' ? '9999' : '0000');
   }
   
   errLimits (n){
@@ -210,7 +209,7 @@ export default class extends Plugin {
   
   build (n, x){
     const app = this.app
-    if (typeof x === 'string') x = this.parse(x || app.attr(n, 'data-def', ''));
+    if (typeof x === 'string') x = this.parse(x || n.dataset.def || '');
     this.win.vCur = x;
     
     if(!this.win.vDays){

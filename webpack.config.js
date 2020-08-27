@@ -39,7 +39,7 @@ module.exports = {
           options: {
             presets: [
               ['@babel/preset-env', {"targets": "defaults"}]
-              //['@babel/preset-env', {"targets": "> 2%, not dead"}]
+              // ['@babel/preset-env', {"targets": "> 2%, not dead"}]
             ]
           }
         }

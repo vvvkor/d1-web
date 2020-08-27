@@ -177,8 +177,8 @@ var _default = /*#__PURE__*/function () {
       this.fire('beforeopt'); //options
 
       if (!opt) {
-        opt = this.attr(document.body, 'data-d1');
-        if (opt) opt = JSON.parse(opt);
+        opt = document.body.dataset.d1;
+        if (opt) opt = this.parse(opt);
       }
 
       this.setOpt(opt);
@@ -257,7 +257,7 @@ var _default = /*#__PURE__*/function () {
         a[_key - 2] = arguments[_key];
       }
 
-      if (this.plugins[p] && this.plugins[p][f]) (_this$plugins$p = this.plugins[p])[f].apply(_this$plugins$p, a);else this.dbg(['no plugin function', p + '.' + f + '()']);
+      if (this.plugins[p] && this.plugins[p][f]) (_this$plugins$p = this.plugins[p])[f].apply(_this$plugins$p, a);else this.dbg(['no plugin function', p + '.' + f + '()'], -1);
     }
   }, {
     key: "toggle",
@@ -342,12 +342,12 @@ var _default = /*#__PURE__*/function () {
   }, {
     key: "isDebug",
     value: function isDebug(l) {
-      return this.opt.debug >= (l || 1) || location.href.indexOf('d1debug') != -1;
+      return this.opt.debug > (l || 0) || location.href.indexOf('d1debug') != -1;
     }
   }, {
     key: "dbg",
     value: function dbg(s, l, e) {
-      if (this.isDebug(l)) console[e ? 'error' : 'log'](s);
+      if (this.isDebug(l)) console[e || l < 0 ? 'error' : 'log'](s);
     } // sequence for IDs of generated nodes
 
   }, {
@@ -431,6 +431,20 @@ var _default = /*#__PURE__*/function () {
     key: "typeOf",
     value: function typeOf(v) {
       return Object.prototype.toString.call(v).slice(8, -1).toLowerCase();
+    }
+  }, {
+    key: "parse",
+    value: function parse(j, def) {
+      var r = '';
+
+      try {
+        r = JSON.parse(j);
+      } catch (e) {
+        this.dbg(['JSON parse failed', j], -1);
+        r = def === true ? j : def === undefined ? null : def;
+      }
+
+      return r;
     } // insert node
     //pos: -1=before, false=prepend, 0=append(default), 1=after
 

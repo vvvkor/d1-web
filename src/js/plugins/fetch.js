@@ -33,7 +33,7 @@ export default class extends Plugin {
   }
 
   receive (n, req, e) {
-    // JSON.parse(req.responseText)
+    // this.app..parse(req.responseText)
     let d = this.app.q(this.app.attr(n, 'data-target', ''));
     if (req.status == '200') {
       if (d) {

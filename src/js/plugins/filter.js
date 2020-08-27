@@ -100,13 +100,8 @@ export default class extends Plugin {
           }
         });
         //parse
-        try{
-          f = JSON.parse(f);
-          this.forAttrs(n, (a, k) => n.setAttribute(a.name, (f[k] || []).join(';')));
-        }
-        catch(e){
-          console.error('Failed JSON parse filter-' + n.id);
-        }
+        f = this.app.parse(f);
+        if(f) this.forAttrs(n, (a, k) => n.setAttribute(a.name, (f[k] || []).join(';')));
       }
     }
   }

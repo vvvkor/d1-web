@@ -177,8 +177,8 @@ var _default = /*#__PURE__*/function () {
       this.fire('beforeopt'); //options
 
       if (!opt) {
-        opt = this.attr(document.body, 'data-d1');
-        if (opt) opt = JSON.parse(opt);
+        opt = document.body.dataset.d1;
+        if (opt) opt = this.parse(opt);
       }
 
       this.setOpt(opt);
@@ -257,7 +257,7 @@ var _default = /*#__PURE__*/function () {
         a[_key - 2] = arguments[_key];
       }
 
-      if (this.plugins[p] && this.plugins[p][f]) (_this$plugins$p = this.plugins[p])[f].apply(_this$plugins$p, a);else this.dbg(['no plugin function', p + '.' + f + '()']);
+      if (this.plugins[p] && this.plugins[p][f]) (_this$plugins$p = this.plugins[p])[f].apply(_this$plugins$p, a);else this.dbg(['no plugin function', p + '.' + f + '()'], -1);
     }
   }, {
     key: "toggle",
@@ -342,12 +342,12 @@ var _default = /*#__PURE__*/function () {
   }, {
     key: "isDebug",
     value: function isDebug(l) {
-      return this.opt.debug >= (l || 1) || location.href.indexOf('d1debug') != -1;
+      return this.opt.debug > (l || 0) || location.href.indexOf('d1debug') != -1;
     }
   }, {
     key: "dbg",
     value: function dbg(s, l, e) {
-      if (this.isDebug(l)) console[e ? 'error' : 'log'](s);
+      if (this.isDebug(l)) console[e || l < 0 ? 'error' : 'log'](s);
     } // sequence for IDs of generated nodes
 
   }, {
@@ -431,6 +431,20 @@ var _default = /*#__PURE__*/function () {
     key: "typeOf",
     value: function typeOf(v) {
       return Object.prototype.toString.call(v).slice(8, -1).toLowerCase();
+    }
+  }, {
+    key: "parse",
+    value: function parse(j, def) {
+      var r = '';
+
+      try {
+        r = JSON.parse(j);
+      } catch (e) {
+        this.dbg(['JSON parse failed', j], -1);
+        r = def === true ? j : def === undefined ? null : def;
+      }
+
+      return r;
     } // insert node
     //pos: -1=before, false=prepend, 0=append(default), 1=after
 
@@ -1725,7 +1739,8 @@ var code_default = /*#__PURE__*/function (_Plugin) {
       }
     };
     _this.opt = {
-      aLang: 'data-lang',
+      dLang: 'lang',
+      //data-lang
       defLang: 'html',
       qCode: '.code'
     };
@@ -1760,7 +1775,7 @@ var code_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "showCode",
     value: function showCode(src) {
-      var lang = this.app.attr(src, this.opt.aLang, this.opt.defLang);
+      var lang = src.dataset[this.opt.dLang] || this.opt.defLang;
       var t = this.spaces(src.innerHTML);
 
       if (!src.vCode) {
@@ -2072,7 +2087,7 @@ var fetch_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "receive",
     value: function receive(n, req, e) {
-      // JSON.parse(req.responseText)
+      // this.app..parse(req.responseText)
       var d = this.app.q(this.app.attr(n, 'data-target', ''));
 
       if (req.status == '200') {
@@ -2872,8 +2887,8 @@ var calendar_default = /*#__PURE__*/function (_Plugin) {
     key: "toggle",
     value: function toggle(on, n) {
       if (n) {
-        var m = this.app.attr(n, 'data-modal');
-        if (m !== null) m = parseInt(m, 10);else m = this.opt.showModal || Math.min(window.innerWidth, window.innerHeight) < this.opt.sizeLimit;
+        var m;
+        if ('modal' in n.dataset) m = parseInt(n.dataset.modal || 1, 10);else m = this.opt.showModal || Math.min(window.innerWidth, window.innerHeight) < this.opt.sizeLimit;
 
         if (on) {
           this.win.className = this.app.opt.cToggle + ' ' + this.app.opt.cOff + ' pad ' + (m ? 'dlg' : '');
@@ -2948,8 +2963,7 @@ var calendar_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "getLimit",
     value: function getLimit(n, a, t) {
-      var r = this.app.attr(n, a);
-      return r ? this.fmt(this.parse(r), 0, t, 'y') : a == 'max' ? '9999' : '0000';
+      return n[a] ? this.fmt(this.parse(n[a]), 0, t, 'y') : a == 'max' ? '9999' : '0000';
     }
   }, {
     key: "errLimits",
@@ -3018,7 +3032,7 @@ var calendar_default = /*#__PURE__*/function (_Plugin) {
     key: "build",
     value: function build(n, x) {
       var app = this.app;
-      if (typeof x === 'string') x = this.parse(x || app.attr(n, 'data-def', ''));
+      if (typeof x === 'string') x = this.parse(x || n.dataset.def || '');
       this.win.vCur = x;
 
       if (!this.win.vDays) {
@@ -3278,9 +3292,9 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
           time: new Date().getTime()
         })).replace(/\{q\}/, n.value));
         this.app.fetch(u, function (req) {
-          var d = JSON.parse(req.responseText);
+          var d = _this3.app.parse(req.responseText);
 
-          _this3.fix(n, n.value, d.data);
+          if (d) _this3.fix(n, n.value, d.data);
         });
       }
     }
@@ -3321,9 +3335,12 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "list",
     value: function list(u, n, req) {
-      var d = JSON.parse(req.responseText);
-      if (u === this.cap(n).value) this.openList(n, d.data);
-      this.store(n, u, d);
+      var d = this.app.parse(req.responseText);
+
+      if (d) {
+        if (u === this.cap(n).value) this.openList(n, d.data);
+        this.store(n, u, d);
+      }
     }
   }, {
     key: "openList",
@@ -3450,9 +3467,12 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "onChainData",
     value: function onChainData(u, n, req) {
-      var d = JSON.parse(req.responseText);
-      this.setOptions(n, d.data);
-      this.store(n, u, d);
+      var d = this.app.parse(req.responseText);
+
+      if (d) {
+        this.setOptions(n, d.data);
+        this.store(n, u, d);
+      }
     }
   }, {
     key: "setOptions",
@@ -4443,7 +4463,7 @@ var keepform_default = /*#__PURE__*/function (_Plugin) {
       var d = localStorage.getItem(id);
 
       if (d) {
-        d = JSON.parse(d);
+        d = this.app.parse(d);
         if (d) Object.keys(d).forEach(function (k) {
           var i = f.elements[k];
           if (i) _this4.restoreInput(i, d[k], mode);
@@ -4808,14 +4828,10 @@ var filter_default = /*#__PURE__*/function (_Plugin) {
             }
           }); //parse
 
-          try {
-            f = JSON.parse(f);
-            this.forAttrs(n, function (a, k) {
-              return n.setAttribute(a.name, (f[k] || []).join(';'));
-            });
-          } catch (e) {
-            console.error('Failed JSON parse filter-' + n.id);
-          }
+          f = this.app.parse(f);
+          if (f) this.forAttrs(n, function (a, k) {
+            return n.setAttribute(a.name, (f[k] || []).join(';'));
+          });
         }
       }
     }

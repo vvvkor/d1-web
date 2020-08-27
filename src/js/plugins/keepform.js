@@ -56,7 +56,7 @@ export default class extends Plugin {
     let id = this.formId(f);
     let d = localStorage.getItem(id);
     if(d){
-      d = JSON.parse(d);
+      d = this.app.parse(d);
       if(d) Object.keys(d).forEach(k => {
         let i = f.elements[k];
         if(i) this.restoreInput(i, d[k], mode);

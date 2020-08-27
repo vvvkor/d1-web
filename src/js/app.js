@@ -26,13 +26,13 @@ export default class {
     };
   }
 
-  init (opt){
+  init (opt) {
     document.body.classList.add(this.opt.cJs); // prepare body: anti-hover, anti-target
     this.fire('beforeopt');
     //options
     if(!opt){
-      opt = this.attr(document.body, 'data-d1');
-      if(opt) opt = JSON.parse(opt);
+      opt = document.body.dataset.d1
+      if(opt) opt = this.parse(opt);
     }
     this.setOpt(opt);
     this.dbg(['opt', this.opt]);
@@ -81,7 +81,7 @@ export default class {
   // call method of plugin
   pf (p, f, ...a) {
     if (this.plugins[p] && this.plugins[p][f]) this.plugins[p][f](...a)
-    else this.dbg(['no plugin function', p + '.' + f + '()'])
+    else this.dbg(['no plugin function', p + '.' + f + '()'], -1)
   }
   
   toggle (...a) {
@@ -135,11 +135,11 @@ export default class {
   // debug
   
   isDebug (l){
-    return (this.opt.debug >= (l || 1) || location.href.indexOf('d1debug') != -1);
+    return (this.opt.debug > (l || 0) || location.href.indexOf('d1debug') != -1);
   }
   
   dbg (s, l, e){
-    if(this.isDebug(l)) console[e ? 'error' : 'log'](s);
+    if(this.isDebug(l)) console[e || l<0 ? 'error' : 'log'](s);
   }
 
   // sequence for IDs of generated nodes
@@ -205,6 +205,18 @@ export default class {
 
   typeOf (v){
     return Object.prototype.toString.call(v).slice(8, -1).toLowerCase();
+  }
+  
+  parse (j, def) {
+    let r = ''
+    try {
+      r = JSON.parse(j);
+    }
+    catch (e) {
+      this.dbg(['JSON parse failed', j], -1)
+      r = def === true ? j : (def === undefined ? null : def)
+    }
+    return r
   }
   
   // insert node
