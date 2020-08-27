@@ -2334,8 +2334,7 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
         var f = this.app.delay(this.doFilter.bind(this), this.opt.wait, true);
         if (!n.vInp.vListen) this.app.b([n.vInp], 'input', function (e) {
           return f(n);
-        }); //if(!n.vInp.vListen) n.vInp.addEventListener('input', f(n), false);
-
+        });
         n.vInp.vListen = 1; //this.doFilter(n);
       }
 
@@ -3214,9 +3213,8 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
         return _this2.updateChain(n);
       });
       var f = app.delay(this.find.bind(this), this.opt.wait, true);
-      app.h('input', '.lookup-input', function (e) {
-        return f(e);
-      });
+      app.h('input', '.lookup-input', f); // e => f(e)
+
       app.h('keydown', '.lookup-input', function (e) {
         return _this2.key(e);
       });
