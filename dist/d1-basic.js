@@ -153,7 +153,6 @@ var _default = /*#__PURE__*/function () {
     this.handlers = {};
     this.opt = {
       debug: 0,
-      aCaption: 'data-caption',
       cAct: 'act',
       cHide: 'hide',
       cToggle: 'toggle',
@@ -1139,9 +1138,11 @@ var _default = /*#__PURE__*/function (_Plugin) {
       ccDlg: 'dlg rad',
       customDialog: true,
       aConfirm: '_confirm',
-      aHead: 'data-head',
-      aPic: 'data-pic',
-      aPrompt: 'data-prompt',
+      dHead: 'head',
+      // data-
+      dPic: 'pic',
+      dPrompt: 'prompt',
+      dCaption: 'caption',
       cBtn: 'btn pad',
       qAlert: 'a.alert',
       qDialog: 'a.dialog, input.dialog'
@@ -1179,7 +1180,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
       var app = this.app;
       d.className = this.opt.ccDlg + (setup.class ? ' ' + setup.class : '');
       app.clr(d);
-      if (h.nodeType) h = app.attr(h, this.opt.aHead, '');
+      if (h.nodeType) h = h.dataset[this.opt.dHead] || '';
       var hh = app.ins('div', '', {
         className: 'row bg'
       }, d);
@@ -1255,29 +1256,28 @@ var _default = /*#__PURE__*/function (_Plugin) {
       }
 
       var app = this.app;
-      var h = app.attr(n, this.opt.aHead, '').replace(/%([\w\-]+)%/g, function (m, a) {
+      var h = (n.dataset[this.opt.dHead] || '').replace(/%([\w\-]+)%/g, function (m, a) {
         return n.getAttribute(a);
       });
-      var icon = app.attr(n, this.opt.aPic, '');
-      var p = app.attr(n, this.opt.aPrompt, '');
-      var t = app.attr(n, app.opt.aCaption, n.title || p || '!').replace(/%([\w\-]+)%/g, function (m, a) {
+      var icon = n.dataset[this.opt.dPic] || '';
+      var p = n.dataset[this.opt.dPrompt] || '';
+      var t = (n.dataset[this.opt.dCaption] || n.title || p || '!').replace(/%([\w\-]+)%/g, function (m, a) {
         return n.getAttribute(a);
       });
-      var rev = app.attr(n, 'data-reverse');
-      var src = app.attr(n, 'data-src');
-      var go = app.attr(n, 'data-go');
+      var rev = ('reverse' in n.dataset);
+      var src = n.dataset.src;
       src = src ? app.q(src) : null;
       if (!src && n.form) src = n.form.elements[p];
       var v = null;
       var al = n.matches(this.opt.qAlert);
       var def = p ? src ? src.value : app.get(n, p) : null;
-      if (def && go !== null) this.onAnswer(n, def, p); //go with default
+      if (def && 'go' in n.dataset) this.onAnswer(n, def, p); //go with default
       else if (this.opt.customDialog) {
           this.openDialog(h, t, al ? null : function (w) {
             return _this4.onAnswer(n, w, p);
           }, {
-            ok: app.attr(n, 'data-ok', ''),
-            cancel: app.attr(n, 'data-cancel', ''),
+            ok: n.dataset.ok,
+            cancel: n.dataset.cancel,
             icon: icon,
             //class: '',
             btn: t.substr(0, 1) == ' ' || n && n.className.match(/-[we]\b/) ? 'bg-e' : 'bg-y',
@@ -1324,7 +1324,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
         } //goto link
         else if (n && n.href) {
-            var ha = app.attr(n, 'href', '').substr(0, 1) == '#';
+            var ha = (n.getAttribute('href') || '').substr(0, 1) === '#';
             var bl = n.target == '_blank';
             if (ha || bl) this.closeDialog();
             var u;
@@ -1392,6 +1392,8 @@ var _default = /*#__PURE__*/function (_Plugin) {
       idPrefix: 'pic-',
       num: true,
       cGal: 'gal',
+      dCaption: 'caption',
+      // data-caption
       qGal: '.gal>a[id]',
       // dup of toggle.opt.qGal
       qGallery: '.gallery',
@@ -1465,7 +1467,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
       if (n) {
         this.loadImg(n);
-        this.loadImg(this.app.q(n.hash));
+        this.loadImg(this.app.q(n.hash)); // preview next
       }
     }
   }, {
@@ -1495,14 +1497,14 @@ var _default = /*#__PURE__*/function (_Plugin) {
             className: 'gallery-pic swipe drag',
             id: this.opt.idPrefix + s,
             href: '#' + this.opt.idPrefix + (i == z - 1 ? first : s + 1)
-          }, g); //p.style.setProperty('--img', 'url("' + app.attr(a[i], 'href', '') + '")');
-          //p.style.backgroundImage = 'url("' + app.attr(a[i], 'href', '') + '")';//preload all
+          }, g); //p.style.setProperty('--img', 'url("' + (a[i].getAttribute('href') || '') + '")');
+          //p.style.backgroundImage = 'url("' + (a[i].getAttribute('href') || '') + '")';//preload all
 
-          p.vLink = app.attr(a[i], 'href', ''); //real link
+          p.vLink = a[i].getAttribute('href') || ''; //real link
 
-          p.vImg = app.attr(a[i], 'href', ''); //preload prev & next
+          p.vImg = p.vLink; //keep image url but do not load yet
 
-          p.setAttribute(app.opt.aCaption, (this.opt.num ? i + 1 + '/' + z + (a[i].title ? ' - ' : '') : '') + (a[i].title || ''));
+          p.dataset[this.opt.dCaption] = (this.opt.num ? i + 1 + '/' + z + (a[i].title ? ' - ' : '') : '') + (a[i].title || '');
           a[i].href = '#' + p.id;
           a[i].vDone = 1;
         }

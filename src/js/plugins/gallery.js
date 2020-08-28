@@ -13,6 +13,7 @@ export default class extends Plugin {
       idPrefix: 'pic-',
       num: true,
       cGal: 'gal',
+      dCaption: 'caption', // data-caption
       qGal: '.gal>a[id]', // dup of toggle.opt.qGal
       qGallery: '.gallery',
       qLinks: 'a.pic'
@@ -62,7 +63,7 @@ export default class extends Plugin {
     let n = this.app.q(location.hash);
     if(n) {
       this.loadImg(n);
-      this.loadImg(this.app.q(n.hash));
+      this.loadImg(this.app.q(n.hash)); // preview next
     }
   }
   
@@ -87,11 +88,11 @@ export default class extends Plugin {
           id: this.opt.idPrefix + s,
           href: '#' + this.opt.idPrefix + (i==z-1 ? first : s+1)
           }, g);
-      //p.style.setProperty('--img', 'url("' + app.attr(a[i], 'href', '') + '")');
-      //p.style.backgroundImage = 'url("' + app.attr(a[i], 'href', '') + '")';//preload all
-      p.vLink = app.attr(a[i], 'href', '');//real link
-      p.vImg = app.attr(a[i], 'href', '');//preload prev & next
-      p.setAttribute(app.opt.aCaption, (this.opt.num ? (i+1)+'/'+z+(a[i].title ? ' - ' : '') : '') + (a[i].title || ''));
+      //p.style.setProperty('--img', 'url("' + (a[i].getAttribute('href') || '') + '")');
+      //p.style.backgroundImage = 'url("' + (a[i].getAttribute('href') || '') + '")';//preload all
+      p.vLink = a[i].getAttribute('href') || '';//real link
+      p.vImg = p.vLink;//keep image url but do not load yet
+      p.dataset[this.opt.dCaption] = (this.opt.num ? (i+1)+'/'+z+(a[i].title ? ' - ' : '') : '') + (a[i].title || '');
       a[i].href = '#' + p.id;
       a[i].vDone = 1;
     }

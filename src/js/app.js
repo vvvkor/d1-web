@@ -12,7 +12,6 @@ export default class {
     
     this.opt = {
       debug: 0,
-      aCaption: 'data-caption',
       cAct: 'act',
       cHide: 'hide',
       cToggle: 'toggle',

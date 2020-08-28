@@ -17,9 +17,10 @@ export default class extends Plugin {
       ccDlg: 'dlg rad',
       customDialog: true,
       aConfirm: '_confirm',
-      aHead: 'data-head',
-      aPic: 'data-pic',
-      aPrompt: 'data-prompt',
+      dHead: 'head', // data-
+      dPic: 'pic',
+      dPrompt: 'prompt',
+      dCaption: 'caption',
       cBtn: 'btn pad',
       qAlert: 'a.alert',
       qDialog: 'a.dialog, input.dialog'
@@ -44,7 +45,7 @@ export default class extends Plugin {
     const app = this.app
     d.className = this.opt.ccDlg + (setup.class ? ' '+setup.class : '');
     app.clr(d);
-    if (h.nodeType) h = app.attr(h, this.opt.aHead, '')
+    if (h.nodeType) h = h.dataset[this.opt.dHead] || '';
     let hh = app.ins('div', '', {className: 'row bg'}, d);
     let hhh = app.ins('h3', ' ' + (h || ''), {className: 'fit pad'}, hh);
     if(setup.icon){
@@ -84,24 +85,23 @@ export default class extends Plugin {
       return;
     }
     const app = this.app
-    let h = app.attr(n, this.opt.aHead, '').replace(/%([\w\-]+)%/g, (m, a) => n.getAttribute(a));
-    let icon = app.attr(n, this.opt.aPic, '');
-    let p = app.attr(n, this.opt.aPrompt, '');
-    let t = app.attr(n, app.opt.aCaption, n.title || p || '!').replace(/%([\w\-]+)%/g, (m, a) => n.getAttribute(a));
-    let rev = app.attr(n, 'data-reverse');
-    let src = app.attr(n, 'data-src');
-    let go = app.attr(n, 'data-go');
+    let h = (n.dataset[this.opt.dHead] || '').replace(/%([\w\-]+)%/g, (m, a) => n.getAttribute(a));
+    let icon = n.dataset[this.opt.dPic] || '';
+    let p = n.dataset[this.opt.dPrompt] || '';
+    let t = (n.dataset[this.opt.dCaption] || n.title || p || '!').replace(/%([\w\-]+)%/g, (m, a) => n.getAttribute(a));
+    let rev = 'reverse' in n.dataset;
+    let src = n.dataset.src;
     src = src ? app.q(src) : null;
     if(!src && n.form) src = n.form.elements[p];
     let v = null;
     let al = n.matches(this.opt.qAlert);
     let def = p ? (src ? src.value : app.get(n, p)) : null;
     
-    if(def && go!==null) this.onAnswer(n, def, p);//go with default
+    if(def && 'go' in n.dataset) this.onAnswer(n, def, p);//go with default
     else if(this.opt.customDialog){
       this.openDialog(h, t, al ? null : (w => this.onAnswer(n, w, p)), {
-        ok: app.attr(n, 'data-ok', ''),
-        cancel: app.attr(n, 'data-cancel', ''),
+        ok: n.dataset.ok,
+        cancel: n.dataset.cancel,
         icon: icon,
         //class: '',
         btn: (t.substr(0,1)==' ' || (n && n.className.match(/-[we]\b/))) ? 'bg-e' : 'bg-y',
@@ -138,7 +138,7 @@ export default class extends Plugin {
     }
     //goto link
     else if(n && n.href){
-      let ha = (app.attr(n, 'href', '').substr(0, 1)=='#');
+      let ha = (n.getAttribute('href') || '').substr(0, 1) === '#';
       let bl = (n.target=='_blank');
       if(ha || bl) this.closeDialog();
       let u;

@@ -54,7 +54,6 @@ export default class extends Plugin {
 
   apply (n){
     let f = {};
-    let z = this.opt.aFilter.length;
     this.forAttrs(n, (a, k) => a.value.length > 0 ? f[k] = a.value.split(/;/) : null);
     this.app.dbg(['filter', n, f]);
     this.app.e(this.app.qq(this.opt.qItem, n), m => m.classList[this.match(m, f) ? 'remove' : 'add'](this.app.opt.cHide))

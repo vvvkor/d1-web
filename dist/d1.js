@@ -153,7 +153,6 @@ var _default = /*#__PURE__*/function () {
     this.handlers = {};
     this.opt = {
       debug: 0,
-      aCaption: 'data-caption',
       cAct: 'act',
       cHide: 'hide',
       cToggle: 'toggle',
@@ -1139,9 +1138,11 @@ var _default = /*#__PURE__*/function (_Plugin) {
       ccDlg: 'dlg rad',
       customDialog: true,
       aConfirm: '_confirm',
-      aHead: 'data-head',
-      aPic: 'data-pic',
-      aPrompt: 'data-prompt',
+      dHead: 'head',
+      // data-
+      dPic: 'pic',
+      dPrompt: 'prompt',
+      dCaption: 'caption',
       cBtn: 'btn pad',
       qAlert: 'a.alert',
       qDialog: 'a.dialog, input.dialog'
@@ -1179,7 +1180,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
       var app = this.app;
       d.className = this.opt.ccDlg + (setup.class ? ' ' + setup.class : '');
       app.clr(d);
-      if (h.nodeType) h = app.attr(h, this.opt.aHead, '');
+      if (h.nodeType) h = h.dataset[this.opt.dHead] || '';
       var hh = app.ins('div', '', {
         className: 'row bg'
       }, d);
@@ -1255,29 +1256,28 @@ var _default = /*#__PURE__*/function (_Plugin) {
       }
 
       var app = this.app;
-      var h = app.attr(n, this.opt.aHead, '').replace(/%([\w\-]+)%/g, function (m, a) {
+      var h = (n.dataset[this.opt.dHead] || '').replace(/%([\w\-]+)%/g, function (m, a) {
         return n.getAttribute(a);
       });
-      var icon = app.attr(n, this.opt.aPic, '');
-      var p = app.attr(n, this.opt.aPrompt, '');
-      var t = app.attr(n, app.opt.aCaption, n.title || p || '!').replace(/%([\w\-]+)%/g, function (m, a) {
+      var icon = n.dataset[this.opt.dPic] || '';
+      var p = n.dataset[this.opt.dPrompt] || '';
+      var t = (n.dataset[this.opt.dCaption] || n.title || p || '!').replace(/%([\w\-]+)%/g, function (m, a) {
         return n.getAttribute(a);
       });
-      var rev = app.attr(n, 'data-reverse');
-      var src = app.attr(n, 'data-src');
-      var go = app.attr(n, 'data-go');
+      var rev = ('reverse' in n.dataset);
+      var src = n.dataset.src;
       src = src ? app.q(src) : null;
       if (!src && n.form) src = n.form.elements[p];
       var v = null;
       var al = n.matches(this.opt.qAlert);
       var def = p ? src ? src.value : app.get(n, p) : null;
-      if (def && go !== null) this.onAnswer(n, def, p); //go with default
+      if (def && 'go' in n.dataset) this.onAnswer(n, def, p); //go with default
       else if (this.opt.customDialog) {
           this.openDialog(h, t, al ? null : function (w) {
             return _this4.onAnswer(n, w, p);
           }, {
-            ok: app.attr(n, 'data-ok', ''),
-            cancel: app.attr(n, 'data-cancel', ''),
+            ok: n.dataset.ok,
+            cancel: n.dataset.cancel,
             icon: icon,
             //class: '',
             btn: t.substr(0, 1) == ' ' || n && n.className.match(/-[we]\b/) ? 'bg-e' : 'bg-y',
@@ -1324,7 +1324,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
         } //goto link
         else if (n && n.href) {
-            var ha = app.attr(n, 'href', '').substr(0, 1) == '#';
+            var ha = (n.getAttribute('href') || '').substr(0, 1) === '#';
             var bl = n.target == '_blank';
             if (ha || bl) this.closeDialog();
             var u;
@@ -1392,6 +1392,8 @@ var _default = /*#__PURE__*/function (_Plugin) {
       idPrefix: 'pic-',
       num: true,
       cGal: 'gal',
+      dCaption: 'caption',
+      // data-caption
       qGal: '.gal>a[id]',
       // dup of toggle.opt.qGal
       qGallery: '.gallery',
@@ -1465,7 +1467,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
       if (n) {
         this.loadImg(n);
-        this.loadImg(this.app.q(n.hash));
+        this.loadImg(this.app.q(n.hash)); // preview next
       }
     }
   }, {
@@ -1495,14 +1497,14 @@ var _default = /*#__PURE__*/function (_Plugin) {
             className: 'gallery-pic swipe drag',
             id: this.opt.idPrefix + s,
             href: '#' + this.opt.idPrefix + (i == z - 1 ? first : s + 1)
-          }, g); //p.style.setProperty('--img', 'url("' + app.attr(a[i], 'href', '') + '")');
-          //p.style.backgroundImage = 'url("' + app.attr(a[i], 'href', '') + '")';//preload all
+          }, g); //p.style.setProperty('--img', 'url("' + (a[i].getAttribute('href') || '') + '")');
+          //p.style.backgroundImage = 'url("' + (a[i].getAttribute('href') || '') + '")';//preload all
 
-          p.vLink = app.attr(a[i], 'href', ''); //real link
+          p.vLink = a[i].getAttribute('href') || ''; //real link
 
-          p.vImg = app.attr(a[i], 'href', ''); //preload prev & next
+          p.vImg = p.vLink; //keep image url but do not load yet
 
-          p.setAttribute(app.opt.aCaption, (this.opt.num ? i + 1 + '/' + z + (a[i].title ? ' - ' : '') : '') + (a[i].title || ''));
+          p.dataset[this.opt.dCaption] = (this.opt.num ? i + 1 + '/' + z + (a[i].title ? ' - ' : '') : '') + (a[i].title || '');
           a[i].href = '#' + p.id;
           a[i].vDone = 1;
         }
@@ -1905,8 +1907,6 @@ var icons_default = /*#__PURE__*/function (_Plugin) {
     value: function init() {
       var _this2 = this;
 
-      //this.app.e('[' + this.opt.aReplace + ']',  n => this.addIcon(this.app.attr(n, this.opt.aReplace, ''), n, true));
-      //this.app.e('[' + this.opt.aAdd + ']', n => this.addIcon(this.app.attr(n, this.opt.aAdd, ''), n));
       this.app.e(this.opt.qIcon, function (n) {
         return _this2.iconize(n);
       });
@@ -1915,7 +1915,7 @@ var icons_default = /*#__PURE__*/function (_Plugin) {
     key: "iconize",
     value: function iconize(n) {
       var m,
-          i = this.app.attr(n, 'data-ico') || this.app.attr(n, 'data-icon');
+          i = n.dataset.ico || n.dataset.icon;
 
       if (!i) {
         m = n.className.match(/\bicon?-([\w\-_]+)/);
@@ -1974,9 +1974,9 @@ var icons_default = /*#__PURE__*/function (_Plugin) {
           var div = document.createElement('div');
           div.innerHTML = svg;
           n = div.firstChild;
-          if (!this.app.attr(n, 'width')) n.setAttribute('width', this.opt.iconSize);
-          if (!this.app.attr(n, 'height')) n.setAttribute('height', this.opt.iconSize);
-          if (!this.app.attr(n, 'class')) n.setAttribute('class', this.opt.cIcon);
+          if (!n.getAttribute('width')) n.setAttribute('width', this.opt.iconSize);
+          if (!n.getAttribute('height')) n.setAttribute('height', this.opt.iconSize);
+          if (!n.getAttribute('class')) n.setAttribute('class', this.opt.cIcon);
         } else n = '';
 
         this.parsed[ico] = n;
@@ -4049,10 +4049,11 @@ var tools_default = /*#__PURE__*/function (_Plugin) {
 
     _this = _super.call(this, 'tools');
     _this.opt = {
-      aNodes: 'data-nodes',
-      aSet: 'data-set',
-      aUnset: 'data-unset',
-      aAttr: 'data-attr',
+      dNodes: 'nodes',
+      // data-nodes
+      dSet: 'set',
+      dUnset: 'unset',
+      dAttr: 'attr',
       cMem: 'mem',
       qHeading: 'h2[id], h3[id], h4[id], h5[id], h6[id]',
       // h1[id],
@@ -4067,9 +4068,9 @@ var tools_default = /*#__PURE__*/function (_Plugin) {
       var _this2 = this;
 
       var app = this.app;
-      this.opt.qSet = '[' + this.opt.aSet + '], [' + this.opt.aNodes + ']';
-      this.opt.qSetClick = 'a[' + this.opt.aSet + ']';
-      this.opt.qSetChange = 'input[' + this.opt.aNodes + '], select[' + this.opt.aNodes + ']';
+      this.opt.qSet = '[data-' + this.opt.dSet + '], [data-' + this.opt.dNodes + ']';
+      this.opt.qSetClick = 'a[data-' + this.opt.dSet + ']';
+      this.opt.qSetChange = 'input[data-' + this.opt.dNodes + '], select[data-' + this.opt.dNodes + ']';
       app.e('table[class]', function (n) {
         return _this2.alignCells(n);
       });
@@ -4138,18 +4139,18 @@ var tools_default = /*#__PURE__*/function (_Plugin) {
       var sel = n.type == 'radio' || n.tagName == 'SELECT';
       var u = sel ? null
       /*''*/
-      : this.app.attr(n, this.opt.aUnset);
-      var attr = this.app.attr(n, this.opt.aAttr) || 'class';
+      : n.dataset[this.opt.dUnset];
+      var attr = n.dataset[this.opt.dAttr] || 'class';
 
       if (attr !== 'class') {
         var v = on ? c : u || '';
         if (v) m.setAttribute(attr, v);else m.removeAttribute(attr);
-      } else if (u !== null) m.className = on ? c : u || '';else {
+      } else if (u !== null && u !== undefined) m.className = on ? c : u || '';else {
         if (sel) {
           //unset other select/radio values
           var _u = n.type == 'radio' ? this.app.qq('input[type="radio"][name="' + n.name + '"]').map(function (nn) {
             return (
-              /*this.app.attr(nn, this.opt.aSet, '')*/
+              /*(nn.dataset[this.opt.dSet] || '')*/
               nn.value
             );
           }).join(' ') : this.app.qq('option', n).map(function (nn) {
@@ -4181,8 +4182,8 @@ var tools_default = /*#__PURE__*/function (_Plugin) {
       if (n.type == 'radio' && !n.checked) return;
       var box = n.type == 'checkbox' || n.type == 'radio';
       var sel = n.tagName == 'SELECT' || n.type == 'radio';
-      var q = this.app.attr(n, this.opt.aNodes, n.hash);
-      var c = sel ? n.value : this.app.attr(n, this.opt.aSet);
+      var q = n.dataset[this.opt.dNodes] || n.hash;
+      var c = sel ? n.value : n.dataset[this.opt.dSet];
       var on = sel ? true : box ? n.checked : n.classList.contains(this.app.opt.cAct);
 
       if (e && !box && !sel) {
@@ -4192,7 +4193,7 @@ var tools_default = /*#__PURE__*/function (_Plugin) {
       } //this.app.dbg(['setclass?', c, on, q, e, box, sel]);
 
 
-      if (c !== null) {
+      if (c !== null && c !== undefined) {
         this.app.e(q, function (m) {
           return _this4.setClass(n, on, m, c);
         });
@@ -4227,13 +4228,11 @@ var tools_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "onResize",
     value: function onResize() {
-      var _this5 = this;
-
       var m = window.innerWidth <= this.opt.minDesktop;
       m ? this.app.e('[data-class-mobile]', function (n) {
-        return n.className = _this5.app.attr(n, 'data-class-mobile', '');
+        return n.className = n.dataset.classMobile || '';
       }) : this.app.e('[data-class-desktop]', function (n) {
-        return n.className = _this5.app.attr(n, 'data-class-desktop', '');
+        return n.className = n.dataset.classDesktop || '';
       });
     }
   }]);
@@ -4766,7 +4765,6 @@ var filter_default = /*#__PURE__*/function (_Plugin) {
       var _this3 = this;
 
       var f = {};
-      var z = this.opt.aFilter.length;
       this.forAttrs(n, function (a, k) {
         return a.value.length > 0 ? f[k] = a.value.split(/;/) : null;
       });

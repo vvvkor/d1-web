@@ -23,13 +23,11 @@ export default class extends Plugin {
   }
 
   init () {
-    //this.app.e('[' + this.opt.aReplace + ']',  n => this.addIcon(this.app.attr(n, this.opt.aReplace, ''), n, true));
-    //this.app.e('[' + this.opt.aAdd + ']', n => this.addIcon(this.app.attr(n, this.opt.aAdd, ''), n));
     this.app.e(this.opt.qIcon, n => this.iconize(n));
   }
   
   iconize (n) {
-    let m, i = this.app.attr(n, 'data-ico') || this.app.attr(n, 'data-icon');
+    let m, i = n.dataset.ico || n.dataset.icon;
     if(!i){
       m = n.className.match(/\bicon?-([\w\-_]+)/);
       if(m) i = m[1];
@@ -77,9 +75,9 @@ export default class extends Plugin {
         let div = document.createElement('div');
         div.innerHTML = svg;
         n = div.firstChild;
-        if(!this.app.attr(n, 'width'))  n.setAttribute('width', this.opt.iconSize);
-        if(!this.app.attr(n, 'height')) n.setAttribute('height', this.opt.iconSize);
-        if(!this.app.attr(n, 'class'))  n.setAttribute('class', this.opt.cIcon);
+        if(!n.getAttribute('width'))  n.setAttribute('width', this.opt.iconSize);
+        if(!n.getAttribute('height')) n.setAttribute('height', this.opt.iconSize);
+        if(!n.getAttribute('class'))  n.setAttribute('class', this.opt.cIcon);
       }
       else n = '';
       this.parsed[ico] = n;
