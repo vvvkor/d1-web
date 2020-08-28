@@ -2236,12 +2236,17 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
     _this.opt = {
       cSort: 'sort',
       cTotals: 'totals',
-      aFilter: 'data-filter',
-      aRep: 'data-filter-report',
+      dFilter: 'filter',
+      // data-filter
+      dRep: 'filterReport',
+      // data-filter-report
       aTotal: 'data-total',
-      aLimit: 'data-limit',
-      aPages: 'data-pages',
-      aPageNavAfter: 'data-pages-after',
+      dLimit: 'limit',
+      // data-limit
+      dPages: 'pages',
+      // data-pages
+      dPageNavAfter: 'pagesAfter',
+      // data-pages-after
       cFilter: 'filter',
       cFiltered: 'bg-w',
       // filter-on - non-empty filter field
@@ -2270,9 +2275,9 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
     value: function init() {
       var _this2 = this;
 
-      this.lang = this.app.attr(document.documentElement, 'lang') || 'en';
+      this.lang = document.documentElement.getAttribute('lang') || 'en';
       this.skipComma = this.lang == 'en';
-      var q = 'table.' + this.opt.cSort + ', table.' + this.opt.cFilter + ', table.' + this.opt.cTotals + ', table[' + this.opt.aFilter + ']' + ', table[' + this.opt.aLimit + ']';
+      var q = 'table.' + this.opt.cSort + ', table.' + this.opt.cFilter + ', table.' + this.opt.cTotals + ', table[' + this.opt.aFilter + ']' + ', table[data-' + this.opt.dLimit + ']';
       this.app.e(q, this.prepare.bind(this));
       this.app.h('click', '.tablex-pagenav a', function (e) {
         return _this2.page(e);
@@ -2318,12 +2323,14 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
 
 
       n.vCase = n.getAttribute('data-case') !== null;
-      var fq = this.app.attr(n, this.opt.aFilter);
+      var fq = n.dataset[this.opt.dFilter];
       n.vInp = fq ? document.querySelector(fq) : n.querySelector('[name="_q"]');
-      n.vRep = this.app.q(this.app.attr(n, this.opt.aRep, ''));
-      n.vLimit = 1 * this.app.attr(n, this.opt.aLimit, 0);
+      n.vRep = this.app.q(n.dataset[this.opt.dRep] || '');
+      n.vLimit = 1 * (n.dataset[this.opt.dLimit] || 0);
       n.vPage = 1;
-      if (!n.vInp && !n.vRep && n.classList.contains(this.opt.cFilter)) this.addFilter(n);
+      if (!n.vInp
+      /* && !n.vRep */
+      && n.classList.contains(this.opt.cFilter)) this.addFilter(n);
       if (n.vLimit && tb.rows.length > n.vLimit) this.addPageNav(n);
 
       if (n.vInp) {
@@ -2432,13 +2439,13 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
       n.vPageNav.vTable = n;
       this.app.ins('div', n.vPageNav, {
         className: 'mar small'
-      }, t, this.app.attr(n, this.opt.aPageNavAfter) === null ? -1 : 1);
+      }, t, this.opt.dPageNavAfter in n.dataset ? 1 : -1);
     }
   }, {
     key: "setPageNav",
     value: function setPageNav(n) {
       var app = this.app;
-      var m = 1 * app.attr(n, this.opt.aPages, 10);
+      var m = 1 * (n.dataset[this.opt.dPages] || 10);
       var h = Math.floor((m + 1) / 2); // shift to first
       //let h = Math.ceil((m + 1) / 2); // shift to last
 
@@ -2536,7 +2543,7 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
       var i, j, data, s, hide;
 
       if (!n.vCols) {
-        n.vCols = this.app.attr(n, 'data-filter-cols', '');
+        n.vCols = n.dataset.filterCols || '';
         n.vCols = n.vCols ? n.vCols.split(/\D+/) : false;
         if (n.vCols && this.opt.cScan) for (i = 0; i < n.vCols.length; i++) {
           if (n.vHead[n.vCols[i]]) n.vHead[n.vCols[i]].classList.add(this.opt.cScan);
@@ -2589,11 +2596,9 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
 
       var d = n.vData;
       var j = m.closest('th, td').cellIndex;
-      var a = this.app.attr(m, 'data-total', '');
-      var dec = parseInt(this.app.attr(m, 'data-dec', 2), 10);
-      var mode = this.app.attr(m, 'data-mode',
-      /*'n'*/
-      n.vTypes[j]);
+      var a = m.dataset.total || '';
+      var dec = 1 * (m.dataset.dec || 2);
+      var mode = m.dataset.mode || n.vTypes[j];
       var r = 0; //if(a == 'count' || a == 'cnt') r = cnt;
 
       if (a == 'count' || a == 'cnt') r = d.reduce(function (acc, cur) {
@@ -3179,12 +3184,13 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
 
     _this = _super.call(this, 'lookup');
     _this.opt = {
-      aLabel: 'data-label',
-      aLookup: 'data-lookup',
-      aCap: 'data-cap',
-      aList: 'data-list',
-      aUrl: 'data-url',
-      aGoto: 'data-goto',
+      dLabel: 'label',
+      // data-label
+      dLookup: 'lookup',
+      dCap: 'cap',
+      dList: 'list',
+      dUrl: 'url',
+      dGoto: 'goto',
       cacheLimit: 0,
       pList: 'lookup-list-',
       max: 10,
@@ -3207,7 +3213,7 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
       });
       this.closeList();
       document.body.appendChild(this.win);
-      app.e('input[' + this.opt.aLookup + ']', function (n) {
+      app.e('input[data-' + this.opt.dLookup + ']', function (n) {
         return _this2.prepare(n);
       });
       app.e('[data-chain]', function (n) {
@@ -3234,8 +3240,7 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
     value: function prepare(n) {
       var app = this.app;
       if (this.cap(n)) return;
-      var cap = app.attr(n, this.opt.aLabel);
-      n.vLabel = cap || n.value || '';
+      n.vLabel = this.opt.dLabel in n.dataset ? n.dataset[this.opt.dLabel] : n.value || '';
       var pop = app.ins('div', '', {
         className: 'pop l lookup-pop'
       }, n, 1);
@@ -3263,7 +3268,7 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
       m.autocomplete = 'off';
       var i = null;
 
-      if (app.attr(n, this.opt.aUrl)) {
+      if (this.opt.dUrl in n.dataset) {
         var ic = app.ins('span', '', {
           className: 'input-tools nobr'
         }, this.opt.inPop ? pop : m, 1); //icons container
@@ -3283,10 +3288,9 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
     value: function initCaption(n) {
       var _this3 = this;
 
-      var cap = this.app.attr(n, this.opt.aLabel);
-      var uc = this.app.attr(n, this.opt.aCap, '');
+      var uc = n.dataset[this.opt.dCap] || '';
 
-      if (n.value && !cap && uc) {
+      if (uc && n.value && !(this.opt.dLabel in n.dataset)) {
         var u = encodeURI(decodeURI(this.app.makeUrl(uc, {
           time: new Date().getTime()
         })).replace(/\{q\}/, n.value));
@@ -3323,7 +3327,7 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
       if (v === '') this.fix(n, '', ''); //empty
       else if (n.vCache && n.vCache[v]) this.openList(n, n.vCache[v]); //cached
         else {
-            var u = encodeURI(decodeURI(this.app.makeUrl(this.app.attr(n, this.opt.aLookup, ''), {
+            var u = encodeURI(decodeURI(this.app.makeUrl(n.dataset[this.opt.dLookup] || '', {
               //value: v,
               time: new Date().getTime()
             })).replace(/\{q\}/, v));
@@ -3367,7 +3371,7 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
       }, this.win);
       var w,
           j = 0;
-      var go = app.attr(n, this.opt.aGoto, '');
+      var go = n.dataset[this.opt.dGoto] || '';
 
       for (var i in d) {
         w = app.ins('li', '', {}, ul);
@@ -3446,7 +3450,7 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
 
       if (n) {
         e.preventDefault();
-        var u = this.app.attr(n, this.opt.aUrl, '');
+        var u = n.dataset[this.opt.dUrl] || '';
         if (n.value.length > 0 && u) location.href = encodeURI(decodeURI(u).replace(/\{id\}/, n.value));
       }
     } // update chain
@@ -3454,11 +3458,11 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "updateChain",
     value: function updateChain(n) {
-      var m = this.app.q(this.app.attr(n, 'data-chain', ''), 0);
+      var m = this.app.q(n.dataset.chain || '');
 
       if (m) {
         if (!n.value) this.setOptions(m, []);else {
-          var u = this.app.attr(m, this.opt.aList, '').replace(/\{q\}/, n.value);
+          var u = (m.dataset[this.opt.dList] || '').replace(/\{q\}/, n.value);
           if (m.vCache && m.vCache[u]) this.setOptions(m, m.vCache[u]);else this.app.fetch(u, this.onChainData.bind(this, u, m));
         }
       }
@@ -3490,7 +3494,7 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
         }
       } else {
         this.app.clr(n);
-        var z = this.app.attr(n, 'data-placeholder', '');
+        var z = n.dataset.placeholder || '';
         if (!a || a.length == 0 || z) this.app.ins('option', z || '-', {
           value: ''
         }, n);
@@ -3504,9 +3508,7 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "store",
     value: function store(n, u, d) {
-      var c = this.app.attr(n, 'data-cache');
-      if (c === null) c = this.opt.cacheLimit;
-      c = parseInt(c, 10);
+      var c = 1 * (n.dataset.cache || this.opt.cacheLimit);
 
       if (c) {
         if (!n.vCache || Object.keys(n.vCache).length >= c) n.vCache = {};

@@ -41,12 +41,12 @@ export default class extends Plugin {
     this.opt = {
       cSort: 'sort',
       cTotals: 'totals',
-      aFilter: 'data-filter',
-      aRep: 'data-filter-report',
+      dFilter: 'filter', // data-filter
+      dRep: 'filterReport', // data-filter-report
       aTotal: 'data-total',
-      aLimit: 'data-limit',
-      aPages: 'data-pages',
-      aPageNavAfter: 'data-pages-after',
+      dLimit: 'limit', // data-limit
+      dPages: 'pages', // data-pages
+      dPageNavAfter: 'pagesAfter', // data-pages-after
       cFilter: 'filter',
       cFiltered: 'bg-w', // filter-on - non-empty filter field
       cScan: 'text-i', // col-scan - searchable columns' header (used if "data-filter-cols" is set)
@@ -63,9 +63,9 @@ export default class extends Plugin {
   }
 
   init () {
-    this.lang = this.app.attr(document.documentElement, 'lang') || 'en';
+    this.lang = document.documentElement.getAttribute('lang') || 'en';
     this.skipComma = (this.lang=='en');
-    let q = 'table.' + this.opt.cSort + ', table.' + this.opt.cFilter + ', table.' + this.opt.cTotals + ', table[' + this.opt.aFilter + ']' + ', table[' + this.opt.aLimit + ']';
+    let q = 'table.' + this.opt.cSort + ', table.' + this.opt.cFilter + ', table.' + this.opt.cTotals + ', table[' + this.opt.aFilter + ']' + ', table[data-' + this.opt.dLimit + ']';
     this.app.e(q, this.prepare.bind(this));
     this.app.h('click', '.tablex-pagenav a', e => this.page(e));
   }
@@ -93,14 +93,14 @@ export default class extends Plugin {
     }
     //let inp = this.app.ins('input','',{type:'search',size:4},rh.cells[0]);
     n.vCase = (n.getAttribute('data-case') !== null);
-    let fq = this.app.attr(n, this.opt.aFilter);
+    let fq = n.dataset[this.opt.dFilter];
     n.vInp = fq
       ? document.querySelector(fq)
       : n.querySelector('[name="_q"]');
-    n.vRep = this.app.q(this.app.attr(n, this.opt.aRep, ''));
-    n.vLimit = 1 * this.app.attr(n, this.opt.aLimit, 0);
+    n.vRep = this.app.q((n.dataset[this.opt.dRep] || ''));
+    n.vLimit = 1 * (n.dataset[this.opt.dLimit] || 0);
     n.vPage = 1;
-    if(!n.vInp && !n.vRep && n.classList.contains(this.opt.cFilter)) this.addFilter(n);
+    if(!n.vInp /* && !n.vRep */ && n.classList.contains(this.opt.cFilter)) this.addFilter(n);
     if(n.vLimit && tb.rows.length>n.vLimit) this.addPageNav(n);
     
     if (n.vInp) {
@@ -183,12 +183,12 @@ export default class extends Plugin {
     let t = n.parentNode.classList.contains('roll') ? n.parentNode : n;
     n.vPageNav = this.app.ins('ul', '', {className: 'nav hover tablex-pagenav'});
     n.vPageNav.vTable = n;
-    this.app.ins('div', n.vPageNav, {className: 'mar small'}, t, this.app.attr(n, this.opt.aPageNavAfter)===null ? -1 : 1);
+    this.app.ins('div', n.vPageNav, {className: 'mar small'}, t, this.opt.dPageNavAfter in n.dataset ? 1 : -1);
   }
   
   setPageNav (n){
     const app = this.app
-    let m = 1 * app.attr(n, this.opt.aPages, 10);
+    let m = 1 * (n.dataset[this.opt.dPages] || 10);
     let h = Math.floor((m + 1) / 2); // shift to first
     //let h = Math.ceil((m + 1) / 2); // shift to last
     let ul = n.vPageNav;
@@ -263,7 +263,7 @@ export default class extends Plugin {
     let cnt = 0;
     let i, j, data, s, hide;
     if (!n.vCols) {
-      n.vCols = this.app.attr(n, 'data-filter-cols', '');
+      n.vCols = n.dataset.filterCols || '';
       n.vCols = n.vCols ? n.vCols.split(/\D+/) : false;
       if (n.vCols && this.opt.cScan)
         for (i = 0; i < n.vCols.length; i++) {
@@ -302,9 +302,9 @@ export default class extends Plugin {
   countTotal (n, m, cnt){
     let d = n.vData;
     let j = m.closest('th, td').cellIndex;
-    let a = this.app.attr(m, 'data-total', '');
-    let dec = parseInt(this.app.attr(m, 'data-dec', 2), 10);
-    let mode = this.app.attr(m, 'data-mode', /*'n'*/ n.vTypes[j]);
+    let a = m.dataset.total || '';
+    let dec = 1 * (m.dataset.dec || 2);
+    let mode = m.dataset.mode || n.vTypes[j];
     let r = 0;
     //if(a == 'count' || a == 'cnt') r = cnt;
     if(a == 'count' || a == 'cnt') r = d.reduce((acc, cur) => acc + (cur.v && cur.x[j][0]!=='' ? 1 : 0), 0);
