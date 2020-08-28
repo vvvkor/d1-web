@@ -2886,8 +2886,9 @@ var calendar_default = /*#__PURE__*/function (_Plugin) {
     key: "toggle",
     value: function toggle(on, n) {
       if (n) {
-        var m;
-        if ('modal' in n.dataset) m = parseInt(n.dataset.modal || 1, 10);else m = this.opt.showModal || Math.min(window.innerWidth, window.innerHeight) < this.opt.sizeLimit;
+        var m = n.dataset.mode;
+        if (m) m = m[0] === 'm'; // modal | popup
+        else m = this.opt.showModal || Math.min(window.innerWidth, window.innerHeight) < this.opt.sizeLimit;
 
         if (on) {
           this.win.className = this.app.opt.cToggle + ' ' + this.app.opt.cOff + ' pad ' + (m ? 'dlg' : '');
@@ -5469,22 +5470,7 @@ var theme_default = /*#__PURE__*/function (_Plugin) {
 
 
 
-var src_app = new app["a" /* default */](); //console.log('app', app)
-
-/*
-const plugins = [
-  'code', // should be first
-  'icons',
-  'toggle', 'dialog', 'gallery',
-  'fetch', 'tablex',
-  // todo:
-  'calendar', 'lookup', 'edit', 'valid',
-  'tools', 'form', 'keepform', 'items', 'filter',
-  'fliptable', 'swipe', 'scroll',
-  'theme'
-]
-*/
-
+var src_app = new app["a" /* default */]();
 src_app.plug(code_default);
 src_app.plug(icons_default);
 src_app.plug(toggle["a" /* default */]);

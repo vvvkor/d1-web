@@ -96,8 +96,8 @@ export default class extends Plugin {
   
   toggle (on, n){
     if(n){
-      let m
-      if('modal' in n.dataset) m = parseInt(n.dataset.modal || 1, 10);
+      let m = n.dataset.mode
+      if(m) m = m[0] === 'm'; // modal | popup
       else m = this.opt.showModal || (Math.min(window.innerWidth, window.innerHeight) < this.opt.sizeLimit);
       if(on){
         this.win.className = this.app.opt.cToggle + ' ' + this.app.opt.cOff + ' pad ' + (m ? 'dlg' : '');

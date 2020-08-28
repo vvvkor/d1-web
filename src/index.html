@@ -845,12 +845,20 @@ Table will become stacked on small screen.
 	
 	<p>Replacement of standard HTML date inputs.
 
+<!--fieldset class="mar">
+<legend>Calendar mode</legend>
+<label><input name="cld-mode" type="radio" data-nodes="#form-cld .calendar" data-attr="data-mode" value="popup" checked> Popup <code>[data-mode="popup"]</code></label><br>
+<label><input name="cld-mode" type="radio" data-nodes="#form-cld .calendar" data-attr="data-mode" value="modal"> Modal <code>[data-mode="modal"]</code></label><br>
+<label><input name="cld-mode" type="radio" data-nodes="#form-cld .calendar" data-attr="data-mode" value=""> Auto (modal only on small screen)<code>:not([data-mode])</code></label><br>
+</fieldset-->
+
+
 <div class="code">
-	<form action="?" method="get">
+	<form action="?" method="get" id="form-cld">
 	<table class="flip">
 	<tr><td>Text<td><input name="txt" type="text">
 	<tr><td>Date<td><input name="dt" class="calendar" type="date">
-	<tr><td>Datetime<td><input name="dtm" class="calendar datetime" type="datetime-local" data-def="2001-02-03T04:05:06" min="2001-02-02T10:00" max="2001-02-15T20:00" data-modal="1">
+	<tr><td>Datetime<td><input name="dtm" class="calendar datetime" type="datetime-local" data-def="2001-02-03T04:05:06" min="2001-02-02T10:00" max="2001-02-15T20:00" data-mode="m">
 	<tr><td><td><input type="submit" value="OK">
 	</table>
 	</form>

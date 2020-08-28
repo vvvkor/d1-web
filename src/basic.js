@@ -4,6 +4,7 @@ import App from './js/app.js'
 import Toggle from './js/plugins/toggle.js'
 import Dialog from './js/plugins/dialog.js'
 import Gallery from './js/plugins/gallery.js'
+
 const app = new App()
 app.plug(Toggle)
 app.plug(Dialog)
