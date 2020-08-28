@@ -35,7 +35,7 @@ export default class extends Plugin {
 
     app.e('input[data-' + this.opt.dLookup + ']', n => this.prepare(n));
     app.e('[data-chain]', n => this.updateChain(n));
-    const f = app.delay(this.find.bind(this), this.opt.wait, true);
+    const f = app.debounce(this.find.bind(this), this.opt.wait);
     app.h('input', '.lookup-input', f); // e => f(e)
     app.h('keydown', '.lookup-input', e => this.key(e));
     app.h('click', '.lookup-item', e => this.choose(e));

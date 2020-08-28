@@ -108,7 +108,7 @@ export default class extends Plugin {
       //1.
       //if(!n.vInp.vListen) n.vInp.addEventListener('input', this.doFilter.bind(this, n), false);
       //2.
-      const f = this.app.delay(this.doFilter.bind(this), this.opt.wait, true);
+      const f = this.app.debounce(this.doFilter.bind(this), this.opt.wait);
       if(!n.vInp.vListen) this.app.b([n.vInp], 'input', e => f(n));
       n.vInp.vListen = 1;
       //this.doFilter(n);

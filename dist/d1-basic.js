@@ -536,6 +536,11 @@ var _default = /*#__PURE__*/function () {
           p = null;
         }, ms);
       };
+    }
+  }, {
+    key: "debounce",
+    value: function debounce(f, ms) {
+      return this.delay(f, ms, true);
     } // url
     // get url parameter(s) from link node
 

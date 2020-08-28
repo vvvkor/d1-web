@@ -265,9 +265,9 @@ export default class {
 
   // function
 
-  throttle (f, ms){
+  throttle (f, ms) {
     let p = false, c, a;
-    return function ff(){
+    return function ff() {
       if (p) { //2
         c = this;
         a = arguments;
@@ -286,7 +286,7 @@ export default class {
     }
   }
 
-  delay (f, ms, skip){
+  delay (f, ms, skip) {
     let p = null;
     return function ff(){
       if(skip && p) clearTimeout(p);
@@ -295,6 +295,10 @@ export default class {
         p = null;
       }, ms);
     }
+  }
+  
+  debounce (f, ms) {
+    return this.delay(f, ms, true)
   }
 
   // url

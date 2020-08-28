@@ -536,6 +536,11 @@ var _default = /*#__PURE__*/function () {
           p = null;
         }, ms);
       };
+    }
+  }, {
+    key: "debounce",
+    value: function debounce(f, ms) {
+      return this.delay(f, ms, true);
     } // url
     // get url parameter(s) from link node
 
@@ -2338,7 +2343,7 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
         //1.
         //if(!n.vInp.vListen) n.vInp.addEventListener('input', this.doFilter.bind(this, n), false);
         //2.
-        var f = this.app.delay(this.doFilter.bind(this), this.opt.wait, true);
+        var f = this.app.debounce(this.doFilter.bind(this), this.opt.wait);
         if (!n.vInp.vListen) this.app.b([n.vInp], 'input', function (e) {
           return f(n);
         });
@@ -3219,7 +3224,7 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
       app.e('[data-chain]', function (n) {
         return _this2.updateChain(n);
       });
-      var f = app.delay(this.find.bind(this), this.opt.wait, true);
+      var f = app.debounce(this.find.bind(this), this.opt.wait);
       app.h('input', '.lookup-input', f); // e => f(e)
 
       app.h('keydown', '.lookup-input', function (e) {
