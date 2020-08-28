@@ -1,4 +1,4 @@
-/*! d1-web v1.4.16 */
+/*! d1-web v1.4.17 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -787,7 +787,7 @@ module.exports = new function () {
 
     app.dbg(['unpop', keep]); //app.e(this.opt.qUnpop, n => (keep && keep.filter(m => m && m.tagName && n.contains(m)).length) ? null : this.toggle(n, false, 1));
 
-    var nn = app.qq(this.opt.qUnpop).filter(function (n) {
+    var nn = app.qq(this.opt.qUnpopOn).filter(function (n) {
       return !(keep && keep.filter(function (m) {
         return m && m.tagName && n.contains(m);
       }).length);

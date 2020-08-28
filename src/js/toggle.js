@@ -244,7 +244,7 @@ module.exports = new(function () {
     }
     app.dbg(['unpop', keep]);
     //app.e(this.opt.qUnpop, n => (keep && keep.filter(m => m && m.tagName && n.contains(m)).length) ? null : this.toggle(n, false, 1));
-    let nn = app.qq(this.opt.qUnpop)
+    let nn = app.qq(this.opt.qUnpopOn)
       .filter(n => !(keep && keep.filter(m => m && m.tagName && n.contains(m)).length)); // skip if contains one of [keep]
     if(seq) nn = nn.filter(n => !app.q(this.opt.qUnpopOn, n)); // to close nested subsequently
     app.e(nn, n => this.toggle(n, false, 1));
