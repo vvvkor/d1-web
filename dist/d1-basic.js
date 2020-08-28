@@ -669,7 +669,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
       var app = this.app;
       app.e('a[data-href]', function (n) {
-        return n.href = _this2.app.attr(n, 'data-href');
+        return n.href = n.dataset.href;
       });
       app.listen('esc', function (e) {
         return _this2.esc(e);

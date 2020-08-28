@@ -91,7 +91,7 @@ export default class extends Plugin {
   }
   
   shift (){
-    let dirs = this.app.attr(this.moved, 'data-swipe', '1234'); // 1=up
+    let dirs = this.moved.dataset.swipe || '1234'; // 1=up
     let dx = this.c.eX - this.c.sX;
     let dy = this.c.eY - this.c.sY;
     let adx = Math.abs(dx);

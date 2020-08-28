@@ -19,14 +19,14 @@ export default class extends Plugin {
   }
   
   checkBoxes (n) {
-    this.app.e(this.app.qq('input[type="checkbox"][class~="' + this.app.attr(n, 'data-group', '') + '"]', n.form),
+    this.app.e(this.app.qq('input[type="checkbox"][class~="' + (n.dataset.group || '') + '"]', n.form),
       m => m.checked = n.checked);
   }
   
   setValue (n) {
     let d = this.app.q(n.hash);
     if (d) {
-      d.value = this.app.attr(n, 'data-value', '');
+      d.value = n.dataset.value || '';
       this.app.pf('toggle', 'unpop', d, true);
       // this.app.pf('toggle', 'modalStyle'); //generally not needed
     }

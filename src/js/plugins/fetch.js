@@ -22,7 +22,7 @@ export default class extends Plugin {
   }
 
   fetchBy (n, f) {
-    this.fetch(this.app.attr(n, 'href', ''), r => f ? f(n, r) : this.receive(n, r));
+    this.fetch(n.getAttribute('href') || '', r => f ? f(n, r) : this.receive(n, r));
   }
 
   fetch (url, f) {
@@ -34,7 +34,7 @@ export default class extends Plugin {
 
   receive (n, req, e) {
     // this.app..parse(req.responseText)
-    let d = this.app.q(this.app.attr(n, 'data-target', ''));
+    let d = this.app.q(n.dataset.target);
     if (req.status == '200') {
       if (d) {
         d.innerHTML = req.responseText;

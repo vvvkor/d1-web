@@ -106,7 +106,7 @@ export default class extends Plugin {
       n.theWys = z;
       n.classList.add(app.opt.cToggle);
       if(n.id) z.id = 'wys-' + n.id;
-      let t = app.attr(n, 'data-tools', this.opt.tools).split('');
+      let t = (n.dataset.tools || this.opt.tools).split('');
       let to = m;
       for (let i in t) {
         let b = this.btn[t[i]];
@@ -125,9 +125,12 @@ export default class extends Plugin {
   }
   
   modeAuto (n){
-    let t = this.app.attr(n, 'data-tools', this.opt.tools).split('');
-    let wys = this.app.attr(n, 'data-wys');
-    if(wys===null) wys = (t.indexOf('/')==-1) || (n.value.match(/(>|&\w+;)/) && !n.value.match(/<script/i));
+    let wys = n.dataset.mode;
+    if(wys) wys = wys[0] === 'w';
+    else{
+      wys = ((n.dataset.tools || this.opt.tools).indexOf('/')==-1)
+        || (n.value.match(/(>|&\w+;)/) && !n.value.match(/<script/i));
+    }
     this.mode(wys, n.theWys);
   }
 

@@ -870,7 +870,7 @@ Table will become stacked on small screen.
 	Auto-adjust <code>textarea</code> height to content <code>.adjust</code>.
 	<p>
 	Turn <code>textarea</code> into WYSIWYG editor <code>.edit</code>.<br>
-	Optionally define initial mode in <code>[data-wys]</code> ("1" for WYSIWYG, "" for source editing).
+	Optionally define initial mode in <code>[data-mode]</code> ("w" for WYSIWYG, "t" for source editing).
 	If absent, mode is defined automatically based on whether HTML tags are contained in text.<br>
 	Optionally define custom <a href="#editor-commands">set of tools</a> in <code>[data-tools]</code>.
 	Example: <code>data-tools="/bi_."</code>.
@@ -934,7 +934,7 @@ Table will become stacked on small screen.
   name="wys"
   class="edit adjust"
   data-tools-x="/*@xbi_.pqf"
-  data-wys="1"
+  data-mode="w"
   cols="50"
   rows="5">Write formatted text.</textarea>
 </div>

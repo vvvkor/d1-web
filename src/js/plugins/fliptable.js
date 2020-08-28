@@ -19,14 +19,14 @@ export default class extends Plugin {
   prepareFlipTable (t) {
     let ths = this.app.qq('thead th', t);
     let tds = this.app.qq('tbody tr>*, tfoot tr>*', t);
-    let order = this.app.attr(t, 'data-order', '0 1 2 3').split(/\D+/);
-    //t.parentNode.classList.remove('roll');
+    // let order = (t.dataset.order || '0 1 2 3').split(/\D+/);
+    // t.parentNode.classList.remove('roll');
     for(let i = 0; i < tds.length; i++){
       let td = tds[i];
       let th = ths[td.cellIndex];
-      let ord = order.indexOf('' + td.cellIndex);
-      if(ord==-1) ord = 99;
-      td.style.order = ord;
+      //let ord = order.indexOf('' + td.cellIndex);
+      //if(ord==-1) ord = 99;
+      //td.style.order = ord;
       //if(td.textContent.replace(/\s+$/, '').length>0){
         let c = this.app.ins('div', '', {className: 'row'});
         if(th) this.app.ins('div', th.textContent, {className: 'hide-desktop'}, c)

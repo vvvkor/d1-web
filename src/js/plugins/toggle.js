@@ -43,7 +43,7 @@ export default class extends Plugin{
 
   init () {
     const app = this.app
-    app.e('a[data-href]', n => n.href = this.app.attr(n, 'data-href'));
+    app.e('a[data-href]', n => n.href = n.dataset.href);
     app.listen('esc', e => this.esc(e));
     app.listen('hashchange', e => this.onHash(e));
     app.listen('keydown', e => this.onKey(e));

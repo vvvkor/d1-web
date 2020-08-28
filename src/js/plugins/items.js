@@ -8,7 +8,7 @@ export default class extends Plugin {
     super('items')
 
     this.opt = {
-      aItem: 'data-item',
+      dItem: 'item', // data-item
       qItem: '.item' // ul, tr, div
     };
   }
@@ -20,7 +20,7 @@ export default class extends Plugin {
   onClick (e){
     let n = e.recv;
     if(n && n.hash){
-      let q = this.app.attr(n, this.opt.aItem);
+      let q = n.dataset[this.opt.dItem];
       let d = q ? this.app.q(q) : e.target.closest(this.opt.qItem);
       if(d){
         let cont = d.parentNode;

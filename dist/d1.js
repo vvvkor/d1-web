@@ -669,7 +669,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
       var app = this.app;
       app.e('a[data-href]', function (n) {
-        return n.href = _this2.app.attr(n, 'data-href');
+        return n.href = n.dataset.href;
       });
       app.listen('esc', function (e) {
         return _this2.esc(e);
@@ -2066,7 +2066,7 @@ var fetch_default = /*#__PURE__*/function (_Plugin) {
     value: function fetchBy(n, f) {
       var _this2 = this;
 
-      this.fetch(this.app.attr(n, 'href', ''), function (r) {
+      this.fetch(n.getAttribute('href') || '', function (r) {
         return f ? f(n, r) : _this2.receive(n, r);
       });
     }
@@ -2088,7 +2088,7 @@ var fetch_default = /*#__PURE__*/function (_Plugin) {
     key: "receive",
     value: function receive(n, req, e) {
       // this.app..parse(req.responseText)
-      var d = this.app.q(this.app.attr(n, 'data-target', ''));
+      var d = this.app.q(n.dataset.target);
 
       if (req.status == '200') {
         if (d) {
@@ -3694,7 +3694,7 @@ var edit_default = /*#__PURE__*/function (_Plugin) {
         n.theWys = z;
         n.classList.add(app.opt.cToggle);
         if (n.id) z.id = 'wys-' + n.id;
-        var t = app.attr(n, 'data-tools', this.opt.tools).split('');
+        var t = (n.dataset.tools || this.opt.tools).split('');
         var to = m;
 
         for (var i in t) {
@@ -3723,9 +3723,10 @@ var edit_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "modeAuto",
     value: function modeAuto(n) {
-      var t = this.app.attr(n, 'data-tools', this.opt.tools).split('');
-      var wys = this.app.attr(n, 'data-wys');
-      if (wys === null) wys = t.indexOf('/') == -1 || n.value.match(/(>|&\w+;)/) && !n.value.match(/<script/i);
+      var wys = n.dataset.mode;
+      if (wys) wys = wys[0] === 'w';else {
+        wys = (n.dataset.tools || this.opt.tools).indexOf('/') == -1 || n.value.match(/(>|&\w+;)/) && !n.value.match(/<script/i);
+      }
       this.mode(wys, n.theWys);
     }
   }, {
@@ -4302,7 +4303,7 @@ var form_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "checkBoxes",
     value: function checkBoxes(n) {
-      this.app.e(this.app.qq('input[type="checkbox"][class~="' + this.app.attr(n, 'data-group', '') + '"]', n.form), function (m) {
+      this.app.e(this.app.qq('input[type="checkbox"][class~="' + (n.dataset.group || '') + '"]', n.form), function (m) {
         return m.checked = n.checked;
       });
     }
@@ -4312,7 +4313,7 @@ var form_default = /*#__PURE__*/function (_Plugin) {
       var d = this.app.q(n.hash);
 
       if (d) {
-        d.value = this.app.attr(n, 'data-value', '');
+        d.value = n.dataset.value || '';
         this.app.pf('toggle', 'unpop', d, true); // this.app.pf('toggle', 'modalStyle'); //generally not needed
       }
     }
@@ -4548,7 +4549,8 @@ var items_default = /*#__PURE__*/function (_Plugin) {
 
     _this = _super.call(this, 'items');
     _this.opt = {
-      aItem: 'data-item',
+      dItem: 'item',
+      // data-item
       qItem: '.item' // ul, tr, div
 
     };
@@ -4570,7 +4572,7 @@ var items_default = /*#__PURE__*/function (_Plugin) {
       var n = e.recv;
 
       if (n && n.hash) {
-        var q = this.app.attr(n, this.opt.aItem);
+        var q = n.dataset[this.opt.dItem];
         var d = q ? this.app.q(q) : e.target.closest(this.opt.qItem);
 
         if (d) {
@@ -4915,15 +4917,15 @@ var fliptable_default = /*#__PURE__*/function (_Plugin) {
     key: "prepareFlipTable",
     value: function prepareFlipTable(t) {
       var ths = this.app.qq('thead th', t);
-      var tds = this.app.qq('tbody tr>*, tfoot tr>*', t);
-      var order = this.app.attr(t, 'data-order', '0 1 2 3').split(/\D+/); //t.parentNode.classList.remove('roll');
+      var tds = this.app.qq('tbody tr>*, tfoot tr>*', t); // let order = (t.dataset.order || '0 1 2 3').split(/\D+/);
+      // t.parentNode.classList.remove('roll');
 
       for (var i = 0; i < tds.length; i++) {
         var td = tds[i];
-        var th = ths[td.cellIndex];
-        var ord = order.indexOf('' + td.cellIndex);
-        if (ord == -1) ord = 99;
-        td.style.order = ord; //if(td.textContent.replace(/\s+$/, '').length>0){
+        var th = ths[td.cellIndex]; //let ord = order.indexOf('' + td.cellIndex);
+        //if(ord==-1) ord = 99;
+        //td.style.order = ord;
+        //if(td.textContent.replace(/\s+$/, '').length>0){
 
         var c = this.app.ins('div', '', {
           className: 'row'
@@ -5104,7 +5106,7 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "shift",
     value: function shift() {
-      var dirs = this.app.attr(this.moved, 'data-swipe', '1234'); // 1=up
+      var dirs = this.moved.dataset.swipe || '1234'; // 1=up
 
       var dx = this.c.eX - this.c.sX;
       var dy = this.c.eY - this.c.sY;
