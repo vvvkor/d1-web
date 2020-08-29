@@ -58,7 +58,14 @@
   </head>
   <body id="body" class="js-theme trans" data-d1='{"debug":false,"plug":{"toggle":{"keepHash":true},"theme":{"fonts":["sans-serif","serif","monospace","PT Sans","Roboto Slab"]}}}'>
 
-
+<!--div class="bg-w">
+Text
+<a class="icon-close empty">Hidden</a>
+<a class="icon-close">Label</a>
+<a class="btn icon-close empty">Hidden</a>
+<a class="btn icon-close">Label</a>
+</div-->
+	
 <div class="topbar toggle shade  row let hide off" id="topbar">
 	<a href="#x" class="pad hover">Topbar</a>
 	<a href="#x" class="pad hover shift">Right</a>
@@ -372,6 +379,16 @@ let double = function (x) {
 				<button class="bg-i icon-info">Info</button>
 				<button class="bg-y icon-ok">OK</button>
 				<button class="bg-n icon-left">Back</button>
+				<br>
+				<button>B</button>
+				<button class="icon-close">B</button>
+				<button class="icon-close empty" title="No label">B</button>
+				<a href="#x" class="btn bg-n">A</a>
+				<a href="#x" class="btn bg-n icon-close">A</a>
+				<a href="#x" class="btn bg-n icon-close empty" title="No label">A</a>
+				<a href="#x" class="hover">A</a>
+				<a href="#x" class="hover icon-close">A</a>
+				<a href="#x" class="hover icon-close empty" title="No label">A</a>
 				<br>
 				<a href="#x" class="btn">Link</a>
 				<a href="#x" class="btn bg-y icon-ok">Link</a>
@@ -896,9 +913,6 @@ let double = function (x) {
   </div><!-- /row -->
 </div><!-- container -->
 <a class="hide" href="#cancel" accesskey="x"></a>
-<!--script>
-	console.log(town.dataset)
-	d1.a(town.dataset).forEach(k => console.log(k))
-</script-->
+
 </body>
 </html>

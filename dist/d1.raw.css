@@ -368,7 +368,7 @@ ul.nav, .nav ul{list-style:none;padding:0;margin:0;}
 .hide[class],
 [class*="not-"],
 .or:not([class*="or-"]),
-.gal>*,
+.gal[class]>*,
 a.act>.is-off, a:not(.act)>.is-on,
 /* css */ /* js may add id, should add .toggle(-mobile), should remove .target(-mobile) */
 .target:not(:target),/*:not(.toggle)*/ /* .target[id] */

@@ -4,7 +4,8 @@
 [class*=icon-]:empty:before{margin:0;}
 .alt{display:none;}
 /*[class*=icon-].ico:before{margin:0;}*/
-	[class*="icon-"].empty{display:inline-block;width:1.2em;height:1.5em;/*basic line-height*/overflow:hidden;box-sizing:content-box;vertical-align:middle;}
+	.empty{display:inline-block;width:1.1em;height:1.5em;/*basic line-height*/overflow:hidden;box-sizing:content-box;vertical-align:middle;}
+	button.empty, .btn.empty{height:1.3em;/*line-height:normal;*/transform:translate(0,-.1em);}
 	[class*="icon-"].empty:before{margin:0 2em 2em 0;}
 
 [class*="icon-"]:before{filter:grayscale(1) brightness(8);}

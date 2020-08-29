@@ -21,13 +21,18 @@
     display: none;
 }
 
-[class*="icon-"].empty {
+.empty {
     display: inline-block;
-    width: 1.2em;
+    width: 1.1em;
     height: 1.5em;
     overflow: hidden;
     box-sizing: content-box;
     vertical-align: middle;
+}
+
+button.empty, .btn.empty {
+    height: 1.3em;
+    transform: translate(0, -.1em);
 }
 
 [class*="icon-"].empty:before {
