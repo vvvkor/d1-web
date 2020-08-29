@@ -21,6 +21,19 @@
     display: none;
 }
 
+[class*="icon-"].empty {
+    display: inline-block;
+    width: 1.2em;
+    height: 1.5em;
+    overflow: hidden;
+    box-sizing: content-box;
+    vertical-align: middle;
+}
+
+[class*="icon-"].empty:before {
+    margin: 0 2em 2em 0;
+}
+
 [class*="icon-"]:before {
     filter: grayscale(1) brightness(8);
 }
