@@ -419,12 +419,6 @@ var _default = /*#__PURE__*/function () {
       if (f) this.nn(q).forEach(function (n) {
         return f.call(_this6, n);
       });
-    } // get attribute of node
-
-  }, {
-    key: "attr",
-    value: function attr(n, a, def) {
-      return n && n.hasAttribute(a) ? n.getAttribute(a) : def !== undefined ? def : null;
     }
   }, {
     key: "typeOf",
@@ -1894,13 +1888,13 @@ var icons_default = /*#__PURE__*/function (_Plugin) {
     _this = _super.call(this, 'icons');
     _this.opt = {
       cIcon: 'icon',
+      // class of svg icon
+      pIcon: 'icon-',
+      // class prefix of tag to insert icon into
+      cEmpty: 'empty',
       iconSize: 24,
-      pSvg: 'icon-',
-      // id prefix to search on page; set false to skip search
-      //aReplace: 'data-ico',
-      //aAdd: 'data-icon',
-      qIcon: '[data-ico], [data-icon], [class*="ico-"], [class*="icon-"]',
-      qIconReplace: '[data-ico], [class*="ico-"]'
+      pSvg: 'icon-' // id prefix to search on page; set false to skip search
+
     };
     _this.parsed = {};
     _this.icons = iconset_default.a;
@@ -1912,39 +1906,31 @@ var icons_default = /*#__PURE__*/function (_Plugin) {
     value: function init() {
       var _this2 = this;
 
-      this.app.e(this.opt.qIcon, function (n) {
+      this.app.e('[class*="' + this.opt.pIcon + '"]', function (n) {
         return _this2.iconize(n);
       });
     }
   }, {
     key: "iconize",
     value: function iconize(n) {
-      var m,
-          i = n.dataset.ico || n.dataset.icon;
+      var m = n.className.match(new RegExp('\\b' + this.opt.pIcon + '([\\w\\-_]+)'));
 
-      if (!i) {
-        m = n.className.match(/\bicon?-([\w\-_]+)/);
-        if (m) i = m[1];
-      }
-
-      if (i) {
-        var clr = n.matches(this.opt.qIconReplace);
-        this.addIcon(i, n, clr);
-        if (m) n.classList.remove(m[0]);
+      if (m && m[1]) {
+        this.addIcon(m[1], n);
+        n.classList.remove(m[0]);
       }
     }
   }, {
     key: "addIcon",
-    value: function addIcon(i, n, clr) {
+    value: function addIcon(i, n) {
       var t = n.textContent;
       var icon = this.i(i);
 
       if (icon) {
-        if (clr) {
+        if (n.classList.contains(this.opt.cEmpty)) {
           this.app.clr(n);
           if (!n.title) n.title = t;
-        } //if(n.firstChild) n.insertBefore(document.createTextNode(' '), n.firstChild);
-
+        }
 
         if (n.firstChild && !n.firstChild.tagName) this.app.ins('span', n.firstChild, {}, n, false);
         n.insertBefore(icon, n.firstChild);
@@ -4707,7 +4693,7 @@ var filter_default = /*#__PURE__*/function (_Plugin) {
     _this.opt = {
       qFilter: '.filters',
       qItem: '.item',
-      aFilter: 'data-filter',
+      dFilter: 'filter',
       cMem: 'mem'
     };
     return _this;
@@ -4721,10 +4707,10 @@ var filter_default = /*#__PURE__*/function (_Plugin) {
       this.app.e(this.opt.qFilter, function (n) {
         return _this2.prepare(n);
       });
-      this.app.h('click', 'a[' + this.opt.aFilter + ']', function (e) {
+      this.app.h('click', 'a[data-' + this.opt.dFilter + ']', function (e) {
         return _this2.applyControl(e.recv);
       });
-      this.app.h('input', ':not(a)[' + this.opt.aFilter + ']', function (e) {
+      this.app.h('input', ':not(a)[data-' + this.opt.dFilter + ']', function (e) {
         return _this2.applyControl(e.recv);
       });
     }
@@ -4733,7 +4719,7 @@ var filter_default = /*#__PURE__*/function (_Plugin) {
     value: function prepare(n) {
       n.vInit = {};
       this.forAttrs(n, function (a, k) {
-        return n.vInit[k] = a.value;
+        return n.vInit[k] = n.dataset[a];
       });
       this.restore(n);
       this.apply(n);
@@ -4742,16 +4728,16 @@ var filter_default = /*#__PURE__*/function (_Plugin) {
     key: "applyControl",
     value: function applyControl(n) {
       var f = n.closest(this.opt.qFilter);
-      var x = this.app.attr(n, this.opt.aFilter, '').split(/=/, 2);
+      var x = (n.dataset[this.opt.dFilter] || '').split(/=/, 2);
 
       if (f) {
         if (x[0]) {
-          var a = this.opt.aFilter + '-' + x[0];
+          var a = this.opt.dFilter + '_' + x[0];
           var v = (n.tagName == 'SELECT' ? n.value : x[1]) || '';
 
           if (v.substr(0, 1) == '+' && v.length > 1) {
             v = v.substr(1);
-            var w = this.app.attr(f, a, '').split(/;/);
+            var w = (f.dataset[a] || '').split(/;/);
             var i = w.indexOf(v);
             if (i == -1) w.push(v);else delete w[i];
             v = w.filter(function (val, key, arr) {
@@ -4759,7 +4745,7 @@ var filter_default = /*#__PURE__*/function (_Plugin) {
             }).join(';');
           }
 
-          f.setAttribute(a, v);
+          f.dataset[a] = v;
           this.apply(f);
         } else {
           this.reset(f);
@@ -4773,13 +4759,13 @@ var filter_default = /*#__PURE__*/function (_Plugin) {
 
       var f = {};
       this.forAttrs(n, function (a, k) {
-        return a.value.length > 0 ? f[k] = a.value.split(/;/) : null;
+        return n.dataset[a].length > 0 ? f[k] = n.dataset[a].split(/;/) : null;
       });
       this.app.dbg(['filter', n, f]);
       this.app.e(this.app.qq(this.opt.qItem, n), function (m) {
         return m.classList[_this3.match(m, f) ? 'remove' : 'add'](_this3.app.opt.cHide);
       });
-      this.app.e(this.app.qq('[' + this.opt.aFilter + ']', n), function (m) {
+      this.app.e(this.app.qq('[data-' + this.opt.dFilter + ']', n), function (m) {
         return _this3.setUsed(m, f);
       });
       this.store(n, f);
@@ -4790,11 +4776,9 @@ var filter_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "match",
     value: function match(n, f) {
-      var _this4 = this;
-
       var r = true;
       Object.keys(f).forEach(function (k) {
-        return f[k] && f[k].length > 0 && f[k].indexOf(_this4.app.attr(n, 'data-' + k, '')) == -1 ? r = false : null;
+        return f[k] && f[k].length > 0 && f[k].indexOf(n.dataset[k] || '') == -1 ? r = false : null;
       });
       return r;
     }
@@ -4802,12 +4786,12 @@ var filter_default = /*#__PURE__*/function (_Plugin) {
     key: "setUsed",
     value: function setUsed(n, f) {
       var u = this.used(n, f);
-      if (n.tagName == 'A') n.classList[u ? 'add' : 'remove'](this.app.opt.cAct);else if (n.type == 'checkbox') n.checked = u;else if (n.type == 'radio') n.checked = u;else if (n.tagName == 'SELECT') n.value = (f[this.app.attr(n, this.opt.aFilter, '')] || [''])[0];
+      if (n.tagName == 'A') n.classList[u ? 'add' : 'remove'](this.app.opt.cAct);else if (n.type == 'checkbox') n.checked = u;else if (n.type == 'radio') n.checked = u;else if (n.tagName == 'SELECT') n.value = (f[n.dataset[this.opt.dFilter] || ''] || [''])[0];
     }
   }, {
     key: "used",
     value: function used(n, f) {
-      var x = this.app.attr(n, this.opt.aFilter, '').split(/=\+?/, 2);
+      var x = (n.dataset[this.opt.dFilter] || '').split(/=\+?/, 2);
       return x[0] && !f[x[0]] && !x[1] || f[x[0]] && f[x[0]].length > 0 && f[x[0]].indexOf(x[1]) != -1; //return ((f[x[0]] || '') == (x[1] || ''));
     }
   }, {
@@ -4818,25 +4802,25 @@ var filter_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "restore",
     value: function restore(n) {
-      var _this5 = this;
+      var _this4 = this;
 
       if (n.id && n.classList.contains(this.opt.cMem)) {
         var f = localStorage.getItem('filter-' + n.id);
 
         if (f) {
           //create attributes if not exist
-          this.app.e(this.app.qq('[' + this.opt.aFilter + ']', n), function (m) {
-            var x = _this5.app.attr(m, _this5.opt.aFilter, '').split(/=/);
+          this.app.e(this.app.qq('[data-' + this.opt.dFilter + ']', n), function (m) {
+            var x = (m.dataset[_this4.opt.dFilter] || '').split(/=/);
 
             if (x[0]) {
-              x = _this5.opt.aFilter + '-' + x[0];
-              if (!n.hasAttribute(x)) n.setAttribute(x, '');
+              x = _this4.opt.dFilter + '_' + x[0];
+              if (!(x in n.dataset)) n.dataset[x] = '';
             }
           }); //parse
 
           f = this.app.parse(f);
           if (f) this.forAttrs(n, function (a, k) {
-            return n.setAttribute(a.name, (f[k] || []).join(';'));
+            return n.dataset[a] = (f[k] || []).join(';');
           });
         }
       }
@@ -4844,20 +4828,19 @@ var filter_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "reset",
     value: function reset(n) {
-      //this.forAttrs(n, a => n.removeAttribute(a.name))
       this.forAttrs(n, function (a, k) {
-        return k in n.vInit ? n.setAttribute(a.name, n.vInit[k] || '') : n.removeAttribute(a.name);
+        return k in n.vInit ? n.dataset[a] = n.vInit[k] || '' : delete n.dataset[a.name];
       });
       this.apply(n);
     }
   }, {
     key: "forAttrs",
     value: function forAttrs(n, f) {
-      var _this6 = this;
+      var _this5 = this;
 
-      var z = this.opt.aFilter.length;
-      this.app.a(n.attributes).forEach(function (a) {
-        return a.name.substr(0, z) == _this6.opt.aFilter ? f(a, a.name.substr(z + 1)) : null;
+      var z = this.opt.dFilter.length;
+      Object.keys(n.dataset).forEach(function (a) {
+        return a.substr(0, z) == _this5.opt.dFilter ? f(a, a.substr(z + 1)) : null;
       });
     }
   }]);

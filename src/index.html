@@ -6,11 +6,17 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 
 	<!-- CDN --REMOVE->
-	<link href="https://cdn.jsdelivr.net/npm/d1-web@0.0.0/dist/d1.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/d1-web@0.0.0/dist/d1.min.js"></script>
+		<link href="https://cdn.jsdelivr.net/npm/d1-web@0.0.0/dist/d1.min.css" rel="stylesheet">
+		<script src="https://cdn.jsdelivr.net/npm/d1-web@0.0.0/dist/d1.min.js"></script>
+		<noscript>
+			<link href="https://cdn.jsdelivr.net/npm/d1-web@0.0.0/dist/d1-icons.min.css" rel="stylesheet">
+		</noscript>
 	<!-- local-npm-src REMOVE-->
-	<link href="../src/index.css" rel="stylesheet">
-	<script src="../dist/d1.min.js"></script>
+		<link href="../src/index.css" rel="stylesheet">
+		<script src="../dist/d1.min.js"></script>
+		<noscript>
+			<link href="../dist/d1-icons.css" rel="stylesheet">
+		</noscript>
 	<!-- -->
 	
 	<script>
@@ -63,12 +69,12 @@
   class="topbar toggle shade  row let center fit hide-print"
   id="topline"
 >
-	<a href="#menu" class="pad -let hide-desktop" data-ico="menu" title="Menu">&equiv;</a>
+	<a href="#menu" class="pad -let hide-desktop icon-menu empty">Menu</a>
 	<a href="#top" class="pad -let"><b>d1</b></a>
 	<code class="pad nobr hide-mobile">npm i d1-web</code>
 	<a class="shift pad text-n">v0.0.0</a>
 	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1-web" title="GitHub" class="pad -let">GitHub</a>
-	<a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="pad -let" data-ico="download" title="Download">Download</a>
+	<a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="pad -let icon-download empty" >Download</a>
 </div>
 
 <div class="-pad row -wrap -center flip">
@@ -659,9 +665,9 @@ For color options see <a href="#colors-buttons">Colors</a> section.
 <input type="submit" value="Submit">
 <input type="submit" value="Disabled" disabled>
 <button type="submit">Button</button>
-<button type="submit" class="bg-e" data-icon="ok">Icon</button>
-<button type="submit" class="bg-e" data-icon="ok"></button>
-<a href="#x" class="btn" data-icon="ok"> Link</a>
+<button type="submit" class="bg-e icon-ok">Icon</button>
+<button type="submit" class="bg-e icon-ok"></button>
+<a href="#x" class="btn icon-ok"> Link</a>
 <br>
 <input type="submit" value="Submit">
 	<!--
@@ -1325,7 +1331,7 @@ and expand it to dropdown navbar on large screen.
 
 <div class="code">
 <div class="hide-desktop">
-	<a href="#navi" class="pad hover" title="Menu" data-ico="menu">&equiv;</a>
+	<a href="#navi" class="pad hover icon-menu empty">Menu</a>
 </div>
 <ul class="nav flip bg hover target-mobile" id="navi">
 	<li><a href="#n0" class="fit"><b>Logo</b></a></li>
@@ -1390,7 +1396,7 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 <div class="code">
 <a href="#modal">Open modal</a>
 <div id="modal" class="dlg rad c pad">
-	<a class="close pad" href="#cancel" data-ico="close">&times;</a>
+	<a class="close pad icon-close empty" href="#cancel">Close</a>
 	<p>Modal</p>
 </div>
 </div>
@@ -1406,7 +1412,7 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 <div class="code">
 <a href="#modal-full">Open fullscreen modal</a>
 <div id="modal-full" class="dlg full center pad bg-w">
-	<a class="close pad" href="#cancel" data-ico="close">&times;</a>
+	<a class="close pad icon-close empty" href="#cancel">Close</a>
 	Fullscreen modal
 </div>
 </div>
@@ -1498,9 +1504,9 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 </p>
 
 <div class="code">
-<a class="pad hover" href="#drw" data-ico="menu">&equiv;</a>
+<a class="pad hover icon-menu empty" href="#drw">Open drawer</a>
 <div class="drawer shift pad" id="drw">
-	<a class="close pad" href="#cancel" data-ico="close">&times;</a>
+	<a class="close pad icon-close empty" href="#cancel">Close</a>
 	Demo drawer
 </div>
 </div>
@@ -1549,7 +1555,7 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 <a href="data.json" data-target="#dlg-inner">Fetch into modal dialog</a><br>
 <a href="data.json" data-target="#x">Fetch into generated modal dialog</a>
 <pre class="bg-i" id="preview">[preview area]</pre>
-<div id="preview-dlg" class="dlg pad"><a class="close pad" href="#cancel" data-ico="close">&times;</a><p class="pad" id="dlg-inner">(preview)</p></div>
+<div id="preview-dlg" class="dlg pad"><a class="close pad icon-close empty" href="#cancel">Close</a><p class="pad" id="dlg-inner">(preview)</p></div>
 </div>
 
 
@@ -1663,7 +1669,7 @@ Toggles on resize.
 <h3 id="filters">Multi-parameter filter</h3>
 
 <div class="code">
-<div class="filters mem" id="filter-items" data-filter-color="green;yellow">
+<div class="filters mem" id="filter-items" data-filter_color="green;yellow">
 	<b>Color (multiple select)</b>
 	<p>
 	As links: 
@@ -1804,13 +1810,13 @@ If link needs to be outside of the item, point at item with query selector in li
 <h3 id="icons">Icons</h3>
 <!--opts-icon-->
 <p>
-Add icon before element's content <code>[data-icon]</code> or <code>.icon-xxx</code>.<br>
-Replace element's content with icon <code>[data-ico]</code> or <code>.ico-xxx</code>. Provide <code>[title]</code> for accessibility.
+Add icon before element's content <code>.icon-xxx</code>.<br>
+Replace element's content with icon <code>.empty.icon-xxx</code>. Provide <code>[title]</code> for accessibility.
 
 <div class="code">
-	<a title="Menu"   href="#x" data-ico="menu" class="pad rad hover">&equiv;</a>
-	<a title="OK"     href="#x" data-icon="ok" class="btn">OK</a>
-	<a title="Cancel" href="#x" data-icon="ban" class="btn bg-n">Cancel</a>
+	<a href="#x" class="pad rad hover icon-menu empty">Menu</a>
+	<a href="#x" class="btn icon-ok">OK</a>
+	<a href="#x" class="btn bg-n icon-ban">Cancel</a>
 </div>
 
 <h4 id="iconset">Available icons</h4>
@@ -1827,11 +1833,11 @@ Replace element's content with icon <code>[data-ico]</code> or <code>.ico-xxx</c
 
 <div class="row mar let" id="demo-all-icons">
 	<!--
-	<li><a href="#x" data-icon="world"></a>
-	<li><a href="#x" data-ico="open">Open</a>
-	<li><a href="#x" data-icon="user">User</a>
-	<li><a href="#x" class="bg-w text-w" data-ico="config">Config</a>
-	<li><a href="#x" class="bg-y text-y" data-icon="find">Find</a>
+	<li><a href="#x" class="icon-world"></a>
+	<li><a href="#x" class="icon-open">Open</a>
+	<li><a href="#x" class="icon-user">User</a>
+	<li><a href="#x" class="bg-w text-w icon-config">Config</a>
+	<li><a href="#x" class="bg-y text-y icon-find">Find</a>
 	-->
 </div>
 
@@ -1841,14 +1847,14 @@ Replace element's content with icon <code>[data-ico]</code> or <code>.ico-xxx</c
 In your document, provide SVG <code>symbol</code> with <code>[id]</code> containing prefixed icon name.
 It will override the icon with the same name, if such exists in iconset.
 <p>
-To explicitly set width, height and class of inserted icon (original or custom), provide values like this: <code>data-icon="sun/128/64/bg-w text-w"</code> or <code>class="icon-sun_128_64_bg-w_text-w"</code>.
+To explicitly set width, height and class of inserted icon (original or custom), provide values like this: <code>class="icon-sun_128_64_bg-w_text-w"</code>.
 </p>
 
 
 <div class="code">
-	<a data-icon="sun">Sun (new symbol)</a><br>
-	<a data-icon="columns">Columns (override symbol)</a><br>
-	<a data-icon="sun/128/64/bg-w text-w" class="mar row let center">Sun (custom size and class)</a>
+	<a class="icon-sun">Sun (new symbol)</a><br>
+	<a class="icon-columns">Columns (override symbol)</a><br>
+	<a class="icon-sun_128_64_bg-w_text-w mar row let center">Sun (custom size and class)</a>
 	<svg style="display:none;" width="0" height="0">
 		<symbol id="icon-sun" viewBox="0 0 16 16"><path d="M1 8l7-7 7 7-7 7zm2-5v10h10v-10z"/></symbol>
 		<symbol id="icon-columns" viewBox="0 0 9 9"><path d="M1 1h7v1h-7zm0 2h3v5h-3zm4 0h3v5h-3z"/></symbol>
@@ -1976,43 +1982,43 @@ let double = function(x){
 
 <div class="code">
 	Span with generated icon:
-	<span data-icon="find"></span>,
-	<span class="text-y" data-icon="find"></span>,
-	<span class="text-y" data-ico="find">title</span>,
-	<span class="text-y" data-icon="find">caption</span>
+	<span class="icon-find"></span>,
+	<span class="text-y icon-find"></span>,
+	<span class="text-y icon-find">title</span>,
+	<span class="text-y icon-find">caption</span>
 	<br>
 	Span with on-page icon:
-	<span data-icon="ok"></span>,
-	<span class="text-y" data-icon="ok"></span>,
-	<span class="text-y" data-ico="ok">title</span>,
-	<span class="text-y" data-icon="ok">caption</span>
+	<span class="icon-ok"></span>,
+	<span class="text-y icon-ok"></span>,
+	<span class="text-y icon-ok">title</span>,
+	<span class="text-y icon-ok">caption</span>
 	<br>
 	Span with absent icon:
-	<span  data-icon="noSvg"></span>,
-	<span class="text-y" data-icon="noSvg"></span>,
-	<span class="text-y" data-ico="noSvg">title</span>,
-	<span class="text-y" data-icon="noSvg">caption</span>
+	<span class="icon-noSvg"></span>,
+	<span class="text-y icon-noSvg"></span>,
+	<span class="text-y icon-noSvg">title</span>,
+	<span class="text-y icon-noSvg">caption</span>
 	<br>
 	Simple links:
-	<a href="#x" data-icon="ok" class="">Default</a>
-	<a href="#x" data-icon="ok" class="text-y">OK</a>
+	<a href="#x" class="icon-ok">Default</a>
+	<a href="#x" class="icon-ok text-y">OK</a>
 	<br>
 	Hover links:
-	<a href="#x" data-icon="ok" class="hover">Default</a>
-	<a href="#x" data-icon="ok" class="hover text-y">OK</a>
+	<a href="#x" class="icon-ok hover">Default</a>
+	<a href="#x" class="icon-ok hover text-y">OK</a>
 	<br>
 	Buttons:
-	<a href="#x" data-icon="ok" class="btn bg-i">Default</a>
-	<a href="#x" data-icon="ok" class="btn bg-y">OK</a>
+	<a href="#x" class="btn bg-i icon-ok">Default</a>
+	<a href="#x" class="btn bg-y icon-ok">OK</a>
 	<table class="hover mar">
 		<tr><td>Table:
-		<td><a href="#x" data-icon="ok" class="">Default</a>
-		<td><a href="#x" data-icon="ok" class="text-y">OK</a>
+		<td><a href="#x" class="icon-ok">Default</a>
+		<td><a href="#x" class="text-y icon-ok">OK</a>
 	</table>
 	<ul class="nav bg hover mar">
 		<li><a>Nav:</a>
-		<li><a href="#x" data-icon="ok" class="">Default</a>
-		<li><a href="#x" data-icon="ok" class="text-y">OK</a>
+		<li><a href="#x" class="icon-ok">Default</a>
+		<li><a href="#x" class="text-y icon-ok">OK</a>
 	</ul>
 </div>
 
@@ -2032,7 +2038,7 @@ let double = function(x){
 
 <div class="code">
 <div class="row center">
-	<a href="#media" class="col-0 pad bg-n let" data-icon="user/50/50"></a>
+	<a href="#media" class="col-0 pad bg-n let icon-user_50_50_text-i icon-user"></a>
 	<div>
 		Some description
 		<br>
@@ -2047,7 +2053,7 @@ let double = function(x){
 
 <div class="code">
 	<figure class="bg c pad">
-		<div class="text-i" data-icon="pin/80/80/bg-w"></div>
+		<div class="text-i icon-pin_80_80_bg-w_text-y icon-pin"></div>
 		<figcaption>
 			Figure caption
 		</figcaption>
@@ -2058,7 +2064,7 @@ let double = function(x){
 
 <div class="code">
 	<div class="shade -dlg c pad rad">
-		<p class="text-w" data-icon="warning/100/100">
+		<p class="text-w icon-warning_100_100 icon-warning">
 		<p><b>No items yet</b>
 		<p>Click the button to create new item</p>
 		<p><a href="#add" class="btn bg-y">Add new item</a>
@@ -2249,7 +2255,7 @@ most important:
 	<td>
 <!--tr><th>.switch<td><a href="#toggle-radio">Togglable (radio)</a><td>label div<td>.pop .tabs -->
 <tr><th>.item<td>Relative position<td>*<td>.over.let .close .filter
-<tr><th>.icon<td>Small image<td>img svg a button<td>.is-on .is-off
+<tr><th>.icon<td>Small image<td>img svg a button<td>.is-on .is-off .icon-x
 <tr><th>.bar<td>Progress bar<td>div<td>.text-x
 <tr><th>.fix<td>Fixed block<td><td>.r .l
 <tr><th>.text-<td><a href="#colors">Text color</a><td>* .invert<td>.text-e .text-w .text-i .text-y .text-n
@@ -2276,8 +2282,8 @@ most important:
 	<span class="tip shift" title="Validate while typing (dimmed submit buttons)">form.js-live-val</span><br>
 	<span class="tip shift" title="Generate gallery">.gallery &gt; a.pic</span><br>
 	<span class="tip shift" title="Container for filtered items">.filter</span><br>
-	<span class="tip shift" title="Add icon before text">.icon-x, [data-icon]</span><br>
-	<span class="tip shift" title="Replace text with icon">.ico-x, [data-ico]</span><br>
+	<span class="tip shift" title="Add icon before text">.icon-x</span><br>
+	<span class="tip shift" title="Replace text with icon">.empty.icon-x</span><br>
 	<span class="tip shift" title="Make tooltip from title">.tip</span><br>
 	<span class="tip shift" title="Hide by filter (use with [data-set])">.not-x, .or, .or-x</span><br>
 	<span class="tip shift" title="Enable theme customizer">body.js-theme</span><br>

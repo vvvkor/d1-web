@@ -10,40 +10,40 @@ export default class extends Plugin {
     this.opt = {
       qFilter: '.filters',
       qItem: '.item',
-      aFilter: 'data-filter',
+      dFilter: 'filter',
       cMem: 'mem'
     };
   }
   
   init () {
     this.app.e(this.opt.qFilter, n => this.prepare(n));
-    this.app.h('click', 'a[' + this.opt.aFilter + ']', e => this.applyControl(e.recv));
-    this.app.h('input', ':not(a)[' + this.opt.aFilter + ']', e => this.applyControl(e.recv));
+    this.app.h('click', 'a[data-' + this.opt.dFilter + ']', e => this.applyControl(e.recv));
+    this.app.h('input', ':not(a)[data-' + this.opt.dFilter + ']', e => this.applyControl(e.recv));
   }
 
   prepare (n){
     n.vInit = {};
-    this.forAttrs(n, (a, k) => n.vInit[k] = a.value);
+    this.forAttrs(n, (a, k) => n.vInit[k] = n.dataset[a]);
     this.restore(n);
     this.apply(n);
   }
   
   applyControl (n){
     let f = n.closest(this.opt.qFilter);
-    let x = this.app.attr(n, this.opt.aFilter, '').split(/=/, 2);
+    let x = (n.dataset[this.opt.dFilter] || '').split(/=/, 2);
     if(f){
       if(x[0]){
-        let a = this.opt.aFilter + '-' + x[0];
+        let a = this.opt.dFilter + '_' + x[0];
         let v = (n.tagName=='SELECT' ? n.value : x[1]) || '';
         if(v.substr(0, 1) == '+' && v.length>1){
           v = v.substr(1);
-          let w = this.app.attr(f, a, '').split(/;/);
+          let w = (f.dataset[a] || '').split(/;/);
           let i = w.indexOf(v);
           if(i==-1) w.push(v);
           else delete w[i];
           v = w.filter((val, key, arr) => (val !== '' && arr.indexOf(val) === key)).join(';');
         }
-        f.setAttribute(a, v);
+        f.dataset[a] = v;
         this.apply(f);
       }
       else{
@@ -54,17 +54,17 @@ export default class extends Plugin {
 
   apply (n){
     let f = {};
-    this.forAttrs(n, (a, k) => a.value.length > 0 ? f[k] = a.value.split(/;/) : null);
+    this.forAttrs(n, (a, k) => n.dataset[a].length > 0 ? f[k] = n.dataset[a].split(/;/) : null);
     this.app.dbg(['filter', n, f]);
     this.app.e(this.app.qq(this.opt.qItem, n), m => m.classList[this.match(m, f) ? 'remove' : 'add'](this.app.opt.cHide))
-    this.app.e(this.app.qq('[' + this.opt.aFilter + ']', n), m => this.setUsed(m, f));
+    this.app.e(this.app.qq('[data-' + this.opt.dFilter + ']', n), m => this.setUsed(m, f));
     this.store(n, f);
     this.app.fire('update', {n: n});
   }
   
   match (n, f){
     let r = true;
-    Object.keys(f).forEach(k => (f[k] && f[k].length > 0 && f[k].indexOf(this.app.attr(n, 'data-' + k, ''))==-1) ? (r = false) : null);
+    Object.keys(f).forEach(k => (f[k] && f[k].length > 0 && f[k].indexOf(n.dataset[k] || '')==-1) ? (r = false) : null);
     return r;
   }
   
@@ -73,11 +73,11 @@ export default class extends Plugin {
     if(n.tagName=='A') n.classList[u ? 'add' : 'remove'](this.app.opt.cAct);
     else if(n.type=='checkbox') n.checked = u;
     else if(n.type=='radio') n.checked = u;
-    else if(n.tagName=='SELECT') n.value = (f[this.app.attr(n, this.opt.aFilter, '')] || [''])[0];
+    else if(n.tagName=='SELECT') n.value = (f[(n.dataset[this.opt.dFilter] || '')] || [''])[0];
   }
 
   used (n, f){
-    let x = this.app.attr(n, this.opt.aFilter, '').split(/=\+?/, 2);
+    let x = (n.dataset[this.opt.dFilter] || '').split(/=\+?/, 2);
     return (x[0] && !f[x[0]] && !x[1]) || (f[x[0]] && f[x[0]].length > 0 && f[x[0]].indexOf(x[1]) != -1);
     //return ((f[x[0]] || '') == (x[1] || ''));
   }
@@ -91,29 +91,28 @@ export default class extends Plugin {
       let f = localStorage.getItem('filter-' + n.id);
       if(f){
         //create attributes if not exist
-        this.app.e(this.app.qq('[' + this.opt.aFilter + ']', n), m => {
-          let x = this.app.attr(m, this.opt.aFilter, '').split(/=/);
+        this.app.e(this.app.qq('[data-' + this.opt.dFilter + ']', n), m => {
+          let x = (m.dataset[this.opt.dFilter] || '').split(/=/);
           if(x[0]){
-            x = this.opt.aFilter + '-' + x[0];
-            if(!n.hasAttribute(x)) n.setAttribute(x, '');
+            x = this.opt.dFilter + '_' + x[0];
+            if(!(x in n.dataset)) n.dataset[x] = '';
           }
         });
         //parse
         f = this.app.parse(f);
-        if(f) this.forAttrs(n, (a, k) => n.setAttribute(a.name, (f[k] || []).join(';')));
+        if(f) this.forAttrs(n, (a, k) => n.dataset[a] = (f[k] || []).join(';'));
       }
     }
   }
   
   reset (n){
-    //this.forAttrs(n, a => n.removeAttribute(a.name))
-    this.forAttrs(n, (a, k) => (k in n.vInit) ? n.setAttribute(a.name, n.vInit[k] || '') : n.removeAttribute(a.name));
+    this.forAttrs(n, (a, k) => (k in n.vInit) ? (n.dataset[a] = n.vInit[k] || '') : (delete n.dataset[a.name]));
     this.apply(n);
   }
   
   forAttrs (n, f){
-    let z = this.opt.aFilter.length;
-    this.app.a(n.attributes).forEach(a => (a.name.substr(0, z)==this.opt.aFilter) ? f(a, a.name.substr(z+1)) : null);
+    let z = this.opt.dFilter.length;
+    Object.keys(n.dataset).forEach(a => (a.substr(0, z)==this.opt.dFilter) ? f(a, a.substr(z+1)) : null);
   }
 
 }

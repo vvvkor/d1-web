@@ -9,13 +9,11 @@ export default class extends Plugin {
     super('icons')
 
     this.opt = {
-      cIcon: 'icon',
+      cIcon: 'icon', // class of svg icon
+      pIcon: 'icon-', // class prefix of tag to insert icon into
+      cEmpty: 'empty',
       iconSize: 24,
-      pSvg: 'icon-', // id prefix to search on page; set false to skip search
-      //aReplace: 'data-ico',
-      //aAdd: 'data-icon',
-      qIcon: '[data-ico], [data-icon], [class*="ico-"], [class*="icon-"]',
-      qIconReplace: '[data-ico], [class*="ico-"]'
+      pSvg: 'icon-' // id prefix to search on page; set false to skip search
     };
     
     this.parsed = {};
@@ -23,31 +21,25 @@ export default class extends Plugin {
   }
 
   init () {
-    this.app.e(this.opt.qIcon, n => this.iconize(n));
+    this.app.e('[class*="' + this.opt.pIcon + '"]', n => this.iconize(n));
   }
   
   iconize (n) {
-    let m, i = n.dataset.ico || n.dataset.icon;
-    if(!i){
-      m = n.className.match(/\bicon?-([\w\-_]+)/);
-      if(m) i = m[1];
-    }
-    if(i){
-      let clr = n.matches(this.opt.qIconReplace);
-      this.addIcon(i, n, clr);
-      if(m) n.classList.remove(m[0]);
+    let m = n.className.match(new RegExp('\\b' + this.opt.pIcon + '([\\w\\-_]+)'));
+    if(m && m[1]){
+      this.addIcon(m[1], n);
+      n.classList.remove(m[0]);
     }
   }
 
-  addIcon (i, n, clr) {
+  addIcon (i, n) {
     let t = n.textContent;
     let icon = this.i(i);
     if(icon){
-      if(clr){
+      if(n.classList.contains(this.opt.cEmpty)){
         this.app.clr(n);
         if(!n.title) n.title = t;
       }
-      //if(n.firstChild) n.insertBefore(document.createTextNode(' '), n.firstChild);
       if(n.firstChild && !n.firstChild.tagName) this.app.ins('span', n.firstChild, {}, n, false);
       n.insertBefore(icon, n.firstChild);
     }

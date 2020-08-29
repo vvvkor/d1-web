@@ -419,12 +419,6 @@ var _default = /*#__PURE__*/function () {
       if (f) this.nn(q).forEach(function (n) {
         return f.call(_this6, n);
       });
-    } // get attribute of node
-
-  }, {
-    key: "attr",
-    value: function attr(n, a, def) {
-      return n && n.hasAttribute(a) ? n.getAttribute(a) : def !== undefined ? def : null;
     }
   }, {
     key: "typeOf",

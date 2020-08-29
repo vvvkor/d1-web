@@ -197,11 +197,6 @@ export default class {
     if(f) this.nn(q).forEach(n => f.call(this, n));
   }
 
-  // get attribute of node
-  attr (n, a, def){
-    return (n && n.hasAttribute(a)) ? n.getAttribute(a) : (def !== undefined ? def : null);
-  }
-
   typeOf (v){
     return Object.prototype.toString.call(v).slice(8, -1).toLowerCase();
   }
