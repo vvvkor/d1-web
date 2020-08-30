@@ -165,7 +165,7 @@ css restructure (maybe)
 /* https: //github.com/jgthms/minireset.css/ */
 button,input,select,textarea{margin:0;box-sizing:border-box;}
 html{box-sizing:content-box;/*scroll-behavior:smooth;*/}
-*,*:before,*:after{box-sizing:inherit;}
+*,*:before,*:after{box-sizing:content-box;/*inherit;*/}
 img,embed,iframe,object,audio,video{/*height:auto;*/max-width:100%;box-sizing:border-box;}
 img,iframe{border:0;}
 img{object-fit:cover;}
@@ -245,7 +245,6 @@ svg{fill:currentColor;}
 .icon{display:inline-block;width:1em;height:1em;transform:translate(0,.15em) scale(1.2);}
 	/*.icon:not(:last-child){margin-right:var(--gap-s);}*/
 	.icon+*{margin-left:var(--gap-s);}
-	.js .alt{display:none;}
 	/*
 		[data-ico]>.icon{margin-right:0;}
 		[data-ico]>.icon~*{display:none;}
@@ -368,7 +367,7 @@ ul.nav, .nav ul{list-style:none;padding:0;margin:0;}
 .hide[class],
 [class*="not-"],
 .or:not([class*="or-"]),
-.gal[class]>*,
+.gal>*,
 a.act>.is-off, a:not(.act)>.is-on,
 /* css */ /* js may add id, should add .toggle(-mobile), should remove .target(-mobile) */
 .target:not(:target),/*:not(.toggle)*/ /* .target[id] */

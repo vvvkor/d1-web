@@ -96,7 +96,7 @@ html {
 }
 
 *, *:before, *:after {
-    box-sizing: inherit;
+    box-sizing: content-box;
 }
 
 img, embed, iframe, object, audio, video {
@@ -315,10 +315,6 @@ svg {
 .icon+* {
     margin-left: .5em;
     margin-left: var(--gap-s);
-}
-
-.js .alt {
-    display: none;
 }
 
 ul {
@@ -712,8 +708,8 @@ ul.nav, .nav ul {
     transition: top .2s;
 }
 
-.hide[class], [class*="not-"], .or:not([class*="or-"]), .gal[class]>*,
-a.act>.is-off, a:not(.act)>.is-on, .target:not(:target),
+.hide[class], [class*="not-"], .or:not([class*="or-"]), .gal>*, a.act>.is-off,
+a:not(.act)>.is-on, .target:not(:target),
 .tabs+div>div:not(:target):not(:last-child):not(.toggle),
 .tabs+div>div:target:not(.toggle)~*, .dlg:not(:target):not(.toggle),
 .nav li:not(:hover)>ul:not(.toggle), .pop:not(:hover)>div:not(.toggle),

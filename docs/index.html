@@ -69,12 +69,12 @@
   class="topbar toggle shade  row let center fit hide-print"
   id="topline"
 >
-	<a href="#menu" class="pad -let hide-desktop icon-menu empty">Menu</a>
+	<a href="#menu" class="pad -let hide-desktop icon-menu empty" title="Menu"><span>Menu</span></a>
 	<a href="#top" class="pad -let"><b>d1</b></a>
 	<code class="pad nobr hide-mobile">npm i d1-web</code>
 	<a class="shift pad text-n">v2.0.0</a>
 	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1-web" title="GitHub" class="pad -let">GitHub</a>
-	<a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="pad -let icon-download empty" >Download</a>
+	<a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="pad -let icon-download empty" ><span>Download</span></a>
 </div>
 
 <div class="-pad row -wrap -center flip">
@@ -751,7 +751,7 @@ In this case, <code>table</code> must be a direct descendant of <code>form</code
 Table will become stacked on small screen.
 
 <div class="code">
-	<form method="post" class="store restore" id="form-table">
+	<form method="post" class="store restore">
 		<table class="flip">
 		<tr>
 			<td><label for="nm">Name</label>
@@ -1331,7 +1331,7 @@ and expand it to dropdown navbar on large screen.
 
 <div class="code">
 <div class="hide-desktop">
-	<a href="#navi" class="pad hover icon-menu empty">Menu</a>
+	<a href="#navi" class="pad hover icon-menu empty" title="Navigation"><span>Navigation</span></a>
 </div>
 <ul class="nav flip bg hover target-mobile" id="navi">
 	<li><a href="#n0" class="fit"><b>Logo</b></a></li>
@@ -1396,7 +1396,7 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 <div class="code">
 <a href="#modal">Open modal</a>
 <div id="modal" class="dlg rad c pad">
-	<a class="close pad icon-close empty" href="#cancel">Close</a>
+	<a class="close pad icon-close empty" href="#cancel"><span>Close</span></a>
 	<p>Modal</p>
 </div>
 </div>
@@ -1412,7 +1412,7 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 <div class="code">
 <a href="#modal-full">Open fullscreen modal</a>
 <div id="modal-full" class="dlg full center pad bg-w">
-	<a class="close pad icon-close empty" href="#cancel">Close</a>
+	<a class="close pad icon-close empty" href="#cancel"><span>Close</span></a>
 	Fullscreen modal
 </div>
 </div>
@@ -1504,9 +1504,9 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 </p>
 
 <div class="code">
-<a class="pad hover icon-menu empty" href="#drw">Open drawer</a>
+<a class="pad hover icon-menu empty" href="#drw" title="Open drawer"><span>Open drawer</span></a>
 <div class="drawer shift pad" id="drw">
-	<a class="close pad icon-close empty" href="#cancel">Close</a>
+	<a class="close pad icon-close empty" href="#cancel"><span>Close</span></a>
 	Demo drawer
 </div>
 </div>
@@ -1555,7 +1555,7 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 <a href="data.json" data-target="#dlg-inner">Fetch into modal dialog</a><br>
 <a href="data.json" data-target="#x">Fetch into generated modal dialog</a>
 <pre class="bg-i" id="preview">[preview area]</pre>
-<div id="preview-dlg" class="dlg pad"><a class="close pad icon-close empty" href="#cancel">Close</a><p class="pad" id="dlg-inner">(preview)</p></div>
+<div id="preview-dlg" class="dlg pad"><a class="close pad icon-close empty" href="#cancel"><span>Close</span></a><p class="pad" id="dlg-inner">(preview)</p></div>
 </div>
 
 
@@ -1582,7 +1582,7 @@ Toggles on resize.
 
 <p>To make link change its URL when Javascript is enabled, use <code>[data-href]</code> attribute.</p>
 
-<div class="code" id="demo-toggle-class">
+<div class="code">
   <a href="#no-js" data-href="#with-js">link</a>
 </div>
 
@@ -1811,10 +1811,10 @@ If link needs to be outside of the item, point at item with query selector in li
 <!--opts-icon-->
 <p>
 Add icon before element's content <code>.icon-xxx</code>.<br>
-Replace element's content with icon <code>.empty.icon-xxx</code>. Provide <code>[title]</code> for accessibility.
+Replace element's content with icon <code>.empty.icon-xxx &gt; *</code>. Provide <code>[title]</code> for accessibility.
 
 <div class="code">
-	<a href="#x" class="pad rad hover icon-menu empty">Menu</a>
+	<a href="#x" class="pad rad hover icon-menu empty" title="Menu"><span>Menu</span></a>
 	<a href="#x" class="btn icon-ok">OK</a>
 	<a href="#x" class="btn bg-n icon-ban">Cancel</a>
 </div>
@@ -1985,19 +1985,19 @@ let double = function(x){
 	<span class="icon-find"></span>,
 	<span class="text-y icon-find"></span>,
 	<span class="text-y icon-find">title</span>,
-	<span class="text-y icon-find">caption</span>
+	<span class="text-y icon-find empty" title="caption"><i>caption</i></span>
 	<br>
 	Span with on-page icon:
 	<span class="icon-ok"></span>,
 	<span class="text-y icon-ok"></span>,
 	<span class="text-y icon-ok">title</span>,
-	<span class="text-y icon-ok">caption</span>
+	<span class="text-y icon-ok empty" title="caption"><i>caption</i></span>
 	<br>
 	Span with absent icon:
 	<span class="icon-noSvg"></span>,
 	<span class="text-y icon-noSvg"></span>,
 	<span class="text-y icon-noSvg">title</span>,
-	<span class="text-y icon-noSvg">caption</span>
+	<span class="text-y icon-noSvg empty" title="caption"><i>caption</i></span>
 	<br>
 	Simple links:
 	<a href="#x" class="icon-ok">Default</a>
@@ -2283,7 +2283,7 @@ most important:
 	<span class="tip shift" title="Generate gallery">.gallery &gt; a.pic</span><br>
 	<span class="tip shift" title="Container for filtered items">.filter</span><br>
 	<span class="tip shift" title="Add icon before text">.icon-x</span><br>
-	<span class="tip shift" title="Replace text with icon">.empty.icon-x</span><br>
+	<span class="tip shift" title="Replace text with icon">.empty.icon-x &gt; *</span><br>
 	<span class="tip shift" title="Make tooltip from title">.tip</span><br>
 	<span class="tip shift" title="Hide by filter (use with [data-set])">.not-x, .or, .or-x</span><br>
 	<span class="tip shift" title="Enable theme customizer">body.js-theme</span><br>

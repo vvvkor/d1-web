@@ -13,30 +13,16 @@
     background-repeat: no-repeat;
 }
 
-[class*=icon-]:empty:before {
+[class*="icon-"]:empty:before {
     margin: 0;
 }
 
-.alt {
+[class*="icon-"].empty>* {
     display: none;
 }
 
-.empty {
-    display: inline-block;
-    width: 1.1em;
-    height: 1.5em;
-    overflow: hidden;
-    box-sizing: content-box;
-    vertical-align: middle;
-}
-
-button.empty, .btn.empty {
-    height: 1.3em;
-    transform: translate(0, -.1em);
-}
-
 [class*="icon-"].empty:before {
-    margin: 0 2em 2em 0;
+    margin: 0;
 }
 
 [class*="icon-"]:before {
@@ -65,6 +51,10 @@ button.empty, .btn.empty {
 }
 
 [class*="icon-"].text-n:before {
+}
+
+[class*="icon-"]:before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath fill='%2300f' d='M5 2a3 3 0 1 0 .01 0z'%3E%3C/path%3E%3C/svg%3E");
 }
 
 .icon-menu:before {

@@ -1,12 +1,14 @@
 /*! d1-web icons v0.0.0 */
 
 [class*="icon-"]:before{content:"";margin-right:var(--gap-s);display:inline-block;width:1em;height:1em;overflow:hidden;transform:translate(0,.15em) scale(1.2);background-position:50% 50%;background-size:contain;background-repeat:no-repeat;}
-[class*=icon-]:empty:before{margin:0;}
-.alt{display:none;}
-/*[class*=icon-].ico:before{margin:0;}*/
-	.empty{display:inline-block;width:1.1em;height:1.5em;/*basic line-height*/overflow:hidden;box-sizing:content-box;vertical-align:middle;}
-	button.empty, .btn.empty{height:1.3em;/*line-height:normal;*/transform:translate(0,-.1em);}
-	[class*="icon-"].empty:before{margin:0 2em 2em 0;}
+[class*="icon-"]:empty:before{margin:0;}
+/* option 1 (requires .gal[class]>*{hide}) in index.css */
+/* .empty{display:inline-block;width:1.1em;overflow:hidden;box-sizing:content-box;vertical-align:middle;height:1.5em;}*/ /*basic line-height*/
+/* button.empty,.btn.empty{transform:translate(0,-.1em);height:1.3em;}*/ /*line-height:normal;*/
+/* [class*="icon-"].empty:before{margin:0 2em 2em 0;} */
+/* option 2 */
+[class*="icon-"].empty>*{display:none;}
+[class*="icon-"].empty:before{margin:0;}
 
 [class*="icon-"]:before{filter:grayscale(1) brightness(8);}
 .btn[class*="icon-"]:before, button[class*="icon-"]:before,
@@ -19,11 +21,10 @@
 [class*="icon-"].text-n:before{}
 
 /* default icon (blue circle) */
-/*
 [class*="icon-"]:before {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath fill='%2300f' d='M5 2a3 3 0 1 0 .01 0z'%3E%3C/path%3E%3C/svg%3E");
 }
-*/
+
 
 /* for icons with black fill */
 /* add contrast(10) if originals not entirely black */

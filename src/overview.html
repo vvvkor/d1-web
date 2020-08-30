@@ -76,7 +76,7 @@ Text
 	<!-- menu -->
 	<header class="bg -bg-n -topbar -toggle">
 		<div class="hide-desktop">
-			<a href="#nav" class="pad hover icon-menu empty">Menu</a>
+			<a href="#nav" class="pad hover icon-menu empty" title="Menu"><span>Menu</span></a>
 			<a href="?" class="pad"><b>d1</b> <span class="text-n">v0.0.0</span></a>
 		</div>
 		
@@ -127,11 +127,11 @@ Text
 			<p>
 			<label><input type="checkbox" data-nodes="#topbar" data-set="topbar toggle shade  row let center fit" data-unset="topbar hide off" id="setup-topbar" class="mem"> Topbar</label><br>
 			<label><input type="checkbox" data-nodes="body" data-set="invert" id="setup-invert" class="mem"> Invert</label>
-				<span class="text-i tip icon-info empty" title="Not supported in  IE and Edge 15-"></span>
+				<span class="text-i tip icon-info empty" title="Not supported in  IE and Edge 15-"><i>[!]</i></span>
 				<br>
 			<label><input type="checkbox" data-nodes="html" data-set="scroller" id="custom-scroll" class="mem"> Custom scroll</label>
-				<span class="text-i tip icon-info empty" title="Supported in  WebKit and Firefox"></span>
-				<span class="text-w tip icon-bookmark empty" title="Remember selection  in local storage"></span>
+				<span class="text-i tip icon-info empty" title="Supported in  WebKit and Firefox"><i>[!]</i></span>
+				<span class="text-w tip icon-bookmark empty" title="Remember selection  in local storage"><i>[#]</i></span>
 			</p>
 		</div>
 		<div class="pad mar shade">
@@ -168,7 +168,7 @@ Text
 					<a href="https://picsum.photos/id/830/1000/700.jpg" class="pic" title="Blue">#3</a>
 					</span>
 				<li><a href="#gal1">Pure CSS Gallery</a>
-					<span class="text-i tip c icon-info empty" title="Not supported in  IE and Edge 15-"></span>
+					<span class="text-i tip c icon-info empty" title="Not supported in  IE and Edge 15-"><i>[!]</i></span>
 				<li><a href="#menu">Drawer & tree</a>
 				<!--li><a href="#x" data-nodes="#topbar" data-set="topbar toggle shade  row let center fit" data-unset="hide">Topbar</a>
 					<b class="small btn bg-e hide-js" title="Requires Javascript">JS</b-->
@@ -181,21 +181,21 @@ Text
 			<!-- togglable -->
 			<div id="modal" class="dlg rad c pad">
 				<!--a class="close pad icon-close empty" href="#cancel">Close</a-->
-				<a class="close pad" href="#cancel"><i class="icon-close"></i><span class="alt">&times;</span></a>
+				<a class="close pad icon-close empty" href="#cancel" title="Close"><b>&times;</b></a>
 				<p>Modal</p>
 			</div>
 			<div id="full" class="dlg full center pad bg-w">
-				<a class="close pad icon-close empty" href="#cancel">Close</a>
+				<a class="close pad icon-close empty" href="#cancel"><i>Close</i></a>
 				Fullscreen modal
 			</div>
 			<div class="gal">
 				<a id="gal1" href="#gal2" style="--img:url(https://picsum.photos/id/360/1000/700.jpg)" data-caption="1/3 - Red"  ></a>
 				<a id="gal2" href="#gal3" style="--img:url(https://picsum.photos/id/844/1000/700.jpg)" data-caption-x="2/3 - Green" ></a>
 				<a id="gal3" href="#gal1" style="--img:url(https://picsum.photos/id/830/1000/700.jpg)" data-caption="3/3 - Blue"></a>
-				<a class="close icon-close empty" href="#cancel">Close</a>
+				<a class="close icon-close empty" href="#cancel"><span>Close</span></a>
 			</div>
 			<div class="drawer pad swipe drag" id="menu" data-swipe="4">
-				<a class="close pad icon-close empty" href="#cancel">Close</a>
+				<a class="close pad icon-close empty" href="#cancel"><span>Close</span></a>
 				<h3 class="icon-flag">Languages</h3>
 				<ul class="tree accordion mem fit">
 					<li><a href="#ul1">Computer</a>
@@ -285,7 +285,7 @@ Text
 		<p class="swipe drag pad bg-e text-e icon-ban fit bord">Alert</p>
 		<p class="swipe drag pad bg-w text-w icon-warning">Warning</p>
 		<p class="swipe drag pad bg-y text-y stick item shade bord icon-ok">
-			<a href="#delete" class="pad close icon-close empty">Dismiss</a>
+			<a href="#delete" class="pad close icon-close empty"><span>Dismiss</span></a>
 			Sticky success message
 		</p>
 		<p class="swipe drag pad bg-i text-i icon-info">Info</p>
@@ -329,8 +329,9 @@ Text
 				<span class="text-y">Success</span><br>
 				<span class="text-i">Info</span><br>
 				<span class="text-n">Note</span><br>
-				<a href="#icon" class="icon-grid">Icon</a><br>
-				<a href="#icon" class="icon-grid" title="Icon without label"></a> After
+				<a href="#icon" class="icon-close">Icon</a><br>
+				<a href="#icon" class="icon-close" title="Icon without label"></a> No label
+				<a href="#icon" class="icon-close empty" title="Icon with hidden label"><span>Hidden label</span></a>
 			</div>
 		</div>
 
@@ -361,7 +362,7 @@ let double = function (x) {
 		</ul>
 		
 		<div class="dlg rad" id="buttons">
-			<a href="#cancel" class="close pad icon-close empty">Close</a>
+			<a href="#cancel" class="close pad icon-close empty"><i>Close</i></a>
 			<h3 class="fit pad bg">Buttons</h3>
 			<!--
 			1<a href="#cancel" class="pad icon-close empty">Close</a>
@@ -382,13 +383,13 @@ let double = function (x) {
 				<br>
 				<button>B</button>
 				<button class="icon-close">B</button>
-				<button class="icon-close empty" title="No label">B</button>
+				<button class="icon-close empty" title="No label"><i>B</i></button>
 				<a href="#x" class="btn bg-n">A</a>
 				<a href="#x" class="btn bg-n icon-close">A</a>
-				<a href="#x" class="btn bg-n icon-close empty" title="No label">A</a>
+				<a href="#x" class="btn bg-n icon-close empty" title="No label"><i>A</i></a>
 				<a href="#x" class="hover">A</a>
 				<a href="#x" class="hover icon-close">A</a>
-				<a href="#x" class="hover icon-close empty" title="No label">A</a>
+				<a href="#x" class="hover icon-close empty" title="No label"><i>A</i></a>
 				<br>
 				<a href="#x" class="btn">Link</a>
 				<a href="#x" class="btn bg-y icon-ok">Link</a>
@@ -405,7 +406,7 @@ let double = function (x) {
 		
 		
 		<div class="dlg rad" id="form-inline">
-			<a href="#cancel" class="close pad icon-close empty">Close</a>
+			<a href="#cancel" class="close pad icon-close empty"><span>Close</span></a>
 			<h3 class="fit pad bg">Inline form</h3>
 			<div class="mar pad nobr">
 			<form>
@@ -416,7 +417,7 @@ let double = function (x) {
 		</div>
 		
 		<div class="dlg rad" id="form-stack">
-			<a href="#cancel" class="close pad icon-close empty">Close</a>
+			<a href="#cancel" class="close pad icon-close empty"><span>Close</span></a>
 			<h3 class="fit pad bg">Stacked form</h3>
 			<div class="mar pad">
 			<form>
@@ -437,7 +438,7 @@ let double = function (x) {
 		</div>
 		
 		<div class="dlg let rad" id="form-flex">
-			<a href="#cancel" class="close pad icon-close empty">Close</a>
+			<a href="#cancel" class="close pad icon-close empty"><span>Close</span></a>
 			<h3 class="fit pad bg">Responsive flex form with custom validation tooltips</h3>
 			<div class="pad read center">
 			<form class="mar pad shade">
@@ -471,7 +472,7 @@ let double = function (x) {
 		
 		<div class="dlg let rad" id="form-table">
 			<div class="bg -stick">
-				<a href="#cancel" class="close pad icon-close empty">Close</a>
+				<a href="#cancel" class="close pad icon-close empty"><span>Close</span></a>
 				<h3 class="fit pad">Responsive table form with custom validation messages</h3>
 			</div>
 			<form class="js-unhint -js-live-val store restore" id="form-big">
@@ -730,8 +731,8 @@ let double = function (x) {
 				<tr>
 					<th>
 						<a class="text-y icon-add" title="Add item" href="#copy" data-item="#tab-item-tpl">Add</a>
-						<a class="text-w icon-delete empty" title="Remove all visible items" href="#delall" data-item="#tab-items>tbody">Delete all</a>
-						<a class="text-e icon-ban empty" title="Clear container" href="#clear" data-item="#tab-items">Clear</a>
+						<a class="text-w icon-delete empty" title="Remove all visible items" href="#delall" data-item="#tab-items>tbody"><span>Delete all</span></a>
+						<a class="text-e icon-ban empty" title="Clear container" href="#clear" data-item="#tab-items"><span>Clear</span></a>
 					</th>
 					<th class="icon-text">Name</th>
 					<th class="icon-ok text-i">Value</th>
@@ -748,7 +749,7 @@ let double = function (x) {
 		
 		<!-- filter -->
 		<div class="filters mem item mar pad shade" id="filter-items" data-filter_color="green;yellow">
-			<a href="#x" data-filter class="close pad text-y hover icon-refresh empty">Reset</a>
+			<a href="#x" data-filter class="close pad text-y hover icon-refresh empty"><i>Reset</i></a>
 			<i>Colors:</i>
 			<a href="#x" class="hover" data-filter="color">any</a>
 			<a href="#x" class="hover" data-filter="color=+red">red</a>
@@ -800,7 +801,7 @@ let double = function (x) {
 			</ul>
 			<div class="bg-i fit pad" id="preview">[preview area]</div>
 		</div>
-		<div id="preview-dlg" class="dlg pad"><a class="close pad icon-close empty" href="#cancel">Close</a><p class="pad" id="dlg-inner">(preview)</p></div>
+		<div id="preview-dlg" class="dlg pad"><a class="close pad icon-close empty" href="#cancel"><b>&times;</b></a><p class="pad" id="dlg-inner">(preview)</p></div>
 		
 		<!-- cols -->
 		<!--
@@ -895,7 +896,7 @@ let double = function (x) {
 			Inverted text
 			<a href="#x">link</a>
 			<span class="bg-e text-e">colors</span>
-			<span class="text-i tip shift icon-info empty" title="Not supported in  IE and Edge 15-"></span>
+			<span class="text-i tip shift icon-info empty" title="Not supported in  IE and Edge 15-"><i>[!]</i></span>
 		</div>
 		<div class="full center c bg-w mar pad shade">
 			<div class="l">
