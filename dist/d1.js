@@ -1,4 +1,4 @@
-/*! d1-web v1.4.17 */
+/*! d1-web v1.4.18 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -2724,7 +2724,7 @@ module.exports = new function () {
     //aReplace: 'data-ico',
     //aAdd: 'data-icon',
     qIcon: '[data-ico], [data-icon], [class*="ico-"], [class*="icon-"]',
-    qIconReplace: '[data-ico], [class*="ico-"]'
+    qIconReplace: '[data-ico], [class*="ico-"], .empty'
   };
   this.parsed = {};
   this.icons = iconset;

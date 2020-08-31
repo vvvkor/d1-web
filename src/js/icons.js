@@ -16,7 +16,7 @@ module.exports = new(function () {
     //aReplace: 'data-ico',
     //aAdd: 'data-icon',
     qIcon: '[data-ico], [data-icon], [class*="ico-"], [class*="icon-"]',
-    qIconReplace: '[data-ico], [class*="ico-"]'
+    qIconReplace: '[data-ico], [class*="ico-"], .empty'
   };
   
   this.parsed = {};

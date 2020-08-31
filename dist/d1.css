@@ -1,4 +1,4 @@
-/*! d1-web v1.4.17 */
+/*! d1-web v1.4.18 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -92,11 +92,10 @@ button, input, select, textarea {
 }
 
 html {
-    box-sizing: content-box;
 }
 
 *, *:before, *:after {
-    box-sizing: inherit;
+    box-sizing: content-box;
 }
 
 img, embed, iframe, object, audio, video {
@@ -665,7 +664,6 @@ ul.nav, .nav ul {
     height: 100vh;
     box-shadow: inset 0 3em 3em -1.5em rgba(0, 0, 0, .3);
     border-bottom: 10em solid #000;
-    box-sizing: content-box;
     outline: 100em solid #000;
 }
 
