@@ -164,7 +164,7 @@ css restructure (maybe)
 
 /* https: //github.com/jgthms/minireset.css/ */
 button,input,select,textarea{margin:0;box-sizing:border-box;}
-html{box-sizing:content-box;/*scroll-behavior:smooth;*/}
+html{/*box-sizing:content-box;*//*scroll-behavior:smooth;*/}
 *,*:before,*:after{box-sizing:content-box;/*inherit;*/}
 img,embed,iframe,object,audio,video{/*height:auto;*/max-width:100%;box-sizing:border-box;}
 img,iframe{border:0;}
@@ -344,7 +344,7 @@ ul.nav, .nav ul{list-style:none;padding:0;margin:0;}
 .drawer.shift[id]{left:auto;right:0;transition-property:right;}
 .drawer.shift:not(:target):not([class*="toggle"]), .drawer.shift.off{right:-21em;}/*hide*/
 /* gallery */
-.gal a[id]{z-index:110;color:#fff;background:#000 50% 50% / contain no-repeat;position:fixed;left:0;top:0;width:100%;height:100vh;box-shadow:inset 0 3em 3em -1.5em rgba(0,0,0,.3);border-bottom:10em solid #000;box-sizing:content-box;outline:100em solid #000;/*none;*/}
+.gal a[id]{z-index:110;color:#fff;background:#000 50% 50% / contain no-repeat;position:fixed;left:0;top:0;width:100%;height:100vh;box-shadow:inset 0 3em 3em -1.5em rgba(0,0,0,.3);border-bottom:10em solid #000;/*box-sizing:content-box;*/outline:100em solid #000;/*none;*/}
 .gal a:target{background-image:var(--img);} /* current */
 	.gal a:target+a{background-image:var(--img);background-position:999em 999em;} /* preload next */
 	.gal a:not([id]), .gal a:after{z-index:111;position:fixed;top:0;color:#fff;padding:0 calc(var(--gap-n) / 2);}

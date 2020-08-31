@@ -92,7 +92,6 @@ button, input, select, textarea {
 }
 
 html {
-    box-sizing: content-box;
 }
 
 *, *:before, *:after {
@@ -661,7 +660,6 @@ ul.nav, .nav ul {
     height: 100vh;
     box-shadow: inset 0 3em 3em -1.5em rgba(0, 0, 0, .3);
     border-bottom: 10em solid #000;
-    box-sizing: content-box;
     outline: 100em solid #000;
 }
 
