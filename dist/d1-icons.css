@@ -1,4 +1,4 @@
-/*! d1-web icons v2.0.2 */
+/*! d1-web icons v2.0.3 */
 
 [class*="icon-"]:before {
     content: "";
@@ -23,6 +23,18 @@
 
 [class*="icon-"].empty:before {
     margin: 0;
+}
+
+@media (max-width: 899px) {
+    [class*="icon-"].empty-mobile:before {
+        margin: 0;
+    }
+}
+
+@media (min-width: 900px) {
+    [class*="icon-"].empty-desktop:before {
+        margin: 0;
+    }
 }
 
 [class*="icon-"]:before {
