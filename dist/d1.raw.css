@@ -1,4 +1,4 @@
-/*! d1-web v2.0.1 */
+/*! d1-web v2.0.2 */
 
 /* @import url("css/columns.css"); */
 
@@ -245,10 +245,6 @@ svg{fill:currentColor;}
 .icon{display:inline-block;width:1em;height:1em;transform:translate(0,.15em) scale(1.2);}
 	/*.icon:not(:last-child){margin-right:var(--gap-s);}*/
 	.icon+*{margin-left:var(--gap-s);}
-	/*
-		[data-ico]>.icon{margin-right:0;}
-		[data-ico]>.icon~*{display:none;}
-	*/
 	/*.icon.line{fill:none;stroke:currentColor;stroke-width:8%;stroke-linecap:round;stroke-linejoin:round;transform:translate(0,.15em);}/*!*/
 
 /* list */
@@ -393,12 +389,12 @@ a.act>.is-off, a:not(.act)>.is-on,
 
 @media (max-width: 899px){
 	/* mobile */
-	.hide-mobile[class], .target-mobile:not(:target), .toggle-mobile.off {display:none;}
+	.hide-mobile[class], .target-mobile:not(:target), .toggle-mobile.off, .empty-mobile>:not(.icon) {display:none;}
 }
 
 @media (min-width: 900px){
 	/* desktop */
-	.hide-desktop[class], .target-desktop:not(:target), .toggle-desktop.off {display:none;}
+	.hide-desktop[class], .target-desktop:not(:target), .toggle-desktop.off, .empty-desktop>:not(.icon) {display:none;}
 }
 
 

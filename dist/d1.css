@@ -1,4 +1,4 @@
-/*! d1-web v2.0.1 */
+/*! d1-web v2.0.2 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -721,13 +721,15 @@ body:not(.js) .hide-nojs {
 }
 
 @media (max-width: 899px) {
-    .hide-mobile[class], .target-mobile:not(:target), .toggle-mobile.off {
+    .hide-mobile[class], .target-mobile:not(:target), .toggle-mobile.off,
+    .empty-mobile>:not(.icon) {
         display: none;
     }
 }
 
 @media (min-width: 900px) {
-    .hide-desktop[class], .target-desktop:not(:target), .toggle-desktop.off {
+    .hide-desktop[class], .target-desktop:not(:target), .toggle-desktop.off,
+    .empty-desktop>:not(.icon) {
         display: none;
     }
 }
