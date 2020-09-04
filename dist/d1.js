@@ -1,4 +1,4 @@
-/*! d1-web v2.0.3 */
+/*! d1-web v2.0.4 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -3120,7 +3120,7 @@ var calendar_default = /*#__PURE__*/function (_Plugin) {
     value: function fmt(x, i, t, f) {
       if (!x) x = new Date();
       if (i) x = new Date(x.getFullYear(), x.getMonth(), i);
-      return Dt.fmt(x, t, f);
+      return Dt.fmt(x, t, f || this.opt.dateFormat);
     }
   }, {
     key: "btn",

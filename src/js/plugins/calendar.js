@@ -280,7 +280,7 @@ export default class extends Plugin {
   fmt (x, i, t, f){
     if(!x) x = new Date();
     if(i) x = new Date(x.getFullYear(), x.getMonth(), i);
-    return Dt.fmt(x, t, f);
+    return Dt.fmt(x, t, f || this.opt.dateFormat);
   }
   
   btn (h, s, p){
