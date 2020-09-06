@@ -152,8 +152,9 @@ export default class {
   }
   
   // get object item by path
-  path (obj, p, def) {
+  path (obj, p, def, chk) {
     let r = obj
+    if (chk && r && this.typeOf(r) === 'object' && r[chk]) r = r[chk]
     if (p) {
       p = p.split('.')
       for (var i=0;i<p.length;i++) if (p[i]) {

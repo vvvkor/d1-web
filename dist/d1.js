@@ -1,4 +1,4 @@
-/*! d1-web v2.1.0 */
+/*! d1-web v2.1.1 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -363,8 +363,9 @@ var _default = /*#__PURE__*/function () {
 
   }, {
     key: "path",
-    value: function path(obj, p, def) {
+    value: function path(obj, p, def, chk) {
       var r = obj;
+      if (chk && r && this.typeOf(r) === 'object' && r[chk]) r = r[chk];
 
       if (p) {
         p = p.split('.');
@@ -3277,7 +3278,7 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
           if (d) {
             var h = u.split('#');
 
-            _this3.fix(n, n.value, _this3.app.path(d, h[1] || '', n.value));
+            _this3.fix(n, n.value, _this3.app.path(d, h[1] || '', n.value, 'data'));
           }
         });
       }
@@ -3323,7 +3324,7 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
 
       if (d) {
         var h = u.split('#');
-        d = this.norm(this.app.path(d, h[1] || ''), h[2], h[3], h[4]);
+        d = this.norm(this.app.path(d, h[1] || '', [], 'data'), h[2], h[3], h[4]);
         if (v === this.cap(n).value) this.openList(n, d);
         this.store(n, v, d);
       }
@@ -3457,7 +3458,7 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
 
       if (d) {
         var h = u.split('#');
-        d = this.norm(this.app.path(d, h[1] || ''), h[2], h[3]);
+        d = this.norm(this.app.path(d, h[1] || '', [], 'data'), h[2], h[3]);
         this.setOptions(n, d);
         this.store(n, u, d);
       } else this.setOptions(n, []);

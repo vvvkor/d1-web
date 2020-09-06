@@ -84,7 +84,7 @@ export default class extends Plugin {
         let d = this.app.parse(req.responseText);
         if(d){
           const h = u.split('#');
-          this.fix(n, n.value, this.app.path(d, h[1] || '', n.value));
+          this.fix(n, n.value, this.app.path(d, h[1] || '', n.value, 'data'));
         }
       });
     }
@@ -126,7 +126,7 @@ export default class extends Plugin {
     let d = this.app.parse(req.responseText);
     if(d){
       const h = u.split('#');
-      d = this.norm(this.app.path(d, h[1] || ''), h[2], h[3], h[4]);
+      d = this.norm(this.app.path(d, h[1] || '', [], 'data'), h[2], h[3], h[4]);
       if(v===this.cap(n).value) this.openList(n, d);
       this.store(n, v, d);
     }
@@ -239,7 +239,7 @@ export default class extends Plugin {
     let d = this.app.parse(req.responseText);
     if(d){
       const h = u.split('#');
-      d = this.norm(this.app.path(d, h[1] || ''), h[2], h[3]);
+      d = this.norm(this.app.path(d, h[1] || '', [], 'data'), h[2], h[3]);
       this.setOptions(n, d);
       this.store(n, u, d);
     }

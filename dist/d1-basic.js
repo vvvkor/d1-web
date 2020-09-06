@@ -1,4 +1,4 @@
-/*! d1-web v2.1.0 */
+/*! d1-web v2.1.1 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -363,8 +363,9 @@ var _default = /*#__PURE__*/function () {
 
   }, {
     key: "path",
-    value: function path(obj, p, def) {
+    value: function path(obj, p, def, chk) {
       var r = obj;
+      if (chk && r && this.typeOf(r) === 'object' && r[chk]) r = r[chk];
 
       if (p) {
         p = p.split('.');
