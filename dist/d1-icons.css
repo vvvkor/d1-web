@@ -1,4 +1,4 @@
-/*! d1-web icons v2.0.5 */
+/*! d1-web icons v2.1.0 */
 
 [class*="icon-"]:before {
     content: "";
@@ -206,7 +206,7 @@
 }
 
 .icon-image:before {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath fill='%2300f' d='M1 2h10v8h-10zm1 1v5l3-3 2 2 1-1 2 2 v-5zm5 .5a1 1 0 1 0 ,001 0z'%3E%3C/path%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath fill='%2300f' d='M1 2h10v8h-10zm1 1v5l3-3 2 2 1-1 2 2 v-5zm5.5 .5a1 1 0 1 0 .001 0z'%3E%3C/path%3E%3C/svg%3E");
 }
 
 .icon-text:before {

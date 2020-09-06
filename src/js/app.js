@@ -150,6 +150,19 @@ export default class {
   a (c){
     return c ? Array.prototype.slice.call(c) : c;
   }
+  
+  // get object item by path
+  path (obj, p, def) {
+    let r = obj
+    if (p) {
+      p = p.split('.')
+      for (var i=0;i<p.length;i++) if (p[i]) {
+        if (r[p[i]] === undefined) return def
+        r = r[p[i]]
+      }
+    }
+    return r
+  }
 
   // find node
   q (s, n){

@@ -1,4 +1,4 @@
-/*! d1-web v2.0.5 */
+/*! d1-web v2.1.0 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -359,6 +359,25 @@ var _default = /*#__PURE__*/function () {
     key: "a",
     value: function a(c) {
       return c ? Array.prototype.slice.call(c) : c;
+    } // get object item by path
+
+  }, {
+    key: "path",
+    value: function path(obj, p, def) {
+      var r = obj;
+
+      if (p) {
+        p = p.split('.');
+
+        for (var i = 0; i < p.length; i++) {
+          if (p[i]) {
+            if (r[p[i]] === undefined) return def;
+            r = r[p[i]];
+          }
+        }
+      }
+
+      return r;
     } // find node
 
   }, {

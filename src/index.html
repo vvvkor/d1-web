@@ -23,6 +23,33 @@
 		console.log('d1 = ', d1);
 		//d1.b([document], 'DOMContentLoaded', d1.e.bind(d1, 'code', n => n.classList.add('bg-w')));
 		
+		d1.listen('beforeopt', function(){
+			// check availability of JSON placeholder
+			var re = [
+				['data-href-alt', 'href'],
+				['data-list-alt', 'data-list'],
+				['data-lookup-alt', 'data-lookup'],
+				['data-cap-alt', 'data-cap']
+				];
+			var u ='https://restcountries.eu/rest/v2/alpha/nz';
+			let data = null;
+			fetch(u)
+				.then(d => d.json())
+				.then(d => data = d)
+				.finally(() => {
+					if(!data?.name) {
+						re.forEach(r => d1.e('[' + r[0] + ']', n => n.setAttribute(r[1], n.getAttribute(r[0]))))
+					}
+					re.forEach(r => {
+						d1.e('[' + r[0] + ']', n => {
+							n.removeAttribute(r[0])
+							//d1.fire('update', {n});
+						})
+					});
+				});
+		});
+
+		
 		d1.b([document], 'DOMContentLoaded', function(n){
 			var d = d1.q('#demo-all-icons');
 			if(d && d1.plugins.icons){
@@ -981,13 +1008,15 @@ Table will become stacked on small screen.
   type="text"
   name="id"
   id="lkp"
-  value="4"
+  value="ru"
   placeholder="search"
-  data-lookup="data.json?q={q}"
-	data-cap="data-cap.json?q={q}"
-  data-label="User One"
+  data-lookup-alt="data.json?q={q}#data"
+	data-cap-alt="data-cap.json?q={q}#data"
+  data-lookup="https://restcountries.eu/rest/v2/name/{q}##alpha2Code#name#languages.0.name"
+  data-cap="https://restcountries.eu/rest/v2/alpha/{q}#name"
+  data-label-x="Country One"
   data-cache="10"
-  data-url="/users/{id}">
+  data-url="#country-{id}">
 </div>
 <!-- data-goto="/userz/{id}" -->
 
@@ -996,11 +1025,12 @@ Table will become stacked on small screen.
 <div class="code">
   <select name="country" data-chain="#town">
     <option value="">-</option>
-    <option value="ru">Russia</option>
-    <option value="fr">France</option>
-    <option value="no">No</option>
+    <option value="Europe">Europe</option>
+    <option value="Asia">Asia</option>
+    <option value="Americas">America</option>
+    <option value="None">None</option>
   </select>
-  <select name="town" id="town" data-list="{q}.json" data-placeholder="..." data-cache="10"></select>
+  <select name="town" id="town" data-list-alt="{q}.json" data-list="https://restcountries.eu/rest/v2/region/{q}##alpha2Code#name" data-placeholder="..." data-cache="10"></select>
 </div>
 
 	<p>Chained datalist.
@@ -1008,11 +1038,12 @@ Table will become stacked on small screen.
 <div class="code">
   <select name="land" id="land" data-chain="#city">
     <option value="" selected>-</option>
-    <option value="ru">Russia</option>
-    <option value="fr">France</option>
-    <option value="no">No</option>
+    <option value="Europe">Europe</option>
+    <option value="Asia">Asia</option>
+    <option value="Americas">Americas</option>
+    <option value="None">None</option>
   </select>
-  <input type="text" list="cities" name="city" id="city" data-list="{q}.json" data-cache="10">
+  <input type="text" list="cities" name="city" id="city" data-list-alt="{q}.json" data-list="https://restcountries.eu/rest/v2/region/{q}##alpha2Code#name" data-cache="10">
   <datalist id="cities"><option value="a"></datalist>
 </div>
 
@@ -1084,7 +1115,7 @@ Table will become stacked on small screen.
 <!--form class="mar pad bg js-unhint js-live-val" id="testform">
 <div><input type="text" name="tx1" required xvalue="1"> <span class="text-e">required</span><span class="text-y">ok</span></div>
 <div><input type="datetime-local" name="dt1" class="calendar" required xvalue="2019-01-01T01:01"> <span class="text-e">required</span><span class="text-y">ok</span></div>
-<div><input type="text" name="lu1" data-lookup="data.json?q={q}" data-xlabel="1" data-url="/x/{id}" xvalue="1" required> <span class="text-e">required</span><span class="text-y">ok</span></div>
+<div><input type="text" name="lu1" data-lookup="data.json?q={q}#data" data-xlabel="1" data-url="/x/{id}" xvalue="1" required> <span class="text-e">required</span><span class="text-y">ok</span></div>
 <div><textarea name="ta1" required class="adjust edit"></textarea> <span class="text-e">required</span><span class="text-y">ok</span></div>
 <div><input type="submit" value="ok" id="testsubmit">
 <a href="#x" onclick="testsubmit.click();return false;">submit</a></div>
@@ -1551,9 +1582,10 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 <h3 id="fetch">Fetch</h3>
 <!--opts-fetch-->
 <div class="code">
-<a href="data.json" data-target="#preview">Fetch into preview area</a><br>
-<a href="data.json" data-target="#dlg-inner">Fetch into modal dialog</a><br>
-<a href="data.json" data-target="#x">Fetch into generated modal dialog</a>
+<a data-href-alt="data.json" href="https://restcountries.eu/rest/v2/alpha/gb#altSpellings" data-target="#preview">Fetch into preview area</a><br>
+<li><a href="#clear" data-item="#preview" class="icon-delete">Clear preview</a><br>
+<a data-href-alt="data.json" href="https://restcountries.eu/rest/v2/alpha/nz#languages" data-target="#dlg-inner">Fetch into modal dialog</a><br>
+<a data-href-alt="data.json" href="https://restcountries.eu/rest/v2/alpha/ru" data-target="#x">Fetch into generated modal dialog</a>
 <pre class="bg-i" id="preview">[preview area]</pre>
 <div id="preview-dlg" class="dlg pad"><a class="close pad icon-close empty" href="#cancel"><span>Close</span></a><p class="pad" id="dlg-inner">(preview)</p></div>
 </div>

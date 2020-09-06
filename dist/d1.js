@@ -1,4 +1,4 @@
-/*! d1-web v2.0.5 */
+/*! d1-web v2.1.0 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -359,6 +359,25 @@ var _default = /*#__PURE__*/function () {
     key: "a",
     value: function a(c) {
       return c ? Array.prototype.slice.call(c) : c;
+    } // get object item by path
+
+  }, {
+    key: "path",
+    value: function path(obj, p, def) {
+      var r = obj;
+
+      if (p) {
+        p = p.split('.');
+
+        for (var i = 0; i < p.length; i++) {
+          if (p[i]) {
+            if (r[p[i]] === undefined) return def;
+            r = r[p[i]];
+          }
+        }
+      }
+
+      return r;
     } // find node
 
   }, {
@@ -1608,7 +1627,7 @@ module.exports = (_module$exports = {
   attach: [15, 'M4.5 11q0 3 3 3t3-3v-8q0-2-2-2t-2 2v7h1v-7q0-1 1-1t1 1v8q0 2-2 2t-2-2v-7h-1z'],
   audio: [19, 'M8 14h-1v-10l8-2v10h-1v-6.5l-6 1.5za3 2 -20 1 1 0 -.01zm7-2a3 2 -20 1 1 0 -.01z'],
   video: [12, 'M1 3h7v2l3-2v6l-3-2v2h-7z'],
-  image: [12, 'M1 2h10v8h-10zm1 1v5l3-3 2 2 1-1 2 2 v-5zm5 .5a1 1 0 1 0 ,001 0z'],
+  image: [12, 'M1 2h10v8h-10zm1 1v5l3-3 2 2 1-1 2 2 v-5zm5.5 .5a1 1 0 1 0 .001 0z'],
   text: [12, 'M2 1h5l3 3v7h-8zm1 1v8h6v-6h-2v-2zm1 4h4v1h-4zm0 2h4v1h-4z'],
   tree: [26, 'M9 3h8v6h-3v3h8v5h2v6h-6v-6h2v-3h-6v3h2v6h-6v-6h2v-3h-6v3h2v6h-6v-6h2v-5h8v-3h-3z'],
   list: [7, 'M1 1h1v1h-1zm0 2h1v1h-1zm0 2h1v1h-1z M3 1h3v1h-3zm0 2h3v1h-3zm0 2h3v1h-3z'],
@@ -2018,8 +2037,9 @@ var fetch_default = /*#__PURE__*/function (_Plugin) {
     value: function fetchBy(n, f) {
       var _this2 = this;
 
-      this.fetch(n.getAttribute('href') || '', function (r) {
-        return f ? f(n, r) : _this2.receive(n, r);
+      var u = n.getAttribute('href') || '';
+      this.fetch(u, function (r) {
+        return f ? f(n, r) : _this2.receive(u, n, r);
       });
     }
   }, {
@@ -2038,17 +2058,22 @@ var fetch_default = /*#__PURE__*/function (_Plugin) {
     }
   }, {
     key: "receive",
-    value: function receive(n, req, e) {
+    value: function receive(u, n, req, e) {
       // this.app..parse(req.responseText)
       var d = this.app.q(n.dataset.target);
 
       if (req.status == '200') {
+        var h = u.split('#');
+        var t = req.responseText;
+        t = h[1] ? JSON.stringify(this.app.path(this.app.parse(t), h[1])) : t;
+        console.log(h, t);
+
         if (d) {
-          d.innerHTML = req.responseText;
+          d.innerHTML = t;
           var dlg = d.closest('.dlg[id]');
           if (dlg) this.app.toggle(dlg, true);
         } else {
-          this.app.dialog(n, req.responseText);
+          this.app.dialog(n, t);
         }
       } else console.error('XHTTP request failed', req); //this.app.fire('after', e);
 
@@ -3249,7 +3274,11 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
         this.app.fetch(u, function (req) {
           var d = _this3.app.parse(req.responseText);
 
-          if (d) _this3.fix(n, n.value, d.data);
+          if (d) {
+            var h = u.split('#');
+
+            _this3.fix(n, n.value, _this3.app.path(d, h[1] || '', n.value));
+          }
         });
       }
     }
@@ -3284,17 +3313,19 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
               time: new Date().getTime()
             })).replace(/\{q\}/, v));
             n.vCur = null;
-            this.app.fetch(u, this.list.bind(this, v, n));
+            this.app.fetch(u, this.list.bind(this, u, v, n));
           }
     }
   }, {
     key: "list",
-    value: function list(u, n, req) {
+    value: function list(u, v, n, req) {
       var d = this.app.parse(req.responseText);
 
       if (d) {
-        if (u === this.cap(n).value) this.openList(n, d.data);
-        this.store(n, u, d);
+        var h = u.split('#');
+        d = this.norm(this.app.path(d, h[1] || ''), h[2], h[3], h[4]);
+        if (v === this.cap(n).value) this.openList(n, d);
+        this.store(n, v, d);
       }
     }
   }, {
@@ -3425,9 +3456,11 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
       var d = this.app.parse(req.responseText);
 
       if (d) {
-        this.setOptions(n, d.data);
+        var h = u.split('#');
+        d = this.norm(this.app.path(d, h[1] || ''), h[2], h[3]);
+        this.setOptions(n, d);
         this.store(n, u, d);
-      }
+      } else this.setOptions(n, []);
     }
   }, {
     key: "setOptions",
@@ -3464,8 +3497,22 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
 
       if (c) {
         if (!n.vCache || Object.keys(n.vCache).length >= c) n.vCache = {};
-        if (d) n.vCache[u] = d.data;
+        if (d) n.vCache[u] = d;
       }
+    }
+  }, {
+    key: "norm",
+    value: function norm(d, fi, fn, fa) {
+      var _this5 = this;
+
+      if (this.app.typeOf(d) !== 'array') return [];
+      return d.map(function (v) {
+        return {
+          id: _this5.app.path(v, fi || 'id'),
+          nm: _this5.app.path(v, fn || 'nm'),
+          info: _this5.app.path(v, fa || 'info')
+        };
+      });
     }
   }]);
 

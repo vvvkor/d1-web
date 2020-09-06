@@ -7,10 +7,10 @@
       content="width=device-width, initial-scale=1">
 	<!--link href="https://unpkg.com/normalize.css@8.0.1/normalize.css" rel="stylesheet"-->
 	<!-- CDN -->
-		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.0.5/dist/d1.min.css" rel="stylesheet">
-		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.0.5/dist/d1.min.js"></script>
+		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.1.0/dist/d1.min.css" rel="stylesheet">
+		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.1.0/dist/d1.min.js"></script>
 		<noscript>
-			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.0.5/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.1.0/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- local-npm-src ->
 		<link href="../src/index.css" rel="stylesheet">
@@ -23,6 +23,33 @@
 	<script>
 		console.log('d1 = ', d1);
 		//d1.listen('beforeopt', function(){ console.log(d1.plugins.theme.opt); });
+		
+		d1.listen('beforeopt', function(){
+			// check availability of JSON placeholder
+			var re = [
+				['data-href-alt', 'href'],
+				['data-list-alt', 'data-list'],
+				['data-lookup-alt', 'data-lookup'],
+				['data-cap-alt', 'data-cap']
+				];
+			var u ='https://restcountries.eu/rest/v2/alpha/nz';
+			let data = null;
+			fetch(u)
+				.then(d => d.json())
+				.then(d => data = d)
+				.finally(() => {
+					if(!data?.name) {
+						re.forEach(r => d1.e('[' + r[0] + ']', n => n.setAttribute(r[1], n.getAttribute(r[0]))))
+					}
+					re.forEach(r => {
+						d1.e('[' + r[0] + ']', n => {
+							n.removeAttribute(r[0])
+							//d1.fire('update', {n});
+						})
+					});
+				});
+		});
+		
 		if (d1.plugins.icons){
 			//inject icon
 			d1.listen('beforeinit', function(){ d1.plugins.icons.icons['js-inject'] = [5, 'M1 1v3h3z']; });
@@ -77,11 +104,11 @@ Text
 	<header class="bg -bg-n -topbar -toggle">
 		<div class="hide-desktop">
 			<a href="#nav" class="pad hover icon-menu empty" title="Menu"><span>Menu</span></a>
-			<a href="?" class="pad"><b>d1</b> <span class="text-n">v2.0.5</span></a>
+			<a href="?" class="pad"><b>d1</b> <span class="text-n">v2.1.0</span></a>
 		</div>
 		
 		<ul class="nav flip hover target-mobile" id="nav">
-			<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v2.0.5</span></a></li>
+			<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v2.1.0</span></a></li>
 			<li><a href="index.html" class="icon-text">Docs</a>
 			<!--li><a class="icon-pin"><span class="hide-desktop">Hide</span></a-->
 			<li>
@@ -508,33 +535,38 @@ let double = function (x) {
 							  type="text"
 							  name="usr_id"
 							  id="usr_id"
-							  value="1"
+							  value="ru"
 							  placeholder="search"
-							  data-lookup="data.json?q={q}"
-							  data-label="User One"
+							  data-lookup-alt="data.json?q={q}#data#id#nm"
+							  data-cap-alt="data-cap.json?q={q}#data"
+							  data-lookup="https://restcountries.eu/rest/v2/name/{q}##alpha2Code#name#languages.0.name"
+							  data-cap="https://restcountries.eu/rest/v2/alpha/{q}#name"
+							  data-label-x="Country One"
 							  data-cache="10"
-							  data-url="#user-{id}">
+							  data-url="#country-{id}">
 							<div class="mar small text-e">Type and select from lookup</div>
 					<tr>
 						<td><label for="country">Chained</label>
 						<td>
 						  <select name="country" id="country" data-chain="#town">
 							<option value="" selected>-</option>
-							<option value="ru">Russia</option>
-							<option value="fr">France</option>
-							<option value="no">No</option>
+							<option value="Europe">Europe</option>
+							<option value="Asia">Asia</option>
+							<option value="Americas">America</option>
+							<option value="None">None</option>
 						  </select>
-						  <select name="town" id="town" data-list="{q}.json" data-placeholder="..." data-cache="10"></select>
+						  <select name="town" id="town" data-list-alt="{q}.json" data-list="https://restcountries.eu/rest/v2/region/{q}##alpha2Code#name" data-placeholder="..." data-cache="10"></select>
 					<tr>
 						<td><label for="land">Chained datalist</label>
 						<td>
 						  <select name="land" id="land" data-chain="#city">
 							<option value="" selected>-</option>
-							<option value="ru">Russia</option>
-							<option value="fr">France</option>
-							<option value="no">No</option>
+							<option value="Europe">Europe</option>
+							<option value="Asia">Asia</option>
+							<option value="Americas">Americas</option>
+							<option value="None">None</option>
 						  </select>
-						  <input type="text" list="cities" name="city" id="city" data-list="{q}.json" data-cache="10">
+						  <input type="text" list="cities" name="city" id="city" data-list-alt="{q}.json" data-list="https://restcountries.eu/rest/v2/region/{q}##alpha2Code#name" data-cache="10">
 						  <datalist id="cities"><option value="a"></datalist>
 					<tr>
 						<td><label for="lng">Select</label>
@@ -796,10 +828,10 @@ let double = function (x) {
 		<!-- fetch -->
 		<div class="shade">
 			<ul class="nav hover">
-				<li><a href="data.json" data-target="#preview">To preview area</a>
+				<li><a data-href-alt="data.json" href="https://restcountries.eu/rest/v2/alpha/gb#altSpellings" data-target="#preview">To preview area</a>
 				<li><a href="#clear" data-item="#preview" class="icon-delete">Clear preview</a>
-				<li><a href="data.json" data-target="#dlg-inner">To dialog</a>
-				<li><a href="data.json" data-target="#xxx" data-head="Fetched data">To generated dialog</a>
+				<li><a data-href-alt="data.json" href="https://restcountries.eu/rest/v2/alpha/nz#languages" data-target="#dlg-inner">To dialog</a>
+				<li><a data-href-alt="data.json" href="https://restcountries.eu/rest/v2/alpha/ru" data-target="#xxx" data-head="Fetched data">To generated dialog</a>
 			</ul>
 			<div class="bg-i fit pad" id="preview">[preview area]</div>
 		</div>

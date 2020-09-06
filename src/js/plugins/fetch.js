@@ -22,7 +22,8 @@ export default class extends Plugin {
   }
 
   fetchBy (n, f) {
-    this.fetch(n.getAttribute('href') || '', r => f ? f(n, r) : this.receive(n, r));
+    const u = n.getAttribute('href') || '';
+    this.fetch(u, r => f ? f(n, r) : this.receive(u, n, r));
   }
 
   fetch (url, f) {
@@ -32,17 +33,21 @@ export default class extends Plugin {
     req.send();
   }
 
-  receive (n, req, e) {
+  receive (u, n, req, e) {
     // this.app..parse(req.responseText)
     let d = this.app.q(n.dataset.target);
     if (req.status == '200') {
+      const h = u.split('#');
+      let t = req.responseText;
+      t = h[1] ? JSON.stringify(this.app.path(this.app.parse(t), h[1])) : t;
+      console.log(h,t)
       if (d) {
-        d.innerHTML = req.responseText;
+        d.innerHTML = t;
         let dlg = d.closest('.dlg[id]');
         if (dlg) this.app.toggle(dlg, true)
       }
       else {
-        this.app.dialog(n, req.responseText)
+        this.app.dialog(n, t)
       }
     }
     else console.error('XHTTP request failed', req);

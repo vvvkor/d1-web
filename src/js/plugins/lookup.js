@@ -82,7 +82,10 @@ export default class extends Plugin {
         .replace(/\{q\}/, n.value));
       this.app.fetch(u, req => {
         let d = this.app.parse(req.responseText);
-        if(d) this.fix(n, n.value, d.data);
+        if(d){
+          const h = u.split('#');
+          this.fix(n, n.value, this.app.path(d, h[1] || '', n.value));
+        }
       });
     }
   }
@@ -115,15 +118,17 @@ export default class extends Plugin {
           time: (new Date()).getTime()
       })).replace(/\{q\}/, v));
       n.vCur = null;
-      this.app.fetch(u, this.list.bind(this, v, n));
+      this.app.fetch(u, this.list.bind(this, u, v, n));
     }
   }
   
-  list (u, n, req){
+  list (u, v, n, req){
     let d = this.app.parse(req.responseText);
     if(d){
-      if(u===this.cap(n).value) this.openList(n, d.data);
-      this.store(n, u, d);
+      const h = u.split('#');
+      d = this.norm(this.app.path(d, h[1] || ''), h[2], h[3], h[4]);
+      if(v===this.cap(n).value) this.openList(n, d);
+      this.store(n, v, d);
     }
   }
 
@@ -233,9 +238,12 @@ export default class extends Plugin {
   onChainData (u, n, req){
     let d = this.app.parse(req.responseText);
     if(d){
-      this.setOptions(n, d.data);
+      const h = u.split('#');
+      d = this.norm(this.app.path(d, h[1] || ''), h[2], h[3]);
+      this.setOptions(n, d);
       this.store(n, u, d);
     }
+    else this.setOptions(n, []);
   }
 
   setOptions (n, a){
@@ -254,12 +262,21 @@ export default class extends Plugin {
     }
   }
   
-  store (n,u,d){
+  store (n, u, d){
     let c = 1 * (n.dataset.cache || this.opt.cacheLimit);
     if(c){
       if(!n.vCache || Object.keys(n.vCache).length>=c) n.vCache = {};
-      if(d) n.vCache[u] = d.data;
+      if(d) n.vCache[u] = d;
     }
+  }
+  
+  norm (d, fi, fn, fa) {
+    if (this.app.typeOf(d) !== 'array')  return [];
+    return d.map(v => ({
+      id: this.app.path(v, fi || 'id'),
+      nm: this.app.path(v, fn || 'nm'),
+      info: this.app.path(v, fa || 'info')
+    }));
   }
 
 }
