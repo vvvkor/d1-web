@@ -7,10 +7,10 @@
       content="width=device-width, initial-scale=1">
 	<!--link href="https://unpkg.com/normalize.css@8.0.1/normalize.css" rel="stylesheet"-->
 	<!-- CDN -->
-		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.1.1/dist/d1.min.css" rel="stylesheet">
-		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.1.1/dist/d1.min.js"></script>
+		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.1.2/dist/d1.min.css" rel="stylesheet">
+		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.1.2/dist/d1.min.js"></script>
 		<noscript>
-			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.1.1/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.1.2/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- local-npm-src ->
 		<link href="../src/index.css" rel="stylesheet">
@@ -104,11 +104,11 @@ Text
 	<header class="bg -bg-n -topbar -toggle">
 		<div class="hide-desktop">
 			<a href="#nav" class="pad hover icon-menu empty" title="Menu"><span>Menu</span></a>
-			<a href="?" class="pad"><b>d1</b> <span class="text-n">v2.1.1</span></a>
+			<a href="?" class="pad"><b>d1</b> <span class="text-n">v2.1.2</span></a>
 		</div>
 		
 		<ul class="nav flip hover target-mobile" id="nav">
-			<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v2.1.1</span></a></li>
+			<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v2.1.2</span></a></li>
 			<li><a href="index.html" class="icon-text">Docs</a>
 			<!--li><a class="icon-pin"><span class="hide-desktop">Hide</span></a-->
 			<li>
@@ -356,11 +356,6 @@ Text
 				<span class="text-y">Success</span><br>
 				<span class="text-i">Info</span><br>
 				<span class="text-n">Note</span><br>
-				<a href="#icon" class="icon-close">Icon</a><br>
-				<a href="#icon" class="icon-close" title="No label"></a> No label<br>
-				<a href="#icon" class="icon-close empty-mobile" title="Desktop label"><span>Desktop label</span></a><br>
-				<a href="#icon" class="icon-close empty-desktop" title="Mobile label"><span>Mobile label</span></a><br>
-				<a href="#icon" class="icon-close empty" title="Hidden label"><span>Hidden label</span></a>
 			</div>
 		</div>
 
@@ -555,7 +550,7 @@ let double = function (x) {
 							<option value="Americas">America</option>
 							<option value="None">None</option>
 						  </select>
-						  <select name="town" id="town" data-list-alt="{q}.json" data-list="https://restcountries.eu/rest/v2/region/{q}##alpha2Code#name" data-placeholder="..." data-cache="10"></select>
+						  <select name="town" id="town" data-list-alt="{q}.json" data-list="https://restcountries.eu/rest/v2/region/{q}##alpha2Code#name" data-placeholder="..." data-cache="10" class="narrow"></select>
 					<tr>
 						<td><label for="land">Chained datalist</label>
 						<td>
@@ -672,6 +667,13 @@ let double = function (x) {
 				<symbol id="icon-sun" viewBox="0 0 16 16"><path d="M1 8l7-7 7 7-7 7zm2-5v10h10v-10z"></path></symbol>
 				<!--symbol id="icon-columns" viewBox="0 0 9 9"><path d="M1 1h7v1h-7zm0 2h3v5h-3zm4 0h3v5h-3z"></path></symbol-->
 			</svg>
+		</div>
+		<div>
+			<a href="#icon" class="bord icon-close">Icon</a>
+			<a href="#icon" class="bord icon-close" title="No label"></a> No label
+			<a href="#icon" class="bord icon-close empty" title="Hidden label"><span>Hidden label</span></a>
+			<a href="#icon" class="bord icon-close empty-mobile" title="Desktop label"><span>Desktop label</span></a>
+			<a href="#icon" class="bord icon-close empty-desktop" title="Mobile label"><span>Mobile label</span></a>
 		</div>
 		
 		<h2 class="" id="table">Responsive table sort and filter</h2>
@@ -831,7 +833,7 @@ let double = function (x) {
 				<li><a data-href-alt="data.json" href="https://restcountries.eu/rest/v2/alpha/gb#altSpellings" data-target="#preview">To preview area</a>
 				<li><a href="#clear" data-item="#preview" class="icon-delete">Clear preview</a>
 				<li><a data-href-alt="data.json" href="https://restcountries.eu/rest/v2/alpha/nz#languages" data-target="#dlg-inner">To dialog</a>
-				<li><a data-href-alt="data.json" href="https://restcountries.eu/rest/v2/alpha/ru" data-target="#xxx" data-head="Fetched data">To generated dialog</a>
+				<li><a data-href-alt="data.json" href="https://restcountries.eu/rest/v2/alpha/ru#borders" data-target="#xxx" data-head="Fetched data">To generated dialog</a>
 			</ul>
 			<div class="bg-i fit pad" id="preview">[preview area]</div>
 		</div>
