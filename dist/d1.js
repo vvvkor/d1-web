@@ -97,9 +97,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var _default =
-/*#__PURE__*/
-function () {
+var _default = /*#__PURE__*/function () {
   function _default(name) {
     _classCallCheck(this, _default);
 
@@ -145,10 +143,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 /*! app - core of d1-web */
 // (() => {
-//let main = new (function(){
-var _default =
-/*#__PURE__*/
-function () {
+//let main = new (function () {
+var _default = /*#__PURE__*/function () {
   function _default() {
     _classCallCheck(this, _default);
 
@@ -210,8 +206,8 @@ function () {
     key: "on",
     value: function on(t, e) {
       this.fire('before', e);
-      this.fire(t, e); //this.fire(t + 'ed', e);
-      //if(!e || !e.defaultPrevented) ;
+      this.fire(t, e); //this.fire(t + 'ed', e)
+      //if (!e || !e.defaultPrevented)
 
       this.fire('after', e);
     } //plugins
@@ -303,8 +299,8 @@ function () {
   }, {
     key: "listen",
     value: function listen(et, f) {
-      //if(!this.handlers[et]) this.handlers[et] = [];
-      //this.handlers[et].push(f);
+      //if (!this.handlers[et]) this.handlers[et] = []
+      //this.handlers[et].push(f)
       this.h(et, '', f);
     } //handle
 
@@ -541,7 +537,7 @@ function () {
     key: "delay",
     value: function delay(f, ms, skip) {
       var p = null;
-      return function ff() {
+      return function () {
         var _arguments = arguments,
             _this7 = this;
 
@@ -595,9 +591,9 @@ function () {
   return _default;
 }();
 /*
-if (this.window === this) window[main.name] = main;
-else module.exports = main;
-})();
+if (this.window === this) window[main.name] = main
+else module.exports = main
+})()
 */
 
 
@@ -610,7 +606,7 @@ else module.exports = main;
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _default; });
 /* harmony import */ var _plugin_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -618,32 +614,36 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 /*! toggle - togglable interactive components */
 // Interface components: dropdown, popup, toggle, modal dialog, tabs, drawer, tree, gallery
 // .nav, .pop, .toggle, .dlg, .tabs, .drawer, .tree, .gal
 
 
-var _default =
-/*#__PURE__*/
-function (_Plugin) {
+var _default = /*#__PURE__*/function (_Plugin) {
   _inherits(_default, _Plugin);
+
+  var _super = _createSuper(_default);
 
   function _default() {
     var _this;
 
     _classCallCheck(this, _default);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(_default).call(this, 'toggle'));
+    _this = _super.call(this, 'toggle');
     _this.shown = null;
     _this.nEsc = 0;
     _this.opt = {
@@ -1111,7 +1111,7 @@ function (_Plugin) {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _default; });
 /* harmony import */ var _plugin_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1119,32 +1119,36 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 /*! dialog - replacement of standard Javascript dialogs: alert, confirm, prompt */
 // a.alert([title]|[data-caption])
 // a.dialog[href]([title]|[data-caption])[data-prompt] [data-src][data-go][data-ok][data-cancel][data-reverse][data-head][data-pic]
  // import Toggle from './toggle.js';
 
-var _default =
-/*#__PURE__*/
-function (_Plugin) {
+var _default = /*#__PURE__*/function (_Plugin) {
   _inherits(_default, _Plugin);
+
+  var _super = _createSuper(_default);
 
   function _default() {
     var _this;
 
     _classCallCheck(this, _default);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(_default).call(this, 'dialog'));
+    _this = _super.call(this, 'dialog');
     _this.dlg = null;
     _this.opt = {
       ccDlg: 'dlg rad',
@@ -1276,7 +1280,7 @@ function (_Plugin) {
       var t = (n.dataset[this.opt.dCaption] || n.title || p || '!').replace(/%([\w\-]+)%/g, function (m, a) {
         return n.getAttribute(a);
       });
-      var rev = 'reverse' in n.dataset;
+      var rev = ('reverse' in n.dataset);
       var src = n.dataset.src;
       src = src ? app.q(src) : null;
       if (!src && n.form) src = n.form.elements[p];
@@ -1363,7 +1367,7 @@ function (_Plugin) {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _default; });
 /* harmony import */ var _plugin_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1371,31 +1375,35 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 /*! gallery - image gallery */
 // .gallery a.pic 
 
 
-var _default =
-/*#__PURE__*/
-function (_Plugin) {
+var _default = /*#__PURE__*/function (_Plugin) {
   _inherits(_default, _Plugin);
+
+  var _super = _createSuper(_default);
 
   function _default() {
     var _this;
 
     _classCallCheck(this, _default);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(_default).call(this, 'gallery'));
+    _this = _super.call(this, 'gallery');
     _this.opt = {
       idPrefix: 'pic-',
       num: true,
@@ -1630,6 +1638,7 @@ module.exports = (_module$exports = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+// ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: ./src/js/polyfill.js
@@ -1642,7 +1651,7 @@ var app = __webpack_require__(1);
 var plugins_plugin = __webpack_require__(0);
 
 // CONCATENATED MODULE: ./src/js/plugins/code.js
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1650,30 +1659,34 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 /*! code - source code sample */
 
 
-var code_default =
-/*#__PURE__*/
-function (_Plugin) {
+var code_default = /*#__PURE__*/function (_Plugin) {
   _inherits(_default, _Plugin);
+
+  var _super = _createSuper(_default);
 
   function _default() {
     var _this;
 
     _classCallCheck(this, _default);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(_default).call(this, 'code'));
+    _this = _super.call(this, 'code');
     _this.langs = {
       html: {
         nm: 'HTML',
@@ -1813,7 +1826,7 @@ var iconset = __webpack_require__(6);
 var iconset_default = /*#__PURE__*/__webpack_require__.n(iconset);
 
 // CONCATENATED MODULE: ./src/js/plugins/icons.js
-function icons_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { icons_typeof = function _typeof(obj) { return typeof obj; }; } else { icons_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return icons_typeof(obj); }
+function icons_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { icons_typeof = function _typeof(obj) { return typeof obj; }; } else { icons_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return icons_typeof(obj); }
 
 function icons_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1821,31 +1834,35 @@ function icons_defineProperties(target, props) { for (var i = 0; i < props.lengt
 
 function icons_createClass(Constructor, protoProps, staticProps) { if (protoProps) icons_defineProperties(Constructor.prototype, protoProps); if (staticProps) icons_defineProperties(Constructor, staticProps); return Constructor; }
 
+function icons_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) icons_setPrototypeOf(subClass, superClass); }
+
+function icons_setPrototypeOf(o, p) { icons_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return icons_setPrototypeOf(o, p); }
+
+function icons_createSuper(Derived) { var hasNativeReflectConstruct = icons_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = icons_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = icons_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return icons_possibleConstructorReturn(this, result); }; }
+
 function icons_possibleConstructorReturn(self, call) { if (call && (icons_typeof(call) === "object" || typeof call === "function")) { return call; } return icons_assertThisInitialized(self); }
 
 function icons_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+function icons_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 function icons_getPrototypeOf(o) { icons_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return icons_getPrototypeOf(o); }
-
-function icons_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) icons_setPrototypeOf(subClass, superClass); }
-
-function icons_setPrototypeOf(o, p) { icons_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return icons_setPrototypeOf(o, p); }
 
 /*! icons - include svg icons */
 
 
 
-var icons_default =
-/*#__PURE__*/
-function (_Plugin) {
+var icons_default = /*#__PURE__*/function (_Plugin) {
   icons_inherits(_default, _Plugin);
+
+  var _super = icons_createSuper(_default);
 
   function _default() {
     var _this;
 
     icons_classCallCheck(this, _default);
 
-    _this = icons_possibleConstructorReturn(this, icons_getPrototypeOf(_default).call(this, 'icons'));
+    _this = _super.call(this, 'icons');
     _this.opt = {
       cIcon: 'icon',
       // class of svg icon
@@ -1960,7 +1977,7 @@ var dialog = __webpack_require__(3);
 var gallery = __webpack_require__(4);
 
 // CONCATENATED MODULE: ./src/js/plugins/fetch.js
-function fetch_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { fetch_typeof = function _typeof(obj) { return typeof obj; }; } else { fetch_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return fetch_typeof(obj); }
+function fetch_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { fetch_typeof = function _typeof(obj) { return typeof obj; }; } else { fetch_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return fetch_typeof(obj); }
 
 function fetch_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1968,30 +1985,34 @@ function fetch_defineProperties(target, props) { for (var i = 0; i < props.lengt
 
 function fetch_createClass(Constructor, protoProps, staticProps) { if (protoProps) fetch_defineProperties(Constructor.prototype, protoProps); if (staticProps) fetch_defineProperties(Constructor, staticProps); return Constructor; }
 
+function fetch_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) fetch_setPrototypeOf(subClass, superClass); }
+
+function fetch_setPrototypeOf(o, p) { fetch_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return fetch_setPrototypeOf(o, p); }
+
+function fetch_createSuper(Derived) { var hasNativeReflectConstruct = fetch_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = fetch_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = fetch_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return fetch_possibleConstructorReturn(this, result); }; }
+
 function fetch_possibleConstructorReturn(self, call) { if (call && (fetch_typeof(call) === "object" || typeof call === "function")) { return call; } return fetch_assertThisInitialized(self); }
 
 function fetch_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+function fetch_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 function fetch_getPrototypeOf(o) { fetch_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return fetch_getPrototypeOf(o); }
-
-function fetch_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) fetch_setPrototypeOf(subClass, superClass); }
-
-function fetch_setPrototypeOf(o, p) { fetch_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return fetch_setPrototypeOf(o, p); }
 
 /*! fetch - asynchronous requests */
 // import toggle from './toggle.js'
 // import dialog from './dialog.js'
 
 
-var fetch_default =
-/*#__PURE__*/
-function (_Plugin) {
+var fetch_default = /*#__PURE__*/function (_Plugin) {
   fetch_inherits(_default, _Plugin);
+
+  var _super = fetch_createSuper(_default);
 
   function _default() {
     fetch_classCallCheck(this, _default);
 
-    return fetch_possibleConstructorReturn(this, fetch_getPrototypeOf(_default).call(this, 'fetch')); // this.opt = {}
+    return _super.call(this, 'fetch'); // this.opt = {}
   }
 
   fetch_createClass(_default, [{
@@ -2069,9 +2090,7 @@ function dt_defineProperties(target, props) { for (var i = 0; i < props.length; 
 function dt_createClass(Constructor, protoProps, staticProps) { if (protoProps) dt_defineProperties(Constructor.prototype, protoProps); if (staticProps) dt_defineProperties(Constructor, staticProps); return Constructor; }
 
 /*! date - parse and format date */
-var Dt =
-/*#__PURE__*/
-function () {
+var Dt = /*#__PURE__*/function () {
   function Dt() {
     dt_classCallCheck(this, Dt);
   }
@@ -2122,7 +2141,7 @@ function () {
 
 
 // CONCATENATED MODULE: ./src/js/plugins/tablex.js
-function tablex_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { tablex_typeof = function _typeof(obj) { return typeof obj; }; } else { tablex_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return tablex_typeof(obj); }
+function tablex_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { tablex_typeof = function _typeof(obj) { return typeof obj; }; } else { tablex_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return tablex_typeof(obj); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -2132,32 +2151,36 @@ function tablex_defineProperties(target, props) { for (var i = 0; i < props.leng
 
 function tablex_createClass(Constructor, protoProps, staticProps) { if (protoProps) tablex_defineProperties(Constructor.prototype, protoProps); if (staticProps) tablex_defineProperties(Constructor, staticProps); return Constructor; }
 
+function tablex_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) tablex_setPrototypeOf(subClass, superClass); }
+
+function tablex_setPrototypeOf(o, p) { tablex_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return tablex_setPrototypeOf(o, p); }
+
+function tablex_createSuper(Derived) { var hasNativeReflectConstruct = tablex_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = tablex_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = tablex_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return tablex_possibleConstructorReturn(this, result); }; }
+
 function tablex_possibleConstructorReturn(self, call) { if (call && (tablex_typeof(call) === "object" || typeof call === "function")) { return call; } return tablex_assertThisInitialized(self); }
 
 function tablex_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+function tablex_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 function tablex_getPrototypeOf(o) { tablex_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return tablex_getPrototypeOf(o); }
-
-function tablex_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) tablex_setPrototypeOf(subClass, superClass); }
-
-function tablex_setPrototypeOf(o, p) { tablex_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return tablex_setPrototypeOf(o, p); }
 
 /*! tablex - filter and sort HTML table */
 // table.sort.totals.filter[data-filter][data-filter-report][data-case][data-filter-cols]
 
 
 
-var tablex_default =
-/*#__PURE__*/
-function (_Plugin) {
+var tablex_default = /*#__PURE__*/function (_Plugin) {
   tablex_inherits(_default, _Plugin);
+
+  var _super = tablex_createSuper(_default);
 
   function _default() {
     var _this;
 
     tablex_classCallCheck(this, _default);
 
-    _this = tablex_possibleConstructorReturn(this, tablex_getPrototypeOf(_default).call(this, 'tablex'));
+    _this = _super.call(this, 'tablex');
     _this.lang = '';
     _this.skipComma = 0;
     _this.intervalUnits = {
@@ -2708,7 +2731,7 @@ function (_Plugin) {
 
 
 // CONCATENATED MODULE: ./src/js/plugins/calendar.js
-function calendar_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { calendar_typeof = function _typeof(obj) { return typeof obj; }; } else { calendar_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return calendar_typeof(obj); }
+function calendar_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { calendar_typeof = function _typeof(obj) { return typeof obj; }; } else { calendar_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return calendar_typeof(obj); }
 
 function calendar_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2716,32 +2739,36 @@ function calendar_defineProperties(target, props) { for (var i = 0; i < props.le
 
 function calendar_createClass(Constructor, protoProps, staticProps) { if (protoProps) calendar_defineProperties(Constructor.prototype, protoProps); if (staticProps) calendar_defineProperties(Constructor, staticProps); return Constructor; }
 
+function calendar_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) calendar_setPrototypeOf(subClass, superClass); }
+
+function calendar_setPrototypeOf(o, p) { calendar_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return calendar_setPrototypeOf(o, p); }
+
+function calendar_createSuper(Derived) { var hasNativeReflectConstruct = calendar_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = calendar_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = calendar_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return calendar_possibleConstructorReturn(this, result); }; }
+
 function calendar_possibleConstructorReturn(self, call) { if (call && (calendar_typeof(call) === "object" || typeof call === "function")) { return call; } return calendar_assertThisInitialized(self); }
 
 function calendar_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+function calendar_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 function calendar_getPrototypeOf(o) { calendar_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return calendar_getPrototypeOf(o); }
-
-function calendar_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) calendar_setPrototypeOf(subClass, superClass); }
-
-function calendar_setPrototypeOf(o, p) { calendar_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return calendar_setPrototypeOf(o, p); }
 
 /*! calendar - replacement of standard date and datetime-local inputs */
 // import toggle from './toggle.js'
 
 
 
-var calendar_default =
-/*#__PURE__*/
-function (_Plugin) {
+var calendar_default = /*#__PURE__*/function (_Plugin) {
   calendar_inherits(_default, _Plugin);
+
+  var _super = calendar_createSuper(_default);
 
   function _default() {
     var _this;
 
     calendar_classCallCheck(this, _default);
 
-    _this = calendar_possibleConstructorReturn(this, calendar_getPrototypeOf(_default).call(this, 'calendar'));
+    _this = _super.call(this, 'calendar');
     _this.opt = {
       cBtn: 'pad hover',
       dateFormat: 'd',
@@ -3093,7 +3120,7 @@ function (_Plugin) {
 
 
 // CONCATENATED MODULE: ./src/js/plugins/lookup.js
-function lookup_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { lookup_typeof = function _typeof(obj) { return typeof obj; }; } else { lookup_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return lookup_typeof(obj); }
+function lookup_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { lookup_typeof = function _typeof(obj) { return typeof obj; }; } else { lookup_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return lookup_typeof(obj); }
 
 function lookup_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -3101,32 +3128,36 @@ function lookup_defineProperties(target, props) { for (var i = 0; i < props.leng
 
 function lookup_createClass(Constructor, protoProps, staticProps) { if (protoProps) lookup_defineProperties(Constructor.prototype, protoProps); if (staticProps) lookup_defineProperties(Constructor, staticProps); return Constructor; }
 
+function lookup_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) lookup_setPrototypeOf(subClass, superClass); }
+
+function lookup_setPrototypeOf(o, p) { lookup_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return lookup_setPrototypeOf(o, p); }
+
+function lookup_createSuper(Derived) { var hasNativeReflectConstruct = lookup_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = lookup_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = lookup_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return lookup_possibleConstructorReturn(this, result); }; }
+
 function lookup_possibleConstructorReturn(self, call) { if (call && (lookup_typeof(call) === "object" || typeof call === "function")) { return call; } return lookup_assertThisInitialized(self); }
 
 function lookup_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+function lookup_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 function lookup_getPrototypeOf(o) { lookup_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return lookup_getPrototypeOf(o); }
-
-function lookup_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) lookup_setPrototypeOf(subClass, superClass); }
-
-function lookup_setPrototypeOf(o, p) { lookup_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return lookup_setPrototypeOf(o, p); }
 
 /*! lookup - autocomplete lookups with data from XHTTP request */
 // import toggle from './toggle.js'
 // import fetch from './fetch.js'
 
 
-var lookup_default =
-/*#__PURE__*/
-function (_Plugin) {
+var lookup_default = /*#__PURE__*/function (_Plugin) {
   lookup_inherits(_default, _Plugin);
+
+  var _super = lookup_createSuper(_default);
 
   function _default() {
     var _this;
 
     lookup_classCallCheck(this, _default);
 
-    _this = lookup_possibleConstructorReturn(this, lookup_getPrototypeOf(_default).call(this, 'lookup'));
+    _this = _super.call(this, 'lookup');
     _this.opt = {
       dLabel: 'label',
       // data-label
@@ -3493,7 +3524,7 @@ function (_Plugin) {
 
 
 // CONCATENATED MODULE: ./src/js/plugins/edit.js
-function edit_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { edit_typeof = function _typeof(obj) { return typeof obj; }; } else { edit_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return edit_typeof(obj); }
+function edit_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { edit_typeof = function _typeof(obj) { return typeof obj; }; } else { edit_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return edit_typeof(obj); }
 
 function edit_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -3501,31 +3532,35 @@ function edit_defineProperties(target, props) { for (var i = 0; i < props.length
 
 function edit_createClass(Constructor, protoProps, staticProps) { if (protoProps) edit_defineProperties(Constructor.prototype, protoProps); if (staticProps) edit_defineProperties(Constructor, staticProps); return Constructor; }
 
+function edit_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) edit_setPrototypeOf(subClass, superClass); }
+
+function edit_setPrototypeOf(o, p) { edit_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return edit_setPrototypeOf(o, p); }
+
+function edit_createSuper(Derived) { var hasNativeReflectConstruct = edit_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = edit_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = edit_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return edit_possibleConstructorReturn(this, result); }; }
+
 function edit_possibleConstructorReturn(self, call) { if (call && (edit_typeof(call) === "object" || typeof call === "function")) { return call; } return edit_assertThisInitialized(self); }
 
 function edit_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+function edit_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 function edit_getPrototypeOf(o) { edit_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return edit_getPrototypeOf(o); }
-
-function edit_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) edit_setPrototypeOf(subClass, superClass); }
-
-function edit_setPrototypeOf(o, p) { edit_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return edit_setPrototypeOf(o, p); }
 
 /*! edit - wysiwyg text editor */
 // import toggle from './toggle.js'
 
 
-var edit_default =
-/*#__PURE__*/
-function (_Plugin) {
+var edit_default = /*#__PURE__*/function (_Plugin) {
   edit_inherits(_default, _Plugin);
+
+  var _super = edit_createSuper(_default);
 
   function _default() {
     var _this;
 
     edit_classCallCheck(this, _default);
 
-    _this = edit_possibleConstructorReturn(this, edit_getPrototypeOf(_default).call(this, 'edit'));
+    _this = _super.call(this, 'edit');
     _this.opt = {
       qAdjust: 'textarea.adjust',
       qEdit: 'textarea.edit',
@@ -3841,7 +3876,7 @@ function (_Plugin) {
 
 
 // CONCATENATED MODULE: ./src/js/plugins/valid.js
-function valid_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { valid_typeof = function _typeof(obj) { return typeof obj; }; } else { valid_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return valid_typeof(obj); }
+function valid_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { valid_typeof = function _typeof(obj) { return typeof obj; }; } else { valid_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return valid_typeof(obj); }
 
 function valid_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -3849,30 +3884,34 @@ function valid_defineProperties(target, props) { for (var i = 0; i < props.lengt
 
 function valid_createClass(Constructor, protoProps, staticProps) { if (protoProps) valid_defineProperties(Constructor.prototype, protoProps); if (staticProps) valid_defineProperties(Constructor, staticProps); return Constructor; }
 
-function valid_possibleConstructorReturn(self, call) { if (call && (valid_typeof(call) === "object" || typeof call === "function")) { return call; } return valid_assertThisInitialized(self); }
-
-function valid_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function valid_getPrototypeOf(o) { valid_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return valid_getPrototypeOf(o); }
-
 function valid_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) valid_setPrototypeOf(subClass, superClass); }
 
 function valid_setPrototypeOf(o, p) { valid_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return valid_setPrototypeOf(o, p); }
 
+function valid_createSuper(Derived) { var hasNativeReflectConstruct = valid_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = valid_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = valid_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return valid_possibleConstructorReturn(this, result); }; }
+
+function valid_possibleConstructorReturn(self, call) { if (call && (valid_typeof(call) === "object" || typeof call === "function")) { return call; } return valid_assertThisInitialized(self); }
+
+function valid_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function valid_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function valid_getPrototypeOf(o) { valid_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return valid_getPrototypeOf(o); }
+
 /*! valid - custom form validation messages */
 
 
-var valid_default =
-/*#__PURE__*/
-function (_Plugin) {
+var valid_default = /*#__PURE__*/function (_Plugin) {
   valid_inherits(_default, _Plugin);
+
+  var _super = valid_createSuper(_default);
 
   function _default() {
     var _this;
 
     valid_classCallCheck(this, _default);
 
-    _this = valid_possibleConstructorReturn(this, valid_getPrototypeOf(_default).call(this, 'valid'));
+    _this = _super.call(this, 'valid');
     _this.opt = {
       aHint: 'data-hint',
       qValidate: 'form',
@@ -3977,7 +4016,7 @@ function (_Plugin) {
 
 
 // CONCATENATED MODULE: ./src/js/plugins/tools.js
-function tools_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { tools_typeof = function _typeof(obj) { return typeof obj; }; } else { tools_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return tools_typeof(obj); }
+function tools_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { tools_typeof = function _typeof(obj) { return typeof obj; }; } else { tools_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return tools_typeof(obj); }
 
 function tools_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -3985,30 +4024,34 @@ function tools_defineProperties(target, props) { for (var i = 0; i < props.lengt
 
 function tools_createClass(Constructor, protoProps, staticProps) { if (protoProps) tools_defineProperties(Constructor.prototype, protoProps); if (staticProps) tools_defineProperties(Constructor, staticProps); return Constructor; }
 
-function tools_possibleConstructorReturn(self, call) { if (call && (tools_typeof(call) === "object" || typeof call === "function")) { return call; } return tools_assertThisInitialized(self); }
-
-function tools_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function tools_getPrototypeOf(o) { tools_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return tools_getPrototypeOf(o); }
-
 function tools_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) tools_setPrototypeOf(subClass, superClass); }
 
 function tools_setPrototypeOf(o, p) { tools_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return tools_setPrototypeOf(o, p); }
 
+function tools_createSuper(Derived) { var hasNativeReflectConstruct = tools_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = tools_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = tools_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return tools_possibleConstructorReturn(this, result); }; }
+
+function tools_possibleConstructorReturn(self, call) { if (call && (tools_typeof(call) === "object" || typeof call === "function")) { return call; } return tools_assertThisInitialized(self); }
+
+function tools_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function tools_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function tools_getPrototypeOf(o) { tools_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return tools_getPrototypeOf(o); }
+
 /*! tools - miscellaneous utilities (toggle class and attributes) */
 
 
-var tools_default =
-/*#__PURE__*/
-function (_Plugin) {
+var tools_default = /*#__PURE__*/function (_Plugin) {
   tools_inherits(_default, _Plugin);
+
+  var _super = tools_createSuper(_default);
 
   function _default() {
     var _this;
 
     tools_classCallCheck(this, _default);
 
-    _this = tools_possibleConstructorReturn(this, tools_getPrototypeOf(_default).call(this, 'tools'));
+    _this = _super.call(this, 'tools');
     _this.opt = {
       dNodes: 'nodes',
       // data-nodes
@@ -4203,7 +4246,7 @@ function (_Plugin) {
 
 
 // CONCATENATED MODULE: ./src/js/plugins/form.js
-function form_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { form_typeof = function _typeof(obj) { return typeof obj; }; } else { form_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return form_typeof(obj); }
+function form_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { form_typeof = function _typeof(obj) { return typeof obj; }; } else { form_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return form_typeof(obj); }
 
 function form_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4211,30 +4254,34 @@ function form_defineProperties(target, props) { for (var i = 0; i < props.length
 
 function form_createClass(Constructor, protoProps, staticProps) { if (protoProps) form_defineProperties(Constructor.prototype, protoProps); if (staticProps) form_defineProperties(Constructor, staticProps); return Constructor; }
 
-function form_possibleConstructorReturn(self, call) { if (call && (form_typeof(call) === "object" || typeof call === "function")) { return call; } return form_assertThisInitialized(self); }
-
-function form_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function form_getPrototypeOf(o) { form_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return form_getPrototypeOf(o); }
-
 function form_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) form_setPrototypeOf(subClass, superClass); }
 
 function form_setPrototypeOf(o, p) { form_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return form_setPrototypeOf(o, p); }
 
+function form_createSuper(Derived) { var hasNativeReflectConstruct = form_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = form_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = form_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return form_possibleConstructorReturn(this, result); }; }
+
+function form_possibleConstructorReturn(self, call) { if (call && (form_typeof(call) === "object" || typeof call === "function")) { return call; } return form_assertThisInitialized(self); }
+
+function form_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function form_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function form_getPrototypeOf(o) { form_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return form_getPrototypeOf(o); }
+
 /*! form - utilities for form inputs */
 
 
-var form_default =
-/*#__PURE__*/
-function (_Plugin) {
+var form_default = /*#__PURE__*/function (_Plugin) {
   form_inherits(_default, _Plugin);
+
+  var _super = form_createSuper(_default);
 
   function _default() {
     var _this;
 
     form_classCallCheck(this, _default);
 
-    _this = form_possibleConstructorReturn(this, form_getPrototypeOf(_default).call(this, 'form'));
+    _this = _super.call(this, 'form');
     _this.opt = {};
     return _this;
   }
@@ -4294,7 +4341,7 @@ function (_Plugin) {
 
 
 // CONCATENATED MODULE: ./src/js/plugins/keepform.js
-function keepform_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { keepform_typeof = function _typeof(obj) { return typeof obj; }; } else { keepform_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return keepform_typeof(obj); }
+function keepform_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { keepform_typeof = function _typeof(obj) { return typeof obj; }; } else { keepform_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return keepform_typeof(obj); }
 
 function keepform_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4302,30 +4349,34 @@ function keepform_defineProperties(target, props) { for (var i = 0; i < props.le
 
 function keepform_createClass(Constructor, protoProps, staticProps) { if (protoProps) keepform_defineProperties(Constructor.prototype, protoProps); if (staticProps) keepform_defineProperties(Constructor, staticProps); return Constructor; }
 
-function keepform_possibleConstructorReturn(self, call) { if (call && (keepform_typeof(call) === "object" || typeof call === "function")) { return call; } return keepform_assertThisInitialized(self); }
-
-function keepform_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function keepform_getPrototypeOf(o) { keepform_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return keepform_getPrototypeOf(o); }
-
 function keepform_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) keepform_setPrototypeOf(subClass, superClass); }
 
 function keepform_setPrototypeOf(o, p) { keepform_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return keepform_setPrototypeOf(o, p); }
 
+function keepform_createSuper(Derived) { var hasNativeReflectConstruct = keepform_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = keepform_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = keepform_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return keepform_possibleConstructorReturn(this, result); }; }
+
+function keepform_possibleConstructorReturn(self, call) { if (call && (keepform_typeof(call) === "object" || typeof call === "function")) { return call; } return keepform_assertThisInitialized(self); }
+
+function keepform_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function keepform_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function keepform_getPrototypeOf(o) { keepform_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return keepform_getPrototypeOf(o); }
+
 /*! keepform - store and restore user input */
 
 
-var keepform_default =
-/*#__PURE__*/
-function (_Plugin) {
+var keepform_default = /*#__PURE__*/function (_Plugin) {
   keepform_inherits(_default, _Plugin);
+
+  var _super = keepform_createSuper(_default);
 
   function _default() {
     var _this;
 
     keepform_classCallCheck(this, _default);
 
-    _this = keepform_possibleConstructorReturn(this, keepform_getPrototypeOf(_default).call(this, 'keepform'));
+    _this = _super.call(this, 'keepform');
     _this.opt = {
       qStore: 'form.store[id]',
       qRestore: 'form.restore[id]'
@@ -4464,7 +4515,7 @@ function (_Plugin) {
 
 
 // CONCATENATED MODULE: ./src/js/plugins/items.js
-function items_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { items_typeof = function _typeof(obj) { return typeof obj; }; } else { items_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return items_typeof(obj); }
+function items_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { items_typeof = function _typeof(obj) { return typeof obj; }; } else { items_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return items_typeof(obj); }
 
 function items_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4472,30 +4523,34 @@ function items_defineProperties(target, props) { for (var i = 0; i < props.lengt
 
 function items_createClass(Constructor, protoProps, staticProps) { if (protoProps) items_defineProperties(Constructor.prototype, protoProps); if (staticProps) items_defineProperties(Constructor, staticProps); return Constructor; }
 
-function items_possibleConstructorReturn(self, call) { if (call && (items_typeof(call) === "object" || typeof call === "function")) { return call; } return items_assertThisInitialized(self); }
-
-function items_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function items_getPrototypeOf(o) { items_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return items_getPrototypeOf(o); }
-
 function items_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) items_setPrototypeOf(subClass, superClass); }
 
 function items_setPrototypeOf(o, p) { items_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return items_setPrototypeOf(o, p); }
 
+function items_createSuper(Derived) { var hasNativeReflectConstruct = items_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = items_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = items_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return items_possibleConstructorReturn(this, result); }; }
+
+function items_possibleConstructorReturn(self, call) { if (call && (items_typeof(call) === "object" || typeof call === "function")) { return call; } return items_assertThisInitialized(self); }
+
+function items_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function items_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function items_getPrototypeOf(o) { items_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return items_getPrototypeOf(o); }
+
 /*! items - copy, hide, delete items */
 
 
-var items_default =
-/*#__PURE__*/
-function (_Plugin) {
+var items_default = /*#__PURE__*/function (_Plugin) {
   items_inherits(_default, _Plugin);
+
+  var _super = items_createSuper(_default);
 
   function _default() {
     var _this;
 
     items_classCallCheck(this, _default);
 
-    _this = items_possibleConstructorReturn(this, items_getPrototypeOf(_default).call(this, 'items'));
+    _this = _super.call(this, 'items');
     _this.opt = {
       dItem: 'item',
       // data-item
@@ -4610,7 +4665,7 @@ function (_Plugin) {
 
 
 // CONCATENATED MODULE: ./src/js/plugins/filter.js
-function filter_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { filter_typeof = function _typeof(obj) { return typeof obj; }; } else { filter_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return filter_typeof(obj); }
+function filter_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { filter_typeof = function _typeof(obj) { return typeof obj; }; } else { filter_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return filter_typeof(obj); }
 
 function filter_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4618,30 +4673,34 @@ function filter_defineProperties(target, props) { for (var i = 0; i < props.leng
 
 function filter_createClass(Constructor, protoProps, staticProps) { if (protoProps) filter_defineProperties(Constructor.prototype, protoProps); if (staticProps) filter_defineProperties(Constructor, staticProps); return Constructor; }
 
-function filter_possibleConstructorReturn(self, call) { if (call && (filter_typeof(call) === "object" || typeof call === "function")) { return call; } return filter_assertThisInitialized(self); }
-
-function filter_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function filter_getPrototypeOf(o) { filter_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return filter_getPrototypeOf(o); }
-
 function filter_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) filter_setPrototypeOf(subClass, superClass); }
 
 function filter_setPrototypeOf(o, p) { filter_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return filter_setPrototypeOf(o, p); }
 
+function filter_createSuper(Derived) { var hasNativeReflectConstruct = filter_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = filter_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = filter_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return filter_possibleConstructorReturn(this, result); }; }
+
+function filter_possibleConstructorReturn(self, call) { if (call && (filter_typeof(call) === "object" || typeof call === "function")) { return call; } return filter_assertThisInitialized(self); }
+
+function filter_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function filter_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function filter_getPrototypeOf(o) { filter_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return filter_getPrototypeOf(o); }
+
 /*! filter - filter items */
 
 
-var filter_default =
-/*#__PURE__*/
-function (_Plugin) {
+var filter_default = /*#__PURE__*/function (_Plugin) {
   filter_inherits(_default, _Plugin);
+
+  var _super = filter_createSuper(_default);
 
   function _default() {
     var _this;
 
     filter_classCallCheck(this, _default);
 
-    _this = filter_possibleConstructorReturn(this, filter_getPrototypeOf(_default).call(this, 'filter'));
+    _this = _super.call(this, 'filter');
     _this.opt = {
       qFilter: '.filters',
       qItem: '.item',
@@ -4802,7 +4861,7 @@ function (_Plugin) {
 
 
 // CONCATENATED MODULE: ./src/js/plugins/fliptable.js
-function fliptable_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { fliptable_typeof = function _typeof(obj) { return typeof obj; }; } else { fliptable_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return fliptable_typeof(obj); }
+function fliptable_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { fliptable_typeof = function _typeof(obj) { return typeof obj; }; } else { fliptable_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return fliptable_typeof(obj); }
 
 function fliptable_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4810,30 +4869,34 @@ function fliptable_defineProperties(target, props) { for (var i = 0; i < props.l
 
 function fliptable_createClass(Constructor, protoProps, staticProps) { if (protoProps) fliptable_defineProperties(Constructor.prototype, protoProps); if (staticProps) fliptable_defineProperties(Constructor, staticProps); return Constructor; }
 
-function fliptable_possibleConstructorReturn(self, call) { if (call && (fliptable_typeof(call) === "object" || typeof call === "function")) { return call; } return fliptable_assertThisInitialized(self); }
-
-function fliptable_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function fliptable_getPrototypeOf(o) { fliptable_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return fliptable_getPrototypeOf(o); }
-
 function fliptable_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) fliptable_setPrototypeOf(subClass, superClass); }
 
 function fliptable_setPrototypeOf(o, p) { fliptable_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return fliptable_setPrototypeOf(o, p); }
 
+function fliptable_createSuper(Derived) { var hasNativeReflectConstruct = fliptable_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = fliptable_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = fliptable_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return fliptable_possibleConstructorReturn(this, result); }; }
+
+function fliptable_possibleConstructorReturn(self, call) { if (call && (fliptable_typeof(call) === "object" || typeof call === "function")) { return call; } return fliptable_assertThisInitialized(self); }
+
+function fliptable_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function fliptable_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function fliptable_getPrototypeOf(o) { fliptable_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return fliptable_getPrototypeOf(o); }
+
 /*! fliptable - responsive table */
 
 
-var fliptable_default =
-/*#__PURE__*/
-function (_Plugin) {
+var fliptable_default = /*#__PURE__*/function (_Plugin) {
   fliptable_inherits(_default, _Plugin);
+
+  var _super = fliptable_createSuper(_default);
 
   function _default() {
     var _this;
 
     fliptable_classCallCheck(this, _default);
 
-    _this = fliptable_possibleConstructorReturn(this, fliptable_getPrototypeOf(_default).call(this, 'fliptable'));
+    _this = _super.call(this, 'fliptable');
     _this.opt = {
       qFlipTable: 'table.flip'
     };
@@ -4890,7 +4953,7 @@ function (_Plugin) {
 
 
 // CONCATENATED MODULE: ./src/js/plugins/swipe.js
-function swipe_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { swipe_typeof = function _typeof(obj) { return typeof obj; }; } else { swipe_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return swipe_typeof(obj); }
+function swipe_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { swipe_typeof = function _typeof(obj) { return typeof obj; }; } else { swipe_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return swipe_typeof(obj); }
 
 function swipe_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4898,30 +4961,34 @@ function swipe_defineProperties(target, props) { for (var i = 0; i < props.lengt
 
 function swipe_createClass(Constructor, protoProps, staticProps) { if (protoProps) swipe_defineProperties(Constructor.prototype, protoProps); if (staticProps) swipe_defineProperties(Constructor, staticProps); return Constructor; }
 
-function swipe_possibleConstructorReturn(self, call) { if (call && (swipe_typeof(call) === "object" || typeof call === "function")) { return call; } return swipe_assertThisInitialized(self); }
-
-function swipe_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function swipe_getPrototypeOf(o) { swipe_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return swipe_getPrototypeOf(o); }
-
 function swipe_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) swipe_setPrototypeOf(subClass, superClass); }
 
 function swipe_setPrototypeOf(o, p) { swipe_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return swipe_setPrototypeOf(o, p); }
 
+function swipe_createSuper(Derived) { var hasNativeReflectConstruct = swipe_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = swipe_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = swipe_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return swipe_possibleConstructorReturn(this, result); }; }
+
+function swipe_possibleConstructorReturn(self, call) { if (call && (swipe_typeof(call) === "object" || typeof call === "function")) { return call; } return swipe_assertThisInitialized(self); }
+
+function swipe_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function swipe_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function swipe_getPrototypeOf(o) { swipe_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return swipe_getPrototypeOf(o); }
+
 /*! swipe - detect touch swipe */
 
 
-var swipe_default =
-/*#__PURE__*/
-function (_Plugin) {
+var swipe_default = /*#__PURE__*/function (_Plugin) {
   swipe_inherits(_default, _Plugin);
+
+  var _super = swipe_createSuper(_default);
 
   function _default() {
     var _this;
 
     swipe_classCallCheck(this, _default);
 
-    _this = swipe_possibleConstructorReturn(this, swipe_getPrototypeOf(_default).call(this, 'swipe'));
+    _this = _super.call(this, 'swipe');
     _this.moved = null;
     _this.c = {};
     _this.opt = {
@@ -5066,7 +5133,7 @@ function (_Plugin) {
 
 
 // CONCATENATED MODULE: ./src/js/plugins/scroll.js
-function scroll_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { scroll_typeof = function _typeof(obj) { return typeof obj; }; } else { scroll_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return scroll_typeof(obj); }
+function scroll_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { scroll_typeof = function _typeof(obj) { return typeof obj; }; } else { scroll_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return scroll_typeof(obj); }
 
 function scroll_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -5074,31 +5141,35 @@ function scroll_defineProperties(target, props) { for (var i = 0; i < props.leng
 
 function scroll_createClass(Constructor, protoProps, staticProps) { if (protoProps) scroll_defineProperties(Constructor.prototype, protoProps); if (staticProps) scroll_defineProperties(Constructor, staticProps); return Constructor; }
 
+function scroll_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) scroll_setPrototypeOf(subClass, superClass); }
+
+function scroll_setPrototypeOf(o, p) { scroll_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return scroll_setPrototypeOf(o, p); }
+
+function scroll_createSuper(Derived) { var hasNativeReflectConstruct = scroll_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = scroll_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = scroll_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return scroll_possibleConstructorReturn(this, result); }; }
+
 function scroll_possibleConstructorReturn(self, call) { if (call && (scroll_typeof(call) === "object" || typeof call === "function")) { return call; } return scroll_assertThisInitialized(self); }
 
 function scroll_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+function scroll_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 function scroll_getPrototypeOf(o) { scroll_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return scroll_getPrototypeOf(o); }
-
-function scroll_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) scroll_setPrototypeOf(subClass, superClass); }
-
-function scroll_setPrototypeOf(o, p) { scroll_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return scroll_setPrototypeOf(o, p); }
 
 /*! scroll - scrolling behaviours (topbar, drawer) */
 // import toggle from './toggle.js'
 
 
-var scroll_default =
-/*#__PURE__*/
-function (_Plugin) {
+var scroll_default = /*#__PURE__*/function (_Plugin) {
   scroll_inherits(_default, _Plugin);
+
+  var _super = scroll_createSuper(_default);
 
   function _default() {
     var _this;
 
     scroll_classCallCheck(this, _default);
 
-    _this = scroll_possibleConstructorReturn(this, scroll_getPrototypeOf(_default).call(this, 'scroll'));
+    _this = _super.call(this, 'scroll');
     _this.y = null; //this.hashed = false;
 
     _this.opt = {
@@ -5213,7 +5284,7 @@ function (_Plugin) {
 
 
 // CONCATENATED MODULE: ./src/js/plugins/theme.js
-function theme_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { theme_typeof = function _typeof(obj) { return typeof obj; }; } else { theme_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return theme_typeof(obj); }
+function theme_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { theme_typeof = function _typeof(obj) { return typeof obj; }; } else { theme_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return theme_typeof(obj); }
 
 function theme_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -5221,30 +5292,34 @@ function theme_defineProperties(target, props) { for (var i = 0; i < props.lengt
 
 function theme_createClass(Constructor, protoProps, staticProps) { if (protoProps) theme_defineProperties(Constructor.prototype, protoProps); if (staticProps) theme_defineProperties(Constructor, staticProps); return Constructor; }
 
-function theme_possibleConstructorReturn(self, call) { if (call && (theme_typeof(call) === "object" || typeof call === "function")) { return call; } return theme_assertThisInitialized(self); }
-
-function theme_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function theme_getPrototypeOf(o) { theme_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return theme_getPrototypeOf(o); }
-
 function theme_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) theme_setPrototypeOf(subClass, superClass); }
 
 function theme_setPrototypeOf(o, p) { theme_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return theme_setPrototypeOf(o, p); }
 
+function theme_createSuper(Derived) { var hasNativeReflectConstruct = theme_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = theme_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = theme_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return theme_possibleConstructorReturn(this, result); }; }
+
+function theme_possibleConstructorReturn(self, call) { if (call && (theme_typeof(call) === "object" || typeof call === "function")) { return call; } return theme_assertThisInitialized(self); }
+
+function theme_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function theme_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function theme_getPrototypeOf(o) { theme_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return theme_getPrototypeOf(o); }
+
 /*! theme - live theme configurator */
 
 
-var theme_default =
-/*#__PURE__*/
-function (_Plugin) {
+var theme_default = /*#__PURE__*/function (_Plugin) {
   theme_inherits(_default, _Plugin);
+
+  var _super = theme_createSuper(_default);
 
   function _default() {
     var _this;
 
     theme_classCallCheck(this, _default);
 
-    _this = theme_possibleConstructorReturn(this, theme_getPrototypeOf(_default).call(this, 'theme'));
+    _this = _super.call(this, 'theme');
     _this.drw = null;
     _this.opt = {
       cTheme: 'js-theme',

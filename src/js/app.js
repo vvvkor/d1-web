@@ -1,14 +1,14 @@
 /*! app - core of d1-web */
 
 // (() => {
-//let main = new (function(){
+//let main = new (function () {
 
 export default class {
 
   constructor () {
-    this.sequence = 0;
-    this.plugins = {};
-    this.handlers = {};
+    this.sequence = 0
+    this.plugins = {}
+    this.handlers = {}
     
     this.opt = {
       debug: 0,
@@ -22,46 +22,46 @@ export default class {
       hOk: '#ok',
       sCancel: 'Cancel',
       sOk: 'OK'
-    };
+    }
   }
 
   init (opt) {
-    document.body.classList.add(this.opt.cJs); // prepare body: anti-hover, anti-target
-    this.fire('beforeopt');
+    document.body.classList.add(this.opt.cJs) // prepare body: anti-hover, anti-target
+    this.fire('beforeopt')
     //options
-    if(!opt){
+    if (!opt) {
       opt = document.body.dataset.d1
-      if(opt) opt = this.parse(opt);
+      if (opt) opt = this.parse(opt)
     }
-    this.setOpt(opt);
-    this.dbg(['opt', this.opt]);
+    this.setOpt(opt)
+    this.dbg(['opt', this.opt])
 
-    this.initPlugins(opt); // plugins
+    this.initPlugins(opt) // plugins
 
     // bind events
-    this.b([window], 'hashchange', e => this.on('hashchange', e)); // on window
-    this.b([document], ['invalid', 'focus', 'blur'], e => this.on(e.type, e), true);//useCapture
-    this.b([document], ['click', 'keydown', 'input', 'change', 'submit'], e => this.on(e.type, e));
+    this.b([window], 'hashchange', e => this.on('hashchange', e)) // on window
+    this.b([document], ['invalid', 'focus', 'blur'], e => this.on(e.type, e), true)//useCapture
+    this.b([document], ['click', 'keydown', 'input', 'change', 'submit'], e => this.on(e.type, e))
 
-    if(location.hash) this.on('hashchange')
-    this.fire('after');
-    this.fire('ready');
+    if (location.hash) this.on('hashchange')
+    this.fire('after')
+    this.fire('ready')
   }
 
   // event delegation
   // https://gomakethings.com/why-event-delegation-is-a-better-way-to-listen-for-events-in-vanilla-js/
-  on (t, e){
-    this.fire('before', e);
-    this.fire(t, e);
-    //this.fire(t + 'ed', e);
-    //if(!e || !e.defaultPrevented) ;
-    this.fire('after', e);
+  on (t, e) {
+    this.fire('before', e)
+    this.fire(t, e)
+    //this.fire(t + 'ed', e)
+    //if (!e || !e.defaultPrevented)
+    this.fire('after', e)
   }
 
   //plugins
 
-  setOpt (opt){
-    if(opt) Object.keys(opt).filter(k => k != 'plug').forEach(k => this.opt[k] = opt[k])
+  setOpt (opt) {
+    if (opt) Object.keys(opt).filter(k => k != 'plug').forEach(k => this.opt[k] = opt[k])
   }
 
   plug (c, n) {
@@ -69,12 +69,12 @@ export default class {
     this.plugins[n || p.name] = p
   }
 
-  initPlugins (opt){
-    if(this.opt.disable) this.opt.disable.forEach(p => delete this.plugins[p]);
-    this.dbg(['plugins', this.plugins]);
-    this.fire('beforeinit');
-    Object.keys(this.plugins).forEach(k => this.plugins[k].install(this, opt?.plug?.[k]));
-    this.fire('afterinit');
+  initPlugins (opt) {
+    if (this.opt.disable) this.opt.disable.forEach(p => delete this.plugins[p])
+    this.dbg(['plugins', this.plugins])
+    this.fire('beforeinit')
+    Object.keys(this.plugins).forEach(k => this.plugins[k].install(this, opt?.plug?.[k]))
+    this.fire('afterinit')
   }
   
   // call method of plugin
@@ -97,35 +97,35 @@ export default class {
 
   //events
 
-  fire (et, e){
-    this.dbg(['fire ' + et, e]);
-    if(this.handlers[et]) this.handlers[et].forEach(h => h.call(this, e));
+  fire (et, e) {
+    this.dbg(['fire ' + et, e])
+    if (this.handlers[et]) this.handlers[et].forEach(h => h.call(this, e))
   }
   
-  listen (et, f){
-    //if(!this.handlers[et]) this.handlers[et] = [];
-    //this.handlers[et].push(f);
-    this.h(et, '', f);
+  listen (et, f) {
+    //if (!this.handlers[et]) this.handlers[et] = []
+    //this.handlers[et].push(f)
+    this.h(et, '', f)
   }
 
   //handle
-  h (et, s, f, before){
-    if(et instanceof Array) et.forEach(ett => this.h(ett, s, f, before));
-    else{
-      if(!this.handlers[et]) this.handlers[et] = [];
+  h (et, s, f, before) {
+    if (et instanceof Array) et.forEach(ett => this.h(ett, s, f, before))
+    else {
+      if (!this.handlers[et]) this.handlers[et] = []
       this.handlers[et][before ? 'unshift' : 'push'](e => {
-        if(s) e.recv = e.target.closest(s);
-        if(!s || e.recv) f(e);
-      });
+        if (s) e.recv = e.target.closest(s)
+        if (!s || e.recv) f(e)
+      })
     }
   }
   
-  dispatch (n, et, p){
+  dispatch (n, et, p) {
     // {view: window, bubbles: true, cancelable: true, composed: false}
-    if(!p) p = {bubbles: true, cancelable: true, view: window};
-    if(typeof(Event) === 'function'){ //-ie
-      if(et instanceof Array) et.forEach(ett => n.dispatchEvent(new Event(ett, p)));
-      else n.dispatchEvent(new Event(et, p));
+    if (!p) p = {bubbles: true, cancelable: true, view: window}
+    if (typeof(Event) === 'function') { //-ie
+      if (et instanceof Array) et.forEach(ett => n.dispatchEvent(new Event(ett, p)))
+      else n.dispatchEvent(new Event(et, p))
     }
   }
 
@@ -133,29 +133,29 @@ export default class {
 
   // debug
   
-  isDebug (l){
-    return (this.opt.debug > (l || 0) || location.href.indexOf('d1debug') != -1);
+  isDebug (l) {
+    return (this.opt.debug > (l || 0) || location.href.indexOf('d1debug') != -1)
   }
   
-  dbg (s, l, e){
-    if(this.isDebug(l)) console[e || l<0 ? 'error' : 'log'](s);
+  dbg (s, l, e) {
+    if (this.isDebug(l)) console[e || l<0 ? 'error' : 'log'](s)
   }
 
   // sequence for IDs of generated nodes
-  seq (){
-    return ++this.sequence;
+  seq () {
+    return ++this.sequence
   }
 
   // convert to array
-  a (c){
-    return c ? Array.prototype.slice.call(c) : c;
+  a (c) {
+    return c ? Array.prototype.slice.call(c) : c
   }
   
   // get object item by path
   path (r, p, def) {
     if (p) {
       if (this.typeOf(p) === 'string') p = p.split('.')
-      for (var i=0;i<p.length;i++) if (p[i] || p[i] === 0) {
+      for (var i=0; i<p.length; i++) if (p[i] || p[i] === 0) {
         if (r === null || r[p[i]] === undefined) return def
         r = r[p[i]]
       }
@@ -164,59 +164,59 @@ export default class {
   }
 
   // find node
-  q (s, n){
+  q (s, n) {
     try{
-      return (n || document).querySelector(s);
+      return (n || document).querySelector(s)
     }
-    catch(e){
-      return null;
+    catch(e) {
+      return null
     }
   }
 
   // find nodes
-  qq (s, n){
+  qq (s, n) {
     try{
-      let r = (n || document).querySelectorAll(s);
-      return this.a(r);
+      let r = (n || document).querySelectorAll(s)
+      return this.a(r)
     }
-    catch(e){
-      return [];
+    catch(e) {
+      return []
     }
   }
   
-  next (n, s, prev){
-    while(n = n[prev ? 'previousElementSibling' : 'nextElementSibling']) if(n.matches(s)) return n;
+  next (n, s, prev) {
+    while (n = n[prev ? 'previousElementSibling' : 'nextElementSibling']) if (n.matches(s)) return n
   }
   
-  nn (q){
-    if(!q) return [];
-    else if(typeof q === 'string') return this.qq(q);
-    else if(q.tagName) return [q];
-    else return this.a(q);
+  nn (q) {
+    if (!q) return []
+    else if (typeof q === 'string') return this.qq(q)
+    else if (q.tagName) return [q]
+    else return this.a(q)
   }
 
   // add event listener
-  b (q, et, f, capt){
-    if(!et) this.e(q, f);
-    if(f) this.nn(q).forEach(n => et instanceof Array
+  b (q, et, f, capt) {
+    if (!et) this.e(q, f)
+    if (f) this.nn(q).forEach(n => et instanceof Array
         ? et.forEach(ett => n.addEventListener(ett, e => f(e), capt))
         : n.addEventListener(et, e => f(e) /*f.bind(this)*/, capt)
-      );
+      )
   }
 
   // execute for each node
-  e (q, f){
-    if(f) this.nn(q).forEach(n => f.call(this, n));
+  e (q, f) {
+    if (f) this.nn(q).forEach(n => f.call(this, n))
   }
 
-  typeOf (v){
-    return Object.prototype.toString.call(v).slice(8, -1).toLowerCase();
+  typeOf (v) {
+    return Object.prototype.toString.call(v).slice(8, -1).toLowerCase()
   }
   
   parse (j, def) {
     let r = ''
     try {
-      r = JSON.parse(j);
+      r = JSON.parse(j)
     }
     catch (e) {
       this.dbg(['JSON parse failed', j], -1)
@@ -228,79 +228,79 @@ export default class {
   // insert node
   //pos: -1=before, false=prepend, 0=append(default), 1=after
   ins (tag, t, attrs, n, pos) {
-    let c = document.createElement(tag || 'span');
-    if (this.typeOf(t) === 'array') t.forEach(m => m.nodeType ? c.appendChild(m) : c.innerHTML += m);
-    else if (t && t.nodeType) c.appendChild(t);
-    else if (t) c.innerHTML = t;
+    let c = document.createElement(tag || 'span')
+    if (this.typeOf(t) === 'array') t.forEach(m => m.nodeType ? c.appendChild(m) : c.innerHTML += m)
+    else if (t && t.nodeType) c.appendChild(t)
+    else if (t) c.innerHTML = t
     if (attrs) {
       for (let i in attrs) {
-        if(attrs[i] !== null && attrs[i] !== undefined){
-          if(i.match(/-/)) c.setAttribute(i.replace(/^-/, ''), attrs[i]);
-          else c[i] = attrs[i];
+        if (attrs[i] !== null && attrs[i] !== undefined) {
+          if (i.match(/-/)) c.setAttribute(i.replace(/^-/, ''), attrs[i])
+          else c[i] = attrs[i]
         }
       }
     }
     return n
       ? (pos
         ? n.parentNode.insertBefore(c, pos<0 ? n : n.nextSibling)
-        : (pos===false ? n.insertBefore(c, n.firstChild) : n.appendChild(c))
+        : (pos === false ? n.insertBefore(c, n.firstChild) : n.appendChild(c))
         )
-      : c;
+      : c
   }
   
   // remove all children
-  clr (n){
-    if(n) while(n.firstChild) n.removeChild(n.firstChild);
+  clr (n) {
+    if (n) while (n.firstChild) n.removeChild(n.firstChild)
   }
 
   // insert close link with icon
-  x (d, pos, cls){
-    return this.ins('a', this.i('close', '&#x2715;'), {href: this.opt.hClose, className: (cls || '')}, d, pos);
+  x (d, pos, cls) {
+    return this.ins('a', this.i('close', '&#x2715;'), {href: this.opt.hClose, className: (cls || '')}, d, pos)
   }
 
   // insert icon
-  i (ico, alt){
+  i (ico, alt) {
     return this.plugins.icons
       ? this.plugins.icons.i(ico, alt)
-      : this.ins('span', alt || ico);
+      : this.ins('span', alt || ico)
   }
   
   // get node toggle status
-  vis (n){
-    return !n.classList.contains(this.opt.cOff);
+  vis (n) {
+    return !n.classList.contains(this.opt.cOff)
   }
 
   // function
 
   throttle (f, ms) {
-    let p = false, c, a;
-    return function ff() {
+    let p = false, c, a
+    return function ff () {
       if (p) { //2
-        c = this;
-        a = arguments;
+        c = this
+        a = arguments
       }
-      else{
-        f.apply(this, arguments); //1
-        p = true;
+      else {
+        f.apply(this, arguments) //1
+        p = true
         setTimeout(() => { //3
-          p = false;
-          if(a){
-            ff.apply(c, a);
-            a = c = null;
+          p = false
+          if (a) {
+            ff.apply(c, a)
+            a = c = null
           }
-        }, ms);
+        }, ms)
       }
     }
   }
 
   delay (f, ms, skip) {
-    let p = null;
-    return function ff(){
-      if(skip && p) clearTimeout(p);
+    let p = null
+    return function () {
+      if (skip && p) clearTimeout(p)
       p = setTimeout(() => {
-        f.apply(this, arguments);
-        p = null;
-      }, ms);
+        f.apply(this, arguments)
+        p = null
+      }, ms)
     }
   }
   
@@ -311,33 +311,33 @@ export default class {
   // url
 
   // get url parameter(s) from link node
-  get (a, g){
-    if(!a || a.tagName!='A') return null;
-    let i, gets={};
-    let args = a.search ? a.search.replace(/^\?/, '').split('&') : [];
-    for(i=0; i<args.length; i++){
-      let v = args[i].split('=');
-      gets[v[0]] = decodeURIComponent(v[1]).replace(/\+/, ' ');
+  get (a, g) {
+    if (!a || a.tagName!='A') return null
+    let i, gets = {}
+    let args = a.search ? a.search.replace(/^\?/, '').split('&') : []
+    for (i=0; i<args.length; i++) {
+      let v = args[i].split('=')
+      gets[v[0]] = decodeURIComponent(v[1]).replace(/\+/, ' ')
     }
-    return g ? gets[g] : gets;
+    return g ? gets[g] : gets
     //protocol, host (hostname, port), pathname, search, hash
   }
 
   // compose url from link node or string, with additional parameters
-  makeUrl (a, args){
-    if(!a.tagName) a = this.ins('a', '', {href: a});
-    let g = this.get(a);
-    Object.keys(args).forEach(k => g[encodeURIComponent(k)] = encodeURIComponent(args[k]));
-    let q = Object.keys(g).map(k => k + '=' + g[k]).join('&');
+  makeUrl (a, args) {
+    if (!a.tagName) a = this.ins('a', '', {href: a})
+    let g = this.get(a)
+    Object.keys(args).forEach(k => g[encodeURIComponent(k)] = encodeURIComponent(args[k]))
+    let q = Object.keys(g).map(k => k + '=' + g[k]).join('&')
     return a.host
       ? a.protocol + '//' + a.host + a.pathname+(q ? '?' + q : '') + a.hash
-      : a.href.replace(/[\?#].*$/, '') + (q ? '?' + q : '') + a.hash; //ie
+      : a.href.replace(/[\?#].*$/, '') + (q ? '?' + q : '') + a.hash //ie
   }
 
 }
 
 /*
-if (this.window === this) window[main.name] = main;
-else module.exports = main;
-})();
+if (this.window === this) window[main.name] = main
+else module.exports = main
+})()
 */
