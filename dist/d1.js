@@ -143,7 +143,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 /*! app - core of d1-web */
 // (() => {
-//let main = new (function () {
+// let main = new (function () {
 var _default = /*#__PURE__*/function () {
   function _default() {
     _classCallCheck(this, _default);
