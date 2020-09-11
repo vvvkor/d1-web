@@ -19,7 +19,7 @@
     "build:version": "cross-var replace-in-file \"/0\\.0\\.0/g\" \"$npm_package_version\" \"dist/*.*\" --isRegex",
     "build:docs.version": "cross-var replace-in-file \"/0\\.0\\.0/g\" \"$npm_package_version\" \"docs/*.*\" --isRegex",
     "webpack": "webpack",
-		"lint": "./node_modules/.bin/eslint ./src/js/*.js ./src/js/plugins/*.js ./src/js/util/*.js",
+    "lint": "./node_modules/.bin/eslint ./src/js/*.js ./src/js/plugins/*.js ./src/js/util/*.js",
     "build": "npm run copy:css && npm run rename:css && npm run build:css && npm run build:css-icons && npm run build:css-icons-post && npm run minify:css-icons && npm run minify:css && npm run build:docs && npm run build:docs.cmt && npm run build:docs.version && webpack && npm run build:version",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
