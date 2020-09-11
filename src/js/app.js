@@ -1,7 +1,7 @@
 /*! app - core of d1-web */
 
 // (() => {
-//let main = new (function () {
+// let main = new (function () {
 
 export default class {
 
