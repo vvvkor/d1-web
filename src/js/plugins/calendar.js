@@ -187,8 +187,8 @@ export default class extends Plugin {
     let skip = ((new Date(y, m, 1)).getDay() + 6) % 7;//skip weekdays
     let maxd = Math.ceil((skip + days) / 7) * 7 - skip;
     let c, vv, sel, today, off, wd;
-    let cd = this.fmt(new Date());
-    let xd = this.fmt(x);
+    // let cd = this.fmt(new Date());
+    // let xd = this.fmt(x);
     let row;
     for(let i=-skip+1; i<=maxd; i++){
       wd = ((skip+i-1)%7)+1;

@@ -134,7 +134,7 @@ export default class extends Plugin {
     this.mode(wys, n.theWys);
   }
 
-  cmd (e, bb, nn) { // (e) or (z, b)
+  cmd (e, bb/*, nn*/) { // (e) or (z, b)
     let n = e.recv;
     let b = bb || this.btn[n.getAttribute('data-cmd')];
     let z = bb ? e : this.app.next(n.closest('nav'), '.edit-wysiwyg');

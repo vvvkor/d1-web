@@ -202,7 +202,7 @@ export default class extends Plugin {
   }
   
   key (e){
-    let n = e.target ? this.ident(e.target) : null;;
+    let n = e.target ? this.ident(e.target) : null;
     if(n){
       if(e.keyCode == 27) this.fix(n, n.value, n.vLabel);
       else if(e.keyCode == 40 && !this.app.vis(this.win)) this.find(e);
