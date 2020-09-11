@@ -165,21 +165,21 @@ export default class {
 
   // find node
   q (s, n) {
-    try{
+    try {
       return (n || document).querySelector(s)
     }
-    catch(e) {
+    catch (e) {
       return null
     }
   }
 
   // find nodes
   qq (s, n) {
-    try{
+    try {
       let r = (n || document).querySelectorAll(s)
       return this.a(r)
     }
-    catch(e) {
+    catch (e) {
       return []
     }
   }
@@ -199,9 +199,9 @@ export default class {
   b (q, et, f, capt) {
     if (!et) this.e(q, f)
     if (f) this.nn(q).forEach(n => et instanceof Array
-        ? et.forEach(ett => n.addEventListener(ett, e => f(e), capt))
-        : n.addEventListener(et, e => f(e) /*f.bind(this)*/, capt)
-      )
+      ? et.forEach(ett => n.addEventListener(ett, e => f(e), capt))
+      : n.addEventListener(et, e => f(e) /*f.bind(this)*/, capt)
+    )
   }
 
   // execute for each node
@@ -242,8 +242,8 @@ export default class {
     }
     return n
       ? (pos
-        ? n.parentNode.insertBefore(c, pos<0 ? n : n.nextSibling)
-        : (pos === false ? n.insertBefore(c, n.firstChild) : n.appendChild(c))
+          ? n.parentNode.insertBefore(c, pos<0 ? n : n.nextSibling)
+          : (pos === false ? n.insertBefore(c, n.firstChild) : n.appendChild(c))
         )
       : c
   }

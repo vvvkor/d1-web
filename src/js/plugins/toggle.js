@@ -60,7 +60,7 @@ export default class extends Plugin{
     this.opt.qUnpopOn = [q.qPop, q.qNav, q.qDlg, q.qDrw/*, q.qGal*/].map(n => n + ':not(.' + app.opt.cOff + ')').join(', ');
     app.e(this.opt.qNav + ', ' + this.opt.qTre, n => this.attachSubNav(n)); //nav, tree: attach to links
     app.e(togglers, n => this.initToggler(n)); //initialize togglers
-      this.opt.mediaSuffixes.forEach(x => app.e(this.opt.qTrg + x, n => this.initToggler(n, x))); //initialize togglers by media
+    this.opt.mediaSuffixes.forEach(x => app.e(this.opt.qTrg + x, n => this.initToggler(n, x))); //initialize togglers by media
     //let autohide = [        q.qPop, q.qNav, q.qDlg, q.qTab, q.qAcc, q.qDrw, q.qMedia/*, q.qGal*/].join(', ');
     //app.e(autohide, n => this.tgl(n, 0)); //autohide
 
@@ -244,7 +244,7 @@ export default class extends Plugin{
       if(a && a.hash){
         //if(a.hash==this.app.opt.hClose) keep = []; //return this.app.fire('esc'); //to close all, even container
         //else
-          keep.push(this.app.q(a.hash));//keep hash target
+        keep.push(this.app.q(a.hash));//keep hash target
       }
     }
     this.app.dbg(['unpop', keep]);

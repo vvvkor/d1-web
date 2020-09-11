@@ -48,8 +48,8 @@ export default class extends Plugin {
     if(css) n.style = css;
   }
   
-  style (k, v, deep){
-    if(k instanceof Array) k.forEach(w => this.style(w, v, 1));
+  style (k, v/*, deep*/){
+    if(k instanceof Array) k.forEach(w => this.style(w, v/*, 1*/));
     else{
       //let n = (k.substr(0, 2)=='--') ? document.documentElement : document.body;
       //let n = document.body;
