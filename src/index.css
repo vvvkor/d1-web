@@ -556,6 +556,7 @@ mark{background-color:var(--bg-warning);}
 .pop>div, .nav ul, .dlg, .drawer{box-shadow:var(--shade);background-color:var(--bg);text-align:left;}
 .stick, .topbar, .back{background-color:var(--bg);}
 .tabs li{margin-right:calc(var(--gap-n) / 4);}
+.nav.roll{flex-wrap:nowrap;}
 .dlg{border:500em solid rgba(0,0,0,.7);}
 .dlg.full{border:none;}
 .dlg.rad{border-radius:calc(500em + var(--radius));}

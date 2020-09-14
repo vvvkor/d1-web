@@ -1,4 +1,4 @@
-/*! d1-web v2.1.4 */
+/*! d1-web v2.1.5 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -82,7 +82,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 8);
+/******/ 	return __webpack_require__(__webpack_require__.s = 9);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -131,6 +131,69 @@ var _default = /*#__PURE__*/function () {
 
 /***/ }),
 /* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Url; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/*! url - url build and arguments */
+var Url = /*#__PURE__*/function () {
+  function Url() {
+    _classCallCheck(this, Url);
+  }
+
+  _createClass(Url, null, [{
+    key: "build",
+    // build url from link node or string, with additional parameters
+    value: function build(a, args) {
+      this;
+
+      if (!a.tagName) {
+        //a = this.ins('a', '', {href: a})
+        var h = a;
+        a = document.createElement('a');
+        a.href = h;
+      }
+
+      var g = Url.get(a);
+      Object.keys(args).forEach(function (k) {
+        return g[encodeURIComponent(k)] = encodeURIComponent(args[k]);
+      });
+      var q = Object.keys(g).map(function (k) {
+        return k + '=' + g[k];
+      }).join('&');
+      return a.host ? a.protocol + '//' + a.host + a.pathname + (q ? '?' + q : '') + a.hash : a.href.replace(/[\?#].*$/, '') + (q ? '?' + q : '') + a.hash; //ie
+    } // get url parameter(s) from link node or string
+
+  }, {
+    key: "get",
+    value: function get(a, g) {
+      if (!a || a.tagName != 'A') return null;
+      var i,
+          gets = {};
+      var args = a.search ? a.search.replace(/^\?/, '').split('&') : [];
+
+      for (i = 0; i < args.length; i++) {
+        var v = args[i].split('=');
+        gets[v[0]] = decodeURIComponent(v[1]).replace(/\+/, ' ');
+      }
+
+      return g ? gets[g] : gets; //protocol, host (hostname, port), pathname, search, hash
+    }
+  }]);
+
+  return Url;
+}();
+
+
+
+/***/ }),
+/* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -504,87 +567,6 @@ var _default = /*#__PURE__*/function () {
     key: "vis",
     value: function vis(n) {
       return !n.classList.contains(this.opt.cOff);
-    } // function
-
-  }, {
-    key: "throttle",
-    value: function throttle(f, ms) {
-      var p = false,
-          c,
-          a;
-      return function ff() {
-        if (p) {
-          //2
-          c = this;
-          a = arguments;
-        } else {
-          f.apply(this, arguments); //1
-
-          p = true;
-          setTimeout(function () {
-            //3
-            p = false;
-
-            if (a) {
-              ff.apply(c, a);
-              a = c = null;
-            }
-          }, ms);
-        }
-      };
-    }
-  }, {
-    key: "delay",
-    value: function delay(f, ms, skip) {
-      var p = null;
-      return function () {
-        var _arguments = arguments,
-            _this7 = this;
-
-        if (skip && p) clearTimeout(p);
-        p = setTimeout(function () {
-          f.apply(_this7, _arguments);
-          p = null;
-        }, ms);
-      };
-    }
-  }, {
-    key: "debounce",
-    value: function debounce(f, ms) {
-      return this.delay(f, ms, true);
-    } // url
-    // get url parameter(s) from link node
-
-  }, {
-    key: "get",
-    value: function get(a, g) {
-      if (!a || a.tagName != 'A') return null;
-      var i,
-          gets = {};
-      var args = a.search ? a.search.replace(/^\?/, '').split('&') : [];
-
-      for (i = 0; i < args.length; i++) {
-        var v = args[i].split('=');
-        gets[v[0]] = decodeURIComponent(v[1]).replace(/\+/, ' ');
-      }
-
-      return g ? gets[g] : gets; //protocol, host (hostname, port), pathname, search, hash
-    } // compose url from link node or string, with additional parameters
-
-  }, {
-    key: "makeUrl",
-    value: function makeUrl(a, args) {
-      if (!a.tagName) a = this.ins('a', '', {
-        href: a
-      });
-      var g = this.get(a);
-      Object.keys(args).forEach(function (k) {
-        return g[encodeURIComponent(k)] = encodeURIComponent(args[k]);
-      });
-      var q = Object.keys(g).map(function (k) {
-        return k + '=' + g[k];
-      }).join('&');
-      return a.host ? a.protocol + '//' + a.host + a.pathname + (q ? '?' + q : '') + a.hash : a.href.replace(/[\?#].*$/, '') + (q ? '?' + q : '') + a.hash; //ie
     }
   }]);
 
@@ -600,7 +582,7 @@ else module.exports = main
 
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1105,12 +1087,13 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _default; });
 /* harmony import */ var _plugin_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var _util_url_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1136,6 +1119,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 /*! dialog - replacement of standard Javascript dialogs: alert, confirm, prompt */
 // a.alert([title]|[data-caption])
 // a.dialog[href]([title]|[data-caption])[data-prompt] [data-src][data-go][data-ok][data-cancel][data-reverse][data-head][data-pic]
+
  // import Toggle from './toggle.js';
 
 var _default = /*#__PURE__*/function (_Plugin) {
@@ -1286,7 +1270,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
       if (!src && n.form) src = n.form.elements[p];
       var v = null;
       var al = n.matches(this.opt.qAlert);
-      var def = p ? src ? src.value : app.get(n, p) : null;
+      var def = p ? src ? src.value : _util_url_js__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].get(n, p) : null;
       if (def && 'go' in n.dataset) this.onAnswer(n, def, p); //go with default
       else if (this.opt.customDialog) {
           this.openDialog(h, t, al ? null : function (w) {
@@ -1348,7 +1332,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
               var a = {};
               a[this.opt.aConfirm] = 1;
               if (v !== true) a[p] = v;
-              u = app.makeUrl(n, a);
+              u = _util_url_js__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].build(n, a);
             }
             if (n.target == '_blank') window.open(u, n.target);else location.href = u;
           }
@@ -1361,7 +1345,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1559,7 +1543,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports) {
 
 if (!Element.prototype.matches) {
@@ -1580,7 +1564,7 @@ if (!Element.prototype.closest) {
 }
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports) {
 
 /*! iconset - svg paths for building icons */
@@ -1676,8 +1660,8 @@ module.exports = {
 };
 
 /***/ }),
-/* 7 */,
-/* 8 */
+/* 8 */,
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1685,10 +1669,10 @@ module.exports = {
 __webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: ./src/js/polyfill.js
-var polyfill = __webpack_require__(5);
+var polyfill = __webpack_require__(6);
 
 // EXTERNAL MODULE: ./src/js/app.js
-var app = __webpack_require__(1);
+var js_app = __webpack_require__(2);
 
 // EXTERNAL MODULE: ./src/js/plugins/plugin.js
 var plugins_plugin = __webpack_require__(0);
@@ -1865,7 +1849,7 @@ var code_default = /*#__PURE__*/function (_Plugin) {
 
 
 // EXTERNAL MODULE: ./src/js/iconset.js
-var iconset = __webpack_require__(6);
+var iconset = __webpack_require__(7);
 var iconset_default = /*#__PURE__*/__webpack_require__.n(iconset);
 
 // CONCATENATED MODULE: ./src/js/plugins/icons.js
@@ -2011,13 +1995,13 @@ var icons_default = /*#__PURE__*/function (_Plugin) {
 
 
 // EXTERNAL MODULE: ./src/js/plugins/toggle.js
-var toggle = __webpack_require__(2);
+var toggle = __webpack_require__(3);
 
 // EXTERNAL MODULE: ./src/js/plugins/dialog.js
-var dialog = __webpack_require__(3);
+var dialog = __webpack_require__(4);
 
 // EXTERNAL MODULE: ./src/js/plugins/gallery.js
-var gallery = __webpack_require__(4);
+var gallery = __webpack_require__(5);
 
 // CONCATENATED MODULE: ./src/js/plugins/fetch.js
 function fetch_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { fetch_typeof = function _typeof(obj) { return typeof obj; }; } else { fetch_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return fetch_typeof(obj); }
@@ -2183,6 +2167,72 @@ var Dt = /*#__PURE__*/function () {
 }();
 
 
+// CONCATENATED MODULE: ./src/js/util/func.js
+function func_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function func_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function func_createClass(Constructor, protoProps, staticProps) { if (protoProps) func_defineProperties(Constructor.prototype, protoProps); if (staticProps) func_defineProperties(Constructor, staticProps); return Constructor; }
+
+/*! func - function derorators */
+var Func = /*#__PURE__*/function () {
+  function Func() {
+    func_classCallCheck(this, Func);
+  }
+
+  func_createClass(Func, null, [{
+    key: "throttle",
+    value: function throttle(f, ms) {
+      var p = false,
+          c,
+          a;
+      return function ff() {
+        if (p) {
+          //2
+          c = this;
+          a = arguments;
+        } else {
+          f.apply(this, arguments); //1
+
+          p = true;
+          setTimeout(function () {
+            //3
+            p = false;
+
+            if (a) {
+              ff.apply(c, a);
+              a = c = null;
+            }
+          }, ms);
+        }
+      };
+    }
+  }, {
+    key: "delay",
+    value: function delay(f, ms, skip) {
+      var p = null;
+      return function () {
+        var _arguments = arguments,
+            _this = this;
+
+        if (skip && p) clearTimeout(p);
+        p = setTimeout(function () {
+          f.apply(_this, _arguments);
+          p = null;
+        }, ms);
+      };
+    }
+  }, {
+    key: "debounce",
+    value: function debounce(f, ms) {
+      return Func.delay(f, ms, true);
+    }
+  }]);
+
+  return Func;
+}();
+
+
 // CONCATENATED MODULE: ./src/js/plugins/tablex.js
 function tablex_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { tablex_typeof = function _typeof(obj) { return typeof obj; }; } else { tablex_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return tablex_typeof(obj); }
 
@@ -2210,6 +2260,7 @@ function tablex_getPrototypeOf(o) { tablex_getPrototypeOf = Object.setPrototypeO
 
 /*! tablex - filter and sort HTML table */
 // table.sort.totals.filter[data-filter][data-filter-report][data-case][data-filter-cols]
+
 
 
 
@@ -2356,7 +2407,7 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
         //1.
         //if(!n.vInp.vListen) n.vInp.addEventListener('input', this.doFilter.bind(this, n), false);
         //2.
-        var f = this.app.debounce(this.doFilter.bind(this), this.opt.wait);
+        var f = Func.debounce(this.doFilter.bind(this), this.opt.wait);
         if (!n.vInp.vListen) this.app.b([n.vInp], 'input', function (e) {
           return f(n);
         });
@@ -3162,6 +3213,9 @@ var calendar_default = /*#__PURE__*/function (_Plugin) {
 }(plugins_plugin["a" /* default */]);
 
 
+// EXTERNAL MODULE: ./src/js/util/url.js
+var url = __webpack_require__(1);
+
 // CONCATENATED MODULE: ./src/js/plugins/lookup.js
 function lookup_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { lookup_typeof = function _typeof(obj) { return typeof obj; }; } else { lookup_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return lookup_typeof(obj); }
 
@@ -3188,6 +3242,8 @@ function lookup_getPrototypeOf(o) { lookup_getPrototypeOf = Object.setPrototypeO
 /*! lookup - autocomplete lookups with data from XHTTP request */
 // import toggle from './toggle.js'
 // import fetch from './fetch.js'
+
+
 
 
 var lookup_default = /*#__PURE__*/function (_Plugin) {
@@ -3237,7 +3293,7 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
       app.e('[data-chain]', function (n) {
         return _this2.updateChain(n);
       });
-      var f = app.debounce(this.find.bind(this), this.opt.wait);
+      var f = Func.debounce(this.find.bind(this), this.opt.wait);
       app.h('input', '.lookup-input', f); // e => f(e)
 
       app.h('keydown', '.lookup-input', function (e) {
@@ -3309,7 +3365,7 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
       var uc = n.dataset[this.opt.dCap] || '';
 
       if (uc && n.value && !(this.opt.dLabel in n.dataset)) {
-        var u = encodeURI(decodeURI(this.app.makeUrl(uc, {
+        var u = encodeURI(decodeURI(url["a" /* default */].build(uc, {
           time: new Date().getTime()
         })).replace(/\{q\}/, n.value));
         this.app.fetch(u, function (req) {
@@ -3350,7 +3406,7 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
       if (v === '') this.fix(n, '', ''); //empty
       else if (n.vCache && n.vCache[v]) this.openList(n, n.vCache[v]); //cached
         else {
-            var u = encodeURI(decodeURI(this.app.makeUrl(n.dataset[this.opt.dLookup] || '', {
+            var u = encodeURI(decodeURI(url["a" /* default */].build(n.dataset[this.opt.dLookup] || '', {
               //value: v,
               time: new Date().getTime()
             })).replace(/\{q\}/, v));
@@ -5022,6 +5078,7 @@ function swipe_getPrototypeOf(o) { swipe_getPrototypeOf = Object.setPrototypeOf 
 /*! swipe - detect touch swipe */
 
 
+
 var swipe_default = /*#__PURE__*/function (_Plugin) {
   swipe_inherits(_default, _Plugin);
 
@@ -5042,7 +5099,7 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
       //', .gal a[id]',
       cDragging: 'dragging',
       maxClick: 20,
-      minSwipe: 50
+      minSwipe: 25
     };
     return _this;
   }
@@ -5052,7 +5109,8 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
     value: function init() {
       var _this2 = this;
 
-      this.drag_ = this.app.throttle(function (e) {
+      //this.drag_ = e => this.drag(e);
+      this.drag_ = Func.throttle(function (e) {
         return _this2.drag(e);
       }, 30); //console.log('swipe init');
 
@@ -5108,15 +5166,17 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "drag",
     value: function drag(e) {
-      //console.log('swipe drag');
       var t = e.touches ? e.touches[0] : e;
       this.c.eX = t.screenX;
       this.c.eY = t.screenY;
 
       if (this.moved && this.moved.matches(this.opt.qDrag)) {
+        //requestAnimationFrame(() => {
+        //console.log('swipe drag');
         var xy = this.shift();
         this.moved.style.transform = 'translate(' + xy[0] + 'px, ' + xy[1] + 'px)';
         this.moved.classList.add(this.opt.cDragging); //this.moved.style.zIndex = 100;
+        //});
       }
     }
   }, {
@@ -5203,6 +5263,7 @@ function scroll_getPrototypeOf(o) { scroll_getPrototypeOf = Object.setPrototypeO
 // import toggle from './toggle.js'
 
 
+
 var scroll_default = /*#__PURE__*/function (_Plugin) {
   scroll_inherits(_default, _Plugin);
 
@@ -5241,9 +5302,9 @@ var scroll_default = /*#__PURE__*/function (_Plugin) {
         this.app.listen('hashchange', function (e) {
           return _this2.onHash(e);
         });
-        var ons = this.app.throttle(function () {
+        var ons = Func.throttle(function () {
           return _this2.onScroll();
-        }, 500); //const ons = this.app.throttle((h) => this.onScroll(h), 500);
+        }, 500); //const ons = Func.throttle((h) => this.onScroll(h), 500);
         //ons(); // forces reflow
 
         setTimeout(function () {
@@ -5519,7 +5580,7 @@ var theme_default = /*#__PURE__*/function (_Plugin) {
 
 
 
-var src_app = new app["a" /* default */]();
+var src_app = new js_app["a" /* default */]();
 src_app.plug(code_default);
 src_app.plug(icons_default);
 src_app.plug(toggle["a" /* default */]);

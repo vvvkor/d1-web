@@ -4,6 +4,7 @@
 
 import Plugin from './plugin.js';
 import Dt from '../util/dt.js';
+import Func from '../util/func.js';
 
 export default class extends Plugin {
 
@@ -108,7 +109,7 @@ export default class extends Plugin {
       //1.
       //if(!n.vInp.vListen) n.vInp.addEventListener('input', this.doFilter.bind(this, n), false);
       //2.
-      const f = this.app.debounce(this.doFilter.bind(this), this.opt.wait);
+      const f = Func.debounce(this.doFilter.bind(this), this.opt.wait);
       if(!n.vInp.vListen) this.app.b([n.vInp], 'input', e => f(n));
       n.vInp.vListen = 1;
       //this.doFilter(n);

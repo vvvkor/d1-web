@@ -1,6 +1,7 @@
 /*! swipe - detect touch swipe */
 
 import Plugin from './plugin.js';
+import Func from '../util/func.js';
 
 export default class extends Plugin {
 
@@ -14,12 +15,13 @@ export default class extends Plugin {
       qKeepDrag: '.drawer',//', .gal a[id]',
       cDragging: 'dragging',
       maxClick: 20,
-      minSwipe: 50
+      minSwipe: 25
     };
   }
 
   init (){
-    this.drag_ = this.app.throttle(e => this.drag(e), 30);
+    //this.drag_ = e => this.drag(e);
+    this.drag_ = Func.throttle(e => this.drag(e), 30);
     //console.log('swipe init');
     /*
     events order:
@@ -57,17 +59,19 @@ export default class extends Plugin {
       this.drag_(e);
     }
   }
-  
+
   drag (e){
-    //console.log('swipe drag');
     let t = e.touches ? e.touches[0] : e;
     this.c.eX = t.screenX; 
     this.c.eY = t.screenY;
     if(this.moved && this.moved.matches(this.opt.qDrag)){
+      //requestAnimationFrame(() => {
+      //console.log('swipe drag');
       let xy = this.shift();
       this.moved.style.transform = 'translate(' + xy[0] + 'px, ' + xy[1] + 'px)';
       this.moved.classList.add(this.opt.cDragging);
       //this.moved.style.zIndex = 100;
+      //});
     }
   }
   

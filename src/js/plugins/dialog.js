@@ -4,6 +4,7 @@
 // a.dialog[href]([title]|[data-caption])[data-prompt] [data-src][data-go][data-ok][data-cancel][data-reverse][data-head][data-pic]
 
 import Plugin from './plugin.js';
+import Url from '../util/url.js'
 // import Toggle from './toggle.js';
 
 export default class extends Plugin {
@@ -95,7 +96,7 @@ export default class extends Plugin {
     if(!src && n.form) src = n.form.elements[p];
     let v = null;
     let al = n.matches(this.opt.qAlert);
-    let def = p ? (src ? src.value : app.get(n, p)) : null;
+    let def = p ? (src ? src.value : Url.get(n, p)) : null;
     
     if(def && 'go' in n.dataset) this.onAnswer(n, def, p);//go with default
     else if(this.opt.customDialog){
@@ -147,7 +148,7 @@ export default class extends Plugin {
         let a = {};
         a[this.opt.aConfirm] = 1;
         if(v!==true) a[p] = v;
-        u = app.makeUrl(n, a);
+        u = Url.build(n, a);
       }
       if(n.target=='_blank') window.open(u, n.target);
       else location.href = u;

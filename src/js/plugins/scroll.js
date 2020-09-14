@@ -3,6 +3,7 @@
 // import toggle from './toggle.js'
 
 import Plugin from './plugin.js'
+import Func from '../util/func.js';
 
 export default class extends Plugin {
 
@@ -26,8 +27,8 @@ export default class extends Plugin {
     let t;
     if(this.app.q(this.opt.qEnable)){
       this.app.listen('hashchange', e => this.onHash(e));
-      const ons = this.app.throttle(() => this.onScroll(), 500);
-      //const ons = this.app.throttle((h) => this.onScroll(h), 500);
+      const ons = Func.throttle(() => this.onScroll(), 500);
+      //const ons = Func.throttle((h) => this.onScroll(h), 500);
       //ons(); // forces reflow
       setTimeout(() => this.onScroll(), 20);
       this.app.b([window], 'scroll', e => ons(/*this.hashed*/));

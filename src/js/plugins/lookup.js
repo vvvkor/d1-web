@@ -4,6 +4,8 @@
 // import fetch from './fetch.js'
 
 import Plugin from './plugin.js'
+import Url from '../util/url.js'
+import Func from '../util/func.js';
 
 export default class extends Plugin {
 
@@ -35,7 +37,7 @@ export default class extends Plugin {
 
     app.e('input[data-' + this.opt.dLookup + ']', n => this.prepare(n));
     app.e('[data-chain]', n => this.updateChain(n));
-    const f = app.debounce(this.find.bind(this), this.opt.wait);
+    const f = Func.debounce(this.find.bind(this), this.opt.wait);
     app.h('input', '.lookup-input', f); // e => f(e)
     app.h('keydown', '.lookup-input', e => this.key(e));
     app.h('click', '.lookup-item', e => this.choose(e));
@@ -78,7 +80,7 @@ export default class extends Plugin {
   initCaption (n){
     let uc = n.dataset[this.opt.dCap] || '';
     if(uc && n.value && !(this.opt.dLabel in n.dataset)){
-      let u = encodeURI(decodeURI(this.app.makeUrl(uc, {time: (new Date()).getTime()}))
+      let u = encodeURI(decodeURI(Url.build(uc, {time: (new Date()).getTime()}))
         .replace(/\{q\}/, n.value));
       this.app.fetch(u, req => {
         let d = this.app.parse(req.responseText);
@@ -114,7 +116,7 @@ export default class extends Plugin {
     if(v==='') this.fix(n, '', ''); //empty
     else if(n.vCache && n.vCache[v]) this.openList(n, n.vCache[v]); //cached
     else{
-      let u = encodeURI(decodeURI(this.app.makeUrl((n.dataset[this.opt.dLookup] || ''), {
+      let u = encodeURI(decodeURI(Url.build((n.dataset[this.opt.dLookup] || ''), {
           //value: v,
           time: (new Date()).getTime()
       })).replace(/\{q\}/, v));

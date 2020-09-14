@@ -1,4 +1,4 @@
-/*! d1-web v2.1.4 */
+/*! d1-web v2.1.5 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -1244,6 +1244,10 @@ mark {
 .tabs li {
     margin-right: .25em;
     margin-right: calc(var(--gap-n)/4);
+}
+
+.nav.roll {
+    flex-wrap: nowrap;
 }
 
 .dlg {
