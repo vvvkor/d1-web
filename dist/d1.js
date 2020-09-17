@@ -1,4 +1,4 @@
-/*! d1-web v2.1.6 */
+/*! d1-web v2.1.7 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -1434,7 +1434,10 @@ var _default = /*#__PURE__*/function (_Plugin) {
     key: "swipe",
     value: function swipe(e) {
       if (e.n.matches(this.opt.qGal)) {
-        if (e.dir == 4) this.browse(e.n);else if (e.dir == 2) this.browse(e.n, true);else if (e.dir == 3) this.app.fire('esc');
+        if (e.dir == 4) this.browse(e.n); // left
+        else if (e.dir == 2) this.browse(e.n, true); // right
+          else if (e.dir == 3) this.app.fire('esc'); // down
+            else if (e.dir == 1) this.visit(e.n); // up
       }
     }
   }, {
@@ -1514,6 +1517,18 @@ var _default = /*#__PURE__*/function (_Plugin) {
       document.body.appendChild(g);
     }
   }, {
+    key: "visit",
+    value: function visit(a) {
+      var h = a.vLink;
+
+      if (!h) {
+        h = window.getComputedStyle(a).backgroundImage;
+        h = h.substring(4, h.length - 1).replace(/^"|"$/g, '');
+      }
+
+      if (h) location.href = h;
+    }
+  }, {
     key: "onKey",
     value: function onKey(e) {
       if (location.hash) {
@@ -1522,16 +1537,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
         if (a && a.hash) {
           var k = e.keyCode;
           if (k == 37 || k == 38) this.browse(a, true);else if (k == 39 || k == 40) this.browse(a); //a.click();
-          else if (k == 8) {
-              var h = a.vLink;
-
-              if (!h) {
-                h = window.getComputedStyle(a).backgroundImage;
-                h = h.substring(4, h.length - 1).replace(/^"|"$/g, '');
-              }
-
-              if (h) location.href = h;
-            } //e.preventDefault();
+          else if (k == 8) this.visit(a); //e.preventDefault();
         }
       }
     }
@@ -1631,7 +1637,7 @@ module.exports = {
   card: [14, 'M1 3.5q0-1 1-1h10q1 0 1 1v7q0 1 -1 1h-10q-1 0-1-1zm1 0v1h10v-1zm0 3v4h10v-4z'],
   sum: [12, 'M2.5 3v-1h7v1h-5l3 3-3 3h5v1h-7v-1l3-3z'],
   //copy: [9, 'M1 3 h1v4h4v1h-5zm2-2h5v5h-5zm1 1v3h3v-3z'],
-  copy: [12, 'M1 3 h1v7h7v1h-8zm2-2h8v8h-8zm1 1v6h6v-6z'],
+  copy: [12, 'M2 3 h1v7h5v1h-6zm2-2h6v8h-6zm1 1v6h4v-6z'],
   help: [18, 'M9 2a7 7 0 1 0 .01 0zm-3 5q0-3 3-3t3 3c0 3-2 2-2 4h-2c0-3 2-2 2-4q0-1-1-1t-1 1zm3 4.5a1.3 1.3 0 1 1 -.01 0z'],
   phone: [13, 'M3 1l2 3-1.2 1.2 4 4 1.2-1.2 3 2c-3 6 -15 -6 -9-9z'],
   //mail: [14, 'M1 2.5h12v9h-12zm1 1v1l5 5 5 -5v-1z'],
@@ -1648,7 +1654,7 @@ module.exports = {
   columns: [16, 'M1.5 2.5h13v11h-13zm1 2v8h5v-8zm6 0v8h5v-8z'],
   //storage: [9, 'M1 1h7v3h-7zm0 4h7v3h-7zm4-3v1h2v-1zm0 4v1h2v-1z'],
   //storage: [10, 'M1 3v-2h9v2zm0 3zv-2h9v2zm0 3zv-2h9v2zm6 -1.5v1h2v-1zm0-3v1h2v-1zm0-3v1h2v-1z'],
-  storage: [13, 'M1 4v-3h11v3zm0 4zv-3h11v3zm0 4zv-3h11v3zm8 -2v1h2v-1zm0-4v1h2v-1zm0-4v1h2v-1z'],
+  storage: [14, 'M1.5 4.5v-3h11v3zm0 4zv-3h11v3zm0 4zv-3h11v3zm8 -2v1h2v-1zm0-4v1h2v-1zm0-4v1h2v-1z'],
   settings: [11, 'M1 2h9v1h-9zm0 3h9v1h-9zm0 3h9v1h-9zm2-7h1v3h-1zm4 3h1v3h-1zm-3 3h1v3h-1z'],
   power: [18, 'M6 3a6.7 6.7 0 1 0 6 0v2a4.9 4.9 0 1 1 -6 0zm2-1.5h2v8h-2z'],
   energy: [11, 'M5 1.5l-2 4h2l-2 5 5-6h-2l2-3z'],

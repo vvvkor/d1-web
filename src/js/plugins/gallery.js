@@ -34,9 +34,10 @@ export default class extends Plugin {
   
   swipe (e){
     if(e.n.matches(this.opt.qGal)){
-      if(e.dir==4) this.browse(e.n);
-      else if(e.dir==2) this.browse(e.n, true);
-      else if(e.dir==3) this.app.fire('esc');
+      if(e.dir==4) this.browse(e.n); // left
+      else if(e.dir==2) this.browse(e.n, true); // right
+      else if(e.dir==3) this.app.fire('esc'); // down
+      else if(e.dir==1) this.visit(e.n); // up
     }
   }
   
@@ -100,6 +101,15 @@ export default class extends Plugin {
     document.body.appendChild(g);
   }
 
+  visit (a) {
+    let h = a.vLink;
+    if(!h){
+      h = window.getComputedStyle(a).backgroundImage;
+      h = h.substring(4, h.length-1).replace(/^"|"$/g, '');
+    }
+    if(h) location.href = h;
+  }
+  
   onKey (e) {
     if(location.hash) {
       let a = this.app.q(location.hash);
@@ -107,14 +117,7 @@ export default class extends Plugin {
         let k = e.keyCode;
         if (k==37 || k==38) this.browse(a, true);
         else if (k==39 || k==40) this.browse(a);//a.click();
-        else if(k==8){
-          let h = a.vLink;
-          if(!h){
-            h = window.getComputedStyle(a).backgroundImage;
-            h = h.substring(4, h.length-1).replace(/^"|"$/g, '');
-          }
-          if(h) location.href = h;
-        }
+        else if(k==8) this.visit(a);
         //e.preventDefault();
       }
     }

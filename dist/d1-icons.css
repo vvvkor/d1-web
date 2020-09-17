@@ -1,4 +1,4 @@
-/*! d1-web icons v2.1.6 */
+/*! d1-web icons v2.1.7 */
 
 [class*="icon-"]:before {
     content: "";
@@ -286,7 +286,7 @@
 }
 
 .icon-copy:before {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath fill='%2300f' d='M1 3 h1v7h7v1h-8zm2-2h8v8h-8zm1 1v6h6v-6z'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath fill='%2300f' d='M2 3 h1v7h5v1h-6zm2-2h6v8h-6zm1 1v6h4v-6z'/%3E%3C/svg%3E");
 }
 
 .icon-help:before {
@@ -342,7 +342,7 @@
 }
 
 .icon-storage:before {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 13 13'%3E%3Cpath fill='%2300f' d='M1 4v-3h11v3zm0 4zv-3h11v3zm0 4zv-3h11v3zm8 -2v1h2v-1zm0-4v1h2v-1zm0-4v1h2v-1z'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath fill='%2300f' d='M1.5 4.5v-3h11v3zm0 4zv-3h11v3zm0 4zv-3h11v3zm8 -2v1h2v-1zm0-4v1h2v-1zm0-4v1h2v-1z'/%3E%3C/svg%3E");
 }
 
 .icon-settings:before {

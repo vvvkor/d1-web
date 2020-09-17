@@ -78,7 +78,7 @@ module.exports = {
   card: [14, 'M1 3.5q0-1 1-1h10q1 0 1 1v7q0 1 -1 1h-10q-1 0-1-1zm1 0v1h10v-1zm0 3v4h10v-4z'],
   sum: [12, 'M2.5 3v-1h7v1h-5l3 3-3 3h5v1h-7v-1l3-3z'],
   //copy: [9, 'M1 3 h1v4h4v1h-5zm2-2h5v5h-5zm1 1v3h3v-3z'],
-  copy: [12, 'M1 3 h1v7h7v1h-8zm2-2h8v8h-8zm1 1v6h6v-6z'],
+  copy: [12, 'M2 3 h1v7h5v1h-6zm2-2h6v8h-6zm1 1v6h4v-6z'],
   help: [18, 'M9 2a7 7 0 1 0 .01 0zm-3 5q0-3 3-3t3 3c0 3-2 2-2 4h-2c0-3 2-2 2-4q0-1-1-1t-1 1zm3 4.5a1.3 1.3 0 1 1 -.01 0z'],
 
   phone: [13, 'M3 1l2 3-1.2 1.2 4 4 1.2-1.2 3 2c-3 6 -15 -6 -9-9z'],
@@ -99,7 +99,7 @@ module.exports = {
 
   //storage: [9, 'M1 1h7v3h-7zm0 4h7v3h-7zm4-3v1h2v-1zm0 4v1h2v-1z'],
   //storage: [10, 'M1 3v-2h9v2zm0 3zv-2h9v2zm0 3zv-2h9v2zm6 -1.5v1h2v-1zm0-3v1h2v-1zm0-3v1h2v-1z'],
-  storage: [13, 'M1 4v-3h11v3zm0 4zv-3h11v3zm0 4zv-3h11v3zm8 -2v1h2v-1zm0-4v1h2v-1zm0-4v1h2v-1z'],
+  storage: [14, 'M1.5 4.5v-3h11v3zm0 4zv-3h11v3zm0 4zv-3h11v3zm8 -2v1h2v-1zm0-4v1h2v-1zm0-4v1h2v-1z'],
   settings: [11, 'M1 2h9v1h-9zm0 3h9v1h-9zm0 3h9v1h-9zm2-7h1v3h-1zm4 3h1v3h-1zm-3 3h1v3h-1z'],
   power: [18, 'M6 3a6.7 6.7 0 1 0 6 0v2a4.9 4.9 0 1 1 -6 0zm2-1.5h2v8h-2z'],
   energy: [11, 'M5 1.5l-2 4h2l-2 5 5-6h-2l2-3z'],
@@ -117,4 +117,4 @@ module.exports = {
   layers: [14, 'M1 5.5l6-3 6 3-6 3zm0 3l2-1 4 2 4-2 2 1-6 3z'],
   none: [1, 'M1 1z'],
 
-};
+}

@@ -1,4 +1,4 @@
-/*! d1-web v2.1.6 */
+/*! d1-web v2.1.7 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -1434,7 +1434,10 @@ var _default = /*#__PURE__*/function (_Plugin) {
     key: "swipe",
     value: function swipe(e) {
       if (e.n.matches(this.opt.qGal)) {
-        if (e.dir == 4) this.browse(e.n);else if (e.dir == 2) this.browse(e.n, true);else if (e.dir == 3) this.app.fire('esc');
+        if (e.dir == 4) this.browse(e.n); // left
+        else if (e.dir == 2) this.browse(e.n, true); // right
+          else if (e.dir == 3) this.app.fire('esc'); // down
+            else if (e.dir == 1) this.visit(e.n); // up
       }
     }
   }, {
@@ -1514,6 +1517,18 @@ var _default = /*#__PURE__*/function (_Plugin) {
       document.body.appendChild(g);
     }
   }, {
+    key: "visit",
+    value: function visit(a) {
+      var h = a.vLink;
+
+      if (!h) {
+        h = window.getComputedStyle(a).backgroundImage;
+        h = h.substring(4, h.length - 1).replace(/^"|"$/g, '');
+      }
+
+      if (h) location.href = h;
+    }
+  }, {
     key: "onKey",
     value: function onKey(e) {
       if (location.hash) {
@@ -1522,16 +1537,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
         if (a && a.hash) {
           var k = e.keyCode;
           if (k == 37 || k == 38) this.browse(a, true);else if (k == 39 || k == 40) this.browse(a); //a.click();
-          else if (k == 8) {
-              var h = a.vLink;
-
-              if (!h) {
-                h = window.getComputedStyle(a).backgroundImage;
-                h = h.substring(4, h.length - 1).replace(/^"|"$/g, '');
-              }
-
-              if (h) location.href = h;
-            } //e.preventDefault();
+          else if (k == 8) this.visit(a); //e.preventDefault();
         }
       }
     }
