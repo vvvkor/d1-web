@@ -8,7 +8,7 @@ export default class extends Plugin {
   constructor () {
     super('swipe')
     this.moved = null;
-    this.c = {};
+    this.c = {}; // current move params
     this.opt = {
       qSwipe: '.swipe',
       qDrag: '.drag',
@@ -35,7 +35,7 @@ export default class extends Plugin {
       }
     */
     this.app.b([document], ['mousedown', 'touchstart'], e => this.onStart(e));
-    this.app.b([document], ['mousemove', 'touchmove'], e => this.onMove(e));
+    this.app.b([document], ['mousemove', 'touchmove'], e => this.onMove(e), {passive: false});
     this.app.b([document], ['click', 'mouseleave', 'touchend', 'touchcancel'/*, 'mouseleave'/*, 'blur', 'keydown', 'contextmenu'*/], e => this.onEnd(e), true);
   }
 
@@ -53,7 +53,8 @@ export default class extends Plugin {
     }
   }
 
-  onMove (e){
+  onMove (e) {
+    //console.log('move', e.type, this.moved?.tagName)
     if(this.moved){
       e.preventDefault();
       this.drag_(e);
@@ -70,7 +71,7 @@ export default class extends Plugin {
       let xy = this.shift();
       this.moved.style.transform = 'translate(' + xy[0] + 'px, ' + xy[1] + 'px)';
       this.moved.classList.add(this.opt.cDragging);
-      //this.moved.style.zIndex = 100;
+      //this.moved.style.zIndex = 99;
       //});
     }
   }

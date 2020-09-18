@@ -1,4 +1,4 @@
-/*! d1-web v2.1.7 */
+/*! d1-web v2.1.8 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -994,13 +994,16 @@ mark {
         border: thin solid #aaa;
     }
 
-    a.btn, button, input[type="submit"] {
+    a.btn, button, [type="submit"] {
         padding: .5em 1em;
         padding: var(--gaps-n);
         border-radius: .2em;
         border-radius: var(--radius);
         margin: .2em 0;
         margin: var(--gap-xs) 0;
+    }
+
+    .btn, button, [type="submit"] {
         border-color: transparent;
     }
 
@@ -1250,7 +1253,7 @@ mark {
     flex-wrap: nowrap;
 }
 
-.nav.roll>*, .row.roll[class]>* {
+.nav.roll>*, .row.roll>* {
     flex: none;
 }
 
@@ -1379,6 +1382,10 @@ form .mar {
 
 .narrow {
     max-width: 16em;
+}
+
+.dragging {
+    z-index: 99;
 }
 
 .scroller::-webkit-scrollbar {

@@ -20,7 +20,9 @@ export default class extends Plugin {
     //this.restore(document.body, 'theme-body');
 
     //button
-    let a = this.app.ins('a', 'Theme', {href: '#' + this.opt.idTheme, className: 'fix pad btn theme-btn hide-print'}, document.body);
+    //const cl = 'fix pad btn hover theme-btn hide-print';
+    const cl = 'fix pad let back shade theme-btn hide-print';
+    let a = this.app.ins('a', 'Theme', {href: '#' + this.opt.idTheme, className: cl}, document.body);
     let s = a.style;
     s.transform = 'rotate(-90deg)';
     s.transformOrigin = '100% 100%';
@@ -28,6 +30,7 @@ export default class extends Plugin {
     s.right = '-.2em';
     s.bottom = s.left = 'auto';
     s.margin = 0;
+    s.opacity = .5;
     //drawer
     this.drw = this.app.ins('div', '', {id: this.opt.idTheme, className: this.app.opt.cToggle + ' ' + this.app.opt.cOff + ' drawer swipe drag pad small shift theme-drawer', 'data-swipe': '2'}, document.body);
     this.app.ins('a', '&#x2715;', {href: '#cancel', className: 'pad hover close'}, this.drw);

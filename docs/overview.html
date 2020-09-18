@@ -7,10 +7,10 @@
       content="width=device-width, initial-scale=1">
 	<!--link href="https://unpkg.com/normalize.css@8.0.1/normalize.css" rel="stylesheet"-->
 	<!-- CDN -->
-		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.1.7/dist/d1.min.css" rel="stylesheet">
-		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.1.7/dist/d1.min.js"></script>
+		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.1.8/dist/d1.min.css" rel="stylesheet">
+		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.1.8/dist/d1.min.js"></script>
 		<noscript>
-			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.1.7/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.1.8/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- local-npm-src ->
 		<link href="../src/index.css" rel="stylesheet">
@@ -74,6 +74,9 @@
 		});
 	</script>
 	<style>
+		@media (min-width: 900px){
+			.row-left{order:-1;}
+		}
 		/* Roboto, Open Sans, Georgia, PT Sans, PT Serif, PT Mono */
 		@import url('https://fonts.googleapis.com/css?family=PT+Sans&display=swap');
 		@import url('https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap');
@@ -104,11 +107,11 @@ Text
 	<header class="bg -bg-n -topbar -toggle">
 		<div class="hide-desktop">
 			<a href="#nav" class="pad hover icon-menu empty" title="Menu"><span>Menu</span></a>
-			<a href="?" class="pad"><b>d1</b> <span class="text-n">v2.1.7</span></a>
+			<a href="?" class="pad"><b>d1</b> <span class="text-n">v2.1.8</span></a>
 		</div>
 		
 		<ul class="nav flip hover target-mobile" id="nav">
-			<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v2.1.7</span></a></li>
+			<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v2.1.8</span></a></li>
 			<li><a href="index.html" class="icon-text">Docs</a>
 			<li><a href="https://github.com/vvvkor/d1-web" class="icon-folder" >GitHub</a>
 			<li><a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="icon-download empty-desktop" title="Download"><span>Download</span></a>
@@ -139,168 +142,10 @@ Text
 
   <!-- row -->
   <div class="row flip pad">
-	<!-- left -->
-	<div class="">
-		<div class="pad mar shade rad" data-class-mobile="pad mar bord rad" data-class-desktop="pad mar shade rad">
-			<h3 class="mar">Status</h3>
-			<p>
-				<b class="btn bg-w hide-js">JavaScript off</b>
-				<b class="btn bg-y hide-nojs">JavaScript on</b>
-				<br>
-				<b class="btn bg-i hide-desktop">Mobile layout</b>
-				<b class="btn bg-n hide-mobile">Desktop layout</b>
-			</p>
-		</div>
-		<div class="pad mar shade">
-			<h3 class="mar">Page setup <b class="small btn bg-e hide-js" title="Requires Javascript">JS</b></h3>
-			<p>
-			<label><input type="checkbox" data-nodes="#topbar" data-set="topbar toggle shade  row let center fit" data-unset="topbar hide off" id="setup-topbar" class="mem"> Topbar</label><br>
-			<label><input type="checkbox" data-nodes="body" data-set="invert" id="setup-invert" class="mem"> Invert</label>
-				<span class="text-i tip icon-info empty" title="Not supported in  IE and Edge 15-"><i>[!]</i></span>
-				<br>
-			<label><input type="checkbox" data-nodes="html" data-set="scroller" id="custom-scroll" class="mem"> Custom scroll</label>
-				<span class="text-i tip icon-info empty" title="Supported in  WebKit and Firefox"><i>[!]</i></span>
-				<span class="text-w tip icon-bookmark empty" title="Remember selection  in local storage"><i>[#]</i></span>
-			</p>
-		</div>
-		<div class="pad mar shade">
-			<h3 class="mar">Components</h3>
-			<!-- togglers -->
-			<ul>
-				<li><a href="#tog">Toggle</a>
-				<div id="tog" class="pad bord yel bg-w target mem">Togglable</div>
-				<li><div class="pop">
-					<a href="#pop">Popup</a>
-					<div id="pop" class="pad shift">
-						Pop
-						<div class="pop">
-							<a href="#pop2">Internal popup</a>
-							<div id="pop2" class="pad">Nested</div>
-						</div>
-					</div>
-				</div>
-				<li><div class="pop">
-					<a href="#x">Hover</a>
-					<div class="pad">
-						Internal popup on
-						<div class="pop">
-							<a href="#x">hover</a>
-							<div class="pad shift">Nested, to the left on desktop</div>
-						</div>
-					</div>
-				</div>
-				<li><a href="#modal">Modal</a>
-				<li><a href="#full">Full</a>
-				<li><span class="gallery">Gallery
-					<a href="https://picsum.photos/id/360/1000/700.jpg" class="pic" title="Red">#1</a>
-					<a href="https://picsum.photos/id/844/1000/700.jpg" class="pic" title="Green">#2</a>
-					<a href="https://picsum.photos/id/830/1000/700.jpg" class="pic" title="Blue">#3</a>
-					</span>
-				<li><a href="#gal1">Pure CSS Gallery</a>
-					<span class="text-i tip c icon-info empty" title="Not supported in  IE and Edge 15-"><i>[!]</i></span>
-				<li><a href="#menu">Drawer & tree</a>
-				<!--li><a href="#x" data-nodes="#topbar" data-set="topbar toggle shade  row let center fit" data-unset="hide">Topbar</a>
-					<b class="small btn bg-e hide-js" title="Requires Javascript">JS</b-->
-				<!--details>
-					<summary>Summary</summary>
-					<div class="bg pad">Details</div>
-				</details-->
-			</ul>
-
-			<!-- togglable -->
-			<div id="modal" class="dlg rad c pad">
-				<!--a class="close pad icon-close empty" href="#cancel">Close</a-->
-				<a class="close pad icon-close empty" href="#cancel" title="Close"><b>&times;</b></a>
-				<p>Modal</p>
-			</div>
-			<div id="full" class="dlg full center pad bg-w">
-				<a class="close pad icon-close empty" href="#cancel"><i>Close</i></a>
-				Fullscreen modal
-			</div>
-			<div class="gal">
-				<a id="gal1" href="#gal2" style="--img:url(https://picsum.photos/id/360/1000/700.jpg)" data-caption="1/3 - Red"  ></a>
-				<a id="gal2" href="#gal3" style="--img:url(https://picsum.photos/id/844/1000/700.jpg)" data-caption-x="2/3 - Green" ></a>
-				<a id="gal3" href="#gal1" style="--img:url(https://picsum.photos/id/830/1000/700.jpg)" data-caption="3/3 - Blue"></a>
-				<a class="close icon-close empty" href="#cancel"><span>Close</span></a>
-			</div>
-			<div class="drawer pad swipe drag" id="menu" data-swipe="4">
-				<a class="close pad icon-close empty" href="#cancel"><span>Close</span></a>
-				<h3 class="icon-flag">Languages</h3>
-				<ul class="tree accordion mem fit">
-					<li><a href="#ul1">Computer</a>
-						<ul id="ul1">
-							<li>Programming
-								<ul class="small">
-									<li>JavaScript</li>
-									<li>PHP</li>
-								</ul>
-							</li>
-							<li>Markup
-								<ul class="small">
-									<li>HTML</li>
-									<li>CSS</li>
-								</ul>
-							</li>
-						</ul>
-					</li>
-					<li><a>Human</a>
-						<ul id="ul2">
-							<li>English</li>
-							<li>Spanish</li>
-							<li>Russial</li>
-						</ul>
-					</li>
-				</ul>
-			</div>
-		</div>
-		
-		<div class="-pad mar -shade">
-			<!--h3 class="mar">Tabs</h3-->
-			<ul class="nav tabs rad mem hover">
-				<li><a href="#tab1">#1</a></li>
-				<li><a href="#tab2">#2</a></li>
-				<li><a href="#tab3">#3</a></li>
-			</ul>
-			<div class="bord">
-				<div id="tab2" class="pad bg-w">2<br>2</div>
-				<div id="tab3" class="pad">3</div>
-				<div id="tab1">
-					<div class="item">
-						<img class="fit" src="https://picsum.photos/id/844/900/200.jpg" height="200" alt="Green">
-						<div class="over invert back -bg-w hover"></div>
-						<div class="over pad row center c invert">
-							<div>
-								<h3 class="mar">Overlay</h3>
-								<p>Text <a href="#x">link</a></p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="pad mar shade">
-			<!-- dialogs -->
-			<h3 class="mar">Dialogs <b class="small btn bg-e hide-js" title="Requires Javascript">JS</b></h3>
-			<ul>
-				<li><a href="#done" class="alert" title="This is a simple alert." data-head="Hello" data-pic="info text-i">Alert</a>
-				<li><a href="?a=1&b=2" class="dialog" title="Continue?">Confirm</a>
-				<li><a href="?a=1&b=2" class="dialog" title="Continue to new tab?" target="_blank">Confirm to new tab</a>
-				<li><a href="#top" class="dialog" title="Continue to %href%?">Confirm hash</a>
-				<li><a href="?a=1&b=Hello!&c=3" class="dialog text-w" data-prompt="b" data-caption="Greeting:" data-ok="Fine" data-cancel="No way" data-reverse="">Prompt</a>
-				<li><a href="?nm=" class="dialog" data-prompt="nm" data-caption="Name:" data-src="#nms" data-go-x data-reverse-x>Prompt from input</a>
-			</ul>
-			<form class="mar">
-				<input type="text" name="nm" id="nms" value="qq" size="5" required pattern="[A-Za-z]{2,}" title="Two or more letters">
-				<input type="submit" name="s1" value="OK">
-				<input type="submit" name="s2" value="Confirm" class="dialog bg-w" title="Submit with" data-prompt="nm" data-head="Attention!">
-			</form>
-		</div>
-	</div>
-
+	
 	<!-- central -->
 	
-	<div class="pad mar col-2" data-class-desktop="pad mar col-2" data-class-mobile="">
+	<div class="pad mar col-2 row-center" data-class-desktop="pad mar col-2" data-class-mobile="">
 	
 		<!-- breadcrumbs -->
 		<div class="small">
@@ -870,10 +715,169 @@ let double = function (x) {
 		-->
 	</div>
 
+	<!-- left -->
 	
+	<div class="row-left">
+		<div class="pad mar shade rad" data-class-mobile="pad mar bord rad" data-class-desktop="pad mar shade rad">
+			<h3 class="mar">Status</h3>
+			<p>
+				<b class="btn bg-w hide-js">JavaScript off</b>
+				<b class="btn bg-y hide-nojs">JavaScript on</b>
+				<br>
+				<b class="btn bg-i hide-desktop">Mobile layout</b>
+				<b class="btn bg-n hide-mobile">Desktop layout</b>
+			</p>
+		</div>
+		<div class="pad mar shade">
+			<h3 class="mar">Page setup <b class="small btn bg-e hide-js" title="Requires Javascript">JS</b></h3>
+			<p>
+			<label><input type="checkbox" data-nodes="#topbar" data-set="topbar toggle shade  row let center fit" data-unset="topbar hide off" id="setup-topbar" class="mem"> Topbar</label><br>
+			<label><input type="checkbox" data-nodes="body" data-set="invert" id="setup-invert" class="mem"> Invert</label>
+				<span class="text-i tip icon-info empty" title="Not supported in  IE and Edge 15-"><i>[!]</i></span>
+				<br>
+			<label><input type="checkbox" data-nodes="html" data-set="scroller" id="custom-scroll" class="mem"> Custom scroll</label>
+				<span class="text-i tip icon-info empty" title="Supported in  WebKit and Firefox"><i>[!]</i></span>
+				<span class="text-w tip icon-bookmark empty" title="Remember selection  in local storage"><i>[#]</i></span>
+			</p>
+		</div>
+		<div class="pad mar shade">
+			<h3 class="mar">Components</h3>
+			<!-- togglers -->
+			<ul>
+				<li><a href="#tog">Toggle</a>
+				<div id="tog" class="pad bord yel bg-w target mem">Togglable</div>
+				<li><div class="pop">
+					<a href="#pop">Popup</a>
+					<div id="pop" class="pad shift">
+						Pop
+						<div class="pop">
+							<a href="#pop2">Internal popup</a>
+							<div id="pop2" class="pad">Nested</div>
+						</div>
+					</div>
+				</div>
+				<li><div class="pop">
+					<a href="#x">Hover</a>
+					<div class="pad">
+						Internal popup on
+						<div class="pop">
+							<a href="#x">hover</a>
+							<div class="pad shift">Nested, to the left on desktop</div>
+						</div>
+					</div>
+				</div>
+				<li><a href="#modal">Modal</a>
+				<li><a href="#full">Full</a>
+				<li><span class="gallery">Gallery
+					<a href="https://picsum.photos/id/360/1000/700.jpg" class="pic" title="Red">#1</a>
+					<a href="https://picsum.photos/id/844/1000/700.jpg" class="pic" title="Green">#2</a>
+					<a href="https://picsum.photos/id/830/1000/700.jpg" class="pic" title="Blue">#3</a>
+					</span>
+				<li><a href="#gal1">Pure CSS Gallery</a>
+					<span class="text-i tip c icon-info empty" title="Not supported in  IE and Edge 15-"><i>[!]</i></span>
+				<li><a href="#menu">Drawer & tree</a>
+				<!--li><a href="#x" data-nodes="#topbar" data-set="topbar toggle shade  row let center fit" data-unset="hide">Topbar</a>
+					<b class="small btn bg-e hide-js" title="Requires Javascript">JS</b-->
+				<!--details>
+					<summary>Summary</summary>
+					<div class="bg pad">Details</div>
+				</details-->
+			</ul>
+
+			<!-- togglable -->
+			<div id="modal" class="dlg rad c pad">
+				<!--a class="close pad icon-close empty" href="#cancel">Close</a-->
+				<a class="close pad icon-close empty" href="#cancel" title="Close"><b>&times;</b></a>
+				<p>Modal</p>
+			</div>
+			<div id="full" class="dlg full center pad bg-w">
+				<a class="close pad icon-close empty" href="#cancel"><i>Close</i></a>
+				Fullscreen modal
+			</div>
+			<div class="gal">
+				<a id="gal1" href="#gal2" style="--img:url(https://picsum.photos/id/360/1000/700.jpg)" data-caption="1/3 - Red"  ></a>
+				<a id="gal2" href="#gal3" style="--img:url(https://picsum.photos/id/844/1000/700.jpg)" data-caption-x="2/3 - Green" ></a>
+				<a id="gal3" href="#gal1" style="--img:url(https://picsum.photos/id/830/1000/700.jpg)" data-caption="3/3 - Blue"></a>
+				<a class="close icon-close empty" href="#cancel"><span>Close</span></a>
+			</div>
+			<div class="drawer pad swipe drag" id="menu" data-swipe="4">
+				<a class="close pad icon-close empty" href="#cancel"><span>Close</span></a>
+				<h3 class="icon-flag">Languages</h3>
+				<ul class="tree accordion mem fit">
+					<li><a href="#ul1">Computer</a>
+						<ul id="ul1">
+							<li>Programming
+								<ul class="small">
+									<li>JavaScript</li>
+									<li>PHP</li>
+								</ul>
+							</li>
+							<li>Markup
+								<ul class="small">
+									<li>HTML</li>
+									<li>CSS</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<li><a>Human</a>
+						<ul id="ul2">
+							<li>English</li>
+							<li>Spanish</li>
+							<li>Russial</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+		
+		<div class="-pad mar -shade">
+			<!--h3 class="mar">Tabs</h3-->
+			<ul class="nav tabs rad mem hover">
+				<li><a href="#tab1">#1</a></li>
+				<li><a href="#tab2">#2</a></li>
+				<li><a href="#tab3">#3</a></li>
+			</ul>
+			<div class="bord">
+				<div id="tab2" class="pad bg-w">2<br>2</div>
+				<div id="tab3" class="pad">3</div>
+				<div id="tab1">
+					<div class="item">
+						<img class="fit" src="https://picsum.photos/id/844/900/200.jpg" height="200" alt="Green">
+						<div class="over invert back -bg-w hover"></div>
+						<div class="over pad row center c invert">
+							<div>
+								<h3 class="mar">Overlay</h3>
+								<p>Text <a href="#x">link</a></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="pad mar shade">
+			<!-- dialogs -->
+			<h3 class="mar">Dialogs <b class="small btn bg-e hide-js" title="Requires Javascript">JS</b></h3>
+			<ul>
+				<li><a href="#done" class="alert" title="This is a simple alert." data-head="Hello" data-pic="info text-i">Alert</a>
+				<li><a href="?a=1&b=2" class="dialog" title="Continue?">Confirm</a>
+				<li><a href="?a=1&b=2" class="dialog" title="Continue to new tab?" target="_blank">Confirm to new tab</a>
+				<li><a href="#top" class="dialog" title="Continue to %href%?">Confirm hash</a>
+				<li><a href="?a=1&b=Hello!&c=3" class="dialog text-w" data-prompt="b" data-caption="Greeting:" data-ok="Fine" data-cancel="No way" data-reverse="">Prompt</a>
+				<li><a href="?nm=" class="dialog" data-prompt="nm" data-caption="Name:" data-src="#nms" data-go-x data-reverse-x>Prompt from input</a>
+			</ul>
+			<form class="mar">
+				<input type="text" name="nm" id="nms" value="qq" size="5" required pattern="[A-Za-z]{2,}" title="Two or more letters">
+				<input type="submit" name="s1" value="OK">
+				<input type="submit" name="s2" value="Confirm" class="dialog bg-w" title="Submit with" data-prompt="nm" data-head="Attention!">
+			</form>
+		</div>
+	</div>
+
 	<!-- right -->
 	
-	<div>
+	<div class="row-right">
 		<div class="pad mar shade">
 			<div class="row center">
 				<a href="#x" class="col-0 pad bg-n let icon-user_50_50_text-n_bg-i icon-user empty">User</a>

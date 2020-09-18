@@ -1,4 +1,4 @@
-/*! d1-web v2.1.7 */
+/*! d1-web v2.1.8 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -5102,7 +5102,8 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
 
     _this = _super.call(this, 'swipe');
     _this.moved = null;
-    _this.c = {};
+    _this.c = {}; // current move params
+
     _this.opt = {
       qSwipe: '.swipe',
       qDrag: '.drag',
@@ -5142,6 +5143,8 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
       });
       this.app.b([document], ['mousemove', 'touchmove'], function (e) {
         return _this2.onMove(e);
+      }, {
+        passive: false
       });
       this.app.b([document], ['click', 'mouseleave', 'touchend', 'touchcancel'
       /*, 'mouseleave'/*, 'blur', 'keydown', 'contextmenu'*/
@@ -5169,6 +5172,7 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "onMove",
     value: function onMove(e) {
+      //console.log('move', e.type, this.moved?.tagName)
       if (this.moved) {
         e.preventDefault();
         this.drag_(e);
@@ -5186,7 +5190,7 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
         //console.log('swipe drag');
         var xy = this.shift();
         this.moved.style.transform = 'translate(' + xy[0] + 'px, ' + xy[1] + 'px)';
-        this.moved.classList.add(this.opt.cDragging); //this.moved.style.zIndex = 100;
+        this.moved.classList.add(this.opt.cDragging); //this.moved.style.zIndex = 99;
         //});
       }
     }
@@ -5452,10 +5456,12 @@ var theme_default = /*#__PURE__*/function (_Plugin) {
       if (!document.body.classList.contains(this.opt.cTheme)) return;
       this.restore(document.documentElement, 'theme-html'); //this.restore(document.body, 'theme-body');
       //button
+      //const cl = 'fix pad btn hover theme-btn hide-print';
 
+      var cl = 'fix pad let back shade theme-btn hide-print';
       var a = this.app.ins('a', 'Theme', {
         href: '#' + this.opt.idTheme,
-        className: 'fix pad btn theme-btn hide-print'
+        className: cl
       }, document.body);
       var s = a.style;
       s.transform = 'rotate(-90deg)';
@@ -5463,7 +5469,8 @@ var theme_default = /*#__PURE__*/function (_Plugin) {
       s.top = '10vh';
       s.right = '-.2em';
       s.bottom = s.left = 'auto';
-      s.margin = 0; //drawer
+      s.margin = 0;
+      s.opacity = .5; //drawer
 
       this.drw = this.app.ins('div', '', {
         id: this.opt.idTheme,
