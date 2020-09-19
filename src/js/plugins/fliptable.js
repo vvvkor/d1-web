@@ -21,7 +21,7 @@ export default class extends Plugin {
     let tds = this.app.qq('tbody tr>*, tfoot tr>*', t);
     // let order = (t.dataset.order || '0 1 2 3').split(/\D+/);
     // t.parentNode.classList.remove('roll');
-    for(let i = 0; i < tds.length; i++){
+    for (let i = 0; i < tds.length; i++) {
       let td = tds[i];
       let th = ths[td.cellIndex];
       //let ord = order.indexOf('' + td.cellIndex);
@@ -31,7 +31,7 @@ export default class extends Plugin {
         let c = this.app.ins('div', '', {className: 'row'});
         if(th) this.app.ins('div', th.textContent, {className: 'hide-desktop'}, c)
         let v = this.app.ins('div', '', {}, c);
-        while(td.firstChild) v.appendChild(td.firstChild);
+        while (td.firstChild) v.appendChild(td.firstChild);
         td.textContent = '';
         td.appendChild(c);
       //}

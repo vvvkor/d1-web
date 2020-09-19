@@ -127,7 +127,7 @@ export default class extends Plugin {
   modeAuto (n){
     let wys = n.dataset.mode;
     if(wys) wys = wys[0] === 'w';
-    else{
+    else {
       wys = ((n.dataset.tools || this.opt.tools).indexOf('/')==-1)
         || (n.value.match(/(>|&\w+;)/) && !n.value.match(/<script/i));
     }
@@ -218,8 +218,10 @@ export default class extends Plugin {
     //n.style.height = (1.5 * (2 + Math.max(n.value.length/50, (n.value.match(/\n/g) || []).length))) + 'em';
     //3. better
     let a = n.value.split(/\n/)
-      .map(function(v){ return Math.ceil(10 * (1 + v.length) / (n.clientWidth || 500)); })
-      .reduce(function(v, r){ return r + v; });
+      //.map(function(v){ return Math.ceil(10 * (1 + v.length) / (n.clientWidth || 500)); })
+      .map(v => Math.ceil(10 * (1 + v.length) / (n.clientWidth || 500)))
+      //.reduce(function(v, r){ return r + v; });
+      .reduce((v, r) => r + v);
     n.style.height = Math.min(1.5 * (2 + a), parseFloat(this.opt.height)) + 'em';
     this.storeSize(n);
   }

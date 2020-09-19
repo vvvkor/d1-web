@@ -46,7 +46,7 @@ export default class extends Plugin {
         f.dataset[a] = v;
         this.apply(f);
       }
-      else{
+      else {
         this.reset(f);
       }
     }

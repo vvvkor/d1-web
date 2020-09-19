@@ -3,7 +3,7 @@
 export default class Url {
 
   // build url from link node or string, with additional parameters
-  static build (a, args) {this
+  static build(a, args) {this
     if (!a.tagName) {
       //a = this.ins('a', '', {href: a})
       const h = a
@@ -19,7 +19,7 @@ export default class Url {
   }
 
   // get url parameter(s) from link node or string
-  static get (a, g) {
+  static get(a, g) {
     if (!a || a.tagName!='A') return null
     let i, gets = {}
     let args = a.search ? a.search.replace(/^\?/, '').split('&') : []

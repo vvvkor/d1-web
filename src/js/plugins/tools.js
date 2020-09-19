@@ -72,7 +72,7 @@ export default class extends Plugin {
       else m.removeAttribute(attr);
     }
     else if(u !== null && u !== undefined) m.className = on ? c : (u || '');
-    else{
+    else {
       if(sel){
         //unset other select/radio values
         let u = (n.type == 'radio')
@@ -107,7 +107,7 @@ export default class extends Plugin {
 
   smartHeading (n){
     let d = this.app.ins('div', '', {});
-    while(n.firstChild) d.appendChild(n.firstChild);
+    while (n.firstChild) d.appendChild(n.firstChild);
     n.appendChild(d);
     d.style.position = 'relative';
     d.style.paddingRight = '1em';

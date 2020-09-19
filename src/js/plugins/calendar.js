@@ -30,7 +30,7 @@ export default class extends Plugin {
 
   init (/*opt*/) {
     //let i;
-    //for(i in opt) this.opt[i] = opt[i];
+    //for (i in opt) this.opt[i] = opt[i];
 
     if(window.innerWidth < this.opt.minWidth) return;
     this.win = this.app.ins('div', '', {id: this.opt.idPicker, className: this.app.opt.cToggle + ' ' + this.app.opt.cOff + ' pad'});//dlg hide pad
@@ -65,7 +65,7 @@ export default class extends Plugin {
           : this.app.next(a.parentNode, c, true);
       }
       else if(this.win.vRel) n = this.win.vRel;
-      else{
+      else {
         let p = a.closest('#' + this.opt.idPicker);
         n = this.opt.inPop
           ? this.app.next(p, c, true)
@@ -125,7 +125,7 @@ export default class extends Plugin {
     n.thePop = pop;
     if(this.opt.addIcons.length>0){
       let ic = this.app.ins('span', '', {className:'input-tools calendar-tools nobr'}, n, 1);//icons container
-      for(let i in this.opt.addIcons){
+      for (let i in this.opt.addIcons) {
         this.app.ins('', ' ', {}, ic);
         this.app.ins('a', this.app.i.apply(this.app, this.opt.addIcons[i].slice(0, 2)), {href: this.opt.addIcons[i][2], className: 'let'}, ic);
       }
@@ -190,11 +190,11 @@ export default class extends Plugin {
     // let cd = this.fmt(new Date());
     // let xd = this.fmt(x);
     let row;
-    for(let i=-skip+1; i<=maxd; i++){
+    for (let i=-skip+1; i<=maxd; i++) {
       wd = ((skip+i-1)%7)+1;
       if(wd == 1) row = this.app.ins('div', '', {className:'row'}, rows);
       if(i<1 || i>days) c = this.app.ins('a', '', {className: 'pad c center'}, row);
-      else{
+      else {
         vv = this.fmt(x, i, 0, 'y');
         sel = (i == d);
         today = false;//(this.fmt(x, i) == cd);

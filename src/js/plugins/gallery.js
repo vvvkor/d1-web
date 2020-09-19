@@ -81,7 +81,7 @@ export default class extends Plugin {
     let a = app.qq(this.opt.qLinks, n);
     let z = a.length;
     let first = 0;
-    for(let i=0; i<z; i++) if(!a[i].vDone) {
+    for (let i=0; i<z; i++) if (!a[i].vDone) {
       let s = app.seq();
       if(!i) first = s;
       let p = app.ins('a', '', {

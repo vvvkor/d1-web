@@ -110,7 +110,7 @@ export default class extends Plugin {
         rev: rev
       });
     }
-    else{
+    else {
       if(al) v = alert(t);//undef
       else if(!p) v = confirm(t);//bool
       else v = prompt(t, def);//null|value
@@ -144,7 +144,7 @@ export default class extends Plugin {
       if(ha || bl) this.closeDialog();
       let u;
       if(ha) u = n.hash;
-      else{
+      else {
         let a = {};
         a[this.opt.aConfirm] = 1;
         if(v!==true) a[p] = v;

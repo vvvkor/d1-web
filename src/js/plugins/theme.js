@@ -53,7 +53,7 @@ export default class extends Plugin {
   
   style (k, v/*, deep*/){
     if(k instanceof Array) k.forEach(w => this.style(w, v/*, 1*/));
-    else{
+    else {
       //let n = (k.substr(0, 2)=='--') ? document.documentElement : document.body;
       //let n = document.body;
       let n = document.documentElement;
@@ -65,7 +65,9 @@ export default class extends Plugin {
   unstyle (e){
     e.preventDefault();
     let s = document.documentElement.style;
-    for(var i = s.length; i--;) s.removeProperty(s[i]);
+    for (let i = s.length; i--;) s.removeProperty(s[i]);//@@ loop type
+      //for (const i of s) console.log(i);
+      //for (const i of s) s.removeProperty(i);
     //document.documentElement.style = '';
     ////document.body.style = '';
     localStorage.removeItem('theme-html');

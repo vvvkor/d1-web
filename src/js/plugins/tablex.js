@@ -202,8 +202,8 @@ export default class extends Plugin {
     if(max>1){
       if(last>m) app.ins('li', app.ins('a', app.i('first', '&laquo;'), {href: '#1'}), {}, ul);
       app.ins('li', app.ins('a', app.i('left', '&lsaquo;'), {href: '#' + Math.max(1, cur-1), className: cur==1 ? 'inact' : ''}), {}, ul);
-      for(var i=min; i<=max; i++){
-        let a = app.ins('a', i, {href: '#' + i, className: (i==cur ? 'act bg' : '')});
+      for (let i=min; i<=max; i++) {
+        const a = app.ins('a', i, {href: '#' + i, className: (i==cur ? 'act bg' : '')});
         app.ins('li', a, {}, ul);
       }
       app.ins('li', app.ins('a', app.i('right', '&rsaquo;'), {href: '#' + Math.min(cur+1, last), className: cur==last ? 'inact' : ''}), {}, ul);
@@ -388,15 +388,15 @@ export default class extends Plugin {
   }
   
   fmtInterval (x, dec){
-    let y = this.intervalUnits.y;
-    let m = this.intervalUnits.m;
-    var s = [
+    const y = this.intervalUnits.y;
+    const m = this.intervalUnits.m;
+    const s = [
         [Math.floor(x / y), 'y'],
         [Math.floor((x % y) / m), 'm'],
         [Math.floor(((x % y) % m) / 86400), 'd'],
         [Math.floor((((x % y) % m) % 86400) / 3600), 'h'],
         [Math.floor(((((x % y) % m) % 86400) % 3600) / 60), 'min'],
-                   [((((x % y) % m) % 86400) % 3600) % 60, 'sec']
+                   [((((x % y) % m) % 86400) % 3600) % 60, 'sec'] // @@ see overview: 185 sec
     ];
     return s.map(v => v[0] ? v[0] + v[1] : null).filter(v => v !== null).join(' ');
   }

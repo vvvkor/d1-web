@@ -162,7 +162,7 @@ export default class extends Plugin{
       if(d) this.tgl(d, false);
       else this.app.fire('esc', e);
     }
-    else{
+    else {
       let d = this.app.q(a.hash);
       if(d && d.matches(this.opt.qTgl)){
         e.preventDefault();

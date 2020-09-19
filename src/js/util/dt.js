@@ -2,7 +2,7 @@
 
 export default class Dt {
 
-  static parse (s) {
+  static parse(s) {
     let d = '';
     let m = (s || '').match(/^(\d+)([\-\.\/\s])(\d+)[\-\.\/\s](\d+)(\D(\d+))?(\D(\d+))?(\D(\d+))?(\D(\d+))?$/);
     if (m) {
@@ -21,18 +21,18 @@ export default class Dt {
     t: include time
     f: y=Y-m-d (default), d=d.m.Y, m=m/d Y
   */
-  static fmt (x, t, f){
+  static fmt(x, t, f) {
     let y = x.getFullYear();
     let m = Dt.n(x.getMonth()+1);
     let d = Dt.n(x.getDate());
     let h = Dt.n(x.getHours());
     let i = Dt.n(x.getMinutes());
     let s = Dt.n(x.getSeconds());
-    return (f=='m' ? m + '/' + d + ' ' + y : (f=='d' ? d + '.' + m + '.' + y : y + '-' + m + '-' + d))
+    return (f == 'm' ? m + '/' + d + ' ' + y : (f == 'd' ? d + '.' + m + '.' + y : y + '-' + m + '-' + d))
       + ((t && h+i+s>0) ? ' '+Dt.n(x.getHours())+':'+Dt.n(x.getMinutes())+':'+Dt.n(x.getSeconds()) : '');
   }
 
-  static n (v, l){
+  static n(v, l) {
     return ('000'+v).substr(-(l || 2));
   }
   

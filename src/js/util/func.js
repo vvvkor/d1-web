@@ -2,7 +2,7 @@
 
 export default class Func {
 
-  static throttle (f, ms) {
+  static throttle(f, ms) {
     let p = false, c, a
     return function ff () {
       if (p) { //2
@@ -23,7 +23,7 @@ export default class Func {
     }
   }
 
-  static delay (f, ms, skip) {
+  static delay(f, ms, skip) {
     let p = null
     return function () {
       if (skip && p) clearTimeout(p)
@@ -34,7 +34,7 @@ export default class Func {
     }
   }
   
-  static debounce (f, ms) {
+  static debounce(f, ms) {
     return Func.delay(f, ms, true)
   }
 

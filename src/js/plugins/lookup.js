@@ -115,7 +115,7 @@ export default class extends Plugin {
     let v = c.value;
     if(v==='') this.fix(n, '', ''); //empty
     else if(n.vCache && n.vCache[v]) this.openList(n, n.vCache[v]); //cached
-    else{
+    else {
       let u = encodeURI(decodeURI(Url.build((n.dataset[this.opt.dLookup] || ''), {
           //value: v,
           time: (new Date()).getTime()
@@ -157,7 +157,7 @@ export default class extends Plugin {
     let ul = app.ins('ul', '', {className: 'nav let hover'}, this.win);
     let w, j = 0;
     let go = n.dataset[this.opt.dGoto] || '';
-    for(let i in d){
+    for (let i in d) {
       w = app.ins('li', '', {}, ul);
       let a = app.ins('a', '', {href: go ? go.replace(/\{id\}/, d[i].id) : '#' + d[i].id, className: '-pad -hover' + (go ? '' : ' lookup-item')}, w);
       app.ins('span', d[i].nm, {}, a);
@@ -231,7 +231,7 @@ export default class extends Plugin {
     let m = this.app.q((n.dataset.chain || ''));
     if(m){
       if(!n.value) this.setOptions(m,[]);
-      else{
+      else {
         let u = (m.dataset[this.opt.dList] || '').replace(/\{q\}/,n.value);
         if(m.vCache && m.vCache[u]) this.setOptions(m,m.vCache[u]);
         else this.app.fetch(u, this.onChainData.bind(this, u, m));
@@ -259,7 +259,7 @@ export default class extends Plugin {
         if(a) a.forEach(v => this.app.ins('option', '', {value: v.nm}, n.list));
       }
     }
-    else{
+    else {
       this.app.clr(n);
       let z = n.dataset.placeholder || '';
       if(!a || a.length==0 || z) this.app.ins('option', z || '-', {value: ''}, n);

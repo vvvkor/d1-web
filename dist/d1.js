@@ -2777,7 +2777,8 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
     value: function fmtInterval(x, dec) {
       var y = this.intervalUnits.y;
       var m = this.intervalUnits.m;
-      var s = [[Math.floor(x / y), 'y'], [Math.floor(x % y / m), 'm'], [Math.floor(x % y % m / 86400), 'd'], [Math.floor(x % y % m % 86400 / 3600), 'h'], [Math.floor(x % y % m % 86400 % 3600 / 60), 'min'], [x % y % m % 86400 % 3600 % 60, 'sec']];
+      var s = [[Math.floor(x / y), 'y'], [Math.floor(x % y / m), 'm'], [Math.floor(x % y % m / 86400), 'd'], [Math.floor(x % y % m % 86400 / 3600), 'h'], [Math.floor(x % y % m % 86400 % 3600 / 60), 'min'], [x % y % m % 86400 % 3600 % 60, 'sec'] // @@ see overview: 185 sec
+      ];
       return s.map(function (v) {
         return v[0] ? v[0] + v[1] : null;
       }).filter(function (v) {
@@ -2902,7 +2903,7 @@ var calendar_default = /*#__PURE__*/function (_Plugin) {
       var _this2 = this;
 
       //let i;
-      //for(i in opt) this.opt[i] = opt[i];
+      //for (i in opt) this.opt[i] = opt[i];
       if (window.innerWidth < this.opt.minWidth) return;
       this.win = this.app.ins('div', '', {
         id: this.opt.idPicker,
@@ -3947,9 +3948,11 @@ var edit_default = /*#__PURE__*/function (_Plugin) {
       //n.style.height = (1.5 * (2 + Math.max(n.value.length/50, (n.value.match(/\n/g) || []).length))) + 'em';
       //3. better
 
-      var a = n.value.split(/\n/).map(function (v) {
+      var a = n.value.split(/\n/) //.map(function(v){ return Math.ceil(10 * (1 + v.length) / (n.clientWidth || 500)); })
+      .map(function (v) {
         return Math.ceil(10 * (1 + v.length) / (n.clientWidth || 500));
-      }).reduce(function (v, r) {
+      }) //.reduce(function(v, r){ return r + v; });
+      .reduce(function (v, r) {
         return r + v;
       });
       n.style.height = Math.min(1.5 * (2 + a), parseFloat(this.opt.height)) + 'em';
@@ -5529,7 +5532,10 @@ var theme_default = /*#__PURE__*/function (_Plugin) {
 
       for (var i = s.length; i--;) {
         s.removeProperty(s[i]);
-      } //document.documentElement.style = '';
+      } //@@ loop type
+      //for (const i of s) console.log(i);
+      //for (const i of s) s.removeProperty(i);
+      //document.documentElement.style = '';
       ////document.body.style = '';
 
 
