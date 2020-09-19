@@ -4,7 +4,7 @@ import Plugin from './plugin.js';
 
 export default class extends Plugin {
 
-  constructor () {
+  constructor() {
     super('fliptable')
 
     this.opt = {
@@ -12,11 +12,11 @@ export default class extends Plugin {
     };
   }
 
-  init () {
+  init() {
     this.app.e(this.opt.qFlipTable, n => n.closest('form') ? null : this.prepareFlipTable(n)); 
   }
 
-  prepareFlipTable (t) {
+  prepareFlipTable(t) {
     let ths = this.app.qq('thead th', t);
     let tds = this.app.qq('tbody tr>*, tfoot tr>*', t);
     // let order = (t.dataset.order || '0 1 2 3').split(/\D+/);
@@ -25,11 +25,11 @@ export default class extends Plugin {
       let td = tds[i];
       let th = ths[td.cellIndex];
       //let ord = order.indexOf('' + td.cellIndex);
-      //if(ord==-1) ord = 99;
+      //if (ord == -1) ord = 99;
       //td.style.order = ord;
-      //if(td.textContent.replace(/\s+$/, '').length>0){
+      //if (td.textContent.replace(/\s+$/, '').length>0) {
         let c = this.app.ins('div', '', {className: 'row'});
-        if(th) this.app.ins('div', th.textContent, {className: 'hide-desktop'}, c)
+        if (th) this.app.ins('div', th.textContent, {className: 'hide-desktop'}, c)
         let v = this.app.ins('div', '', {}, c);
         while (td.firstChild) v.appendChild(td.firstChild);
         td.textContent = '';

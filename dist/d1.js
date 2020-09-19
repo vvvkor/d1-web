@@ -1,4 +1,4 @@
-/*! d1-web v2.1.8 */
+/*! d1-web v2.1.9 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -206,7 +206,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 /*! app - core of d1-web */
 // (() => {
-// let main = new (function () {
+// const main = new (function () {
 var _default = /*#__PURE__*/function () {
   function _default() {
     _classCallCheck(this, _default);
@@ -455,8 +455,7 @@ var _default = /*#__PURE__*/function () {
     key: "qq",
     value: function qq(s, n) {
       try {
-        var r = (n || document).querySelectorAll(s);
-        return this.a(r);
+        return this.a((n || document).querySelectorAll(s));
       } catch (e) {
         return [];
       }
@@ -934,7 +933,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
         if (deep != -1) {
           if (!deep) this.toggleDependent(d);
           this.hiliteLinks(d);
-          this.storeVisibility(d); //if(!deep) this.modalStyle(d);
+          this.storeVisibility(d); //if (!deep) this.modalStyle(d);
         }
 
         this.app.fire('aftertoggle', {
@@ -957,7 +956,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
       var _this3 = this;
 
       if (this.app.vis(d)) {
-        if (d.matches(this.opt.qDlg)) ; //this.app.e(this.opt.qDlg, n => n==d ? null : this.toggle(n, false, 1)); //hide other dialogs
+        if (d.matches(this.opt.qDlg)) ; //this.app.e(this.opt.qDlg, n => n == d ? null : this.toggle(n, false, 1)); //hide other dialogs
         else if (d.matches(this.opt.qTab)) this.app.e(d.parentNode.children, function (n) {
             return n == d ? null : _this3.toggle(n, false, 1);
           }); //hide sibling tabs
@@ -978,7 +977,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
         var a = x.closest('a');
 
         if (a && a.hash) {
-          //if(a.hash==this.app.opt.hClose) keep = []; //return this.app.fire('esc'); //to close all, even container
+          //if (a.hash == this.app.opt.hClose) keep = []; //return this.app.fire('esc'); //to close all, even container
           //else
           keep.push(this.app.q(a.hash)); //keep hash target
         }
@@ -1067,12 +1066,12 @@ var _default = /*#__PURE__*/function (_Plugin) {
           var wide = qr.width > 300; //x
 
           if (vert) s.left = dx || wide ? '3em' : '100%';else if (dx && qn.width > qr.width && qr.right > qn.width) {
-            //if(overflows-right && wider-then-container && enough-place-on-the-left) pop-left
+            //if (overflows-right && wider-then-container && enough-place-on-the-left) pop-left
             s.left = qr.width - qn.width + 'px';
           } else s.left = 0; //y
 
           if (vert) s.top = dx || wide ? '90%' : 0;else if (dy && qr.top > qn.height) {
-            //if(overflows-bottom && enough-place-on-the-top) pop-top
+            //if (overflows-bottom && enough-place-on-the-top) pop-top
             s.top = (i ? -qr.height : 0) - qn.height + 'px';
           } else s.top = '100%';
           if (i) p.style.verticalAlign = 'bottom';
@@ -2101,8 +2100,7 @@ var fetch_default = /*#__PURE__*/function (_Plugin) {
       if (req.status == '200') {
         var h = u.split('#');
         var t = req.responseText;
-        t = h[1] ? JSON.stringify(this.app.path(this.app.parse(t), h[1])) : t;
-        console.log(h, t);
+        t = h[1] ? JSON.stringify(this.app.path(this.app.parse(t), h[1])) : t; // console.log(h,t)
 
         if (d) {
           d.innerHTML = t;
@@ -2416,7 +2414,7 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
       if (n.vInp) {
         //n.vInp.onsearch = n.vInp.onkeyup = this.doFilter.bind(this,n);
         //1.
-        //if(!n.vInp.vListen) n.vInp.addEventListener('input', this.doFilter.bind(this, n), false);
+        //if (!n.vInp.vListen) n.vInp.addEventListener('input', this.doFilter.bind(this, n), false);
         //2.
         var f = Func.debounce(this.doFilter.bind(this), this.opt.wait);
         if (!n.vInp.vListen) this.app.b([n.vInp], 'input', function (e) {
@@ -2679,7 +2677,7 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
       var a = m.dataset.total || '';
       var dec = 1 * (m.dataset.dec || 2);
       var mode = m.dataset.mode || n.vTypes[j];
-      var r = 0; //if(a == 'count' || a == 'cnt') r = cnt;
+      var r = 0; //if (a == 'count' || a == 'cnt') r = cnt;
 
       if (a == 'count' || a == 'cnt') r = d.reduce(function (acc, cur) {
         return acc + (cur.v && cur.x[j][0] !== '' ? 1 : 0);
@@ -2777,8 +2775,7 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
     value: function fmtInterval(x, dec) {
       var y = this.intervalUnits.y;
       var m = this.intervalUnits.m;
-      var s = [[Math.floor(x / y), 'y'], [Math.floor(x % y / m), 'm'], [Math.floor(x % y % m / 86400), 'd'], [Math.floor(x % y % m % 86400 / 3600), 'h'], [Math.floor(x % y % m % 86400 % 3600 / 60), 'min'], [x % y % m % 86400 % 3600 % 60, 'sec'] // @@ see overview: 185 sec
-      ];
+      var s = [[Math.floor(x / y), 'y'], [Math.floor(x % y / m), 'm'], [Math.floor(x % y % m / 86400), 'd'], [Math.floor(x % y % m % 86400 / 3600), 'h'], [Math.floor(x % y % m % 86400 % 3600 / 60), 'min'], [x % y % m % 86400 % 3600 % 60, 'sec']];
       return s.map(function (v) {
         return v[0] ? v[0] + v[1] : null;
       }).filter(function (v) {
@@ -2931,8 +2928,8 @@ var calendar_default = /*#__PURE__*/function (_Plugin) {
       });
     }
     /*
-    key (e){
-      if(e.keyCode == 40 && !this.app.vis(this.win)) this.openDialog(e.target, null, e);
+    key(e) {
+      if (e.keyCode == 40 && !this.app.vis(this.win)) this.openDialog(e.target, null, e);
     }
     */
 
@@ -2989,7 +2986,7 @@ var calendar_default = /*#__PURE__*/function (_Plugin) {
         }
       }
 
-      this.app.toggle(this.win, on); //if(!on) this.win.tabindex = -1;
+      this.app.toggle(this.win, on); //if (!on) this.win.tabindex = -1;
 
       if (!on) document.body.appendChild(this.win); //this.app.fire('after');
     }
@@ -3029,7 +3026,7 @@ var calendar_default = /*#__PURE__*/function (_Plugin) {
       if (e) e.preventDefault();
       this.build(n, d || n.value);
       this.toggle(true, n); //let f = (this.app.q('.bg-w', this.win) || this.app.q('#1', this.win));
-      //if(f) f.focus();
+      //if (f) f.focus();
     }
   }, {
     key: "closeDialog",
@@ -3948,11 +3945,9 @@ var edit_default = /*#__PURE__*/function (_Plugin) {
       //n.style.height = (1.5 * (2 + Math.max(n.value.length/50, (n.value.match(/\n/g) || []).length))) + 'em';
       //3. better
 
-      var a = n.value.split(/\n/) //.map(function(v){ return Math.ceil(10 * (1 + v.length) / (n.clientWidth || 500)); })
-      .map(function (v) {
+      var a = n.value.split(/\n/).map(function (v) {
         return Math.ceil(10 * (1 + v.length) / (n.clientWidth || 500));
-      }) //.reduce(function(v, r){ return r + v; });
-      .reduce(function (v, r) {
+      }).reduce(function (v, r) {
         return r + v;
       });
       n.style.height = Math.min(1.5 * (2 + a), parseFloat(this.opt.height)) + 'em';
@@ -4103,7 +4098,7 @@ var valid_default = /*#__PURE__*/function (_Plugin) {
     key: "validateForm",
     value: function validateForm(n, e) {
       if (e) n.classList.remove(this.opt.cUnhint);
-      var ok = n.checkValidity(); //!==false
+      var ok = n.checkValidity(); // !== false
 
       if (!ok && e) {
         e.preventDefault();
@@ -5036,9 +5031,9 @@ var fliptable_default = /*#__PURE__*/function (_Plugin) {
       for (var i = 0; i < tds.length; i++) {
         var td = tds[i];
         var th = ths[td.cellIndex]; //let ord = order.indexOf('' + td.cellIndex);
-        //if(ord==-1) ord = 99;
+        //if (ord == -1) ord = 99;
         //td.style.order = ord;
-        //if(td.textContent.replace(/\s+$/, '').length>0){
+        //if (td.textContent.replace(/\s+$/, '').length>0) {
 
         var c = this.app.ins('div', '', {
           className: 'row'
@@ -5134,7 +5129,7 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
         touchstart
         touchmove(s)
         touchend
-        if(!defaultPrevented){
+        if (!defaultPrevented) {
           mousemove
           mousedown
           mouseup & click
@@ -5207,7 +5202,7 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
 
         if (!undo) {
           var xy = this.shift(); //after touch event: handle mouse events only on A nodes without swipe
-          //if(e.type.indexOf('touch')!=-1 && (dir || trg.tagName!='A')) e.preventDefault();
+          //if (e.type.indexOf('touch') != -1 && (dir || trg.tagName != 'A')) e.preventDefault();
 
           if (xy[2]) {
             this.app.fire('swipe', {
@@ -5216,7 +5211,7 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
               y: xy[1],
               dir: xy[2]
             });
-            e.preventDefault(); //if(e.type.indexOf('touch')!=-1)
+            e.preventDefault(); //if (e.type.indexOf('touch') != -1)
           }
         }
 
@@ -5333,7 +5328,7 @@ var scroll_default = /*#__PURE__*/function (_Plugin) {
         });
       }
       /*
-      else if(t = this.app.q(this.opt.qTopbarFixed)){
+      else if (t = this.app.q(this.opt.qTopbarFixed)) {
         this.app.listen('hashchange', e => this.fixScroll());
       }
       */
@@ -5378,7 +5373,7 @@ var scroll_default = /*#__PURE__*/function (_Plugin) {
         }
 
       this.y = window.scrollY; // forces reflow
-      //if(this.hashed) this.fixScroll();
+      //if (this.hashed) this.fixScroll();
       //this.hashed = false;
     }
   }, {
@@ -5388,9 +5383,9 @@ var scroll_default = /*#__PURE__*/function (_Plugin) {
       n.classList[y && dy <= 0 ? 'add' : 'remove'](this.opt.cStart);
     }
     /*
-    fixScroll (){
+    fixScroll() {
       this.app.dbg(['scroll-fix', location.hash]);
-      if(this.app.q(location.hash)){
+      if (this.app.q(location.hash)) {
         //let t = this.app.q(this.opt.qTopbar + ':not(.'+ this.app.opt.cOff +')');
         let t = this.app.q(this.opt.qTopbarFixed);
         window.scrollBy(0, (t ? -t.offsetHeight : 0) - this.opt.gap);
@@ -5517,7 +5512,7 @@ var theme_default = /*#__PURE__*/function (_Plugin) {
         /*, 1*/
         );
       });else {
-        //let n = (k.substr(0, 2)=='--') ? document.documentElement : document.body;
+        //let n = (k.substr(0, 2) == '--') ? document.documentElement : document.body;
         //let n = document.body;
         var n = document.documentElement;
         n.style.setProperty(k, v);
@@ -5529,15 +5524,7 @@ var theme_default = /*#__PURE__*/function (_Plugin) {
     value: function unstyle(e) {
       e.preventDefault();
       var s = document.documentElement.style;
-
-      for (var i = s.length; i--;) {
-        s.removeProperty(s[i]);
-      } //@@ loop type
-      //for (const i of s) console.log(i);
-      //for (const i of s) s.removeProperty(i);
-      //document.documentElement.style = '';
-      ////document.body.style = '';
-
+      s.cssText = ''; //for (let i = s.length; i--; ) s.removeProperty(s[i]);
 
       localStorage.removeItem('theme-html'); //localStorage.removeItem('theme-body');
     }

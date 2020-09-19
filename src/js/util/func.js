@@ -4,7 +4,7 @@ export default class Func {
 
   static throttle(f, ms) {
     let p = false, c, a
-    return function ff () {
+    return function ff() {
       if (p) { //2
         c = this
         a = arguments

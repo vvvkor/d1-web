@@ -4,18 +4,18 @@ import Plugin from './plugin.js';
 
 export default class extends Plugin {
 
-  constructor () {
+  constructor() {
     super('example')
     this.opt = {
     };
   }
 
-  init () {
+  init() {
     //app.h('click', 'a.example', e => this.onClick(e));
   }
 
   /*
-  onClick (e) {
+  onClick(e) {
     let n = e.target; // e.recv
   }
   */

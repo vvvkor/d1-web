@@ -1,7 +1,7 @@
 /*! app - core of d1-web */
 
 // (() => {
-// let main = new (function () {
+// const main = new (function () {
 
 export default class {
 
@@ -65,7 +65,7 @@ export default class {
   }
 
   plug(c, n) {
-    let p = new c()
+    const p = new c()
     this.plugins[n || p.name] = p
   }
 
@@ -176,8 +176,7 @@ export default class {
   // find nodes
   qq(s, n) {
     try {
-      let r = (n || document).querySelectorAll(s)
-      return this.a(r)
+      return this.a((n || document).querySelectorAll(s))
     }
     catch (e) {
       return []
@@ -228,7 +227,7 @@ export default class {
   // insert node
   //pos: -1=before, false=prepend, 0=append(default), 1=after
   ins(tag, t, attrs, n, pos) {
-    let c = document.createElement(tag || 'span')
+    const c = document.createElement(tag || 'span')
     if (this.typeOf(t) === 'array') t.forEach(m => m.nodeType ? c.appendChild(m) : c.innerHTML += m)
     else if (t && t.nodeType) c.appendChild(t)
     else if (t) c.innerHTML = t

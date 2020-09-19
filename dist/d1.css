@@ -1,4 +1,4 @@
-/*! d1-web v2.1.8 */
+/*! d1-web v2.1.9 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -1415,6 +1415,7 @@ form .mar {
         opacity: 0;
         z-index: -1;
         transition-duration: .1s;
+        pointer-events: none;
     }
 
     .trans [data-tip]:hover:after {

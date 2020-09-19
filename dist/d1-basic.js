@@ -1,4 +1,4 @@
-/*! d1-web v2.1.8 */
+/*! d1-web v2.1.9 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -206,7 +206,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 /*! app - core of d1-web */
 // (() => {
-// let main = new (function () {
+// const main = new (function () {
 var _default = /*#__PURE__*/function () {
   function _default() {
     _classCallCheck(this, _default);
@@ -455,8 +455,7 @@ var _default = /*#__PURE__*/function () {
     key: "qq",
     value: function qq(s, n) {
       try {
-        var r = (n || document).querySelectorAll(s);
-        return this.a(r);
+        return this.a((n || document).querySelectorAll(s));
       } catch (e) {
         return [];
       }
@@ -934,7 +933,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
         if (deep != -1) {
           if (!deep) this.toggleDependent(d);
           this.hiliteLinks(d);
-          this.storeVisibility(d); //if(!deep) this.modalStyle(d);
+          this.storeVisibility(d); //if (!deep) this.modalStyle(d);
         }
 
         this.app.fire('aftertoggle', {
@@ -957,7 +956,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
       var _this3 = this;
 
       if (this.app.vis(d)) {
-        if (d.matches(this.opt.qDlg)) ; //this.app.e(this.opt.qDlg, n => n==d ? null : this.toggle(n, false, 1)); //hide other dialogs
+        if (d.matches(this.opt.qDlg)) ; //this.app.e(this.opt.qDlg, n => n == d ? null : this.toggle(n, false, 1)); //hide other dialogs
         else if (d.matches(this.opt.qTab)) this.app.e(d.parentNode.children, function (n) {
             return n == d ? null : _this3.toggle(n, false, 1);
           }); //hide sibling tabs
@@ -978,7 +977,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
         var a = x.closest('a');
 
         if (a && a.hash) {
-          //if(a.hash==this.app.opt.hClose) keep = []; //return this.app.fire('esc'); //to close all, even container
+          //if (a.hash == this.app.opt.hClose) keep = []; //return this.app.fire('esc'); //to close all, even container
           //else
           keep.push(this.app.q(a.hash)); //keep hash target
         }
@@ -1067,12 +1066,12 @@ var _default = /*#__PURE__*/function (_Plugin) {
           var wide = qr.width > 300; //x
 
           if (vert) s.left = dx || wide ? '3em' : '100%';else if (dx && qn.width > qr.width && qr.right > qn.width) {
-            //if(overflows-right && wider-then-container && enough-place-on-the-left) pop-left
+            //if (overflows-right && wider-then-container && enough-place-on-the-left) pop-left
             s.left = qr.width - qn.width + 'px';
           } else s.left = 0; //y
 
           if (vert) s.top = dx || wide ? '90%' : 0;else if (dy && qr.top > qn.height) {
-            //if(overflows-bottom && enough-place-on-the-top) pop-top
+            //if (overflows-bottom && enough-place-on-the-top) pop-top
             s.top = (i ? -qr.height : 0) - qn.height + 'px';
           } else s.top = '100%';
           if (i) p.style.verticalAlign = 'bottom';

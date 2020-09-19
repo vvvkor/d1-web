@@ -4,7 +4,7 @@ import Plugin from './plugin.js';
 
 export default class extends Plugin {
 
-  constructor () {
+  constructor() {
     super('tools')
 
     this.opt = {
@@ -18,7 +18,7 @@ export default class extends Plugin {
     };
   }
   
-  init () {
+  init() {
     const app = this.app
     this.opt.qSet = '[data-' + this.opt.dSet + '], [data-' + this.opt.dNodes + ']';
     this.opt.qSetClick = 'a[data-' + this.opt.dSet + ']';
@@ -33,7 +33,7 @@ export default class extends Plugin {
     app.b([window], 'resize', e => this.onResize(e));
   }
 
-  alignCells (n) {
+  alignCells(n) {
     let m = n.className.match(/\b[lcr]\d\d?\b/g);
     if (m) {
       for (let i = 0; i < m.length; i++) {
@@ -42,38 +42,38 @@ export default class extends Plugin {
     }
   }
   
-  store (n, v){
-    if(n && (n.id || n.name) && n.classList.contains(this.opt.cMem)){
+  store(n, v) {
+    if (n && (n.id || n.name) && n.classList.contains(this.opt.cMem)) {
       localStorage.setItem('set#' + (n.id || '#' + n.name), v);
     }
   }
   
-  restore (n){
-    if(n && (n.id || n.name) && n.classList && n.classList.contains(this.opt.cMem)){
+  restore(n) {
+    if (n && (n.id || n.name) && n.classList && n.classList.contains(this.opt.cMem)) {
       let v = localStorage.getItem('set#' + (n.id || '#' + n.name));
-      if(v !== null){
+      if (v !== null) {
         let t = n.tagName;
-        if(t=='A') n.classList[v ? 'add' : 'remove'](this.app.opt.cAct);
-        else if(t=='SELECT') n.value = v;
-        else if(n.type == 'checkbox') n.checked = !!v;
-        else if(n.type == 'radio') n.checked = (n.value == v);
+        if (t == 'A') n.classList[v ? 'add' : 'remove'](this.app.opt.cAct);
+        else if (t == 'SELECT') n.value = v;
+        else if (n.type == 'checkbox') n.checked = !!v;
+        else if (n.type == 'radio') n.checked = (n.value == v);
       }
     }
   }
   
-  setClass (n, on, m, c){
+  setClass(n, on, m, c) {
     this.app.dbg(['setclass', m, c]);
-    let sel = (n.type == 'radio' || n.tagName=='SELECT');
+    let sel = (n.type == 'radio' || n.tagName == 'SELECT');
     let u = sel ? null /*''*/ : n.dataset[this.opt.dUnset];
     let attr = n.dataset[this.opt.dAttr] || 'class';
-    if(attr !== 'class'){
+    if (attr !== 'class') {
       let v = on ? c : (u || '');
-      if(v) m.setAttribute(attr, v);
+      if (v) m.setAttribute(attr, v);
       else m.removeAttribute(attr);
     }
-    else if(u !== null && u !== undefined) m.className = on ? c : (u || '');
+    else if (u !== null && u !== undefined) m.className = on ? c : (u || '');
     else {
-      if(sel){
+      if (sel) {
         //unset other select/radio values
         let u = (n.type == 'radio')
           ? this.app.qq('input[type="radio"][name="' + n.name + '"]').map(nn => /*(nn.dataset[this.opt.dSet] || '')*/nn.value).join(' ')
@@ -83,29 +83,29 @@ export default class extends Plugin {
       c.split(/\s+/).filter(cc => cc).forEach(cc => m.classList[on ? 'add' : 'remove'](cc));
     }
     n.classList[on ? 'add' : 'remove'](this.app.opt.cAct);
-    this.store(n, sel ? n.value : ((n.type=='checkbox' ? n.checked : n.classList.contains(this.app.opt.cAct)) ? '1' : ''));
+    this.store(n, sel ? n.value : ((n.type == 'checkbox' ? n.checked : n.classList.contains(this.app.opt.cAct)) ? '1' : ''));
   }
 
-  toggleClass (n, e) {
-    if(n.type == 'radio' && !n.checked) return;
+  toggleClass(n, e) {
+    if (n.type == 'radio' && !n.checked) return;
     let box = (n.type == 'checkbox' || n.type == 'radio');
     let sel = (n.tagName == 'SELECT' || n.type == 'radio');
     let q = n.dataset[this.opt.dNodes] || n.hash;
     let c = sel ? n.value : n.dataset[this.opt.dSet];
     let on = sel ? true : (box ? n.checked : n.classList.contains(this.app.opt.cAct));
-    if(e && !box && !sel){
+    if (e && !box && !sel) {
       on = !on;
       e.preventDefault();
       e.stopPropagation();
     }
     //this.app.dbg(['setclass?', c, on, q, e, box, sel]);
-    if (c !== null && c !== undefined){
+    if (c !== null && c !== undefined) {
       this.app.e(q, m => this.setClass(n, on, m, c));
       this.app.fire('update', {q: q});
     }
   }
 
-  smartHeading (n){
+  smartHeading(n) {
     let d = this.app.ins('div', '', {});
     while (n.firstChild) d.appendChild(n.firstChild);
     n.appendChild(d);
@@ -118,7 +118,7 @@ export default class extends Plugin {
     //let a = this.app.ins('a', this.app.i('asc', '&uarr;'), {href:'#', className: 'small close text-n hide-print'}, n);
   }
 
-  onResize () {
+  onResize() {
     let m = (window.innerWidth <= this.opt.minDesktop);
     m
       ? this.app.e('[data-class-mobile]', n => n.className = (n.dataset.classMobile || ''))

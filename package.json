@@ -1,6 +1,6 @@
 {
   "name": "d1-web",
-  "version": "2.1.8",
+  "version": "2.1.9",
   "description": "Lightweight responsive front-end framework",
   "main": "dist/d1.css",
   "directories": {
@@ -49,7 +49,7 @@
     "copyfiles": "^2.3.0",
     "cross-var": "^1.1.0",
     "cssnano": "^4.1.10",
-    "eslint": "^7.8.1",
+    "eslint": "^7.9.0",
     "perfectionist": "^2.4.0",
     "postcss-calc": "^7.0.4",
     "postcss-cli": "^7.1.2",
@@ -57,7 +57,7 @@
     "postcss-discard-comments": "^2.0.4",
     "replace-in-file": "^3.4.4",
     "terser": "^4.8.0",
-    "webpack": "^4.44.1",
+    "webpack": "^4.44.2",
     "webpack-cli": "^3.3.12"
   }
 }

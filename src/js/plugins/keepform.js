@@ -4,7 +4,7 @@ import Plugin from './plugin.js';
 
 export default class extends Plugin {
 
-  constructor () {
+  constructor() {
     super('keepform')
     this.opt = {
       qStore: 'form.store[id]',
@@ -12,8 +12,8 @@ export default class extends Plugin {
     };
   }
 
-  init (){
-    if(Object.fromEntries && FormData){
+  init() {
+    if (Object.fromEntries && FormData) {
       const app = this.app
       let q = this.opt.qStore;
       app.e(q, f => this.addControls(f));
@@ -25,7 +25,7 @@ export default class extends Plugin {
     }
   }
   
-  addControls (f){
+  addControls(f) {
     const app = this.app
     let d = app.ins('div', '', {className: 'pad r keepform-tools'}, f, false);
     app.ins('a', app.i('energy', '[^]'), {href: '#restore'}, d);
@@ -35,61 +35,61 @@ export default class extends Plugin {
     app.ins('a', app.i('ban', '[x]'), {href: '#unstore'}, d);
   }
   
-  reset (e){
+  reset(e) {
     e.preventDefault();
     let f = e.target.closest('form');
     f.reset();
     this.app.e(this.app.qq('[name]', f), n => this.app.fire('value', {n: n}));
   }
   
-  unstore (e){
+  unstore(e) {
     e.preventDefault();
     localStorage.removeItem(this.formId(e.target.closest('form')));
   }
   
-  restore (e){
+  restore(e) {
     e.preventDefault();
     this.restoreForm(e.target.closest('form'));
   }
   
-  restoreForm (f, mode){
+  restoreForm(f, mode) {
     let id = this.formId(f);
     let d = localStorage.getItem(id);
-    if(d){
+    if (d) {
       d = this.app.parse(d);
-      if(d) Object.keys(d).forEach(k => {
+      if (d) Object.keys(d).forEach(k => {
         let i = f.elements[k];
-        if(i) this.restoreInput(i, d[k], mode);
+        if (i) this.restoreInput(i, d[k], mode);
       });
     }
   }
   
-  restoreInput (i, v, mode){
-    if(i instanceof NodeList) i.forEach(j => this.restoreInput(j, v, mode));
+  restoreInput(i, v, mode) {
+    if (i instanceof NodeList) i.forEach(j => this.restoreInput(j, v, mode));
     else {
-      if(i.type.match(/file|submit|password/)) ;
-      else if(i.type.match(/checkbox|radio/)) i.checked = Array.isArray(v) ? (v.indexOf(i.value) != -1) : (i.value === v);
+      if (i.type.match(/file|submit|password/)) ;
+      else if (i.type.match(/checkbox|radio/)) i.checked = Array.isArray(v) ? (v.indexOf(i.value) != -1) : (i.value === v);
       else i.value = v;
       this.app.fire('value', {n: i, modeAuto: mode});
     }
   }
   
-  store (e){
+  store(e) {
     let f = new FormData(e.recv);
     //let d = JSON.stringify(Object.fromEntries(f)); // does not support multiple
     let d = {};
     f.forEach((v, k) => {
-      if(!d.hasOwnProperty(k)) d[k] = v;
+      if (!d.hasOwnProperty(k)) d[k] = v;
       else {
         // multiple
-        if(!Array.isArray(d[k])) d[k] = [d[k]];
+        if (!Array.isArray(d[k])) d[k] = [d[k]];
         d[k].push(v);
       }
     });
     localStorage.setItem(this.formId(e.recv), JSON.stringify(d));
   }
   
-  formId (f){
+  formId(f) {
     return 'form#' + f.id + '@' + location.pathname;
   }
   

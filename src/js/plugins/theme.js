@@ -4,7 +4,7 @@ import Plugin from './plugin.js';
 
 export default class extends Plugin {
 
-  constructor () {
+  constructor() {
     super('theme')
     this.drw = null;
 
@@ -14,8 +14,8 @@ export default class extends Plugin {
     };
   }
   
-  init () {
-    if(!document.body.classList.contains(this.opt.cTheme)) return;
+  init() {
+    if (!document.body.classList.contains(this.opt.cTheme)) return;
     this.restore(document.documentElement, 'theme-html');
     //this.restore(document.body, 'theme-body');
 
@@ -46,15 +46,15 @@ export default class extends Plugin {
     this.put('Gaps', ['0.5', '0.7', '1', '1.2', '1.5'], '--gap');
   }
   
-  restore (n, v){
+  restore(n, v) {
     let css = localStorage.getItem(v);
-    if(css) n.style = css;
+    if (css) n.style = css;
   }
   
-  style (k, v/*, deep*/){
-    if(k instanceof Array) k.forEach(w => this.style(w, v/*, 1*/));
+  style(k, v/*, deep*/) {
+    if (k instanceof Array) k.forEach(w => this.style(w, v/*, 1*/));
     else {
-      //let n = (k.substr(0, 2)=='--') ? document.documentElement : document.body;
+      //let n = (k.substr(0, 2) == '--') ? document.documentElement : document.body;
       //let n = document.body;
       let n = document.documentElement;
       n.style.setProperty(k, v);
@@ -62,30 +62,27 @@ export default class extends Plugin {
     }
   }
   
-  unstyle (e){
+  unstyle(e) {
     e.preventDefault();
     let s = document.documentElement.style;
-    for (let i = s.length; i--;) s.removeProperty(s[i]);//@@ loop type
-      //for (const i of s) console.log(i);
-      //for (const i of s) s.removeProperty(i);
-    //document.documentElement.style = '';
-    ////document.body.style = '';
+    s.cssText = '';
+    //for (let i = s.length; i--; ) s.removeProperty(s[i]);
     localStorage.removeItem('theme-html');
     //localStorage.removeItem('theme-body');
   }
   
-  hx (s, l){
+  hx(s, l) {
     this.app.ins('h'+(l || 1), s, {className: 'mar'}, this.drw);
   }
   
-  put (hh, arr, func){
+  put(hh, arr, func) {
     this.hx(hh, 3);
     let c = [];
     arr.forEach((v/*, k*/) => {
       let color = v.match(/[#(]/);
       let a = this.app.ins('a', color ? '' : v, {href:'#', title: v, className: color ? 'pad hover bord' : 'pad hover'}, this.drw);
-      if(color) a.style.backgroundColor = v;
-      else if(typeof func === 'string') a.style[func] = v;
+      if (color) a.style.backgroundColor = v;
+      else if (typeof func === 'string') a.style[func] = v;
       c.push(a);
     });
     this.app.b(c, 'click', (func instanceof Function

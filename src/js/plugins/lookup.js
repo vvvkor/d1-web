@@ -9,7 +9,7 @@ import Func from '../util/func.js';
 
 export default class extends Plugin {
 
-  constructor () {
+  constructor() {
     super('lookup')
 
     this.opt = {
@@ -29,7 +29,7 @@ export default class extends Plugin {
     this.win = null;
   }
   
-  init () {
+  init() {
     const app = this.app
     this.win = app.ins('div', '', {id: this.opt.pList + app.seq(), className: app.opt.cToggle + ' ' + app.opt.cOff});
     this.closeList();
@@ -45,14 +45,14 @@ export default class extends Plugin {
     app.h('change', '[data-chain]', e => this.updateChain(e.target));
   }
 
-  prepare (n) {
+  prepare(n) {
     const app = this.app
-    if(this.cap(n)) return;
+    if (this.cap(n)) return;
     n.vLabel = (this.opt.dLabel in n.dataset)
       ? n.dataset[this.opt.dLabel]
       : (n.value || '');
     let pop = app.ins('div', '', {className: 'pop l lookup-pop'}, n, 1);
-    if(!this.opt.inPop) pop.style.verticalAlign = 'bottom';
+    if (!this.opt.inPop) pop.style.verticalAlign = 'bottom';
     n.classList.add('bg-n', 'lookup-id');
     n.classList.add(app.opt.cHide);
     //n.type = 'hidden';
@@ -60,15 +60,15 @@ export default class extends Plugin {
     m.name = 'lookup-' + n.name;
     //m.required = n.required;
     //n.required = false;
-    if(n.id) {
+    if (n.id) {
       m.id = 'lookup-' + n.id;
-      if(n.title) m.title = n.title;
+      if (n.title) m.title = n.title;
       app.e('[for="' + n.id + '"]', lbl => lbl.htmlFor = m.id);
     }
-    if(n.placeholder) m.placeholder = n.placeholder;
+    if (n.placeholder) m.placeholder = n.placeholder;
     m.autocomplete = 'off';
     let i = null;
-    if(this.opt.dUrl in n.dataset){
+    if (this.opt.dUrl in n.dataset) {
       let ic = app.ins('span', '', {className:'input-tools nobr'}, this.opt.inPop ? pop : m, 1);//icons container
       i = app.ins('a', app.i('forward', '&rarr;'), {href: '#goto', className: 'let lookup-goto'}, ic);
       i.style.cursor = 'pointer';
@@ -77,14 +77,14 @@ export default class extends Plugin {
     this.initCaption(n)
   }
   
-  initCaption (n){
+  initCaption(n) {
     let uc = n.dataset[this.opt.dCap] || '';
-    if(uc && n.value && !(this.opt.dLabel in n.dataset)){
+    if (uc && n.value && !(this.opt.dLabel in n.dataset)) {
       let u = encodeURI(decodeURI(Url.build(uc, {time: (new Date()).getTime()}))
         .replace(/\{q\}/, n.value));
       this.app.fetch(u, req => {
         let d = this.app.parse(req.responseText);
-        if(d){
+        if (d) {
           const h = u.split('#');
           if (!h[1] && d.data) d = d.data
           this.fix(n, n.value, this.app.path(d, h[1] || '', n.value));
@@ -93,28 +93,28 @@ export default class extends Plugin {
     }
   }
   
-  ident (n, mode){
-    if(mode != 't' && (mode == 'i' || this.opt.inPop)) n = n.closest('.lookup-pop');
+  ident(n, mode) {
+    if (mode != 't' && (mode == 'i' || this.opt.inPop)) n = n.closest('.lookup-pop');
     return this.app.next(n, '.lookup-id', true);
   }
 
-  cap (n){
+  cap(n) {
     return this.opt.inPop
       ? this.app.q('.lookup-input', this.pop(n))
       : this.app.next(n, '.lookup-input');
   }
 
-  pop (n){
+  pop(n) {
     return this.app.next(n, '.lookup-pop');
   }
 
-  find (e){
+  find(e) {
     let c = e.target;
     let n = this.ident(c);
-    if(!n) return;
+    if (!n) return;
     let v = c.value;
-    if(v==='') this.fix(n, '', ''); //empty
-    else if(n.vCache && n.vCache[v]) this.openList(n, n.vCache[v]); //cached
+    if (v === '') this.fix(n, '', ''); //empty
+    else if (n.vCache && n.vCache[v]) this.openList(n, n.vCache[v]); //cached
     else {
       let u = encodeURI(decodeURI(Url.build((n.dataset[this.opt.dLookup] || ''), {
           //value: v,
@@ -125,19 +125,19 @@ export default class extends Plugin {
     }
   }
   
-  list (u, v, n, req){
+  list(u, v, n, req) {
     let d = this.app.parse(req.responseText);
-    if(d){
+    if (d) {
       const h = u.split('#');
       if (!h[1] && d.data) d = d.data
       d = this.norm(this.app.path(d, h[1] || '', []), h[2], h[3], h[4]);
-      if(v===this.cap(n).value) this.openList(n, d);
+      if (v === this.cap(n).value) this.openList(n, d);
       this.store(n, v, d);
     }
   }
 
-  openList (n, d, e){
-    if(e) e.stopPropagation();
+  openList(n, d, e) {
+    if (e) e.stopPropagation();
     this.closeList();
     let pop = this.pop(n);
     pop.appendChild(this.win);
@@ -147,11 +147,11 @@ export default class extends Plugin {
     //this.app.pf('toggle', 'setShown', null);
   }
   
-  closeList (){
+  closeList() {
     this.app.toggle(this.win, false);
   }
   
-  build (n, d){
+  build(n, d) {
     const app = this.app
     app.clr(this.win);
     let ul = app.ins('ul', '', {className: 'nav let hover'}, this.win);
@@ -161,87 +161,87 @@ export default class extends Plugin {
       w = app.ins('li', '', {}, ul);
       let a = app.ins('a', '', {href: go ? go.replace(/\{id\}/, d[i].id) : '#' + d[i].id, className: '-pad -hover' + (go ? '' : ' lookup-item')}, w);
       app.ins('span', d[i].nm, {}, a);
-      if(d[i].info){
+      if (d[i].info) {
         app.ins('br', '', {}, a);
         app.ins('small', d[i].info, {className: 'text-n'}, a);
       }
       j++;
-      if(j >= this.opt.max) break;
+      if (j >= this.opt.max) break;
     }
-    if(ul.firstChild) this.hilite(n, ul.firstChild.firstChild);
+    if (ul.firstChild) this.hilite(n, ul.firstChild.firstChild);
   }
   
-  hilite (n, a){
-    if(n.vCur) n.vCur.classList.remove(this.app.opt.cAct);
+  hilite(n, a) {
+    if (n.vCur) n.vCur.classList.remove(this.app.opt.cAct);
     a.classList.add(this.app.opt.cAct);
     n.vCur = a;
   }
   
-  hiliteNext (n, prev){
-    if(n.vCur) {
+  hiliteNext(n, prev) {
+    if (n.vCur) {
       let a = n.vCur.parentNode[prev ? 'previousSibling' : 'nextSibling'];
-      if(!a) a = n.vCur.parentNode.parentNode[prev ? 'lastChild' : 'firstChild'];
+      if (!a) a = n.vCur.parentNode.parentNode[prev ? 'lastChild' : 'firstChild'];
       a = a.firstChild;
       this.hilite(n, a);
     }
   }
   
-  choose (e){
-    if(e) e.preventDefault();
+  choose(e) {
+    if (e) e.preventDefault();
     let a = e.recv;
     let n = this.ident(a, 'i');
     n.vCur = a;
     this.fix(n, a.hash.substr(1), a.firstChild.textContent);
   }
   
-  fix (n, v, c){
+  fix(n, v, c) {
     n.vCur = null;
-    if(n.vWait) clearTimeout(n.vWait);
+    if (n.vWait) clearTimeout(n.vWait);
     n.value = v;
     n.vLabel = this.cap(n).value = c;
     this.app.dispatch(n, ['input', 'change']);
     this.closeList();
   }
   
-  key (e){
+  key(e) {
     let n = e.target ? this.ident(e.target) : null;
-    if(n){
-      if(e.keyCode == 27) this.fix(n, n.value, n.vLabel);
-      else if(e.keyCode == 40 && !this.app.vis(this.win)) this.find(e);
-      else if(e.keyCode == 38 || e.keyCode == 40) this.hiliteNext(n, e.keyCode == 38);
-      else if(e.keyCode == 13 && n.vCur){
-        if(this.app.vis(this.win)) e.preventDefault();
+    if (n) {
+      if (e.keyCode == 27) this.fix(n, n.value, n.vLabel);
+      else if (e.keyCode == 40 && !this.app.vis(this.win)) this.find(e);
+      else if (e.keyCode == 38 || e.keyCode == 40) this.hiliteNext(n, e.keyCode == 38);
+      else if (e.keyCode == 13 && n.vCur) {
+        if (this.app.vis(this.win)) e.preventDefault();
         n.vCur.click();
       }
     }
   }
   
-  go (e){
+  go(e) {
     let n = e.recv ? this.ident(e.recv.parentNode, 't') : null;
-    if(n){
+    if (n) {
       e.preventDefault();
       let u = n.dataset[this.opt.dUrl] || '';
-      if(n.value.length>0 && u) location.href = encodeURI(decodeURI(u).replace(/\{id\}/, n.value));
+      if (n.value.length>0 && u) location.href = encodeURI(decodeURI(u).replace(/\{id\}/, n.value));
     }
   }
 
   // update chain
   
-  updateChain (n){
+  updateChain(n) {
     let m = this.app.q((n.dataset.chain || ''));
-    if(m){
-      if(!n.value) this.setOptions(m,[]);
+    if (m) {
+      if (!n.value) this.setOptions(m,[]);
       else {
         let u = (m.dataset[this.opt.dList] || '').replace(/\{q\}/,n.value);
-        if(m.vCache && m.vCache[u]) this.setOptions(m,m.vCache[u]);
+        if (m.vCache && m.vCache[u]) this.setOptions(m,m.vCache[u]);
         else this.app.fetch(u, this.onChainData.bind(this, u, m));
       }
     }
   }
   
-  onChainData (u, n, req){
+  onChainData(u, n, req) {
     let d = this.app.parse(req.responseText);
-    if(d){
+    if (d) {
       const h = u.split('#');
       if (!h[1] && d.data) d = d.data
       d = this.norm(this.app.path(d, h[1] || '', []), h[2], h[3]);
@@ -251,31 +251,31 @@ export default class extends Plugin {
     else this.setOptions(n, []);
   }
 
-  setOptions (n, a){
-    if(n.list){
-      if(n.list){
+  setOptions(n, a) {
+    if (n.list) {
+      if (n.list) {
         this.app.clr(n.list);
         n.value = '';
-        if(a) a.forEach(v => this.app.ins('option', '', {value: v.nm}, n.list));
+        if (a) a.forEach(v => this.app.ins('option', '', {value: v.nm}, n.list));
       }
     }
     else {
       this.app.clr(n);
       let z = n.dataset.placeholder || '';
-      if(!a || a.length==0 || z) this.app.ins('option', z || '-', {value: ''}, n);
-      if(a) a.forEach(v => this.app.ins('option', v.nm, {value: v.id}, n));
+      if (!a || a.length == 0 || z) this.app.ins('option', z || '-', {value: ''}, n);
+      if (a) a.forEach(v => this.app.ins('option', v.nm, {value: v.id}, n));
     }
   }
   
-  store (n, u, d){
+  store(n, u, d) {
     let c = 1 * (n.dataset.cache || this.opt.cacheLimit);
-    if(c){
-      if(!n.vCache || Object.keys(n.vCache).length>=c) n.vCache = {};
-      if(d) n.vCache[u] = d;
+    if (c) {
+      if (!n.vCache || Object.keys(n.vCache).length>=c) n.vCache = {};
+      if (d) n.vCache[u] = d;
     }
   }
   
-  norm (d, fi, fn, fa) {
+  norm(d, fi, fn, fa) {
     if (this.app.typeOf(d) !== 'array')  return [];
     return d.map(v => ({
       id: this.app.path(v, fi || 'id'),

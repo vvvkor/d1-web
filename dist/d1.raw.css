@@ -1,4 +1,4 @@
-/*! d1-web v2.1.8 */
+/*! d1-web v2.1.9 */
 
 /* @import url("css/columns.css"); */
 
@@ -606,7 +606,7 @@ mark{background-color:var(--bg-warning);}
 */
 @media (min-width: 900px){
 	.trans .nav li:not(.shift)>ul.toggle, .trans .pop>.toggle, .trans [data-tip]:after{display:block !important;transition:.2s opacity;}
-	.trans .nav ul.toggle.off, .trans .pop>.toggle.off, .trans [data-tip]:not(:hover):after{opacity:0;z-index:-1;transition-duration:.1s;}
+	.trans .nav ul.toggle.off, .trans .pop>.toggle.off, .trans [data-tip]:not(:hover):after{opacity:0;z-index:-1;transition-duration:.1s;pointer-events:none;}
 	.trans [data-tip]:hover:after{transition:opacity .3s .3s;}
 	.trans .dlg.toggle:not(.off){transition-duration:.2s;transition-property:opacity,transform;opacity:1;}
 	.trans .dlg.toggle.off{display:block !important;opacity:0;z-index:-1;transform:translate(-50%, -50%) scale(.8);}

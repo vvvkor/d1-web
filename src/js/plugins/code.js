@@ -4,7 +4,7 @@ import Plugin from './plugin.js';
 
 export default class extends Plugin {
 
-  constructor () {
+  constructor() {
     super('code')
 
     this.langs = {
@@ -47,24 +47,24 @@ export default class extends Plugin {
     };
   }
 
-  init () {
+  init() {
     this.app.e(this.opt.qCode, n => this.showCode(n));
     this.app.e('code[class*="language-"]', n => this.hiliteNode(n));
     this.app.listen('update', e => this.updateCode(e));
   }
 
-  updateCode (e) {
+  updateCode(e) {
     let n = e.n ? e.n : this.app.q(e.q);
-    if(n){
+    if (n) {
       let p = n.closest(this.opt.qCode);
-      if(p) this.showCode(p);
+      if (p) this.showCode(p);
     }
   }
   
-  showCode (src) {
+  showCode(src) {
     let lang = src.dataset[this.opt.dLang] || this.opt.defLang;
     let t = this.spaces(src.innerHTML);
-    if(!src.vCode){
+    if (!src.vCode) {
       let cont = this.app.ins('div', '', {classList: 'bord'}, src, 1);
       cont.appendChild(src);
       src.classList.add('pad');
@@ -78,30 +78,30 @@ export default class extends Plugin {
     src.vCode.innerHTML = this.hiliteText(t, lang);
   }
   
-  spaces (s) {
+  spaces(s) {
     return s
       .replace(/^\s*\r?\n|\s+$/g, '')
       .replace(/\t/g, '  ');
       //.replace(/=""/g, '');
   }
   
-  hiliteNode (n) {
+  hiliteNode(n) {
     n.innerHTML = this.hiliteText(
       this.spaces(n.textContent), 
       this.app.a(n.classList).filter(c => c.match(/language-/))[0].substr(9)
       );
   }
   
-  hiliteText (t, lang) {
+  hiliteText(t, lang) {
     let l = this.langs[lang];
     let d = this.app.ins('div');
     d.textContent = t;
     t = d.innerHTML;
-    if(l && l.re) l.re.forEach(re => t = t.replace(re[0], m => this.token(re[1], m)))
+    if (l && l.re) l.re.forEach(re => t = t.replace(re[0], m => this.token(re[1], m)))
     return t;
   }
   
-  token (c, m) {
+  token(c, m) {
     return "<Span Class = 'text-" + c + "'>" + m + "</Span>";
   }
 

@@ -4,7 +4,7 @@ import Plugin from './plugin.js';
 
 export default class extends Plugin {
 
-  constructor () {
+  constructor() {
     super('valid')
 
     this.opt = {
@@ -15,7 +15,7 @@ export default class extends Plugin {
     };
   }
   
-  init () {
+  init() {
     //let q = this.opt.qValidate;
     //let dh = '[' + this.opt.aHint + ']';
     //this.app.e(q + ' input' + dh + ', ' + q + ' textarea' + dh + ', '+ q +' select' + dh, n => this.initInput(n));
@@ -30,44 +30,44 @@ export default class extends Plugin {
     this.app.h('submit', this.opt.qValidate, e => e.target.getAttribute('novalidate') ? this.validateForm(e.target, e) : null);//custom validation
   }
   
-  isLive (f){
+  isLive(f) {
     return (f && f.classList.contains(this.opt.cLiveVal));
   }
   
-  validateInput (n) {
-    if (n.willValidate){
+  validateInput(n) {
+    if (n.willValidate) {
       if (n.type == 'radio') this.app.e(this.app.qq('[name="'+n.name+'"]', n.form), m => m.setCustomValidity(''));
       else n.setCustomValidity('');
       n.checkValidity();
-      if(this.isLive(n.form)) this.validateForm(n.form);
+      if (this.isLive(n.form)) this.validateForm(n.form);
     }
   }
 
-  setCustomMessage (n) {
-    if (n.willValidate){
+  setCustomMessage(n) {
+    if (n.willValidate) {
       let t = n.getAttribute('data-hint') || '';// || n.title;
       t = t.replace(/%([\w\-]+)%/g, (m, v) => n.getAttribute(v));
       n.setCustomValidity(t);
     }
   }
   
-  unhint (n) {
+  unhint(n) {
     n.setAttribute('novalidate', true);
   }
   
-  validateForm (n, e) {
-    if(e) n.classList.remove(this.opt.cUnhint);
-    let ok = n.checkValidity();//!==false
+  validateForm(n, e) {
+    if (e) n.classList.remove(this.opt.cUnhint);
+    let ok = n.checkValidity();// !== false
     if (!ok && e) {
       e.preventDefault();
       e.stopPropagation();
       let f = this.app.q('[name]:invalid:not(.hide):not(.off), [name]:invalid~.subinput', n);
-      if(f){
+      if (f) {
         this.app.dbg(['focus validate', f]);
         f.focus();
       }
     }
-    if(this.isLive(n)){
+    if (this.isLive(n)) {
       //this.app.e(this.app.qq('[type="submit"]', n), m => m.disabled = !ok);//if no cUnhint
       this.app.e(this.app.qq('[type="submit"]', n), m => m.classList[ok ? 'remove' : 'add']('bg-n'));//if cUnhint used
     }

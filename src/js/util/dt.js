@@ -4,7 +4,7 @@ export default class Dt {
 
   static parse(s) {
     let d = '';
-    let m = (s || '').match(/^(\d+)([\-\.\/\s])(\d+)[\-\.\/\s](\d+)(\D(\d+))?(\D(\d+))?(\D(\d+))?(\D(\d+))?$/);
+    const m = (s || '').match(/^(\d+)([\-\.\/\s])(\d+)[\-\.\/\s](\d+)(\D(\d+))?(\D(\d+))?(\D(\d+))?(\D(\d+))?$/);
     if (m) {
       let x;
       if (m[2] == '.') x = [4, 3, 1]; //d.m.Y
@@ -22,12 +22,12 @@ export default class Dt {
     f: y=Y-m-d (default), d=d.m.Y, m=m/d Y
   */
   static fmt(x, t, f) {
-    let y = x.getFullYear();
-    let m = Dt.n(x.getMonth()+1);
-    let d = Dt.n(x.getDate());
-    let h = Dt.n(x.getHours());
-    let i = Dt.n(x.getMinutes());
-    let s = Dt.n(x.getSeconds());
+    const y = x.getFullYear();
+    const m = Dt.n(x.getMonth()+1);
+    const d = Dt.n(x.getDate());
+    const h = Dt.n(x.getHours());
+    const i = Dt.n(x.getMinutes());
+    const s = Dt.n(x.getSeconds());
     return (f == 'm' ? m + '/' + d + ' ' + y : (f == 'd' ? d + '.' + m + '.' + y : y + '-' + m + '-' + d))
       + ((t && h+i+s>0) ? ' '+Dt.n(x.getHours())+':'+Dt.n(x.getMinutes())+':'+Dt.n(x.getSeconds()) : '');
   }
