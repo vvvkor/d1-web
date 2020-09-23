@@ -298,12 +298,15 @@ export default class extends Plugin{
       i = (i && i.tagName == 'INPUT') ? i : null;
       let r = i || n.parentNode;
       if (r) {
+        //const is_touch = 'ontouchstart' in document.documentElement;
+        //const maxw = is_touch ? screen.width : window.innerWidth;
+        const maxw = document.documentElement.clientWidth;
         s.right = 'auto';
         s.left = vert ? '100%' : 0;
         s.top = vert ? 0 : '100%';
         let qn = n.getBoundingClientRect();
         let qr = r.getBoundingClientRect();
-        let dx = (qn.right > window.innerWidth);
+        let dx = (qn.right > maxw);
         let dy = (qn.bottom > window.innerHeight);
         let wide = (qr.width > 300);
         //x

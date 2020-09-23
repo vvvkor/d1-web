@@ -491,6 +491,7 @@ mark{background-color:var(--bg-warning);}
 	
 	input,select{max-width:100%;}
 	textarea{width:100%;}
+	[type="file"]{max-width:15em;}
 	input,button,select,textarea{padding:var(--gap-xs);line-height:normal;}
 	input,button,select,textarea,a.btn{border:thin solid #aaa;} /* rgba(0,0,0,.3) fails for select */
 	a.btn,button,[type="submit"]{padding:var(--gaps-n);border-radius:var(--radius);margin:var(--gap-xs) 0;}

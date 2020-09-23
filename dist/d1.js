@@ -1,4 +1,4 @@
-/*! d1-web v2.1.9 */
+/*! d1-web v2.1.10 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -1056,12 +1056,15 @@ var _default = /*#__PURE__*/function (_Plugin) {
         var r = i || n.parentNode;
 
         if (r) {
+          //const is_touch = 'ontouchstart' in document.documentElement;
+          //const maxw = is_touch ? screen.width : window.innerWidth;
+          var maxw = document.documentElement.clientWidth;
           s.right = 'auto';
           s.left = vert ? '100%' : 0;
           s.top = vert ? 0 : '100%';
           var qn = n.getBoundingClientRect();
           var qr = r.getBoundingClientRect();
-          var dx = qn.right > window.innerWidth;
+          var dx = qn.right > maxw;
           var dy = qn.bottom > window.innerHeight;
           var wide = qr.width > 300; //x
 
