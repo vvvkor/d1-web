@@ -48,5 +48,5 @@ app.plug(Theme)
 // const opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}}
 app.b([document], 'DOMContentLoaded', e => app.init(/*opt*/))
 
-if (typeof module !== 'undefined') module.exports = app
+// if (typeof module !== 'undefined') module.exports = app
 if (window) window.d1 = app
