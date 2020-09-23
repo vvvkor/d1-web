@@ -6,16 +6,16 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 
 	<!-- CDN --R E M O V E->
-		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.1.12/dist/d1.min.css" rel="stylesheet">
-		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.1.12/dist/d1.min.js"></script>
+		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.1.14/dist/d1.min.css" rel="stylesheet">
+		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.1.14/dist/d1.min.js"></script>
 		<noscript>
-			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.1.12/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.1.14/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- CDN -->
-		<link href="https://unpkg.com/d1-web@2.1.12/dist/d1.min.css" rel="stylesheet">
-		<script src="https://unpkg.com/d1-web@2.1.12/dist/d1.min.js"></script>
+		<link href="https://unpkg.com/d1-web@2.1.14/dist/d1.min.css" rel="stylesheet">
+		<script src="https://unpkg.com/d1-web@2.1.14/dist/d1.min.js"></script>
 		<noscript>
-			<link href="https://unpkg.com/d1-web@2.1.12/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://unpkg.com/d1-web@2.1.14/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- local-npm-src ->
 		<link href="../src/index.css" rel="stylesheet">
@@ -105,7 +105,7 @@
 	<a href="#menu" class="pad -let hide-desktop icon-menu empty" title="Menu"><span>Menu</span></a>
 	<a href="#top" class="pad -let"><b>d1</b></a>
 	<code class="-pad -nobr hide-mobile">npm i d1-web</code>
-	<a class="shift pad text-n">v2.1.12</a>
+	<a class="shift pad text-n">v2.1.14</a>
 	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1-web" title="GitHub" class="pad -let">GitHub</a>
 	<a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="pad -let icon-download empty" ><span>Download</span></a>
 </div>
@@ -237,14 +237,17 @@ Most components are usable without JavaScript.<br>
 
 <p>Install to your repository:
 <pre>npm install d1-web</pre>
-<p>Then use in your CSS file:
-<pre><code class="language-css-x">@import "../node_modules/d1-web/dist/d1.min.css";</code></pre>
+<p>Then use in your CSS file (<code>d1-icons.css</code> is optional):
+<pre><code class="language-css-x">@import "../node_modules/d1-web/dist/d1.min.css";
+@import "../node_modules/d1-web/dist/d1-icons.min.css";</code></pre>
 <p>And optionally bundle into your JavaScript file:
 <pre><code class="language-js">let d1 = require("d1-web");</code></pre>
 
 <h3 id="install-manually">Install manually</h3>
 
-<p>Add the <a href="https://github.com/vvvkor/d1-web/archive/master.zip">distributed</a> CSS and JavaScript to the <code>head</code> of your document.</p>
+<p>Add the <a href="https://github.com/vvvkor/d1-web/archive/master.zip">distributed</a> CSS and JavaScript to the <code>head</code> of your document.<br>
+Inclusion of <code>d1.js</code> and <code>d1-icons.css</code> is optional.
+</p>
 
 <pre><code class="language-html">&lt;!doctype html&gt;
 &lt;html lang="en"&gt;
@@ -255,6 +258,9 @@ Most components are usable without JavaScript.<br>
       content="width=device-width, initial-scale=1"&gt;
     &lt;link rel="stylesheet" href="/css/d1.min.css"&gt;
     &lt;script src="/js/d1.min.js"&gt;&lt;/script&gt;
+    &lt;noscript&gt;
+      &lt;link href="/js/d1-icons.min.css" rel="stylesheet"&gt;
+    &lt;/noscript&gt;
   &lt;/head&gt;
   &lt;body&gt;
   &lt;/body&gt;
@@ -264,7 +270,7 @@ Most components are usable without JavaScript.<br>
 <h3 id="use-cdn">CDN</h3>
 
 <p>Add CDN links to the <code>head</code> of your document.<br>
-Including of <code>d1.js</code> and <code>d1-icons.css</code> is optional.
+Inclusion of <code>d1.js</code> and <code>d1-icons.css</code> is optional.
 
 <ul class="nav tabs roll hover rad">
 	<li><a href="#cdn-jsdelivr">jsDelivr</a>
@@ -273,19 +279,19 @@ Including of <code>d1.js</code> and <code>d1-icons.css</code> is optional.
 </ul>
 <div>
 	<div id="cdn-jsdelivr">
-		<pre><code class="language-html">&lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.1.12/dist/d1.min.css" rel="stylesheet"&gt;
-&lt;script src="https://cdn.jsdelivr.net/npm/d1-web@2.1.12/dist/d1.min.js"&gt;&lt;/script&gt;
+		<pre><code class="language-html">&lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.1.14/dist/d1.min.css" rel="stylesheet"&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/d1-web@2.1.14/dist/d1.min.js"&gt;&lt;/script&gt;
 &lt;noscript&gt;
-  &lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.1.12/dist/d1-icons.min.css" rel="stylesheet"&gt;
+  &lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.1.14/dist/d1-icons.min.css" rel="stylesheet"&gt;
 &lt;/noscript&gt;
 
 		</code></pre>
 	</div>
 	<div id="cdn-unpkg">
-		<pre><code class="language-html">&lt;link href="https://unpkg.com/d1-web@2.1.12/dist/d1.min.css" rel="stylesheet"&gt;
-&lt;script src="https://unpkg.com/d1-web@2.1.12/dist/d1.min.js"&gt;&lt;/script&gt;
+		<pre><code class="language-html">&lt;link href="https://unpkg.com/d1-web@2.1.14/dist/d1.min.css" rel="stylesheet"&gt;
+&lt;script src="https://unpkg.com/d1-web@2.1.14/dist/d1.min.js"&gt;&lt;/script&gt;
 &lt;noscript&gt;
-  &lt;link href="https://unpkg.com/d1-web@2.1.12/dist/d1-icons.min.css" rel="stylesheet"&gt;
+  &lt;link href="https://unpkg.com/d1-web@2.1.14/dist/d1-icons.min.css" rel="stylesheet"&gt;
 &lt;/noscript&gt		</code></pre>
 	</div>
 	<div id="cdn-unpkg-short">
