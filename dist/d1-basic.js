@@ -1,4 +1,4 @@
-/*! d1-web v2.1.14 */
+/*! d1-web v2.1.15 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -82,11 +82,12 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 8);
+/******/ 	return __webpack_require__(__webpack_require__.s = 29);
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
+/******/ ({
+
+/***/ 0:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -130,7 +131,8 @@ var _default = /*#__PURE__*/function () {
 
 
 /***/ }),
-/* 1 */
+
+/***/ 1:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -193,7 +195,38 @@ var Url = /*#__PURE__*/function () {
 
 
 /***/ }),
-/* 2 */
+
+/***/ 29:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function(module) {/* harmony import */ var _js_polyfill_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9);
+/* harmony import */ var _js_polyfill_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_js_polyfill_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _js_app_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
+/* harmony import */ var _js_plugins_toggle_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5);
+/* harmony import */ var _js_plugins_dialog_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(6);
+/* harmony import */ var _js_plugins_gallery_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(7);
+
+
+
+
+
+var app = new _js_app_js__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"]();
+app.plug(_js_plugins_toggle_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"]);
+app.plug(_js_plugins_dialog_js__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"]);
+app.plug(_js_plugins_gallery_js__WEBPACK_IMPORTED_MODULE_4__[/* default */ "a"]); // let opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}}
+
+app.b([document], 'DOMContentLoaded', function (e) {
+  return app.init();
+});
+if (true) module.exports = app;
+if (window) window.d1 = app;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(8)(module)))
+
+/***/ }),
+
+/***/ 4:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -581,7 +614,8 @@ else module.exports = main
 
 
 /***/ }),
-/* 3 */
+
+/***/ 5:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1089,7 +1123,8 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
 
 /***/ }),
-/* 4 */
+
+/***/ 6:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1347,7 +1382,8 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
 
 /***/ }),
-/* 5 */
+
+/***/ 7:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1551,7 +1587,39 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
 
 /***/ }),
-/* 6 */
+
+/***/ 8:
+/***/ (function(module, exports) {
+
+module.exports = function(originalModule) {
+	if (!originalModule.webpackPolyfill) {
+		var module = Object.create(originalModule);
+		// module.parent = undefined by default
+		if (!module.children) module.children = [];
+		Object.defineProperty(module, "loaded", {
+			enumerable: true,
+			get: function() {
+				return module.l;
+			}
+		});
+		Object.defineProperty(module, "id", {
+			enumerable: true,
+			get: function() {
+				return module.i;
+			}
+		});
+		Object.defineProperty(module, "exports", {
+			enumerable: true
+		});
+		module.webpackPolyfill = 1;
+	}
+	return module;
+};
+
+
+/***/ }),
+
+/***/ 9:
 /***/ (function(module, exports) {
 
 if (!Element.prototype.matches) {
@@ -1571,34 +1639,6 @@ if (!Element.prototype.closest) {
   };
 }
 
-/***/ }),
-/* 7 */,
-/* 8 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _js_polyfill_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6);
-/* harmony import */ var _js_polyfill_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_js_polyfill_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _js_app_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
-/* harmony import */ var _js_plugins_toggle_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
-/* harmony import */ var _js_plugins_dialog_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4);
-/* harmony import */ var _js_plugins_gallery_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(5);
-
-
-
-
-
-var app = new _js_app_js__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"]();
-app.plug(_js_plugins_toggle_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"]);
-app.plug(_js_plugins_dialog_js__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"]);
-app.plug(_js_plugins_gallery_js__WEBPACK_IMPORTED_MODULE_4__[/* default */ "a"]); // let opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}}
-
-app.b([document], 'DOMContentLoaded', function (e) {
-  return app.init();
-}); // if (typeof module !== 'undefined') module.exports = app
-
-if (window) window.d1 = app;
-
 /***/ })
-/******/ ]);
+
+/******/ });
