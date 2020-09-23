@@ -1,4 +1,4 @@
-/*! d1-web v2.1.10 */
+/*! d1-web v2.1.11 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -211,6 +211,10 @@ blockquote, pre, fieldset {
 
 pre, code {
     white-space: pre-wrap;
+}
+
+[class*="language-"] {
+    white-space: pre;
 }
 
 pre, code, kbd, samp {

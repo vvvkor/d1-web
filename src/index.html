@@ -5,11 +5,17 @@
 	<title>d1-web / documentation</title>
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 
-	<!-- CDN --REMOVE->
+	<!-- CDN --R E M O V E->
 		<link href="https://cdn.jsdelivr.net/npm/d1-web@0.0.0/dist/d1.min.css" rel="stylesheet">
 		<script src="https://cdn.jsdelivr.net/npm/d1-web@0.0.0/dist/d1.min.js"></script>
 		<noscript>
 			<link href="https://cdn.jsdelivr.net/npm/d1-web@0.0.0/dist/d1-icons.min.css" rel="stylesheet">
+		</noscript>
+	<!-- CDN --REMOVE->
+		<link href="https://unpkg.com/d1-web@0.0.0/dist/d1.min.css" rel="stylesheet">
+		<script src="https://unpkg.com/d1-web@0.0.0/dist/d1.min.js"></script>
+		<noscript>
+			<link href="https://unpkg.com/d1-web@0.0.0/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- local-npm-src REMOVE-->
 		<link href="../src/index.css" rel="stylesheet">
@@ -257,11 +263,40 @@ Most components are usable without JavaScript.<br>
 
 <h3 id="use-cdn">CDN</h3>
 
-<p>Add CDN links to the <code>head</code> of your document.
+<p>Add CDN links to the <code>head</code> of your document.<br>
+Including of <code>d1.js</code> and <code>d1-icons.css</code> is optional.
 
-<pre><code class="language-html">&lt;link href="https://cdn.jsdelivr.net/npm/d1-web/dist/d1.min.css" rel="stylesheet"&gt;
-&lt;script src="https://cdn.jsdelivr.net/npm/d1-web/dist/d1.min.js"&gt;&lt;/script&gt;
-</code></pre>
+<ul class="nav tabs roll hover rad">
+	<li><a href="#cdn-jsdelivr">jsDelivr</a>
+	<li><a href="#cdn-unpkg">unpkg</a>
+	<li><a href="#cdn-unpkg-short">unpkg (short)</a>
+</ul>
+<div>
+	<hr class="fit">
+	<div id="cdn-jsdelivr">
+		<pre><code class="language-html">&lt;link href="https://cdn.jsdelivr.net/npm/d1-web@0.0.0/dist/d1.min.css" rel="stylesheet"&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/d1-web@0.0.0/dist/d1.min.js"&gt;&lt;/script&gt;
+&lt;noscript&gt;
+  &lt;link href="https://cdn.jsdelivr.net/npm/d1-web@0.0.0/dist/d1-icons.min.css" rel="stylesheet"&gt;
+&lt;/noscript&gt;
+
+		</code></pre>
+	</div>
+	<div id="cdn-unpkg">
+		<pre><code class="language-html">&lt;link href="https://unpkg.com/d1-web@0.0.0/dist/d1.min.css" rel="stylesheet"&gt;
+&lt;script src="https://unpkg.com/d1-web@0.0.0/dist/d1.min.js"&gt;&lt;/script&gt;
+&lt;noscript&gt;
+  &lt;link href="https://unpkg.com/d1-web@0.0.0/dist/d1-icons.min.css" rel="stylesheet"&gt;
+&lt;/noscript&gt		</code></pre>
+	</div>
+	<div id="cdn-unpkg-short">
+		<pre><code class="language-html">&lt;link href="https://unpkg.com/d1-web" rel="stylesheet"&gt;
+&lt;script src="https://unpkg.com/d1-web/dist/d1.min.js"&gt;&lt;/script&gt;
+&lt;noscript&gt;
+  &lt;link href="https://unpkg.com/d1-web/dist/d1-icons.min.css" rel="stylesheet"&gt;
+&lt;/noscript&gt		</code></pre>
+	</div>
+</div>
 
 <h2 id="typography">Typography</h2>
 
