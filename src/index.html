@@ -242,6 +242,10 @@ Most components are usable without JavaScript.<br>
 @import "../node_modules/d1-web/dist/d1-icons.min.css";</code></pre>
 <p>And optionally bundle into your JavaScript file:
 <pre><code class="language-js">require("../node_modules/d1-web/dist/d1.min.js");</code></pre>
+<p>or build from source:
+<pre><code class="language-js">const d1 = require("../../d1-web/src/module.js").default;
+d1.b([document], 'DOMContentLoaded', e => d1.init(/* options */));</code></pre>
+<!-- // or: import d1 from "../../d1-web/src/module.js"; -->
 
 <h3 id="install-manually">Install manually</h3>
 

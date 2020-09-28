@@ -45,6 +45,7 @@ export default class extends Plugin {
       dFilter: 'filter', // data-filter
       dRep: 'filterReport', // data-filter-report
       aTotal: 'data-total',
+      dLabels: 'labels',
       dLimit: 'limit', // data-limit
       dPages: 'pages', // data-pages
       dPageNavAfter: 'pagesAfter', // data-pages-after
@@ -212,11 +213,12 @@ export default class extends Plugin {
   }
 
   addFooter(n, rh) {
-    let f = this.app.ins('tfoot', this.app.ins('tr'), {className: 'nobr'}, n);
+    const f = this.app.ins('tfoot', this.app.ins('tr'), {className: 'nobr'}, n);
     this.app.a(rh.cells).forEach(h => {
-      let t = n.vTypes[h.cellIndex];
-      let func = t == 's' ? 'count' : (t == 'd' ? 'max' : 'sum');
-      this.app.ins('th', this.app.ins(t == 's' ? 'i' : 'span', '', {[this.opt.aTotal]: func, className: (t == 's' ? 'text-n' : '')}), {title: func}, f.firstChild);
+      const t = n.vTypes[h.cellIndex];
+      const func = t == 's' ? 'count' : (t == 'd' ? 'max' : 'sum');
+      const th = this.app.ins('th', this.app.ins(t == 's' ? 'i' : 'span', '', {[this.opt.aTotal]: func, className: (t == 's' ? 'text-n' : '')}), {title: func}, f.firstChild);
+      if (this.opt.dLabels in n.dataset) this.app.ins('div', func, {className: 'small text-n'}, th, false);
     }
     );
   }

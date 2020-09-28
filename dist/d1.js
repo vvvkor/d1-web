@@ -1,4 +1,4 @@
-/*! d1-web v2.1.16 */
+/*! d1-web v2.1.17 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -2322,6 +2322,7 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
       dRep: 'filterReport',
       // data-filter-report
       aTotal: 'data-total',
+      dLabels: 'labels',
       dLimit: 'limit',
       // data-limit
       dPages: 'pages',
@@ -2577,9 +2578,13 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
         var t = n.vTypes[h.cellIndex];
         var func = t == 's' ? 'count' : t == 'd' ? 'max' : 'sum';
 
-        _this3.app.ins('th', _this3.app.ins(t == 's' ? 'i' : 'span', '', (_this3$app$ins = {}, _defineProperty(_this3$app$ins, _this3.opt.aTotal, func), _defineProperty(_this3$app$ins, "className", t == 's' ? 'text-n' : ''), _this3$app$ins)), {
+        var th = _this3.app.ins('th', _this3.app.ins(t == 's' ? 'i' : 'span', '', (_this3$app$ins = {}, _defineProperty(_this3$app$ins, _this3.opt.aTotal, func), _defineProperty(_this3$app$ins, "className", t == 's' ? 'text-n' : ''), _this3$app$ins)), {
           title: func
         }, f.firstChild);
+
+        if (_this3.opt.dLabels in n.dataset) _this3.app.ins('div', func, {
+          className: 'small text-n'
+        }, th, false);
       });
     }
   }, {
