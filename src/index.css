@@ -512,6 +512,15 @@ mark{background-color:var(--bg-warning);}
 		:valid:not(.subinput)~.text-e, :invalid~.text-y, /*.js-unhint :valid~.text-y,*/ .js-unhint :invalid~.text-e, .js-unhint:invalid~.text-e{display:none;}
 	input[type="range"], input[type="color"]{vertical-align:middle;padding:unset;}
 		input[type="range"]{border:initial;}
+	
+	/* file picker */
+	.picker{display:block;width:8em;height:8em;background:var(--bg-lite) no-repeat 50% 50% / cover;/*border-radius:50%;*/}
+	.unpicked .subtool{display:none;}
+		.picker .tools{opacity:.4;}
+		.picker:hover .tools{opacity:.8;}
+		.picker .tools>:not(:first-child){margin-left:var(--gap-n);}
+		.picker .tools label{cursor:pointer;}
+		/*.unpicked .picked{background-color:#999;}*/
 
 	/* color */
 	

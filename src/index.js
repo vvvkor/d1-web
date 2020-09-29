@@ -14,6 +14,7 @@ import Edit from './js/plugins/edit.js'
 import Valid from './js/plugins/valid.js'
 import Tools from './js/plugins/tools.js'
 import Form from './js/plugins/form.js'
+import Pickfile from './js/plugins/pickfile.js'
 import Keepform from './js/plugins/keepform.js'
 import Items from './js/plugins/items.js'
 import Filter from './js/plugins/filter.js'
@@ -37,6 +38,7 @@ app.plug(Edit)
 app.plug(Valid)
 app.plug(Tools)
 app.plug(Form)
+app.plug(Pickfile)
 app.plug(Keepform)
 app.plug(Items)
 app.plug(Filter)

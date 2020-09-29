@@ -1517,6 +1517,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
       app.x(g);
       document.body.appendChild(g);
+      return g;
     }
   }, {
     key: "visit",

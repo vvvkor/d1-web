@@ -99,6 +99,7 @@ export default class extends Plugin {
     }
     app.x(g);
     document.body.appendChild(g);
+    return g;
   }
 
   visit(a) {

@@ -1517,6 +1517,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
       app.x(g);
       document.body.appendChild(g);
+      return g;
     }
   }, {
     key: "visit",
@@ -4457,6 +4458,161 @@ var form_default = /*#__PURE__*/function (_Plugin) {
 }(plugins_plugin["a" /* default */]);
 
 
+// CONCATENATED MODULE: ./src/js/plugins/pickfile.js
+function pickfile_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { pickfile_typeof = function _typeof(obj) { return typeof obj; }; } else { pickfile_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return pickfile_typeof(obj); }
+
+function pickfile_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function pickfile_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function pickfile_createClass(Constructor, protoProps, staticProps) { if (protoProps) pickfile_defineProperties(Constructor.prototype, protoProps); if (staticProps) pickfile_defineProperties(Constructor, staticProps); return Constructor; }
+
+function pickfile_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) pickfile_setPrototypeOf(subClass, superClass); }
+
+function pickfile_setPrototypeOf(o, p) { pickfile_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return pickfile_setPrototypeOf(o, p); }
+
+function pickfile_createSuper(Derived) { var hasNativeReflectConstruct = pickfile_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = pickfile_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = pickfile_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return pickfile_possibleConstructorReturn(this, result); }; }
+
+function pickfile_possibleConstructorReturn(self, call) { if (call && (pickfile_typeof(call) === "object" || typeof call === "function")) { return call; } return pickfile_assertThisInitialized(self); }
+
+function pickfile_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function pickfile_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function pickfile_getPrototypeOf(o) { pickfile_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return pickfile_getPrototypeOf(o); }
+
+/*! example - file input decorator */
+
+
+var pickfile_default = /*#__PURE__*/function (_Plugin) {
+  pickfile_inherits(_default, _Plugin);
+
+  var _super = pickfile_createSuper(_default);
+
+  function _default() {
+    var _this;
+
+    pickfile_classCallCheck(this, _default);
+
+    _this = _super.call(this, 'pickfile');
+    _this.opt = {
+      qPick: '.pick[name]'
+    };
+    return _this;
+  }
+
+  pickfile_createClass(_default, [{
+    key: "init",
+    value: function init() {
+      var _this2 = this;
+
+      this.app.e(this.opt.qPick, function (n) {
+        return _this2.prepare(n);
+      });
+      d1.h('click', 'a.unpick', function (e) {
+        e.preventDefault();
+
+        _this2.setPicker(e.recv, '');
+      });
+      d1.h('change', this.opt.qPick, function (e) {
+        return _this2.setPicker(e.recv, true);
+      });
+    }
+  }, {
+    key: "prepare",
+    value: function prepare(n) {
+      if (!n.id) n.id = 'pick-' + this.app.seq();
+      var nn = n.closest('label') || n;
+      var cont = this.app.ins('label', '', {
+        htmlFor: n.id,
+        className: 'picker gallery'
+      }, nn, -1);
+      var tools = this.app.ins('div', '', {
+        className: 'tools pad back'
+      }, cont);
+      this.app.ins('label', this.app.i('folder', '&uarr;'), {
+        htmlFor: n.id
+      }, tools);
+      this.app.ins('a', this.app.i('image', '#'), {
+        className: 'pic subtool'
+      }, tools);
+      this.app.ins('a', this.app.i('delete', '&times;'), {
+        className: 'unpick subtool',
+        href: '#unpick'
+      }, tools);
+      var hide = this.app.ins('div', '', {
+        className: 'hide'
+      }, tools);
+      this.app.ins('input', '', {
+        type: 'checkbox',
+        value: 1,
+        name: 'unpick_' + n.name,
+        className: 'unpick'
+      }, hide);
+      hide.appendChild(nn);
+      this.setPicker(n, false);
+    }
+  }, {
+    key: "setPicker",
+    value: function setPicker(n, url) {
+      var d = n.closest('.picker');
+
+      if (d) {
+        var _this$app$q;
+
+        var keep = url === false;
+        if (keep) url = ((_this$app$q = this.app.q('[data-picked]', d)) === null || _this$app$q === void 0 ? void 0 : _this$app$q.dataset.picked) || '';
+
+        if (url === true) {
+          var f = this.app.q(this.opt.qPick, d); //1.
+          //const fr = new FileReader();
+          //const ref = this;
+          //fr.onload = function(e){ ref.setPicker(n, this.result); }
+          //if(f.files[0]) fr.readAsDataURL(f.files[0]);
+          //2.
+
+          if (f.files[0]) {
+            var blob = URL.createObjectURL(f.files[0]);
+            this.setPicker(n, blob); // free memory - if gallery not used
+
+            /*
+            const img = document.createElement('img');
+            img.src = blob;
+            img.onload = e => URL.revokeObjectURL(img.src);
+            */
+          } else this.setPicker(n, false);
+
+          return;
+        }
+
+        var bg = url ? 'url("' + url + '")' : '';
+        d1.e(this.app.qq('input.unpick', d), function (n) {
+          return n.checked = !url && !keep;
+        });
+        d.style.backgroundImage = bg;
+        d1.e(this.app.qq('a.pic', d), function (n) {
+          return n.href = url;
+        });
+        d.classList[url ? 'remove' : 'add']('unpicked');
+      }
+
+      if (url) {
+        var _this$app$plugins$gal;
+
+        // (re)init gallery
+        if (d.vGal) d.vGal.parentNode.removeChild(d.vGal);
+        this.app.e(this.app.qq('a.pic', d), function (n) {
+          return delete n.vDone;
+        });
+        d.vGal = (_this$app$plugins$gal = this.app.plugins.gallery) === null || _this$app$plugins$gal === void 0 ? void 0 : _this$app$plugins$gal.prepare(d);
+      }
+    }
+  }]);
+
+  return _default;
+}(plugins_plugin["a" /* default */]);
+
+
 // CONCATENATED MODULE: ./src/js/plugins/keepform.js
 function keepform_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { keepform_typeof = function _typeof(obj) { return typeof obj; }; } else { keepform_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return keepform_typeof(obj); }
 
@@ -5599,6 +5755,7 @@ var theme_default = /*#__PURE__*/function (_Plugin) {
 
 
 
+
 var src_app = new js_app["a" /* default */]();
 src_app.plug(code_default);
 src_app.plug(icons_default);
@@ -5613,6 +5770,7 @@ src_app.plug(edit_default);
 src_app.plug(valid_default);
 src_app.plug(tools_default);
 src_app.plug(form_default);
+src_app.plug(pickfile_default);
 src_app.plug(keepform_default);
 src_app.plug(items_default);
 src_app.plug(filter_default);
