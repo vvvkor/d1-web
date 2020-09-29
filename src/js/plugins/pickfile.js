@@ -7,7 +7,8 @@ export default class extends Plugin {
   constructor() {
     super('pickfile')
     this.opt = {
-      qPick: '.pick[name]'
+      qPick: '.pick[name]',
+      qDrop: 'input.drop'
     };
   }
 
@@ -15,6 +16,7 @@ export default class extends Plugin {
     this.app.e(this.opt.qPick, n => this.prepare(n));
     d1.h('click', 'a.unpick', e => { e.preventDefault(); this.setPicker(e.recv, ''); });
     d1.h('change', this.opt.qPick, e => this.setPicker(e.recv, true));
+    this.prepareDrop(this.app.q(this.opt.qDrop));
   }
   
   prepare(n) {
@@ -26,9 +28,12 @@ export default class extends Plugin {
     this.app.ins('label', this.app.i('folder', '&uarr;'), {htmlFor: n.id}, tools);
     this.app.ins('a', this.app.i('image', '#'), {className: 'pic subtool'}, tools);
     this.app.ins('a', this.app.i('delete', '&times;'), {className: 'unpick subtool', href: '#unpick'}, tools);
-    const hide = this.app.ins('div', '', {className: 'hide'}, tools);
-    this.app.ins('input', '', {type: 'checkbox', value: 1, name: 'unpick_' + n.name, className: 'unpick'}, hide);
+    const hide = this.app.ins('div', '', {className: '-hide'}, cont);
+    const s = hide.style;
+    s.position = 'fixed';
+    s.top = '-10em';
     hide.appendChild(nn);
+    this.app.ins('input', '', {type: 'checkbox', value: 1, name: 'unpick_' + n.name, className: 'unpick'}, hide);
     this.setPicker(n, false);
   }
 
@@ -70,6 +75,23 @@ export default class extends Plugin {
       this.app.e(this.app.qq('a.pic', d), n => delete n.vDone);
       d.vGal = this.app.plugins.gallery?.prepare(d);
     }
+  }
+  
+  prepareDrop(n) {
+    if(n){
+      const b = document.body;
+      //this.app.b([b], 'dragover', (e) => e.preventDefault());
+      this.app.b([b], 'dragenter', e => b.classList.add('drag'));
+      this.app.b([b], 'dragend', e => b.classList.remove('drag'));
+      this.app.b([n], 'dragleave', e => b.classList.remove('drag'));
+      
+      this.app.b([n], 'drop', (e) => {
+        b.classList.remove('drag');
+        if (e.target.hasAttribute('data-submit') || e.ctrlKey || e.shiftKey) {
+          setTimeout(() => n.form.submit(), 200);
+        }
+      });
+    } 
   }
 
 }

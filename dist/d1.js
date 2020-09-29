@@ -4496,7 +4496,8 @@ var pickfile_default = /*#__PURE__*/function (_Plugin) {
 
     _this = _super.call(this, 'pickfile');
     _this.opt = {
-      qPick: '.pick[name]'
+      qPick: '.pick[name]',
+      qDrop: 'input.drop'
     };
     return _this;
   }
@@ -4517,6 +4518,7 @@ var pickfile_default = /*#__PURE__*/function (_Plugin) {
       d1.h('change', this.opt.qPick, function (e) {
         return _this2.setPicker(e.recv, true);
       });
+      this.prepareDrop(this.app.q(this.opt.qDrop));
     }
   }, {
     key: "prepare",
@@ -4541,15 +4543,18 @@ var pickfile_default = /*#__PURE__*/function (_Plugin) {
         href: '#unpick'
       }, tools);
       var hide = this.app.ins('div', '', {
-        className: 'hide'
-      }, tools);
+        className: '-hide'
+      }, cont);
+      var s = hide.style;
+      s.position = 'fixed';
+      s.top = '-10em';
+      hide.appendChild(nn);
       this.app.ins('input', '', {
         type: 'checkbox',
         value: 1,
         name: 'unpick_' + n.name,
         className: 'unpick'
       }, hide);
-      hide.appendChild(nn);
       this.setPicker(n, false);
     }
   }, {
@@ -4605,6 +4610,32 @@ var pickfile_default = /*#__PURE__*/function (_Plugin) {
           return delete n.vDone;
         });
         d.vGal = (_this$app$plugins$gal = this.app.plugins.gallery) === null || _this$app$plugins$gal === void 0 ? void 0 : _this$app$plugins$gal.prepare(d);
+      }
+    }
+  }, {
+    key: "prepareDrop",
+    value: function prepareDrop(n) {
+      if (n) {
+        var b = document.body; //this.app.b([b], 'dragover', (e) => e.preventDefault());
+
+        this.app.b([b], 'dragenter', function (e) {
+          return b.classList.add('drag');
+        });
+        this.app.b([b], 'dragend', function (e) {
+          return b.classList.remove('drag');
+        });
+        this.app.b([n], 'dragleave', function (e) {
+          return b.classList.remove('drag');
+        });
+        this.app.b([n], 'drop', function (e) {
+          b.classList.remove('drag');
+
+          if (e.target.hasAttribute('data-submit') || e.ctrlKey || e.shiftKey) {
+            setTimeout(function () {
+              return n.form.submit();
+            }, 200);
+          }
+        });
       }
     }
   }]);
