@@ -41,14 +41,15 @@ export default class extends Plugin {
     if (e) e.preventDefault();
     const d = n.closest('.picker');
     if(d){
+      const f = this.app.q(this.opt.qPick, d);
       const def = this.app.q('[data-picked]', d)?.dataset.picked || '';
       let keep = (url === false);
       let img = keep;
       let num = '';
 
-      if (keep) url = def;
-      if (url === true) {
-        const f = this.app.q(this.opt.qPick, d);
+      if (url === '') f.value = '';
+      else if (keep) url = def;
+      else if (url === true) {
         //1.
         //const fr = new FileReader();
         //const ref = this;

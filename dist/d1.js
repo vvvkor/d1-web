@@ -4587,21 +4587,19 @@ var pickfile_default = /*#__PURE__*/function (_Plugin) {
       if (d) {
         var _this$app$q;
 
+        var f = this.app.q(this.opt.qPick, d);
         var def = ((_this$app$q = this.app.q('[data-picked]', d)) === null || _this$app$q === void 0 ? void 0 : _this$app$q.dataset.picked) || '';
         var keep = url === false;
         var img = keep;
         var num = '';
-        if (keep) url = def;
-
-        if (url === true) {
-          var f = this.app.q(this.opt.qPick, d); //1.
+        if (url === '') f.value = '';else if (keep) url = def;else if (url === true) {
+          //1.
           //const fr = new FileReader();
           //const ref = this;
           //fr.onload = function(e){ ref.pick(n, this.result); }
           //if(f.files[0]) fr.readAsDataURL(f.files[0]);
           //return;
           //2.
-
           if (f.files[0]) {
             url = URL.createObjectURL(f.files[0]);
             if (f.files[0].type.match(/^image/)) img = true;
@@ -4617,7 +4615,6 @@ var pickfile_default = /*#__PURE__*/function (_Plugin) {
             keep = img = true;
           }
         }
-
         var bg = url ? img ? 'url("' + url + '")' : '' : '';
         d.style.backgroundImage = bg;
         d1.e(this.app.qq('input.unpick', d), function (n) {
