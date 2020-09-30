@@ -1423,6 +1423,20 @@ var _default = /*#__PURE__*/function (_Plugin) {
       });
       this.prepareAll();
     }
+    /*
+    reinit(n) {
+      this.app.e('a[href="#' + n.id + '"]', a => {
+        const g = a.closest(this.opt.qGallery);
+        if (g) {
+          console.log('reinit', a.hash, g);
+          if (g.vGal) g.vGal.parentNode.removeChild(g.vGal);
+          this.app.e(this.app.qq(this.opt.qLinks, g), n => delete n.vDone);
+          g.vGal = this.app.plugins.gallery?.prepare(g);
+        }
+      });
+    }
+    */
+
   }, {
     key: "prepareAll",
     value: function prepareAll(d) {
@@ -1471,6 +1485,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
       var n = this.app.q(location.hash);
 
       if (n) {
+        //this.reinit(n);
         this.loadImg(n);
         this.loadImg(this.app.q(n.hash)); // preview next
       }
@@ -1486,6 +1501,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "prepare",
     value: function prepare(n) {
+      //console.log('prepare', n);
       var app = this.app;
       var g = app.ins('div', '', {
         className: this.opt.cGal

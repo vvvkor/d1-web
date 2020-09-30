@@ -514,11 +514,13 @@ mark{background-color:var(--bg-warning);}
 		input[type="range"]{border:initial;}
 	
 	/* file picker */
-	.picker{display:block;width:8em;height:8em;background:var(--bg-lite) no-repeat 50% 50% / cover;/*border-radius:50%;*/}
+	.picker{display:inline-block;width:8em;height:8em;background:var(--bg-lite) no-repeat 50% 50% / cover;border-radius:50%;}
+	.pickdoc{background-color:var(--text-info);outline:.5em solid var(--bg-info);outline-offset:-3.2em;}
 	.unpicked .subtool{display:none;}
-		.picker .tools{opacity:.4;}
+		.picker .tools{opacity:.4;display:flex;justify-content:space-around;}
+		.picker .tools>:empty{display:none;}
+		.picker .tools-hide{position:fixed;top:-10em;}
 		.picker:hover .tools{opacity:.8;}
-		.picker .tools>:not(:first-child){margin-left:var(--gap-n);}
 		.picker .tools label{cursor:pointer;}
 		/*.unpicked .picked{background-color:#999;}*/
 	/* drop */

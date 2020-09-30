@@ -1423,6 +1423,20 @@ var _default = /*#__PURE__*/function (_Plugin) {
       });
       this.prepareAll();
     }
+    /*
+    reinit(n) {
+      this.app.e('a[href="#' + n.id + '"]', a => {
+        const g = a.closest(this.opt.qGallery);
+        if (g) {
+          console.log('reinit', a.hash, g);
+          if (g.vGal) g.vGal.parentNode.removeChild(g.vGal);
+          this.app.e(this.app.qq(this.opt.qLinks, g), n => delete n.vDone);
+          g.vGal = this.app.plugins.gallery?.prepare(g);
+        }
+      });
+    }
+    */
+
   }, {
     key: "prepareAll",
     value: function prepareAll(d) {
@@ -1471,6 +1485,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
       var n = this.app.q(location.hash);
 
       if (n) {
+        //this.reinit(n);
         this.loadImg(n);
         this.loadImg(this.app.q(n.hash)); // preview next
       }
@@ -1486,6 +1501,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "prepare",
     value: function prepare(n) {
+      //console.log('prepare', n);
       var app = this.app;
       var g = app.ins('div', '', {
         className: this.opt.cGal
@@ -4510,13 +4526,14 @@ var pickfile_default = /*#__PURE__*/function (_Plugin) {
       this.app.e(this.opt.qPick, function (n) {
         return _this2.prepare(n);
       });
+      d1.h('click', 'a.pickdef', function (e) {
+        return _this2.pick(e.recv, false, e);
+      });
       d1.h('click', 'a.unpick', function (e) {
-        e.preventDefault();
-
-        _this2.setPicker(e.recv, '');
+        return _this2.pick(e.recv, '', e);
       });
       d1.h('change', this.opt.qPick, function (e) {
-        return _this2.setPicker(e.recv, true);
+        return _this2.pick(e.recv, true);
       });
       this.prepareDrop(this.app.q(this.opt.qDrop));
     }
@@ -4538,16 +4555,20 @@ var pickfile_default = /*#__PURE__*/function (_Plugin) {
       this.app.ins('a', this.app.i('image', '#'), {
         className: 'pic subtool'
       }, tools);
+      if (n.multiple) this.app.ins('a', '', {
+        className: 'picknum subtool'
+      }, tools);
+      if (n.dataset.picked) this.app.ins('a', this.app.i('back', '&times;'), {
+        className: 'pickdef',
+        href: '#pickdef'
+      }, tools);
       this.app.ins('a', this.app.i('delete', '&times;'), {
         className: 'unpick subtool',
         href: '#unpick'
       }, tools);
       var hide = this.app.ins('div', '', {
-        className: '-hide'
+        className: 'tools-hide'
       }, cont);
-      var s = hide.style;
-      s.position = 'fixed';
-      s.top = '-10em';
       hide.appendChild(nn);
       this.app.ins('input', '', {
         type: 'checkbox',
@@ -4555,50 +4576,61 @@ var pickfile_default = /*#__PURE__*/function (_Plugin) {
         name: 'unpick_' + n.name,
         className: 'unpick'
       }, hide);
-      this.setPicker(n, false);
+      this.pick(n, false);
     }
   }, {
-    key: "setPicker",
-    value: function setPicker(n, url) {
+    key: "pick",
+    value: function pick(n, url, e) {
+      if (e) e.preventDefault();
       var d = n.closest('.picker');
 
       if (d) {
         var _this$app$q;
 
+        var def = ((_this$app$q = this.app.q('[data-picked]', d)) === null || _this$app$q === void 0 ? void 0 : _this$app$q.dataset.picked) || '';
         var keep = url === false;
-        if (keep) url = ((_this$app$q = this.app.q('[data-picked]', d)) === null || _this$app$q === void 0 ? void 0 : _this$app$q.dataset.picked) || '';
+        var img = keep;
+        var num = '';
+        if (keep) url = def;
 
         if (url === true) {
           var f = this.app.q(this.opt.qPick, d); //1.
           //const fr = new FileReader();
           //const ref = this;
-          //fr.onload = function(e){ ref.setPicker(n, this.result); }
+          //fr.onload = function(e){ ref.pick(n, this.result); }
           //if(f.files[0]) fr.readAsDataURL(f.files[0]);
+          //return;
           //2.
 
           if (f.files[0]) {
-            var blob = URL.createObjectURL(f.files[0]);
-            this.setPicker(n, blob); // free memory - if gallery not used
-
+            url = URL.createObjectURL(f.files[0]);
+            if (f.files[0].type.match(/^image/)) img = true;
+            num = f.files.length;
             /*
+            // free memory - if gallery not used
             const img = document.createElement('img');
-            img.src = blob;
+            img.src = url;
             img.onload = e => URL.revokeObjectURL(img.src);
             */
-          } else this.setPicker(n, false);
-
-          return;
+          } else {
+            url = def;
+            keep = img = true;
+          }
         }
 
-        var bg = url ? 'url("' + url + '")' : '';
+        var bg = url ? img ? 'url("' + url + '")' : '' : '';
+        d.style.backgroundImage = bg;
         d1.e(this.app.qq('input.unpick', d), function (n) {
           return n.checked = !url && !keep;
         });
-        d.style.backgroundImage = bg;
         d1.e(this.app.qq('a.pic', d), function (n) {
-          return n.href = url;
+          return img ? n.href = url : null;
+        });
+        d1.e(this.app.qq('a.picknum', d), function (n) {
+          return n.textContent = num;
         });
         d.classList[url ? 'remove' : 'add']('unpicked');
+        d.classList[!keep && url && !img ? 'add' : 'remove']('pickdoc');
       }
 
       if (url) {

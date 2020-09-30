@@ -28,6 +28,20 @@ export default class extends Plugin {
     this.prepareAll();
   }
   
+  /*
+  reinit(n) {
+    this.app.e('a[href="#' + n.id + '"]', a => {
+      const g = a.closest(this.opt.qGallery);
+      if (g) {
+        console.log('reinit', a.hash, g);
+        if (g.vGal) g.vGal.parentNode.removeChild(g.vGal);
+        this.app.e(this.app.qq(this.opt.qLinks, g), n => delete n.vDone);
+        g.vGal = this.app.plugins.gallery?.prepare(g);
+      }
+    });
+  }
+  */
+  
   prepareAll(d) {
     this.app.e(this.app.qq(this.opt.qGallery, d), n => this.prepare(n));
   }
@@ -63,6 +77,7 @@ export default class extends Plugin {
   onHash() {
     let n = this.app.q(location.hash);
     if (n) {
+      //this.reinit(n);
       this.loadImg(n);
       this.loadImg(this.app.q(n.hash)); // preview next
     }
@@ -76,6 +91,7 @@ export default class extends Plugin {
   }
   
   prepare(n) {
+    //console.log('prepare', n);
     const app = this.app
     let g = app.ins('div', '', {className: this.opt.cGal});
     let a = app.qq(this.opt.qLinks, n);

@@ -160,6 +160,7 @@
 			<li><a href="#calendar">Calendar</a>
 			<li><a href="#edit">Edit</a>
 			<li><a href="#lookup">Lookup</a>
+			<li><a href="#pickfile">File picker</a>
 			<li><a href="#validate">Validation</a>
 			<li><a href="#keepform">Form storage</a>
 			<!--li><a href="#form-validate">Validation</a-->
@@ -1090,6 +1091,22 @@ Table will become stacked on small screen.
   </select>
   <input type="text" list="cities" name="city" id="city" data-list-alt="{q}.json" data-list="https://restcountries.eu/rest/v2/region/{q}##alpha2Code#name" data-cache="10">
   <datalist id="cities"><option value="a"></datalist>
+</div>
+
+
+<h3 id="pickfile">File picker with dropzone</h3>
+
+<p>Add <code>.pick</code> class to file input to make it show selected images.<br>
+Optionally set <code>[data-picked]</code> to URL of initial image.<br>
+Add <code>.drop</code> class to file input for drag and drop behaviour.<br>
+
+<div class="code">
+  <input
+    type="file"
+    name="upload[]"
+    multiple
+    class="pick drop"
+    data-picked="https://picsum.photos/id/360/300/200.jpg">
 </div>
 
 

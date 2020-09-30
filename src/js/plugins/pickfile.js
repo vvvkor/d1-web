@@ -14,8 +14,9 @@ export default class extends Plugin {
 
   init() {
     this.app.e(this.opt.qPick, n => this.prepare(n));
-    d1.h('click', 'a.unpick', e => { e.preventDefault(); this.setPicker(e.recv, ''); });
-    d1.h('change', this.opt.qPick, e => this.setPicker(e.recv, true));
+    d1.h('click', 'a.pickdef', e => this.pick(e.recv, false, e));
+    d1.h('click', 'a.unpick', e => this.pick(e.recv, '', e));
+    d1.h('change', this.opt.qPick, e => this.pick(e.recv, true));
     this.prepareDrop(this.app.q(this.opt.qDrop));
   }
   
@@ -27,47 +28,57 @@ export default class extends Plugin {
     const tools = this.app.ins('div', '', {className: 'tools pad back'}, cont);
     this.app.ins('label', this.app.i('folder', '&uarr;'), {htmlFor: n.id}, tools);
     this.app.ins('a', this.app.i('image', '#'), {className: 'pic subtool'}, tools);
+    if (n.multiple) this.app.ins('a', '', {className: 'picknum subtool'}, tools);
+    if (n.dataset.picked) this.app.ins('a', this.app.i('back', '&times;'), {className: 'pickdef', href: '#pickdef'}, tools);
     this.app.ins('a', this.app.i('delete', '&times;'), {className: 'unpick subtool', href: '#unpick'}, tools);
-    const hide = this.app.ins('div', '', {className: '-hide'}, cont);
-    const s = hide.style;
-    s.position = 'fixed';
-    s.top = '-10em';
+    const hide = this.app.ins('div', '', {className: 'tools-hide'}, cont);
     hide.appendChild(nn);
     this.app.ins('input', '', {type: 'checkbox', value: 1, name: 'unpick_' + n.name, className: 'unpick'}, hide);
-    this.setPicker(n, false);
+    this.pick(n, false);
   }
 
-  setPicker(n, url) {
-    var d = n.closest('.picker');
+  pick(n, url, e) {
+    if (e) e.preventDefault();
+    const d = n.closest('.picker');
     if(d){
-      var keep = (url === false);
-      if (keep) url = this.app.q('[data-picked]', d)?.dataset.picked || '';
+      const def = this.app.q('[data-picked]', d)?.dataset.picked || '';
+      let keep = (url === false);
+      let img = keep;
+      let num = '';
+
+      if (keep) url = def;
       if (url === true) {
         const f = this.app.q(this.opt.qPick, d);
         //1.
         //const fr = new FileReader();
         //const ref = this;
-        //fr.onload = function(e){ ref.setPicker(n, this.result); }
+        //fr.onload = function(e){ ref.pick(n, this.result); }
         //if(f.files[0]) fr.readAsDataURL(f.files[0]);
+        //return;
         //2.
         if(f.files[0]){
-          const blob = URL.createObjectURL(f.files[0]);
-          this.setPicker(n, blob);
-          // free memory - if gallery not used
+          url = URL.createObjectURL(f.files[0]);
+          if (f.files[0].type.match(/^image/)) img = true;
+          num = f.files.length;
           /*
+          // free memory - if gallery not used
           const img = document.createElement('img');
-          img.src = blob;
+          img.src = url;
           img.onload = e => URL.revokeObjectURL(img.src);
           */
         }
-        else this.setPicker(n, false);
-        return;
+        else {
+          url = def;
+          keep = img = true;
+        }
       }
-      const bg = url ? 'url("' + url + '")' : '';
-      d1.e(this.app.qq('input.unpick', d), n => n.checked = !url && !keep);
+      const bg = url ? (img ? 'url("' + url + '")' : '') : '';
       d.style.backgroundImage = bg;
-      d1.e(this.app.qq('a.pic', d), n => n.href = url);
+      d1.e(this.app.qq('input.unpick', d), n => n.checked = !url && !keep);
+      d1.e(this.app.qq('a.pic', d), n => img ? n.href = url : null);
+      d1.e(this.app.qq('a.picknum', d), n => n.textContent = num);
       d.classList[url ? 'remove' : 'add']('unpicked');
+      d.classList[!keep && url && !img ? 'add' : 'remove']('pickdoc');
     }
     if (url) {
       // (re)init gallery

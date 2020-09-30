@@ -160,13 +160,6 @@ Text
 			<a class="let" href="overview.html">Overview</a>
 		</div>
 		
-		<div class="bord">
-			File 1: <input type="file" name="f1" class="pick -drop" id="f1">
-		</div>
-		<div class="bord">
-			<label>File 2: <input type="file" multiple name="f2[]" class="pick drop" data-picked="https://picsum.photos/id/360/300/200.jpg"></label>
-		</div>
-	
 		<h1 class="mar">d1 <span class="text-n">frontend framework</span></h1>
 		
 		<p class="swipe drag pad bg-e text-e icon-ban fit bord">Alert</p>
@@ -885,6 +878,14 @@ let double = function (x) {
 				<input type="submit" name="s1" value="OK">
 				<input type="submit" name="s2" value="Confirm" class="dialog bg-w" title="Submit with" data-prompt="nm" data-head="Attention!">
 			</form>
+		</div>
+		
+		<div class="shade pad c">
+			<!-- file upload -->
+			<h3 class="mar">File picker with dropzone <b class="small btn bg-e hide-js" title="Requires Javascript">JS</b></h3>
+			<input type="file" name="f1" class="pick -drop" id="f1">
+			<hr>
+			<label>File 2: <input type="file" multiple name="f2[]" class="pick drop" data-picked="https://picsum.photos/id/360/300/200.jpg"></label>
 		</div>
 	</div>
 
