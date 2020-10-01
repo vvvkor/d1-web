@@ -1,4 +1,4 @@
-/*! d1-web v2.1.17 */
+/*! d1-web v2.2.0 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -832,7 +832,8 @@ mark {
         margin-bottom: var(--gap-n);
     }
 
-    table.flip tbody, table.flip tfoot, table.flip tr, table.flip tr>* {
+    table.flip caption, table.flip tbody, table.flip tfoot, table.flip tr,
+    table.flip tr>* {
         display: block;
         text-align: left;
     }
@@ -1080,6 +1081,59 @@ mark {
 
     input[type="range"] {
         border: initial;
+    }
+
+    .picker {
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    .picker>nav {
+        font-size: 75%;
+    }
+
+    .picker>label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 8em;
+        height: 8em;
+        background: rgba(0, 0, 0, .05) no-repeat 50% 50% / contain;
+        background: var(--bg-pane) no-repeat 50% 50% / contain;
+    }
+
+    .picker>label:hover {
+        background-size: cover;
+    }
+
+    .picker>label>span {
+        font-size: 300%;
+    }
+
+    .picker>div {
+        position: fixed;
+        top: -10em;
+        z-index: 200;
+    }
+
+    .picker label {
+        cursor: pointer;
+    }
+
+    .drag input.drop {
+    }
+
+    .drag input.drop:before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: rgba(0, 0, 0, .3);
+        outline: .5em dashed #fff;
+        outline-offset: -2em;
+        z-index: 200;
     }
 
     .btn[class], button, [type="submit"] {

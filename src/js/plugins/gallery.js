@@ -25,22 +25,15 @@ export default class extends Plugin {
     this.app.listen('keydown', e => this.onKey(e));
     this.app.h('click', this.opt.qGal, e => this.next(e));
     this.app.listen('swipe', e => this.swipe(e));
+    this.app.listen('exhibit', e => this.reinit(e));
     this.prepareAll();
   }
   
-  /*
-  reinit(n) {
-    this.app.e('a[href="#' + n.id + '"]', a => {
-      const g = a.closest(this.opt.qGallery);
-      if (g) {
-        console.log('reinit', a.hash, g);
-        if (g.vGal) g.vGal.parentNode.removeChild(g.vGal);
-        this.app.e(this.app.qq(this.opt.qLinks, g), n => delete n.vDone);
-        g.vGal = this.app.plugins.gallery?.prepare(g);
-      }
-    });
+  reinit({n, opt}) {
+    if (n.vGal) n.vGal.parentNode.removeChild(n.vGal);
+    this.app.e(this.app.qq(this.opt.qLinks, n), a => delete a.vDone);
+    n.vGal = this.prepare(n, opt);
   }
-  */
   
   prepareAll(d) {
     this.app.e(this.app.qq(this.opt.qGallery, d), n => this.prepare(n));
@@ -56,9 +49,8 @@ export default class extends Plugin {
   }
   
   next(e) {
-    //console.log(e.defaultPrevented);
     if (e.defaultPrevented) return;
-    let n = e.recv;
+    const n = e.recv;
     if (e.clientX > 0 /* not Enter key */ && e.clientX < n.clientWidth / 3) {
       this.browse(n, true);
       e.preventDefault();
@@ -67,7 +59,7 @@ export default class extends Plugin {
   
   browse(n, back) {
     if (back) {
-      let p = n.previousElementSibling || this.app.qq('a[id]', n.parentNode).pop();
+      const p = n.previousElementSibling || this.app.qq('a[id]', n.parentNode).pop();
       if (p.id) location.hash = '#' + p.id;
     }
     else location.hash = n.hash;
@@ -75,9 +67,8 @@ export default class extends Plugin {
   }
   
   onHash() {
-    let n = this.app.q(location.hash);
+    const n = this.app.q(location.hash);
     if (n) {
-      //this.reinit(n);
       this.loadImg(n);
       this.loadImg(this.app.q(n.hash)); // preview next
     }
@@ -90,26 +81,26 @@ export default class extends Plugin {
     }
   }
   
-  prepare(n) {
-    //console.log('prepare', n);
-    const app = this.app
-    let g = app.ins('div', '', {className: this.opt.cGal});
-    let a = app.qq(this.opt.qLinks, n);
-    let z = a.length;
+  prepare(n, opt) {
+    opt = opt ? {...this.opt, ...opt} : this.opt;
+    const app = this.app;
+    const g = app.ins('div', '', {className: opt.cGal});
+    const a = app.qq(opt.qLinks, n);
+    const z = a.length;
     let first = 0;
     for (let i=0; i<z; i++) if (!a[i].vDone) {
-      let s = app.seq();
+      const s = app.seq();
       if (!i) first = s;
-      let p = app.ins('a', '', {
+      const p = app.ins('a', '', {
           className: 'gallery-pic swipe drag',
-          id: this.opt.idPrefix + s,
-          href: '#' + this.opt.idPrefix + (i == z-1 ? first : s+1)
+          id: opt.idPrefix + s,
+          href: '#' + opt.idPrefix + (i == z-1 ? first : s+1)
           }, g);
       //p.style.setProperty('--img', 'url("' + (a[i].getAttribute('href') || '') + '")');
       //p.style.backgroundImage = 'url("' + (a[i].getAttribute('href') || '') + '")';//preload all
       p.vLink = a[i].getAttribute('href') || '';//real link
       p.vImg = p.vLink;//keep image url but do not load yet
-      p.dataset[this.opt.dCaption] = (this.opt.num ? (i+1)+'/'+z+(a[i].title ? ' - ' : '') : '') + (a[i].title || '');
+      p.dataset[opt.dCaption] = (opt.num ? (i+1)+'/'+z+(a[i].title ? ' - ' : '') : '') + (a[i].title || '');
       a[i].href = '#' + p.id;
       a[i].vDone = 1;
     }
@@ -129,9 +120,9 @@ export default class extends Plugin {
   
   onKey(e) {
     if (location.hash) {
-      let a = this.app.q(location.hash);
+      const a = this.app.q(location.hash);
       if (a && a.hash) {
-        let k = e.keyCode;
+        const k = e.keyCode;
         if (k == 37 || k == 38) this.browse(a, true);
         else if (k == 39 || k == 40) this.browse(a);//a.click();
         else if (k == 8) this.visit(a);

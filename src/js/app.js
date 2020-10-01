@@ -232,6 +232,7 @@ export default class {
     else if (t && t.nodeType) c.appendChild(t)
     else if (t) c.innerHTML = t
     if (attrs) {
+      if (this.typeOf(attrs) === 'string') attrs = {className: attrs}
       for (let i in attrs) {
         if (attrs[i] !== null && attrs[i] !== undefined) {
           if (i.match(/-/)) c.setAttribute(i.replace(/^-/, ''), attrs[i])

@@ -47,18 +47,18 @@ export default class extends Plugin {
     d.className = this.opt.ccDlg + (setup.class ? ' '+setup.class : '');
     app.clr(d);
     if (h.nodeType) h = h.dataset[this.opt.dHead] || '';
-    let hh = app.ins('div', '', {className: 'row bg'}, d);
-    let hhh = app.ins('h3', ' ' + (h || ''), {className: 'fit pad'}, hh);
+    let hh = app.ins('div', '', 'row bg', d);
+    let hhh = app.ins('h3', ' ' + (h || ''), 'fit pad', hh);
     if (setup.icon) {
       let m = setup.icon.match(/(\S+)(\s(.*))?/);
       if (m) hhh.insertBefore(app.ins('span', app.i(m[1]), {className: m[3] || ''}), hhh.firstChild);
     }
     app.x(hh, 0, 'pad hover col-0');
-    let b = app.ins('div', '', {className: 'pad'}, d);
+    let b = app.ins('div', '', 'pad', d);
     if (t) app.ins('div', t, {}, b);
     let inp = {value: true};
     if (setup.def || setup.def === '') inp = app.ins('input', '', {value: setup.def}, b);
-    let bb = app.ins('p', '', {className: 'r'}, b);
+    let bb = app.ins('p', '', 'r', b);
     let b1 = this.opt.cBtn + ' ' + (setup.btn || (t.substr(0,1) == ' ' ? 'bg-e' : ''));
     let b2 = this.opt.cBtn + ' bg-n';
     let yes = app.ins('a', setup.ok || app.opt.sOk, {href: app.opt.hClose, className: (setup.rev ? b2 : b1)}, bb);

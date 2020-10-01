@@ -1,4 +1,4 @@
-/*! d1-web v2.1.17 */
+/*! d1-web v2.2.0 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -529,6 +529,10 @@ var _default = /*#__PURE__*/function () {
       });else if (t && t.nodeType) c.appendChild(t);else if (t) c.innerHTML = t;
 
       if (attrs) {
+        if (this.typeOf(attrs) === 'string') attrs = {
+          className: attrs
+        };
+
         for (var i in attrs) {
           if (attrs[i] !== null && attrs[i] !== undefined) {
             if (i.match(/-/)) c.setAttribute(i.replace(/^-/, ''), attrs[i]);else c[i] = attrs[i];
@@ -763,7 +767,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
       });
       /*
       app.e(this.opt.qTip, n => {
-        let p = app.ins('div',app.ins('div', n.title.replace(/\s\s+/g, '<br>'), {className: 'btn bg-n'}), {className: 'pop'}, n, 1);
+        let p = app.ins('div',app.ins('div', n.title.replace(/\s\s+/g, '<br>'), 'btn bg-n'), 'pop', n, 1);
         n.title = '';
         p.insertBefore(n, p.firstChild);
       });//init tooltips as popup
@@ -1183,12 +1187,8 @@ var _default = /*#__PURE__*/function (_Plugin) {
       d.className = this.opt.ccDlg + (setup.class ? ' ' + setup.class : '');
       app.clr(d);
       if (h.nodeType) h = h.dataset[this.opt.dHead] || '';
-      var hh = app.ins('div', '', {
-        className: 'row bg'
-      }, d);
-      var hhh = app.ins('h3', ' ' + (h || ''), {
-        className: 'fit pad'
-      }, hh);
+      var hh = app.ins('div', '', 'row bg', d);
+      var hhh = app.ins('h3', ' ' + (h || ''), 'fit pad', hh);
 
       if (setup.icon) {
         var m = setup.icon.match(/(\S+)(\s(.*))?/);
@@ -1198,9 +1198,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
       }
 
       app.x(hh, 0, 'pad hover col-0');
-      var b = app.ins('div', '', {
-        className: 'pad'
-      }, d);
+      var b = app.ins('div', '', 'pad', d);
       if (t) app.ins('div', t, {}, b);
       var inp = {
         value: true
@@ -1208,9 +1206,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
       if (setup.def || setup.def === '') inp = app.ins('input', '', {
         value: setup.def
       }, b);
-      var bb = app.ins('p', '', {
-        className: 'r'
-      }, b);
+      var bb = app.ins('p', '', 'r', b);
       var b1 = this.opt.cBtn + ' ' + (setup.btn || (t.substr(0, 1) == ' ' ? 'bg-e' : ''));
       var b2 = this.opt.cBtn + ' bg-n';
       var yes = app.ins('a', setup.ok || app.opt.sOk, {
@@ -1355,6 +1351,12 @@ var _default = /*#__PURE__*/function (_Plugin) {
 /* harmony import */ var _plugin_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -1421,22 +1423,22 @@ var _default = /*#__PURE__*/function (_Plugin) {
       this.app.listen('swipe', function (e) {
         return _this2.swipe(e);
       });
+      this.app.listen('exhibit', function (e) {
+        return _this2.reinit(e);
+      });
       this.prepareAll();
     }
-    /*
-    reinit(n) {
-      this.app.e('a[href="#' + n.id + '"]', a => {
-        const g = a.closest(this.opt.qGallery);
-        if (g) {
-          console.log('reinit', a.hash, g);
-          if (g.vGal) g.vGal.parentNode.removeChild(g.vGal);
-          this.app.e(this.app.qq(this.opt.qLinks, g), n => delete n.vDone);
-          g.vGal = this.app.plugins.gallery?.prepare(g);
-        }
+  }, {
+    key: "reinit",
+    value: function reinit(_ref) {
+      var n = _ref.n,
+          opt = _ref.opt;
+      if (n.vGal) n.vGal.parentNode.removeChild(n.vGal);
+      this.app.e(this.app.qq(this.opt.qLinks, n), function (a) {
+        return delete a.vDone;
       });
+      n.vGal = this.prepare(n, opt);
     }
-    */
-
   }, {
     key: "prepareAll",
     value: function prepareAll(d) {
@@ -1459,7 +1461,6 @@ var _default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "next",
     value: function next(e) {
-      //console.log(e.defaultPrevented);
       if (e.defaultPrevented) return;
       var n = e.recv;
 
@@ -1485,7 +1486,6 @@ var _default = /*#__PURE__*/function (_Plugin) {
       var n = this.app.q(location.hash);
 
       if (n) {
-        //this.reinit(n);
         this.loadImg(n);
         this.loadImg(this.app.q(n.hash)); // preview next
       }
@@ -1500,13 +1500,13 @@ var _default = /*#__PURE__*/function (_Plugin) {
     }
   }, {
     key: "prepare",
-    value: function prepare(n) {
-      //console.log('prepare', n);
+    value: function prepare(n, opt) {
+      opt = opt ? _objectSpread(_objectSpread({}, this.opt), opt) : this.opt;
       var app = this.app;
       var g = app.ins('div', '', {
-        className: this.opt.cGal
+        className: opt.cGal
       });
-      var a = app.qq(this.opt.qLinks, n);
+      var a = app.qq(opt.qLinks, n);
       var z = a.length;
       var first = 0;
 
@@ -1516,8 +1516,8 @@ var _default = /*#__PURE__*/function (_Plugin) {
           if (!i) first = s;
           var p = app.ins('a', '', {
             className: 'gallery-pic swipe drag',
-            id: this.opt.idPrefix + s,
-            href: '#' + this.opt.idPrefix + (i == z - 1 ? first : s + 1)
+            id: opt.idPrefix + s,
+            href: '#' + opt.idPrefix + (i == z - 1 ? first : s + 1)
           }, g); //p.style.setProperty('--img', 'url("' + (a[i].getAttribute('href') || '') + '")');
           //p.style.backgroundImage = 'url("' + (a[i].getAttribute('href') || '') + '")';//preload all
 
@@ -1525,7 +1525,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
           p.vImg = p.vLink; //keep image url but do not load yet
 
-          p.dataset[this.opt.dCaption] = (this.opt.num ? i + 1 + '/' + z + (a[i].title ? ' - ' : '') : '') + (a[i].title || '');
+          p.dataset[opt.dCaption] = (opt.num ? i + 1 + '/' + z + (a[i].title ? ' - ' : '') : '') + (a[i].title || '');
           a[i].href = '#' + p.id;
           a[i].vDone = 1;
         }

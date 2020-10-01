@@ -1,4 +1,4 @@
-/*! d1-web v2.1.17 */
+/*! d1-web v2.2.0 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -529,6 +529,10 @@ var _default = /*#__PURE__*/function () {
       });else if (t && t.nodeType) c.appendChild(t);else if (t) c.innerHTML = t;
 
       if (attrs) {
+        if (this.typeOf(attrs) === 'string') attrs = {
+          className: attrs
+        };
+
         for (var i in attrs) {
           if (attrs[i] !== null && attrs[i] !== undefined) {
             if (i.match(/-/)) c.setAttribute(i.replace(/^-/, ''), attrs[i]);else c[i] = attrs[i];
@@ -763,7 +767,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
       });
       /*
       app.e(this.opt.qTip, n => {
-        let p = app.ins('div',app.ins('div', n.title.replace(/\s\s+/g, '<br>'), {className: 'btn bg-n'}), {className: 'pop'}, n, 1);
+        let p = app.ins('div',app.ins('div', n.title.replace(/\s\s+/g, '<br>'), 'btn bg-n'), 'pop', n, 1);
         n.title = '';
         p.insertBefore(n, p.firstChild);
       });//init tooltips as popup
@@ -1183,12 +1187,8 @@ var _default = /*#__PURE__*/function (_Plugin) {
       d.className = this.opt.ccDlg + (setup.class ? ' ' + setup.class : '');
       app.clr(d);
       if (h.nodeType) h = h.dataset[this.opt.dHead] || '';
-      var hh = app.ins('div', '', {
-        className: 'row bg'
-      }, d);
-      var hhh = app.ins('h3', ' ' + (h || ''), {
-        className: 'fit pad'
-      }, hh);
+      var hh = app.ins('div', '', 'row bg', d);
+      var hhh = app.ins('h3', ' ' + (h || ''), 'fit pad', hh);
 
       if (setup.icon) {
         var m = setup.icon.match(/(\S+)(\s(.*))?/);
@@ -1198,9 +1198,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
       }
 
       app.x(hh, 0, 'pad hover col-0');
-      var b = app.ins('div', '', {
-        className: 'pad'
-      }, d);
+      var b = app.ins('div', '', 'pad', d);
       if (t) app.ins('div', t, {}, b);
       var inp = {
         value: true
@@ -1208,9 +1206,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
       if (setup.def || setup.def === '') inp = app.ins('input', '', {
         value: setup.def
       }, b);
-      var bb = app.ins('p', '', {
-        className: 'r'
-      }, b);
+      var bb = app.ins('p', '', 'r', b);
       var b1 = this.opt.cBtn + ' ' + (setup.btn || (t.substr(0, 1) == ' ' ? 'bg-e' : ''));
       var b2 = this.opt.cBtn + ' bg-n';
       var yes = app.ins('a', setup.ok || app.opt.sOk, {
@@ -1355,6 +1351,12 @@ var _default = /*#__PURE__*/function (_Plugin) {
 /* harmony import */ var _plugin_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -1421,22 +1423,22 @@ var _default = /*#__PURE__*/function (_Plugin) {
       this.app.listen('swipe', function (e) {
         return _this2.swipe(e);
       });
+      this.app.listen('exhibit', function (e) {
+        return _this2.reinit(e);
+      });
       this.prepareAll();
     }
-    /*
-    reinit(n) {
-      this.app.e('a[href="#' + n.id + '"]', a => {
-        const g = a.closest(this.opt.qGallery);
-        if (g) {
-          console.log('reinit', a.hash, g);
-          if (g.vGal) g.vGal.parentNode.removeChild(g.vGal);
-          this.app.e(this.app.qq(this.opt.qLinks, g), n => delete n.vDone);
-          g.vGal = this.app.plugins.gallery?.prepare(g);
-        }
+  }, {
+    key: "reinit",
+    value: function reinit(_ref) {
+      var n = _ref.n,
+          opt = _ref.opt;
+      if (n.vGal) n.vGal.parentNode.removeChild(n.vGal);
+      this.app.e(this.app.qq(this.opt.qLinks, n), function (a) {
+        return delete a.vDone;
       });
+      n.vGal = this.prepare(n, opt);
     }
-    */
-
   }, {
     key: "prepareAll",
     value: function prepareAll(d) {
@@ -1459,7 +1461,6 @@ var _default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "next",
     value: function next(e) {
-      //console.log(e.defaultPrevented);
       if (e.defaultPrevented) return;
       var n = e.recv;
 
@@ -1485,7 +1486,6 @@ var _default = /*#__PURE__*/function (_Plugin) {
       var n = this.app.q(location.hash);
 
       if (n) {
-        //this.reinit(n);
         this.loadImg(n);
         this.loadImg(this.app.q(n.hash)); // preview next
       }
@@ -1500,13 +1500,13 @@ var _default = /*#__PURE__*/function (_Plugin) {
     }
   }, {
     key: "prepare",
-    value: function prepare(n) {
-      //console.log('prepare', n);
+    value: function prepare(n, opt) {
+      opt = opt ? _objectSpread(_objectSpread({}, this.opt), opt) : this.opt;
       var app = this.app;
       var g = app.ins('div', '', {
-        className: this.opt.cGal
+        className: opt.cGal
       });
-      var a = app.qq(this.opt.qLinks, n);
+      var a = app.qq(opt.qLinks, n);
       var z = a.length;
       var first = 0;
 
@@ -1516,8 +1516,8 @@ var _default = /*#__PURE__*/function (_Plugin) {
           if (!i) first = s;
           var p = app.ins('a', '', {
             className: 'gallery-pic swipe drag',
-            id: this.opt.idPrefix + s,
-            href: '#' + this.opt.idPrefix + (i == z - 1 ? first : s + 1)
+            id: opt.idPrefix + s,
+            href: '#' + opt.idPrefix + (i == z - 1 ? first : s + 1)
           }, g); //p.style.setProperty('--img', 'url("' + (a[i].getAttribute('href') || '') + '")');
           //p.style.backgroundImage = 'url("' + (a[i].getAttribute('href') || '') + '")';//preload all
 
@@ -1525,7 +1525,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
           p.vImg = p.vLink; //keep image url but do not load yet
 
-          p.dataset[this.opt.dCaption] = (this.opt.num ? i + 1 + '/' + z + (a[i].title ? ' - ' : '') : '') + (a[i].title || '');
+          p.dataset[opt.dCaption] = (opt.num ? i + 1 + '/' + z + (a[i].title ? ' - ' : '') : '') + (a[i].title || '');
           a[i].href = '#' + p.id;
           a[i].vDone = 1;
         }
@@ -1823,16 +1823,12 @@ var code_default = /*#__PURE__*/function (_Plugin) {
         this.app.ins('div', this.app.ins('a', (this.langs[lang] ? this.langs[lang].nm : lang) || lang, {
           className: 'pad',
           href: '#' + id
-        }), {
-          className: '-r bg small'
-        }, cont);
+        }), '-r bg small', cont);
         var pre = this.app.ins('pre', '', {
-          className: this.app.opt.cToggle + ' ' + this.app.opt.cOff + ' fit pad',
-          id: id
+          id: id,
+          className: this.app.opt.cToggle + ' ' + this.app.opt.cOff + ' fit pad'
         }, cont);
-        var cod = this.app.ins('code', '', {
-          className: 'language-' + lang
-        }, pre);
+        var cod = this.app.ins('code', '', 'language-' + lang, pre);
         src.vCode = cod;
       } //src.vCode.textContent = t;
 
@@ -2532,13 +2528,9 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
     key: "addPageNav",
     value: function addPageNav(n) {
       var t = n.parentNode.classList.contains('roll') ? n.parentNode : n;
-      n.vPageNav = this.app.ins('ul', '', {
-        className: 'nav hover tablex-pagenav'
-      });
+      n.vPageNav = this.app.ins('ul', '', 'nav hover tablex-pagenav');
       n.vPageNav.vTable = n;
-      this.app.ins('div', n.vPageNav, {
-        className: 'mar small'
-      }, t, this.opt.dPageNavAfter in n.dataset ? 1 : -1);
+      this.app.ins('div', n.vPageNav, 'mar small', t, this.opt.dPageNavAfter in n.dataset ? 1 : -1);
     }
   }, {
     key: "setPageNav",
@@ -2586,9 +2578,7 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
     value: function addFooter(n, rh) {
       var _this3 = this;
 
-      var f = this.app.ins('tfoot', this.app.ins('tr'), {
-        className: 'nobr'
-      }, n);
+      var f = this.app.ins('tfoot', this.app.ins('tr'), 'nobr', n);
       this.app.a(rh.cells).forEach(function (h) {
         var _this3$app$ins;
 
@@ -2599,9 +2589,7 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
           title: func
         }, f.firstChild);
 
-        if (_this3.opt.dLabels in n.dataset) _this3.app.ins('div', func, {
-          className: 'small text-n'
-        }, th, false);
+        if (_this3.opt.dLabels in n.dataset) _this3.app.ins('div', func, 'small text-n', th, false);
       });
     }
   }, {
@@ -3022,17 +3010,13 @@ var calendar_default = /*#__PURE__*/function (_Plugin) {
       n.type = 'text';
       n.autocomplete = 'off';
       if (n.value) n.value = this.fmt(this.parse(n.value), 0, n.vTime);
-      var pop = this.app.ins('div', '', {
-        className: 'pop l'
-      }, n, -1); //''
+      var pop = this.app.ins('div', '', 'pop l', n, -1); //''
 
       if (!this.opt.inPop) pop.style.verticalAlign = 'bottom';
       n.thePop = pop;
 
       if (this.opt.addIcons.length > 0) {
-        var ic = this.app.ins('span', '', {
-          className: 'input-tools calendar-tools nobr'
-        }, n, 1); //icons container
+        var ic = this.app.ins('span', '', 'input-tools calendar-tools nobr', n, 1); //icons container
 
         for (var i in this.opt.addIcons) {
           this.app.ins('', ' ', {}, ic);
@@ -3115,20 +3099,14 @@ var calendar_default = /*#__PURE__*/function (_Plugin) {
 
       for (var i = -skip + 1; i <= maxd; i++) {
         wd = (skip + i - 1) % 7 + 1;
-        if (wd == 1) row = this.app.ins('div', '', {
-          className: 'row'
-        }, rows);
-        if (i < 1 || i > days) c = this.app.ins('a', '', {
-          className: 'pad c center'
-        }, row);else {
+        if (wd == 1) row = this.app.ins('div', '', 'row', rows);
+        if (i < 1 || i > days) c = this.app.ins('a', '', 'pad c center', row);else {
           vv = this.fmt(x, i, 0, 'y');
           sel = i == d;
           today = false; //(this.fmt(x, i) == cd);
 
           off = min && vv < min || max && vv > max;
-          c = this.app.ins('a', i, {
-            className: 'pad c center ' + (sel ? 'bg-w ' : '') + (today ? 'bg-y ' : '') + (off ? 'text-n ' : 'hover ') + (wd > 5 ? 'text-e ' : '')
-          }, row);
+          c = this.app.ins('a', i, 'pad c center ' + (sel ? 'bg-w ' : '') + (today ? 'bg-y ' : '') + (off ? 'text-n ' : 'hover ') + (wd > 5 ? 'text-e ' : ''), row);
           if (!off) c.href = '#' + i;
         }
       } //time
@@ -3146,15 +3124,11 @@ var calendar_default = /*#__PURE__*/function (_Plugin) {
       if (!this.win.vDays) {
         app.clr(this.win); //buttons
 
-        var p1 = app.ins('p', '', {
-          className: 'c'
-        }, this.win);
+        var p1 = app.ins('p', '', 'c', this.win);
         this.btn(this.opt.hashNow, app.i('ok', '&check;'), p1);
         this.btn('#prev-year', app.i('prev2', '&laquo;'), p1);
         this.btn('#prev-month', app.i('prev', '&lsaquo;'), p1);
-        this.win.vNodeCur = app.ins('span', '', {
-          className: 'pad'
-        }, p1);
+        this.win.vNodeCur = app.ins('span', '', 'pad', p1);
         this.btn('#next-month', app.i('next', '&rsaquo;'), p1);
         this.btn('#next-year', app.i('next2', '&raquo;'), p1);
         this.btn(this.opt.hCancel, app.i('close', '&#x2715;'), p1);
@@ -3165,21 +3139,13 @@ var calendar_default = /*#__PURE__*/function (_Plugin) {
         var hm = app.ins('div', '', {}, this.win);
         this.win.vNodeTime = hm;
         app.ins('hr', '', {}, hm);
-        var p2 = app.ins('p', '', {
-          className: 'c'
-        }, hm);
+        var p2 = app.ins('p', '', 'c', hm);
         this.btn('#prev-hour', app.i('prev', '&lsaquo;'), p2);
-        this.win.vHours = app.ins('span', '', {
-          className: 'pad'
-        }, p2);
+        this.win.vHours = app.ins('span', '', 'pad', p2);
         this.btn('#next-hour', app.i('next', '&rsaquo;'), p2);
-        app.ins('span', ':', {
-          className: 'pad'
-        }, p2);
+        app.ins('span', ':', 'pad', p2);
         this.btn('#prev-min', app.i('prev', '&lsaquo;'), p2);
-        this.win.vMinutes = app.ins('span', '', {
-          className: 'pad'
-        }, p2);
+        this.win.vMinutes = app.ins('span', '', 'pad', p2);
         this.btn('#next-min', app.i('next', '&rsaquo;'), p2);
       }
 
@@ -3349,9 +3315,7 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
       var app = this.app;
       if (this.cap(n)) return;
       n.vLabel = this.opt.dLabel in n.dataset ? n.dataset[this.opt.dLabel] : n.value || '';
-      var pop = app.ins('div', '', {
-        className: 'pop l lookup-pop'
-      }, n, 1);
+      var pop = app.ins('div', '', 'pop l lookup-pop', n, 1);
       if (!this.opt.inPop) pop.style.verticalAlign = 'bottom';
       n.classList.add('bg-n', 'lookup-id');
       n.classList.add(app.opt.cHide); //n.type = 'hidden';
@@ -3377,9 +3341,7 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
       var i = null;
 
       if (this.opt.dUrl in n.dataset) {
-        var ic = app.ins('span', '', {
-          className: 'input-tools nobr'
-        }, this.opt.inPop ? pop : m, 1); //icons container
+        var ic = app.ins('span', '', 'input-tools nobr', this.opt.inPop ? pop : m, 1); //icons container
 
         i = app.ins('a', app.i('forward', '&rarr;'), {
           href: '#goto',
@@ -3482,9 +3444,7 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
     value: function build(n, d) {
       var app = this.app;
       app.clr(this.win);
-      var ul = app.ins('ul', '', {
-        className: 'nav let hover'
-      }, this.win);
+      var ul = app.ins('ul', '', 'nav let hover', this.win);
       var w,
           j = 0;
       var go = n.dataset[this.opt.dGoto] || '';
@@ -3499,9 +3459,7 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
 
         if (d[i].info) {
           app.ins('br', '', {}, a);
-          app.ins('small', d[i].info, {
-            className: 'text-n'
-          }, a);
+          app.ins('small', d[i].info, 'text-n', a);
         }
 
         j++;
@@ -3810,14 +3768,12 @@ var edit_default = /*#__PURE__*/function (_Plugin) {
     value: function prepare(n) {
       if (!n.theWys) {
         var app = this.app;
-        var m = app.ins('nav', '', {
-          className: 'bg'
-        },
+        var m = app.ins('nav', '', 'bg',
         /*d*/
         n, -1);
         var mm = app.ins('div', '', {
           className: app.opt.cToggle + ' ' + app.opt.cOff
-        }); //let zc = app.ins('div', '', {className:'subinput'}, n, 1)
+        }); //let zc = app.ins('div', '', 'subinput', n, 1)
 
         var z = app.ins('div', '', {
           className: app.opt.cToggle + ' bord pad subinput edit-wysiwyg'
@@ -4526,13 +4482,13 @@ var pickfile_default = /*#__PURE__*/function (_Plugin) {
       this.app.e(this.opt.qPick, function (n) {
         return _this2.prepare(n);
       });
-      d1.h('click', 'a.pickdef', function (e) {
+      this.app.h('click', '.picker [href="#pickdef"]', function (e) {
         return _this2.pick(e.recv, false, e);
       });
-      d1.h('click', 'a.unpick', function (e) {
+      this.app.h('click', '.picker [href="#unpick"]', function (e) {
         return _this2.pick(e.recv, '', e);
       });
-      d1.h('change', this.opt.qPick, function (e) {
+      this.app.h('change', this.opt.qPick, function (e) {
         return _this2.pick(e.recv, true);
       });
       this.prepareDrop(this.app.q(this.opt.qDrop));
@@ -4540,59 +4496,64 @@ var pickfile_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "prepare",
     value: function prepare(n) {
+      var a = this.app;
       if (!n.id) n.id = 'pick-' + this.app.seq();
       var nn = n.closest('label') || n;
-      var cont = this.app.ins('label', '', {
+      var cont = a.ins('div', '', 'picker gallery', nn, -1);
+      var nav = a.ins('nav', '', 'pad bg row', cont);
+      a.ins('label', a.i('folder', '&uarr;'), {
         htmlFor: n.id,
-        className: 'picker gallery'
-      }, nn, -1);
-      var tools = this.app.ins('div', '', {
-        className: 'tools pad back'
-      }, cont);
-      this.app.ins('label', this.app.i('folder', '&uarr;'), {
-        htmlFor: n.id
-      }, tools);
-      this.app.ins('a', this.app.i('image', '#'), {
-        className: 'pic subtool'
-      }, tools);
-      if (n.multiple) this.app.ins('a', '', {
-        className: 'picknum subtool'
-      }, tools);
-      if (n.dataset.picked) this.app.ins('a', this.app.i('back', '&times;'), {
-        className: 'pickdef',
+        className: 'col-0' + (n.multiple ? ' text-i' : '')
+      }, nav);
+      a.ins('a', a.i('image', '#'), 'pic col-0', nav);
+      /*if (n.multiple)*/
+
+      a.ins('a', '', 'picknum', nav);
+      if (n.dataset.picked) a.ins('a', a.i('back', '&larr;'), {
+        className: 'col-0',
         href: '#pickdef'
-      }, tools);
-      this.app.ins('a', this.app.i('delete', '&times;'), {
-        className: 'unpick subtool',
+      }, nav);
+      a.ins('a', a.i('delete', '&times;'), {
+        className: 'col-0',
         href: '#unpick'
-      }, tools);
-      var hide = this.app.ins('div', '', {
-        className: 'tools-hide'
+      }, nav);
+      var preview = a.ins('label', '', {
+        htmlFor: n.id
       }, cont);
+      a.ins('span', a.i('text', '[]'), 'mar pad', preview);
+      var hide = a.ins('div', '', {}, cont);
       hide.appendChild(nn);
-      this.app.ins('input', '', {
+      a.ins('input', '', {
         type: 'checkbox',
         value: 1,
-        name: 'unpick_' + n.name,
-        className: 'unpick'
+        name: 'remove_' + n.name
       }, hide);
       this.pick(n, false);
     }
   }, {
     key: "pick",
     value: function pick(n, url, e) {
+      var _this3 = this;
+
       if (e) e.preventDefault();
       var d = n.closest('.picker');
 
       if (d) {
-        var _this$app$q;
-
         var f = this.app.q(this.opt.qPick, d);
-        var def = ((_this$app$q = this.app.q('[data-picked]', d)) === null || _this$app$q === void 0 ? void 0 : _this$app$q.dataset.picked) || '';
-        var keep = url === false;
-        var img = keep;
+        var ch = this.app.a(d.children); //const nav = ch.find(m => m.matches('nav'));
+
+        var preview = ch.find(function (m) {
+          return m.matches('label');
+        }); //const inputs = ch.find(m => m.matches('div'));
+
+        var keep = false;
+        var img = '';
         var num = '';
-        if (url === '') f.value = '';else if (keep) url = def;else if (url === true) {
+        var fn = '';
+        if (url === '' || url === false) f.value = '';
+
+        if (url === true && f.files[0]) {
+          // files selected
           //1.
           //const fr = new FileReader();
           //const ref = this;
@@ -4600,46 +4561,48 @@ var pickfile_default = /*#__PURE__*/function (_Plugin) {
           //if(f.files[0]) fr.readAsDataURL(f.files[0]);
           //return;
           //2.
-          if (f.files[0]) {
-            url = URL.createObjectURL(f.files[0]);
-            if (f.files[0].type.match(/^image/)) img = true;
-            num = f.files.length;
-            /*
-            // free memory - if gallery not used
-            const img = document.createElement('img');
-            img.src = url;
-            img.onload = e => URL.revokeObjectURL(img.src);
-            */
-          } else {
-            url = def;
-            keep = img = true;
-          }
+          url = URL.createObjectURL(f.files[0]);
+          if (f.files[0].type.match(/^image/)) img = url;
+          num = f.files.length;
+          fn = f.files[0].name;
+          /*
+          // free memory - if gallery not used
+          const im = document.createElement('img');
+          im.src = url;
+          im.onload = e => URL.revokeObjectURL(im.src);
+          */
+        } else if (url === true || url === false) {
+          // selection cancelled or reset to default
+          url = fn = f.dataset.picked || '';
+          keep = true;
+          img = url.match(/\.(PNG|GIF|SVG|WEBP|BMP|ICO|JPE?G)$/i) ? url : '';
         }
-        var bg = url ? img ? 'url("' + url + '")' : '' : '';
-        d.style.backgroundImage = bg;
-        d1.e(this.app.qq('input.unpick', d), function (n) {
+
+        d.classList[url ? 'remove' : 'add']('unpicked');
+        preview.style.backgroundImage = img ? 'url("' + img + '")' : '';
+        preview.title = fn; //preview.dataset.tip = fn;
+
+        this.app.e(this.app.qq('[name^="remove_"]', d), function (n) {
           return n.checked = !url && !keep;
         });
-        d1.e(this.app.qq('a.pic', d), function (n) {
-          return img ? n.href = url : null;
-        });
-        d1.e(this.app.qq('a.picknum', d), function (n) {
-          return n.textContent = num;
-        });
-        d.classList[url ? 'remove' : 'add']('unpicked');
-        d.classList[!keep && url && !img ? 'add' : 'remove']('pickdoc');
-      }
-
-      if (url) {
-        var _this$app$plugins$gal;
-
-        // (re)init gallery
-        if (d.vGal) d.vGal.parentNode.removeChild(d.vGal);
         this.app.e(this.app.qq('a.pic', d), function (n) {
-          return delete n.vDone;
+          n.href = img;
+          n.title = fn;
+          n.classList[img ? 'remove' : 'add'](_this3.app.opt.cHide);
         });
-        d.vGal = (_this$app$plugins$gal = this.app.plugins.gallery) === null || _this$app$plugins$gal === void 0 ? void 0 : _this$app$plugins$gal.prepare(d);
+        this.app.e(this.app.qq('.picknum', d), function (n) {
+          return n.textContent = num;
+        }); //this.app.e(this.app.qq('[href="#unpick"]', d), n => n.classList[url ? 'remove' : 'add']('inact'));
+
+        preview.firstChild.classList[url && !img ? 'remove' : 'add'](this.app.opt.cHide);
       }
+
+      if (url) this.app.fire('exhibit', {
+        n: d,
+        opt: {
+          num: false
+        }
+      }); // re-init gallery
     }
   }, {
     key: "prepareDrop",
@@ -4749,9 +4712,7 @@ var keepform_default = /*#__PURE__*/function (_Plugin) {
     key: "addControls",
     value: function addControls(f) {
       var app = this.app;
-      var d = app.ins('div', '', {
-        className: 'pad r keepform-tools'
-      }, f, false);
+      var d = app.ins('div', '', 'pad r keepform-tools', f, false);
       app.ins('a', app.i('energy', '[^]'), {
         href: '#restore'
       }, d);
@@ -5259,12 +5220,8 @@ var fliptable_default = /*#__PURE__*/function (_Plugin) {
         //td.style.order = ord;
         //if (td.textContent.replace(/\s+$/, '').length>0) {
 
-        var c = this.app.ins('div', '', {
-          className: 'row'
-        });
-        if (th) this.app.ins('div', th.textContent, {
-          className: 'hide-desktop'
-        }, c);
+        var c = this.app.ins('div', '', 'row');
+        if (th) this.app.ins('div', th.textContent, 'hide-desktop', c);
         var v = this.app.ins('div', '', {}, c);
 
         while (td.firstChild) {
@@ -5755,9 +5712,7 @@ var theme_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "hx",
     value: function hx(s, l) {
-      this.app.ins('h' + (l || 1), s, {
-        className: 'mar'
-      }, this.drw);
+      this.app.ins('h' + (l || 1), s, 'mar', this.drw);
     }
   }, {
     key: "put",

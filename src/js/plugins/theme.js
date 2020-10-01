@@ -72,7 +72,7 @@ export default class extends Plugin {
   }
   
   hx(s, l) {
-    this.app.ins('h'+(l || 1), s, {className: 'mar'}, this.drw);
+    this.app.ins('h'+(l || 1), s, 'mar', this.drw);
   }
   
   put(hh, arr, func) {

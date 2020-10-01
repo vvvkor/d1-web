@@ -69,9 +69,9 @@ export default class extends Plugin {
       cont.appendChild(src);
       src.classList.add('pad');
       let id = 'code-' + this.app.seq();
-      this.app.ins('div', this.app.ins('a', (this.langs[lang] ? this.langs[lang].nm : lang) || lang, {className: 'pad', href: '#'+id}), {className: '-r bg small'}, cont);
-      let pre = this.app.ins('pre', '', {className: this.app.opt.cToggle + ' ' + this.app.opt.cOff + ' fit pad', id: id}, cont);
-      let cod = this.app.ins('code', '', {className: 'language-' + lang}, pre);
+      this.app.ins('div', this.app.ins('a', (this.langs[lang] ? this.langs[lang].nm : lang) || lang, {className: 'pad', href: '#'+id}), '-r bg small', cont);
+      let pre = this.app.ins('pre', '', {id: id, className: this.app.opt.cToggle + ' ' + this.app.opt.cOff + ' fit pad'}, cont);
+      let cod = this.app.ins('code', '', 'language-' + lang, pre);
       src.vCode = cod;
     }
     //src.vCode.textContent = t;

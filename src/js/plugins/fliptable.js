@@ -28,8 +28,8 @@ export default class extends Plugin {
       //if (ord == -1) ord = 99;
       //td.style.order = ord;
       //if (td.textContent.replace(/\s+$/, '').length>0) {
-        let c = this.app.ins('div', '', {className: 'row'});
-        if (th) this.app.ins('div', th.textContent, {className: 'hide-desktop'}, c)
+        let c = this.app.ins('div', '', 'row');
+        if (th) this.app.ins('div', th.textContent, 'hide-desktop', c)
         let v = this.app.ins('div', '', {}, c);
         while (td.firstChild) v.appendChild(td.firstChild);
         td.textContent = '';

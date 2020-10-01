@@ -27,7 +27,7 @@ export default class extends Plugin {
   
   addControls(f) {
     const app = this.app
-    let d = app.ins('div', '', {className: 'pad r keepform-tools'}, f, false);
+    let d = app.ins('div', '', 'pad r keepform-tools', f, false);
     app.ins('a', app.i('energy', '[^]'), {href: '#restore'}, d);
     app.ins('', ' ', {}, d);
     app.ins('a', app.i('refresh', '[-]'), {href: '#reset'}, d);

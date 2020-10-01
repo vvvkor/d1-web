@@ -96,9 +96,9 @@ export default class extends Plugin {
   prepare(n) {
     if (!n.theWys) {
       const app = this.app
-      let m = app.ins('nav', '', {className: 'bg'}, /*d*/ n, -1);
+      let m = app.ins('nav', '', 'bg', /*d*/ n, -1);
       let mm = app.ins('div', '', {className: app.opt.cToggle + ' ' + app.opt.cOff});
-      //let zc = app.ins('div', '', {className:'subinput'}, n, 1)
+      //let zc = app.ins('div', '', 'subinput', n, 1)
       let z = app.ins('div', '', {className: app.opt.cToggle + ' bord pad subinput edit-wysiwyg'}, n, 1/*zc*/);
       z.setAttribute('contenteditable', true);
       z.theArea = n;

@@ -51,7 +51,7 @@ export default class extends Plugin {
     n.vLabel = (this.opt.dLabel in n.dataset)
       ? n.dataset[this.opt.dLabel]
       : (n.value || '');
-    let pop = app.ins('div', '', {className: 'pop l lookup-pop'}, n, 1);
+    let pop = app.ins('div', '', 'pop l lookup-pop', n, 1);
     if (!this.opt.inPop) pop.style.verticalAlign = 'bottom';
     n.classList.add('bg-n', 'lookup-id');
     n.classList.add(app.opt.cHide);
@@ -69,7 +69,7 @@ export default class extends Plugin {
     m.autocomplete = 'off';
     let i = null;
     if (this.opt.dUrl in n.dataset) {
-      let ic = app.ins('span', '', {className:'input-tools nobr'}, this.opt.inPop ? pop : m, 1);//icons container
+      let ic = app.ins('span', '', 'input-tools nobr', this.opt.inPop ? pop : m, 1);//icons container
       i = app.ins('a', app.i('forward', '&rarr;'), {href: '#goto', className: 'let lookup-goto'}, ic);
       i.style.cursor = 'pointer';
       app.ins('', ' ', {}, ic, -1);
@@ -154,7 +154,7 @@ export default class extends Plugin {
   build(n, d) {
     const app = this.app
     app.clr(this.win);
-    let ul = app.ins('ul', '', {className: 'nav let hover'}, this.win);
+    let ul = app.ins('ul', '', 'nav let hover', this.win);
     let w, j = 0;
     let go = n.dataset[this.opt.dGoto] || '';
     for (let i in d) {
@@ -163,7 +163,7 @@ export default class extends Plugin {
       app.ins('span', d[i].nm, {}, a);
       if (d[i].info) {
         app.ins('br', '', {}, a);
-        app.ins('small', d[i].info, {className: 'text-n'}, a);
+        app.ins('small', d[i].info, 'text-n', a);
       }
       j++;
       if (j >= this.opt.max) break;

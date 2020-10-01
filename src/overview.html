@@ -538,7 +538,7 @@ let double = function (x) {
 			<label><input type="checkbox" data-nodes="#totals" data-set="bg-i" data-unset="hide"> more totals</label>
 		</p>
 		<div class="roll">
-		<table id="tablex" class="flip let shift hover c2 r3 sort -filter totals" data-filter="#table-filter" data-filter-report="#filter-info" data-filter-cols="0 2" data-case-x data-labels-x>
+		<table id="tablex" class="flip let shift hover c2 r3 sort -filter totals" data-filter="#table-filter" data-filter-report="#filter-info" data-filter-cols="0 2" data-case-x data-labels data-limit="2">
 			<!--caption>Web languages</caption-->
 			<thead>
 				<tr><th>String<th>Number<th>Bytes<th>Interval<th>Date
@@ -883,9 +883,9 @@ let double = function (x) {
 		<div class="shade pad c">
 			<!-- file upload -->
 			<h3 class="mar">File picker with dropzone <b class="small btn bg-e hide-js" title="Requires Javascript">JS</b></h3>
-			<input type="file" name="f1" class="pick -drop" id="f1">
+			<label>Files: <input type="file" multiple name="fm[]" class="pick drop" data-picked="https://picsum.photos/id/360/300/200.jpg"></label>
 			<hr>
-			<label>File 2: <input type="file" multiple name="f2[]" class="pick drop" data-picked="https://picsum.photos/id/360/300/200.jpg"></label>
+			<input type="file" name="f1" class="pick -drop" id="f1">
 		</div>
 	</div>
 

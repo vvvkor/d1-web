@@ -120,11 +120,11 @@ export default class extends Plugin {
     n.type = 'text';
     n.autocomplete = 'off';
     if (n.value) n.value = this.fmt(this.parse(n.value), 0, n.vTime);
-    let pop = this.app.ins('div', '', {className:'pop l'}, n, -1); //''
+    let pop = this.app.ins('div', '', 'pop l', n, -1); //''
     if (!this.opt.inPop) pop.style.verticalAlign = 'bottom';
     n.thePop = pop;
     if (this.opt.addIcons.length>0) {
-      let ic = this.app.ins('span', '', {className:'input-tools calendar-tools nobr'}, n, 1);//icons container
+      let ic = this.app.ins('span', '', 'input-tools calendar-tools nobr', n, 1);//icons container
       for (let i in this.opt.addIcons) {
         this.app.ins('', ' ', {}, ic);
         this.app.ins('a', this.app.i.apply(this.app, this.opt.addIcons[i].slice(0, 2)), {href: this.opt.addIcons[i][2], className: 'let'}, ic);
@@ -192,14 +192,14 @@ export default class extends Plugin {
     let row;
     for (let i=-skip+1; i<=maxd; i++) {
       wd = ((skip+i-1)%7)+1;
-      if (wd == 1) row = this.app.ins('div', '', {className:'row'}, rows);
-      if (i<1 || i>days) c = this.app.ins('a', '', {className: 'pad c center'}, row);
+      if (wd == 1) row = this.app.ins('div', '', 'row', rows);
+      if (i<1 || i>days) c = this.app.ins('a', '', 'pad c center', row);
       else {
         vv = this.fmt(x, i, 0, 'y');
         sel = (i == d);
         today = false;//(this.fmt(x, i) == cd);
         off = (min && vv<min) || (max && vv>max);
-        c = this.app.ins('a', i, {className: 'pad c center ' + (sel ? 'bg-w ' : '') + (today ? 'bg-y ' : '') + (off ? 'text-n ' : 'hover ') + (wd>5 ? 'text-e ' : '')}, row);
+        c = this.app.ins('a', i, 'pad c center ' + (sel ? 'bg-w ' : '') + (today ? 'bg-y ' : '') + (off ? 'text-n ' : 'hover ') + (wd>5 ? 'text-e ' : ''), row);
         if (!off) c.href = '#' + i;
       }
     }
@@ -215,11 +215,11 @@ export default class extends Plugin {
     if (!this.win.vDays) {
       app.clr(this.win);
       //buttons
-      let p1 = app.ins('p', '', {className: 'c'}, this.win);
+      let p1 = app.ins('p', '', 'c', this.win);
       this.btn(this.opt.hashNow, app.i('ok', '&check;'), p1);
       this.btn('#prev-year', app.i('prev2', '&laquo;'), p1);
       this.btn('#prev-month', app.i('prev', '&lsaquo;'), p1);
-      this.win.vNodeCur = app.ins('span', '', {className: 'pad'}, p1);
+      this.win.vNodeCur = app.ins('span', '', 'pad', p1);
       this.btn('#next-month', app.i('next', '&rsaquo;'), p1);
       this.btn('#next-year', app.i('next2', '&raquo;'), p1);
       this.btn(this.opt.hCancel, app.i('close', '&#x2715;'), p1);
@@ -230,13 +230,13 @@ export default class extends Plugin {
       let hm = app.ins('div', '', {}, this.win);
       this.win.vNodeTime = hm;
       app.ins('hr', '', {}, hm);
-      let p2 = app.ins('p', '', {className: 'c'}, hm);
+      let p2 = app.ins('p', '', 'c', hm);
       this.btn('#prev-hour', app.i('prev', '&lsaquo;'), p2);
-      this.win.vHours = app.ins('span', '', {className: 'pad'}, p2);
+      this.win.vHours = app.ins('span', '', 'pad', p2);
       this.btn('#next-hour', app.i('next', '&rsaquo;'), p2);
-      app.ins('span', ':', {className: 'pad'}, p2);
+      app.ins('span', ':', 'pad', p2);
       this.btn('#prev-min', app.i('prev', '&lsaquo;'), p2);
-      this.win.vMinutes = app.ins('span', '', {className: 'pad'}, p2);
+      this.win.vMinutes = app.ins('span', '', 'pad', p2);
       this.btn('#next-min', app.i('next', '&rsaquo;'), p2);
     }
     this.update(n, x);
