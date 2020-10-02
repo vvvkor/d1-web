@@ -20,12 +20,9 @@ export default class extends Plugin {
     this.app.h('click', '.picker [href="#unpick"]', e => this.pick(e.recv, '', e));
     this.app.h('change', this.opt.qPick, e => this.pick(e.recv, true));
     //drop
-    const q = this.opt.qDrop + ',' + this.opt.qPick;
-    const drop = this.app.q(q);
-    if (drop){
+    if (this.app.q(this.opt.qDrop + ',' + this.opt.qPick)) {
       const b = document.body;
-      this.app.b([b], ['dragenter', 'dragleave', 'drop', 'mouseover'], e => this.detectDragBody(e));
-      this.app.b(q, ['dragenter', 'dragleave', 'drop'], e => this.detectDragTarget(e));
+      this.app.b([b], ['dragenter', 'dragleave', 'drop', 'mouseover'], e => this.detectDrag(e));
       this.app.b([b], 'drop', e => this.drop(e));
     }
 //listen to all events
@@ -111,12 +108,13 @@ Object.keys(window).forEach(key => {
     if (url) this.app.fire('exhibit', {n: d, opt: {num: false}}); // re-init gallery
   }
   
-  detectDragBody(e) {
+  detectDrag(e) {
     /*
     events sequence:
     - dragenter
     - [dragenter dragleave] *
-    - [dragleave | drop | NOTHING (if dropped not into file input) -> mouseover/focus/blur]
+    - [dragleave | drop | NOTHING]
+      - NOTHING if dropped not into file input causing download; use mouseover/focus/blur
     */
     if (e.type === 'drop' || e.type === 'mouseover') this.dragging = 0;
     else{
@@ -124,12 +122,11 @@ Object.keys(window).forEach(key => {
       this.dragging += (e.type === 'dragenter' ? 1 : -1);
     }
     document.body.classList[this.dragging > 0 ? 'add' : 'remove']('drag');
+    if (e.type !== 'mouseover') {
+      e.target.classList[this.dragging > 0 && e.type === 'dragenter' ? 'add' : 'remove']('act');
+    }
   }
-  
-  detectDragTarget(e) {
-    e.target.classList[e.type === 'dragenter' ? 'add' : 'remove']('act');
-  }
-  
+
   drop(e) {
     //if (e.target.tagName !== 'INPUT') e.preventDefault();
     if (e.target.form && e.target.hasAttribute('data-submit') || e.ctrlKey || e.shiftKey) {

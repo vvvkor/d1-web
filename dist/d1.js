@@ -1,4 +1,4 @@
-/*! d1-web v2.2.1 */
+/*! d1-web v2.2.2 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -4494,16 +4494,10 @@ var pickfile_default = /*#__PURE__*/function (_Plugin) {
         return _this2.pick(e.recv, true);
       }); //drop
 
-      var q = this.opt.qDrop + ',' + this.opt.qPick;
-      var drop = this.app.q(q);
-
-      if (drop) {
+      if (this.app.q(this.opt.qDrop + ',' + this.opt.qPick)) {
         var b = document.body;
         this.app.b([b], ['dragenter', 'dragleave', 'drop', 'mouseover'], function (e) {
-          return _this2.detectDragBody(e);
-        });
-        this.app.b(q, ['dragenter', 'dragleave', 'drop'], function (e) {
-          return _this2.detectDragTarget(e);
+          return _this2.detectDrag(e);
         });
         this.app.b([b], 'drop', function (e) {
           return _this2.drop(e);
@@ -4629,24 +4623,24 @@ var pickfile_default = /*#__PURE__*/function (_Plugin) {
       }); // re-init gallery
     }
   }, {
-    key: "detectDragBody",
-    value: function detectDragBody(e) {
+    key: "detectDrag",
+    value: function detectDrag(e) {
       /*
       events sequence:
       - dragenter
       - [dragenter dragleave] *
-      - [dragleave | drop | NOTHING (if dropped not into file input) -> mouseover/focus/blur]
+      - [dragleave | drop | NOTHING]
+        - NOTHING if dropped not into file input causing download; use mouseover/focus/blur
       */
       if (e.type === 'drop' || e.type === 'mouseover') this.dragging = 0;else {
         e.preventDefault();
         this.dragging += e.type === 'dragenter' ? 1 : -1;
       }
       document.body.classList[this.dragging > 0 ? 'add' : 'remove']('drag');
-    }
-  }, {
-    key: "detectDragTarget",
-    value: function detectDragTarget(e) {
-      e.target.classList[e.type === 'dragenter' ? 'add' : 'remove']('act');
+
+      if (e.type !== 'mouseover') {
+        e.target.classList[this.dragging > 0 && e.type === 'dragenter' ? 'add' : 'remove']('act');
+      }
     }
   }, {
     key: "drop",
