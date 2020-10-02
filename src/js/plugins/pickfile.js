@@ -23,6 +23,10 @@ export default class extends Plugin {
     if (this.app.q(this.opt.qDrop + ',' + this.opt.qPick)) {
       const b = document.body;
       this.app.b([b], ['dragenter', 'dragleave', 'drop', 'mouseover'], e => this.detectDrag(e));
+      // fix ff - avoid dropzones for drags inside document
+      //this.app.b([b], 'dragstart', e => e.preventDefault());
+      this.app.b([b], 'dragstart', e => this.dragging = -100);
+      this.app.b([b], 'dragend', e => this.dragging = 0);
       this.app.b([b], 'drop', e => this.drop(e));
     }
 //listen to all events
@@ -116,14 +120,22 @@ Object.keys(window).forEach(key => {
     - [dragleave | drop | NOTHING]
       - NOTHING if dropped not into file input causing download; use mouseover/focus/blur
     */
-    if (e.type === 'drop' || e.type === 'mouseover') this.dragging = 0;
+    if (e.type === 'drop' || e.type === 'mouseover'){
+      if (this.dragging > 0) this.dragging = 0;
+    }
     else{
       e.preventDefault();
       this.dragging += (e.type === 'dragenter' ? 1 : -1);
     }
     document.body.classList[this.dragging > 0 ? 'add' : 'remove']('drag');
     if (e.type !== 'mouseover') {
-      e.target.classList[this.dragging > 0 && e.type === 'dragenter' ? 'add' : 'remove']('act');
+      if (e.target.matches && e.target.matches('[type="file"]')) { // skip text nodes
+        if (e.type === 'drop') e.target.vDragging = 0;
+        else e.target.vDragging = (e.target.vDragging || 0) + (e.type === 'dragenter' ? 1 : -1); //fix ff
+        e.target.classList[e.target.vDragging > 0 && e.type !== 'drop' ? 'add' : 'remove']('act');
+        //e.target.classList[e.target.vDragging > 0 && e.type === 'dragenter' ? 'add' : 'remove']('act');
+        //console.log('DRAG', this.dragging, e.target.vDragging, e.type, e.target.id);
+      }
     }
   }
 

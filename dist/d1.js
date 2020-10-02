@@ -1,4 +1,4 @@
-/*! d1-web v2.2.2 */
+/*! d1-web v2.2.3 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -377,7 +377,7 @@ var _default = /*#__PURE__*/function () {
       });else {
         if (!this.handlers[et]) this.handlers[et] = [];
         this.handlers[et][before ? 'unshift' : 'push'](function (e) {
-          if (s) e.recv = e.target.closest(s);
+          if (s) e.recv = e.target.closest ? e.target.closest(s) : null;
           if (!s || e.recv) f(e);
         });
       }
@@ -4498,6 +4498,14 @@ var pickfile_default = /*#__PURE__*/function (_Plugin) {
         var b = document.body;
         this.app.b([b], ['dragenter', 'dragleave', 'drop', 'mouseover'], function (e) {
           return _this2.detectDrag(e);
+        }); // fix ff - avoid dropzones for drags inside document
+        //this.app.b([b], 'dragstart', e => e.preventDefault());
+
+        this.app.b([b], 'dragstart', function (e) {
+          return _this2.dragging = -100;
+        });
+        this.app.b([b], 'dragend', function (e) {
+          return _this2.dragging = 0;
         });
         this.app.b([b], 'drop', function (e) {
           return _this2.drop(e);
@@ -4632,14 +4640,23 @@ var pickfile_default = /*#__PURE__*/function (_Plugin) {
       - [dragleave | drop | NOTHING]
         - NOTHING if dropped not into file input causing download; use mouseover/focus/blur
       */
-      if (e.type === 'drop' || e.type === 'mouseover') this.dragging = 0;else {
+      if (e.type === 'drop' || e.type === 'mouseover') {
+        if (this.dragging > 0) this.dragging = 0;
+      } else {
         e.preventDefault();
         this.dragging += e.type === 'dragenter' ? 1 : -1;
       }
+
       document.body.classList[this.dragging > 0 ? 'add' : 'remove']('drag');
 
       if (e.type !== 'mouseover') {
-        e.target.classList[this.dragging > 0 && e.type === 'dragenter' ? 'add' : 'remove']('act');
+        if (e.target.matches && e.target.matches('[type="file"]')) {
+          // skip text nodes
+          if (e.type === 'drop') e.target.vDragging = 0;else e.target.vDragging = (e.target.vDragging || 0) + (e.type === 'dragenter' ? 1 : -1); //fix ff
+
+          e.target.classList[e.target.vDragging > 0 && e.type !== 'drop' ? 'add' : 'remove']('act'); //e.target.classList[e.target.vDragging > 0 && e.type === 'dragenter' ? 'add' : 'remove']('act');
+          //console.log('DRAG', this.dragging, e.target.vDragging, e.type, e.target.id);
+        }
       }
     }
   }, {

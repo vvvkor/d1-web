@@ -114,7 +114,7 @@ export default class {
     else {
       if (!this.handlers[et]) this.handlers[et] = []
       this.handlers[et][before ? 'unshift' : 'push'](e => {
-        if (s) e.recv = e.target.closest(s)
+        if (s) e.recv = e.target.closest ? e.target.closest(s) : null
         if (!s || e.recv) f(e)
       })
     }

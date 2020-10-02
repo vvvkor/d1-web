@@ -1,4 +1,4 @@
-/*! d1-web v2.2.2 */
+/*! d1-web v2.2.3 */
 
 /* @import url("css/columns.css"); */
 
@@ -522,10 +522,22 @@ mark{background-color:var(--bg-warning);}
 	.picker>label>span{font-size:300%;}
 	.picker>div{/*position:fixed;top:-10em;*/width:0;height:0;overflow:hidden;/*z-index:200;*/}
 	.picker label{cursor:pointer;}
-	/* drop */
+	/* drop - chrome (no dropzone in firefox) */
+	/*
 	.drag .drop:before, .drag .pick:before{content:"";position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.3);outline:.5em dashed rgba(255,255,255,.5);outline-offset:-2em;z-index:200;}
 	.drag .pick:not(.drop):before{position:absolute;outline-offset:-1.5em;z-index:201;}
-	[type="file"].act:before{outline-color:#fff;}
+	.drag [type="file"].act:before{outline-color:#fff;}
+	*/
+	/* drop - firefox (visible file input - fixed for chrome) */
+	.drag .pick, .drag .drop{
+		top:0;left:0;max-width:100%;min-width:100%;height:100%;
+		background:rgba(0,0,0,.3);outline:.5em dashed rgba(255,255,255,.5);
+		position:absolute;outline-offset:-1.5em;z-index:201;
+	}
+	.drag .drop{position:fixed;outline-offset:-2em;z-index:200;}
+	.drag [type="file"].act{outline-color:#fff;}
+		.drag .picker [type="file"]{/*-webkit-appearance:textfield;*/color:transparent;}
+		.drag .picker ::-webkit-file-upload-button{visibility:hidden;}
 
 	/* color */
 	

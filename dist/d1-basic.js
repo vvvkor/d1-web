@@ -1,4 +1,4 @@
-/*! d1-web v2.2.2 */
+/*! d1-web v2.2.3 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -377,7 +377,7 @@ var _default = /*#__PURE__*/function () {
       });else {
         if (!this.handlers[et]) this.handlers[et] = [];
         this.handlers[et][before ? 'unshift' : 'push'](function (e) {
-          if (s) e.recv = e.target.closest(s);
+          if (s) e.recv = e.target.closest ? e.target.closest(s) : null;
           if (!s || e.recv) f(e);
         });
       }
