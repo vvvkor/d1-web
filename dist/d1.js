@@ -1,4 +1,4 @@
-/*! d1-web v2.2.3 */
+/*! d1-web v2.2.4 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -4643,7 +4643,7 @@ var pickfile_default = /*#__PURE__*/function (_Plugin) {
       if (e.type === 'drop' || e.type === 'mouseover') {
         if (this.dragging > 0) this.dragging = 0;
       } else {
-        e.preventDefault();
+        if (this.dragging >= 0) e.preventDefault();
         this.dragging += e.type === 'dragenter' ? 1 : -1;
       }
 
@@ -5355,16 +5355,17 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
           mouseup & click
         }
       */
+      //firefox needs also: dragover, dragend (click is not prevented!)
 
       this.app.b([document], ['mousedown', 'touchstart'], function (e) {
         return _this2.onStart(e);
       });
-      this.app.b([document], ['mousemove', 'touchmove'], function (e) {
+      this.app.b([document], ['mousemove', 'touchmove', 'dragover'], function (e) {
         return _this2.onMove(e);
       }, {
         passive: false
       });
-      this.app.b([document], ['click', 'mouseleave', 'touchend', 'touchcancel'
+      this.app.b([document], ['click', 'mouseleave', 'touchend', 'touchcancel', 'dragend'
       /*, 'mouseleave'/*, 'blur', 'keydown', 'contextmenu'*/
       ], function (e) {
         return _this2.onEnd(e);
@@ -5382,6 +5383,8 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
       this.moved = e.target.closest(this.opt.qSwipe);
 
       if (this.moved) {
+        e.preventDefault(); // fix firefox: avoid click on dragend
+
         var t = e.touches ? e.touches[0] : e;
         this.c.sX = this.c.eX = t.screenX;
         this.c.sY = this.c.eY = t.screenY;
@@ -5390,7 +5393,7 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "onMove",
     value: function onMove(e) {
-      //console.log('move', e.type, this.moved?.tagName)
+      //console.log('swipe move', e.type, this.moved?.tagName)
       if (this.moved) {
         e.preventDefault();
         this.drag_(e);
@@ -5425,13 +5428,15 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
           //if (e.type.indexOf('touch') != -1 && (dir || trg.tagName != 'A')) e.preventDefault();
 
           if (xy[2]) {
+            //console.log('swiped', xy[2], this.moved);
+            e.preventDefault(); //if (e.type.indexOf('touch') != -1)
+
             this.app.fire('swipe', {
               n: this.moved,
               x: xy[0],
               y: xy[1],
               dir: xy[2]
             });
-            e.preventDefault(); //if (e.type.indexOf('touch') != -1)
           }
         }
 

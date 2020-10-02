@@ -124,7 +124,7 @@ Object.keys(window).forEach(key => {
       if (this.dragging > 0) this.dragging = 0;
     }
     else{
-      e.preventDefault();
+      if (this.dragging >= 0) e.preventDefault();
       this.dragging += (e.type === 'dragenter' ? 1 : -1);
     }
     document.body.classList[this.dragging > 0 ? 'add' : 'remove']('drag');

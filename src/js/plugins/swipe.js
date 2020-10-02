@@ -34,9 +34,10 @@ export default class extends Plugin {
         mouseup & click
       }
     */
+    //firefox needs also: dragover, dragend (click is not prevented!)
     this.app.b([document], ['mousedown', 'touchstart'], e => this.onStart(e));
-    this.app.b([document], ['mousemove', 'touchmove'], e => this.onMove(e), {passive: false});
-    this.app.b([document], ['click', 'mouseleave', 'touchend', 'touchcancel'/*, 'mouseleave'/*, 'blur', 'keydown', 'contextmenu'*/], e => this.onEnd(e), true);
+    this.app.b([document], ['mousemove', 'touchmove', 'dragover'], e => this.onMove(e), {passive: false});
+    this.app.b([document], ['click', 'mouseleave', 'touchend', 'touchcancel', 'dragend'/*, 'mouseleave'/*, 'blur', 'keydown', 'contextmenu'*/], e => this.onEnd(e), true);
   }
 
   onStart(e) {
@@ -47,6 +48,7 @@ export default class extends Plugin {
     }
     this.moved = e.target.closest(this.opt.qSwipe);
     if (this.moved) {
+      e.preventDefault(); // fix firefox: avoid click on dragend
       let t = e.touches ? e.touches[0] : e;
       this.c.sX = this.c.eX = t.screenX; 
       this.c.sY = this.c.eY = t.screenY;
@@ -54,7 +56,7 @@ export default class extends Plugin {
   }
 
   onMove(e) {
-    //console.log('move', e.type, this.moved?.tagName)
+    //console.log('swipe move', e.type, this.moved?.tagName)
     if (this.moved) {
       e.preventDefault();
       this.drag_(e);
@@ -86,8 +88,9 @@ export default class extends Plugin {
         //after touch event: handle mouse events only on A nodes without swipe
         //if (e.type.indexOf('touch') != -1 && (dir || trg.tagName != 'A')) e.preventDefault();
         if (xy[2]) {
-          this.app.fire('swipe', {n: this.moved, x: xy[0], y: xy[1], dir: xy[2]});
+          //console.log('swiped', xy[2], this.moved);
           e.preventDefault(); //if (e.type.indexOf('touch') != -1)
+          this.app.fire('swipe', {n: this.moved, x: xy[0], y: xy[1], dir: xy[2]});
         }
       }
       this.moved.classList.remove(this.opt.cDragging);
