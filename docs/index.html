@@ -6,16 +6,16 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 
 	<!-- CDN --R E M O V E->
-		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.2.0/dist/d1.min.css" rel="stylesheet">
-		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.2.0/dist/d1.min.js"></script>
+		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.2.1/dist/d1.min.css" rel="stylesheet">
+		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.2.1/dist/d1.min.js"></script>
 		<noscript>
-			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.2.0/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.2.1/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- CDN -->
-		<link href="https://unpkg.com/d1-web@2.2.0/dist/d1.min.css" rel="stylesheet">
-		<script src="https://unpkg.com/d1-web@2.2.0/dist/d1.min.js"></script>
+		<link href="https://unpkg.com/d1-web@2.2.1/dist/d1.min.css" rel="stylesheet">
+		<script src="https://unpkg.com/d1-web@2.2.1/dist/d1.min.js"></script>
 		<noscript>
-			<link href="https://unpkg.com/d1-web@2.2.0/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://unpkg.com/d1-web@2.2.1/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- local-npm-src ->
 		<link href="../src/index.css" rel="stylesheet">
@@ -105,7 +105,7 @@
 	<a href="#menu" class="pad -let hide-desktop icon-menu empty" title="Menu"><span>Menu</span></a>
 	<a href="#top" class="pad -let"><b>d1</b></a>
 	<code class="-pad -nobr hide-mobile">npm i d1-web</code>
-	<a class="shift pad text-n">v2.2.0</a>
+	<a class="shift pad text-n">v2.2.1</a>
 	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1-web" title="GitHub" class="pad -let">GitHub</a>
 	<a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="pad -let icon-download empty" ><span>Download</span></a>
 </div>
@@ -284,19 +284,19 @@ Inclusion of <code>d1.js</code> and <code>d1-icons.css</code> is optional.
 </ul>
 <div>
 	<div id="cdn-jsdelivr">
-		<pre><code class="language-html">&lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.2.0/dist/d1.min.css" rel="stylesheet"&gt;
-&lt;script src="https://cdn.jsdelivr.net/npm/d1-web@2.2.0/dist/d1.min.js"&gt;&lt;/script&gt;
+		<pre><code class="language-html">&lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.2.1/dist/d1.min.css" rel="stylesheet"&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/d1-web@2.2.1/dist/d1.min.js"&gt;&lt;/script&gt;
 &lt;noscript&gt;
-  &lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.2.0/dist/d1-icons.min.css" rel="stylesheet"&gt;
+  &lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.2.1/dist/d1-icons.min.css" rel="stylesheet"&gt;
 &lt;/noscript&gt;
 
 		</code></pre>
 	</div>
 	<div id="cdn-unpkg">
-		<pre><code class="language-html">&lt;link href="https://unpkg.com/d1-web@2.2.0/dist/d1.min.css" rel="stylesheet"&gt;
-&lt;script src="https://unpkg.com/d1-web@2.2.0/dist/d1.min.js"&gt;&lt;/script&gt;
+		<pre><code class="language-html">&lt;link href="https://unpkg.com/d1-web@2.2.1/dist/d1.min.css" rel="stylesheet"&gt;
+&lt;script src="https://unpkg.com/d1-web@2.2.1/dist/d1.min.js"&gt;&lt;/script&gt;
 &lt;noscript&gt;
-  &lt;link href="https://unpkg.com/d1-web@2.2.0/dist/d1-icons.min.css" rel="stylesheet"&gt;
+  &lt;link href="https://unpkg.com/d1-web@2.2.1/dist/d1-icons.min.css" rel="stylesheet"&gt;
 &lt;/noscript&gt		</code></pre>
 	</div>
 	<div id="cdn-unpkg-short">
@@ -1096,19 +1096,19 @@ Table will become stacked on small screen.
 
 <h3 id="pickfile">File picker with dropzone</h3>
 
-<p>Add <code>.pick</code> class to file input to make it show selected images.<br>
+<p>Add <code>.pick</code> class to file input for drag and drop behaviour and image preview.<br>
 Optionally set <code>[data-picked]</code> to URL of initial image.<br>
-Add <code>.drop</code> class to file input for drag and drop behaviour.<br>
+Add <code>.drop</code> class to file input for fullscreen dropzone (use one per page).<br>
 
 <div class="code">
   <input
     type="file"
     name="upload-drop[]"
-    class="pick drop">
+    class="pick">
   <input
     type="file"
     name="upload-img[]"
-    class="pick"
+    class="pick drop"
     data-picked="https://picsum.photos/id/360/300/200.jpg">
   <input
     type="file"
@@ -1117,6 +1117,10 @@ Add <code>.drop</code> class to file input for drag and drop behaviour.<br>
     class="pick"
     data-picked="overview.html">
 </div>
+  <!--input
+    type="file"
+    name="upload-drop[]"
+    class="drop"-->
 
 
 <h3 id="validate">Validation</h3>
@@ -2351,6 +2355,7 @@ most important:
 <tr><th>.gal<td><a href="#gallery">Gallery</a><td>a .close<td><i>[data-info]</i>
 <tr><th>.drawer<td><a href="#drawer">Drawer</a><td>div a.close<td>.shift
 <tr><th>.topbar<td><a href="#topbar">Top bar</a><td><td>.toggle
+<tr><th>.pick<td><a href="#pickfile">File picker</a><td>input[type="file"]<td>.drop
 <tr><th>.let<td>Specific modifications to components<td>
 	<span class="tip shift" title="Allow wrapping">.row</span><br>
 	<span class="tip shift" title="Row separators">.table</span><br>
@@ -2431,6 +2436,7 @@ most important:
 <li><code>.col-2</code> &mdash; grid cell with expanding width (x2)
 <li><code>.col-3</code> &mdash; grid cell with expanding width (x3)
 <li><code>.dlg</code> &mdash; card-like block
+<li><code>.drop</code> &mdash; file input with fullscreen dropzone
 <li><code>.drawer</code> &mdash; drawer
 <li><code>.fit</code> &mdash; remove formatting: margin, border, padding, shadow
 <li><code>.fix</code> &mdash; fixed in corner
@@ -2460,6 +2466,7 @@ most important:
 <li><code>.off</code> &mdash; hidden with JavaScript
 <li><code>.over</code> &mdash; overlay
 <li><code>.pad</code> &mdash; add padding
+<li><code>.pick</code> &mdash; file input with image preview and dropzone
 <li><code>.pop</code> &mdash; popup component wrapper
 <li><code>.r</code> &mdash; align content to the right
 <li><code>.rad</code> &mdash; rounded corners

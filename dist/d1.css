@@ -1,4 +1,4 @@
-/*! d1-web v2.2.0 */
+/*! d1-web v2.2.1 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -1086,6 +1086,7 @@ mark {
     .picker {
         display: inline-block;
         vertical-align: top;
+        position: relative;
     }
 
     .picker>nav {
@@ -1111,29 +1112,36 @@ mark {
     }
 
     .picker>div {
-        position: fixed;
-        top: -10em;
-        z-index: 200;
+        width: 0;
+        height: 0;
+        overflow: hidden;
     }
 
     .picker label {
         cursor: pointer;
     }
 
-    .drag input.drop {
-    }
-
-    .drag input.drop:before {
+    .drag .drop:before, .drag .pick:before {
         content: "";
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
-        height: 100vh;
+        height: 100%;
         background: rgba(0, 0, 0, .3);
-        outline: .5em dashed #fff;
+        outline: .5em dashed rgba(255, 255, 255, .5);
         outline-offset: -2em;
         z-index: 200;
+    }
+
+    .drag .pick:not(.drop):before {
+        position: absolute;
+        outline-offset: -1.5em;
+        z-index: 201;
+    }
+
+    [type="file"].act:before {
+        outline-color: #fff;
     }
 
     .btn[class], button, [type="submit"] {

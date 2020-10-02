@@ -10,14 +10,30 @@ export default class extends Plugin {
       qPick: '.pick[name]',
       qDrop: 'input.drop'
     };
+    this.dragging = 0;
   }
 
   init() {
+    //pick
     this.app.e(this.opt.qPick, n => this.prepare(n));
     this.app.h('click', '.picker [href="#pickdef"]', e => this.pick(e.recv, false, e));
     this.app.h('click', '.picker [href="#unpick"]', e => this.pick(e.recv, '', e));
     this.app.h('change', this.opt.qPick, e => this.pick(e.recv, true));
-    this.prepareDrop(this.app.q(this.opt.qDrop));
+    //drop
+    const q = this.opt.qDrop + ',' + this.opt.qPick;
+    const drop = this.app.q(q);
+    if (drop){
+      const b = document.body;
+      this.app.b([b], ['dragenter', 'dragleave', 'drop', 'mouseover'], e => this.detectDragBody(e));
+      this.app.b(q, ['dragenter', 'dragleave', 'drop'], e => this.detectDragTarget(e));
+      this.app.b([b], 'drop', e => this.drop(e));
+    }
+//listen to all events
+/*
+Object.keys(window).forEach(key => {
+    if (/^on/.test(key)) window.addEventListener(key.slice(2), e => console.log('EVENT', e.type));
+});
+*/
   }
   
   prepare(n) {
@@ -95,21 +111,30 @@ export default class extends Plugin {
     if (url) this.app.fire('exhibit', {n: d, opt: {num: false}}); // re-init gallery
   }
   
-  prepareDrop(n) {
-    if (n) {
-      const b = document.body;
-      //this.app.b([b], 'dragover', (e) => e.preventDefault());
-      this.app.b([b], 'dragenter', e => b.classList.add('drag'));
-      this.app.b([b], 'dragend', e => b.classList.remove('drag'));
-      this.app.b([n], 'dragleave', e => b.classList.remove('drag'));
-      
-      this.app.b([n], 'drop', (e) => {
-        b.classList.remove('drag');
-        if (e.target.hasAttribute('data-submit') || e.ctrlKey || e.shiftKey) {
-          setTimeout(() => n.form.submit(), 200);
-        }
-      });
-    } 
+  detectDragBody(e) {
+    /*
+    events sequence:
+    - dragenter
+    - [dragenter dragleave] *
+    - [dragleave | drop | NOTHING (if dropped not into file input) -> mouseover/focus/blur]
+    */
+    if (e.type === 'drop' || e.type === 'mouseover') this.dragging = 0;
+    else{
+      e.preventDefault();
+      this.dragging += (e.type === 'dragenter' ? 1 : -1);
+    }
+    document.body.classList[this.dragging > 0 ? 'add' : 'remove']('drag');
+  }
+  
+  detectDragTarget(e) {
+    e.target.classList[e.type === 'dragenter' ? 'add' : 'remove']('act');
+  }
+  
+  drop(e) {
+    //if (e.target.tagName !== 'INPUT') e.preventDefault();
+    if (e.target.form && e.target.hasAttribute('data-submit') || e.ctrlKey || e.shiftKey) {
+      setTimeout(() => e.target.form.submit(), 200);
+    }
   }
 
 }
