@@ -89,6 +89,7 @@ export default class extends Plugin {
         //if (e.type.indexOf('touch') != -1 && (dir || trg.tagName != 'A')) e.preventDefault();
         if (xy[2]) {
           e.preventDefault(); //if (e.type.indexOf('touch') != -1)
+          e.unfire = true; // avoid unhash()
           const url = this.moved.dataset['swipe' + xy[2]];
           if (url) location.hash = url;
           else this.app.fire('swipe', {n: this.moved, x: xy[0], y: xy[1], dir: xy[2]});

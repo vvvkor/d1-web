@@ -1,4 +1,4 @@
-/*! d1-web v2.2.5 */
+/*! d1-web v2.2.6 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -356,7 +356,7 @@ var _default = /*#__PURE__*/function () {
 
       this.dbg(['fire ' + et, e]);
       if (this.handlers[et]) this.handlers[et].forEach(function (h) {
-        return h.call(_this4, e);
+        return (e === null || e === void 0 ? void 0 : e.unfire) ? null : h.call(_this4, e);
       });
     }
   }, {
@@ -761,10 +761,8 @@ var _default = /*#__PURE__*/function (_Plugin) {
         n.setAttribute('data-tip', n.title.replace(/\s\s+/g, '\n'));
         n.title = '';
       }); //init tooltips
+      //app.listen('swipe', e => this.swipe(e));
 
-      app.listen('swipe', function (e) {
-        return _this2.swipe(e);
-      });
       /*
       app.e(this.opt.qTip, n => {
         let p = app.ins('div',app.ins('div', n.title.replace(/\s\s+/g, '<br>'), 'btn bg-n'), 'pop', n, 1);
@@ -773,16 +771,15 @@ var _default = /*#__PURE__*/function (_Plugin) {
       });//init tooltips as popup
       */
     }
-  }, {
-    key: "swipe",
-    value: function swipe(e) {
+    /*
+    swipe(e) {
       if (e.n.matches(this.opt.qDrw)) {
         this.tgl(e.n, false);
-        setTimeout(function () {
-          return e.n.style.transform = '';
-        }, 500);
+        setTimeout(() => e.n.style.transform = '', 500);
       }
     }
+    */
+
   }, {
     key: "modalStyle",
     value: function modalStyle(e) {
@@ -879,8 +876,8 @@ var _default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "onClick",
     value: function onClick(e) {
-      this.nEsc = 0; // if (!e.target.closest('a, input, select, textarea')) this.unhash(); // breaks swipe hash links
-
+      this.nEsc = 0;
+      if (!e.target.closest('a, input, select, textarea')) this.unhash();
       if (e.clientX >= 0 && e.clientX <= 10 && e.clientY > 5 && this.opt.qDrawer) this.toggle(this.opt.qDrawer);
     }
   }, {
@@ -5429,6 +5426,8 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
 
           if (xy[2]) {
             e.preventDefault(); //if (e.type.indexOf('touch') != -1)
+
+            e.unfire = true; // avoid unhash()
 
             var url = this.moved.dataset['swipe' + xy[2]];
             if (url) location.hash = url;else this.app.fire('swipe', {

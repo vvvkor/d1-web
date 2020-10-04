@@ -99,7 +99,7 @@ export default class {
 
   fire(et, e) {
     this.dbg(['fire ' + et, e])
-    if (this.handlers[et]) this.handlers[et].forEach(h => h.call(this, e))
+    if (this.handlers[et]) this.handlers[et].forEach(h => e?.unfire ? null : h.call(this, e))
   }
   
   listen(et, f) {

@@ -71,7 +71,7 @@ export default class extends Plugin{
     app.e(this.opt.qTab + ':first-child', n => app.a(n.parentNode.children).filter(m => app.vis(m)).length ? null : this.tgl(app.q(app.q('a[href^="#"]', n.parentNode.previousElementSibling).hash), 1));//inactive tabs: show first
     app.e('.' + app.opt.cToggle + '[id]', n => this.hiliteLinks(n));//init links state
     app.e(this.opt.qTip, n => { n.setAttribute('data-tip', n.title.replace(/\s\s+/g, '\n')); n.title = ''; });//init tooltips
-    app.listen('swipe', e => this.swipe(e));
+    //app.listen('swipe', e => this.swipe(e));
     /*
     app.e(this.opt.qTip, n => {
       let p = app.ins('div',app.ins('div', n.title.replace(/\s\s+/g, '<br>'), 'btn bg-n'), 'pop', n, 1);
@@ -81,12 +81,14 @@ export default class extends Plugin{
     */
   }
 
+  /*
   swipe(e) {
     if (e.n.matches(this.opt.qDrw)) {
       this.tgl(e.n, false);
       setTimeout(() => e.n.style.transform = '', 500);
     }
   }
+  */
 
   modalStyle(e) {
     let n = e ? e.target : null;
@@ -175,7 +177,7 @@ export default class extends Plugin{
   
   onClick(e) {
     this.nEsc = 0;
-    // if (!e.target.closest('a, input, select, textarea')) this.unhash(); // breaks swipe hash links
+    if (!e.target.closest('a, input, select, textarea')) this.unhash();
     if (e.clientX>=0 && e.clientX<=10 && e.clientY>5 && this.opt.qDrawer) this.toggle(this.opt.qDrawer);
   }
   
