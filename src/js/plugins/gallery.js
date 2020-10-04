@@ -24,7 +24,7 @@ export default class extends Plugin {
     this.app.listen('hashchange', e => this.onHash(e));
     this.app.listen('keydown', e => this.onKey(e));
     this.app.h('click', this.opt.qGal, e => this.next(e));
-    this.app.listen('swipe', e => this.swipe(e));
+    //this.app.listen('swipe', e => this.swipe(e));
     this.app.listen('exhibit', e => this.reinit(e));
     this.prepareAll();
   }
@@ -39,6 +39,7 @@ export default class extends Plugin {
     this.app.e(this.app.qq(this.opt.qGallery, d), n => this.prepare(n));
   }
   
+  /*
   swipe(e) {
     if (e.n.matches(this.opt.qGal)) {
       if (e.dir == 4) this.browse(e.n); // left
@@ -47,6 +48,7 @@ export default class extends Plugin {
       else if (e.dir == 1) this.visit(e.n); // up
     }
   }
+  */
   
   next(e) {
     if (e.defaultPrevented) return;
@@ -91,10 +93,16 @@ export default class extends Plugin {
     for (let i=0; i<z; i++) if (!a[i].vDone) {
       const s = app.seq();
       if (!i) first = s;
+      const next = '#' + opt.idPrefix + (i == z-1 ? first : s+1);
+      const prev = '#' + opt.idPrefix + (i == 0 ? first+z-1 : s-1);
       const p = app.ins('a', '', {
           className: 'gallery-pic swipe drag',
           id: opt.idPrefix + s,
-          href: '#' + opt.idPrefix + (i == z-1 ? first : s+1)
+          href: next,
+          'data-swipe-up': a[i].href || '',
+          'data-swipe-right': prev,
+          'data-swipe-down': this.app.opt.hClose,
+          'data-swipe-left': next
           }, g);
       //p.style.setProperty('--img', 'url("' + (a[i].getAttribute('href') || '') + '")');
       //p.style.backgroundImage = 'url("' + (a[i].getAttribute('href') || '') + '")';//preload all

@@ -32,7 +32,7 @@ export default class extends Plugin {
     s.margin = 0;
     s.opacity = .5;
     //drawer
-    this.drw = this.app.ins('div', '', {id: this.opt.idTheme, className: this.app.opt.cToggle + ' ' + this.app.opt.cOff + ' drawer swipe drag pad small shift theme-drawer', 'data-swipe': '2'}, document.body);
+    this.drw = this.app.ins('div', '', {id: this.opt.idTheme, className: this.app.opt.cToggle + ' ' + this.app.opt.cOff + ' drawer swipe drag pad small shift theme-drawer', 'data-swipe-right': this.app.opt.hClose}, document.body);
     this.app.ins('a', '&#x2715;', {href: '#cancel', className: 'pad hover close'}, this.drw);
     
     //menu

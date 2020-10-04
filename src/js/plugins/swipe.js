@@ -48,7 +48,7 @@ export default class extends Plugin {
     }
     this.moved = e.target.closest(this.opt.qSwipe);
     if (this.moved) {
-      e.preventDefault(); // fix firefox: avoid click on dragend
+      if (e.type.indexOf('touch') == -1) e.preventDefault(); // fix firefox: avoid click on dragend
       let t = e.touches ? e.touches[0] : e;
       this.c.sX = this.c.eX = t.screenX; 
       this.c.sY = this.c.eY = t.screenY;
@@ -58,7 +58,7 @@ export default class extends Plugin {
   onMove(e) {
     //console.log('swipe move', e.type, this.moved?.tagName)
     if (this.moved) {
-      e.preventDefault();
+      if (e.type.indexOf('touch') == -1) e.preventDefault();
       this.drag_(e);
     }
   }
@@ -83,16 +83,18 @@ export default class extends Plugin {
     if (this.moved) {
       let undo = (e.type == 'mouseleave' || e.type == 'touchcancel');
       if (undo || !this.moved.matches(this.opt.qKeepDrag)) this.undrag();
+      else setTimeout(this.undrag.bind(this, this.moved), 500);
       if (!undo) {
         let xy = this.shift();
         //after touch event: handle mouse events only on A nodes without swipe
         //if (e.type.indexOf('touch') != -1 && (dir || trg.tagName != 'A')) e.preventDefault();
         if (xy[2]) {
-          e.preventDefault(); //if (e.type.indexOf('touch') != -1)
+          //if (e.type.indexOf('touch') != -1)
+            e.preventDefault(); // does not prevent click in firefox
           e.unfire = true; // avoid unhash()
           const url = this.moved.dataset['swipe' + xy[2]];
-          if (url) location.hash = url;
-          else this.app.fire('swipe', {n: this.moved, x: xy[0], y: xy[1], dir: xy[2]});
+          if (url) location.href = url;
+          else this.app.fire('swipe', {e, n: this.moved, x: xy[0], y: xy[1], dir: xy[2]});
         }
       }
       this.moved.classList.remove(this.opt.cDragging);
@@ -101,16 +103,20 @@ export default class extends Plugin {
   }
   
   shift() {
-    let dirs = this.moved.dataset.swipe || '1234'; // 1=up
+    //let dirs = this.moved.dataset.swipe || '1234'; // 1=up
     let dx = this.c.eX - this.c.sX;
     let dy = this.c.eY - this.c.sY;
     let adx = Math.abs(dx);
     let ady = Math.abs(dy); 
     let r = [0, 0, 0];
     if (adx >= this.opt.minSwipe || ady >= this.opt.minSwipe) {
-      r = (adx > ady) ? [dx, 0, dx>0 ? 2 : 4] : [0, dy, dy>0 ? 3 : 1];
+      // r = (adx > ady) ? [dx, 0, dx>0 ? 2 : 4] : [0, dy, dy>0 ? 3 : 1];
+      r = (adx > ady)
+        ? [dx, 0, dx>0 ? 'Right' : 'Left']
+        : [0, dy, dy>0 ? 'Down' : 'Up'];
     }
-    if (dirs.indexOf(r[2]) ===-1) r = [0, 0, 0];
+    //if (dirs.indexOf(r[2]) ===-1) r = [0, 0, 0];
+    if (!('swipe' + r[2] in this.moved.dataset)) r = [0, 0, 0];
     return r;
   }
   

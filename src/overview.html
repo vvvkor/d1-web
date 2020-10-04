@@ -103,8 +103,8 @@
   </head>
   <body id="body"
 		class="js-theme trans swipe"
-		data-swipe2="#menu"
-		data-swipe4="#theme-config"
+		data-swipe-right="#menu"
+		data-swipe-left="#theme-config"
 		data-d1='{"debug":false,"plug":{"toggle":{"keepHash":true},"theme":{"fonts":["sans-serif","serif","monospace","PT Sans","Roboto Slab"]}}}'>
 
 <!--div class="bg-w">
@@ -176,18 +176,18 @@ Text
 		<h1 class="mar">d1 <span class="text-n">frontend framework</span></h1>
 		
 		<p class="swipe drag pad bg-e text-e icon-ban fit bord"
-			data-swipe1="#swipe-up"
-			data-swipe2="#swipe-right"
-			data-swipe3="#swipe-down"
-			data-swipe4="#swipe-left"
+			data-swipe-up="#swipe-up"
+			data-swipe-right="#swipe-right"
+			data-swipe-down="#swipe-down"
+			data-swipe-left="#swipe-left"
 			>Alert (swipe me)</p>
-		<p class="swipe drag pad bg-w text-w icon-warning">Warning</p>
-		<p class="swipe drag pad bg-y text-y stick item shade bord icon-ok">
+		<p class="drag pad bg-w text-w icon-warning">Warning</p>
+		<p class="drag pad bg-y text-y stick item shade bord icon-ok">
 			<a href="#delete" class="pad close icon-close empty"><span>Dismiss</span></a>
 			Sticky success message
 		</p>
-		<p class="swipe drag pad bg-i text-i icon-info">Info</p>
-		<p class="swipe drag pad bg-n text-n icon-text">Note</p>
+		<p class="drag pad bg-i text-i icon-info">Info</p>
+		<p class="drag pad bg-n text-n icon-text">Note</p>
 		
 		<h2 class="mem" id="typo">Typography</h2>
 		
@@ -824,7 +824,7 @@ let double = function (x) {
 				<a id="gal3" href="#gal1" style="--img:url(https://picsum.photos/id/830/1000/700.jpg)" data-caption="3/3 - Blue"></a>
 				<a class="close icon-close empty" href="#cancel"><span>Close</span></a>
 			</div>
-			<div class="drawer pad swipe drag" id="menu" data-swipe="4">
+			<div class="drawer pad swipe drag" id="menu" data-swipe-left="#cancel">
 				<a class="close pad icon-close empty" href="#cancel"><span>Close</span></a>
 				<h3 class="icon-flag">Languages</h3>
 				<ul class="tree accordion mem fit">

@@ -1,4 +1,4 @@
-/*! d1-web v2.2.6 */
+/*! d1-web v2.2.8 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -1416,10 +1416,8 @@ var _default = /*#__PURE__*/function (_Plugin) {
       });
       this.app.h('click', this.opt.qGal, function (e) {
         return _this2.next(e);
-      });
-      this.app.listen('swipe', function (e) {
-        return _this2.swipe(e);
-      });
+      }); //this.app.listen('swipe', e => this.swipe(e));
+
       this.app.listen('exhibit', function (e) {
         return _this2.reinit(e);
       });
@@ -1445,16 +1443,17 @@ var _default = /*#__PURE__*/function (_Plugin) {
         return _this3.prepare(n);
       });
     }
-  }, {
-    key: "swipe",
-    value: function swipe(e) {
+    /*
+    swipe(e) {
       if (e.n.matches(this.opt.qGal)) {
         if (e.dir == 4) this.browse(e.n); // left
         else if (e.dir == 2) this.browse(e.n, true); // right
-          else if (e.dir == 3) this.app.fire('esc'); // down
-            else if (e.dir == 1) this.visit(e.n); // up
+        else if (e.dir == 3) this.app.fire('esc'); // down
+        else if (e.dir == 1) this.visit(e.n); // up
       }
     }
+    */
+
   }, {
     key: "next",
     value: function next(e) {
@@ -1511,10 +1510,16 @@ var _default = /*#__PURE__*/function (_Plugin) {
         if (!a[i].vDone) {
           var s = app.seq();
           if (!i) first = s;
+          var next = '#' + opt.idPrefix + (i == z - 1 ? first : s + 1);
+          var prev = '#' + opt.idPrefix + (i == 0 ? first + z - 1 : s - 1);
           var p = app.ins('a', '', {
             className: 'gallery-pic swipe drag',
             id: opt.idPrefix + s,
-            href: '#' + opt.idPrefix + (i == z - 1 ? first : s + 1)
+            href: next,
+            'data-swipe-up': a[i].href || '',
+            'data-swipe-right': prev,
+            'data-swipe-down': this.app.opt.hClose,
+            'data-swipe-left': next
           }, g); //p.style.setProperty('--img', 'url("' + (a[i].getAttribute('href') || '') + '")');
           //p.style.backgroundImage = 'url("' + (a[i].getAttribute('href') || '') + '")';//preload all
 

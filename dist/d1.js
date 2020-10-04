@@ -1,4 +1,4 @@
-/*! d1-web v2.2.6 */
+/*! d1-web v2.2.8 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -1416,10 +1416,8 @@ var _default = /*#__PURE__*/function (_Plugin) {
       });
       this.app.h('click', this.opt.qGal, function (e) {
         return _this2.next(e);
-      });
-      this.app.listen('swipe', function (e) {
-        return _this2.swipe(e);
-      });
+      }); //this.app.listen('swipe', e => this.swipe(e));
+
       this.app.listen('exhibit', function (e) {
         return _this2.reinit(e);
       });
@@ -1445,16 +1443,17 @@ var _default = /*#__PURE__*/function (_Plugin) {
         return _this3.prepare(n);
       });
     }
-  }, {
-    key: "swipe",
-    value: function swipe(e) {
+    /*
+    swipe(e) {
       if (e.n.matches(this.opt.qGal)) {
         if (e.dir == 4) this.browse(e.n); // left
         else if (e.dir == 2) this.browse(e.n, true); // right
-          else if (e.dir == 3) this.app.fire('esc'); // down
-            else if (e.dir == 1) this.visit(e.n); // up
+        else if (e.dir == 3) this.app.fire('esc'); // down
+        else if (e.dir == 1) this.visit(e.n); // up
       }
     }
+    */
+
   }, {
     key: "next",
     value: function next(e) {
@@ -1511,10 +1510,16 @@ var _default = /*#__PURE__*/function (_Plugin) {
         if (!a[i].vDone) {
           var s = app.seq();
           if (!i) first = s;
+          var next = '#' + opt.idPrefix + (i == z - 1 ? first : s + 1);
+          var prev = '#' + opt.idPrefix + (i == 0 ? first + z - 1 : s - 1);
           var p = app.ins('a', '', {
             className: 'gallery-pic swipe drag',
             id: opt.idPrefix + s,
-            href: '#' + opt.idPrefix + (i == z - 1 ? first : s + 1)
+            href: next,
+            'data-swipe-up': a[i].href || '',
+            'data-swipe-right': prev,
+            'data-swipe-down': this.app.opt.hClose,
+            'data-swipe-left': next
           }, g); //p.style.setProperty('--img', 'url("' + (a[i].getAttribute('href') || '') + '")');
           //p.style.backgroundImage = 'url("' + (a[i].getAttribute('href') || '') + '")';//preload all
 
@@ -5380,7 +5385,7 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
       this.moved = e.target.closest(this.opt.qSwipe);
 
       if (this.moved) {
-        e.preventDefault(); // fix firefox: avoid click on dragend
+        if (e.type.indexOf('touch') == -1) e.preventDefault(); // fix firefox: avoid click on dragend
 
         var t = e.touches ? e.touches[0] : e;
         this.c.sX = this.c.eX = t.screenX;
@@ -5392,7 +5397,7 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
     value: function onMove(e) {
       //console.log('swipe move', e.type, this.moved?.tagName)
       if (this.moved) {
-        e.preventDefault();
+        if (e.type.indexOf('touch') == -1) e.preventDefault();
         this.drag_(e);
       }
     }
@@ -5418,19 +5423,21 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
       //console.log('swipe end', this.moved, e.which, e.button, e);
       if (this.moved) {
         var undo = e.type == 'mouseleave' || e.type == 'touchcancel';
-        if (undo || !this.moved.matches(this.opt.qKeepDrag)) this.undrag();
+        if (undo || !this.moved.matches(this.opt.qKeepDrag)) this.undrag();else setTimeout(this.undrag.bind(this, this.moved), 500);
 
         if (!undo) {
           var xy = this.shift(); //after touch event: handle mouse events only on A nodes without swipe
           //if (e.type.indexOf('touch') != -1 && (dir || trg.tagName != 'A')) e.preventDefault();
 
           if (xy[2]) {
-            e.preventDefault(); //if (e.type.indexOf('touch') != -1)
+            //if (e.type.indexOf('touch') != -1)
+            e.preventDefault(); // does not prevent click in firefox
 
             e.unfire = true; // avoid unhash()
 
             var url = this.moved.dataset['swipe' + xy[2]];
-            if (url) location.hash = url;else this.app.fire('swipe', {
+            if (url) location.href = url;else this.app.fire('swipe', {
+              e: e,
               n: this.moved,
               x: xy[0],
               y: xy[1],
@@ -5446,8 +5453,7 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "shift",
     value: function shift() {
-      var dirs = this.moved.dataset.swipe || '1234'; // 1=up
-
+      //let dirs = this.moved.dataset.swipe || '1234'; // 1=up
       var dx = this.c.eX - this.c.sX;
       var dy = this.c.eY - this.c.sY;
       var adx = Math.abs(dx);
@@ -5455,10 +5461,12 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
       var r = [0, 0, 0];
 
       if (adx >= this.opt.minSwipe || ady >= this.opt.minSwipe) {
-        r = adx > ady ? [dx, 0, dx > 0 ? 2 : 4] : [0, dy, dy > 0 ? 3 : 1];
-      }
+        // r = (adx > ady) ? [dx, 0, dx>0 ? 2 : 4] : [0, dy, dy>0 ? 3 : 1];
+        r = adx > ady ? [dx, 0, dx > 0 ? 'Right' : 'Left'] : [0, dy, dy > 0 ? 'Down' : 'Up'];
+      } //if (dirs.indexOf(r[2]) ===-1) r = [0, 0, 0];
 
-      if (dirs.indexOf(r[2]) === -1) r = [0, 0, 0];
+
+      if (!('swipe' + r[2] in this.moved.dataset)) r = [0, 0, 0];
       return r;
     }
   }, {
@@ -5697,7 +5705,7 @@ var theme_default = /*#__PURE__*/function (_Plugin) {
       this.drw = this.app.ins('div', '', {
         id: this.opt.idTheme,
         className: this.app.opt.cToggle + ' ' + this.app.opt.cOff + ' drawer swipe drag pad small shift theme-drawer',
-        'data-swipe': '2'
+        'data-swipe-right': this.app.opt.hClose
       }, document.body);
       this.app.ins('a', '&#x2715;', {
         href: '#cancel',

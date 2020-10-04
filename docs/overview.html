@@ -8,16 +8,16 @@
 	<!--link href="https://unpkg.com/normalize.css@8.0.1/normalize.css" rel="stylesheet"-->
 	<!-- "" replaced with ""  -->
 	<!-- CDN --R E M O V E->
-		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.2.6/dist/d1.min.css" rel="stylesheet">
-		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.2.6/dist/d1.min.js"></script>
+		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.2.8/dist/d1.min.css" rel="stylesheet">
+		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.2.8/dist/d1.min.js"></script>
 		<noscript>
-			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.2.6/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.2.8/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- CDN -->
-		<link href="https://unpkg.com/d1-web@2.2.6/dist/d1.min.css" rel="stylesheet">
-		<script src="https://unpkg.com/d1-web@2.2.6/dist/d1.min.js"></script>
+		<link href="https://unpkg.com/d1-web@2.2.8/dist/d1.min.css" rel="stylesheet">
+		<script src="https://unpkg.com/d1-web@2.2.8/dist/d1.min.js"></script>
 		<noscript>
-			<link href="https://unpkg.com/d1-web@2.2.6/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://unpkg.com/d1-web@2.2.8/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- local-npm-src REMOVE -- >
 		<link href="../src/index.css" rel="stylesheet">
@@ -103,8 +103,8 @@
   </head>
   <body id="body"
 		class="js-theme trans swipe"
-		data-swipe2="#menu"
-		data-swipe4="#theme-config"
+		data-swipe-right="#menu"
+		data-swipe-left="#theme-config"
 		data-d1='{"debug":false,"plug":{"toggle":{"keepHash":true},"theme":{"fonts":["sans-serif","serif","monospace","PT Sans","Roboto Slab"]}}}'>
 
 <!--div class="bg-w">
@@ -126,11 +126,11 @@ Text
 	<header class="bg -bg-n -topbar -toggle">
 		<div class="hide-desktop">
 			<a href="#nav" class="pad hover icon-menu empty" title="Menu"><span>Menu</span></a>
-			<a href="?" class="pad"><b>d1</b> <span class="text-n">v2.2.6</span></a>
+			<a href="?" class="pad"><b>d1</b> <span class="text-n">v2.2.8</span></a>
 		</div>
 		
 		<ul class="nav flip hover target-mobile" id="nav">
-			<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v2.2.6</span></a></li>
+			<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v2.2.8</span></a></li>
 			<li><a href="index.html" class="icon-text">Docs</a>
 			<li><a href="https://github.com/vvvkor/d1-web" class="icon-folder" >GitHub</a>
 			<li><a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="icon-download empty-desktop" title="Download"><span>Download</span></a>
@@ -176,18 +176,18 @@ Text
 		<h1 class="mar">d1 <span class="text-n">frontend framework</span></h1>
 		
 		<p class="swipe drag pad bg-e text-e icon-ban fit bord"
-			data-swipe1="#swipe-up"
-			data-swipe2="#swipe-right"
-			data-swipe3="#swipe-down"
-			data-swipe4="#swipe-left"
+			data-swipe-up="#swipe-up"
+			data-swipe-right="#swipe-right"
+			data-swipe-down="#swipe-down"
+			data-swipe-left="#swipe-left"
 			>Alert (swipe me)</p>
-		<p class="swipe drag pad bg-w text-w icon-warning">Warning</p>
-		<p class="swipe drag pad bg-y text-y stick item shade bord icon-ok">
+		<p class="drag pad bg-w text-w icon-warning">Warning</p>
+		<p class="drag pad bg-y text-y stick item shade bord icon-ok">
 			<a href="#delete" class="pad close icon-close empty"><span>Dismiss</span></a>
 			Sticky success message
 		</p>
-		<p class="swipe drag pad bg-i text-i icon-info">Info</p>
-		<p class="swipe drag pad bg-n text-n icon-text">Note</p>
+		<p class="drag pad bg-i text-i icon-info">Info</p>
+		<p class="drag pad bg-n text-n icon-text">Note</p>
 		
 		<h2 class="mem" id="typo">Typography</h2>
 		
@@ -824,7 +824,7 @@ let double = function (x) {
 				<a id="gal3" href="#gal1" style="--img:url(https://picsum.photos/id/830/1000/700.jpg)" data-caption="3/3 - Blue"></a>
 				<a class="close icon-close empty" href="#cancel"><span>Close</span></a>
 			</div>
-			<div class="drawer pad swipe drag" id="menu" data-swipe="4">
+			<div class="drawer pad swipe drag" id="menu" data-swipe-left="#cancel">
 				<a class="close pad icon-close empty" href="#cancel"><span>Close</span></a>
 				<h3 class="icon-flag">Languages</h3>
 				<ul class="tree accordion mem fit">
