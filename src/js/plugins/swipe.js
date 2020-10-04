@@ -88,9 +88,10 @@ export default class extends Plugin {
         //after touch event: handle mouse events only on A nodes without swipe
         //if (e.type.indexOf('touch') != -1 && (dir || trg.tagName != 'A')) e.preventDefault();
         if (xy[2]) {
-          //console.log('swiped', xy[2], this.moved);
           e.preventDefault(); //if (e.type.indexOf('touch') != -1)
-          this.app.fire('swipe', {n: this.moved, x: xy[0], y: xy[1], dir: xy[2]});
+          const url = this.moved.dataset['swipe' + xy[2]];
+          if (url) location.hash = url;
+          else this.app.fire('swipe', {n: this.moved, x: xy[0], y: xy[1], dir: xy[2]});
         }
       }
       this.moved.classList.remove(this.opt.cDragging);

@@ -1,4 +1,4 @@
-/*! d1-web v2.2.4 */
+/*! d1-web v2.2.5 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -879,8 +879,8 @@ var _default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "onClick",
     value: function onClick(e) {
-      this.nEsc = 0;
-      if (!e.target.closest('a, input, select, textarea')) this.unhash();
+      this.nEsc = 0; // if (!e.target.closest('a, input, select, textarea')) this.unhash(); // breaks swipe hash links
+
       if (e.clientX >= 0 && e.clientX <= 10 && e.clientY > 5 && this.opt.qDrawer) this.toggle(this.opt.qDrawer);
     }
   }, {
