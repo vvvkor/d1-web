@@ -37,7 +37,8 @@ export default class extends Plugin {
     //firefox needs also: dragover, dragend (click is not prevented!)
     this.app.b([document], ['mousedown', 'touchstart'], e => this.onStart(e));
     this.app.b([document], ['mousemove', 'touchmove', 'dragover'], e => this.onMove(e), {passive: false});
-    this.app.b([document], ['click', 'mouseleave', 'touchend', 'touchcancel', 'dragend'/*, 'mouseleave'/*, 'blur', 'keydown', 'contextmenu'*/], e => this.onEnd(e), true);
+    //this.app.b([window], 'scroll', e => {console.log('s');this.moved = null});
+    this.app.b([document], ['click', 'mouseleave', 'touchend', 'touchcancel', 'dragend'/*, 'mouseleave'/*, 'blur', 'keydown', 'contextmenu'*/], e => this.onEnd(e), true /*{capture: true, passive: false}*/);
   }
 
   onStart(e) {
@@ -48,7 +49,7 @@ export default class extends Plugin {
     }
     this.moved = e.target.closest(this.opt.qSwipe);
     if (this.moved) {
-      if (e.type.indexOf('touch') == -1) e.preventDefault(); // fix firefox: avoid click on dragend
+      if (!e.type.match(/^touch/)) e.preventDefault(); // fix firefox: avoid click on dragend
       let t = e.touches ? e.touches[0] : e;
       this.c.sX = this.c.eX = t.screenX; 
       this.c.sY = this.c.eY = t.screenY;
@@ -56,9 +57,12 @@ export default class extends Plugin {
   }
 
   onMove(e) {
-    //console.log('swipe move', e.type, this.moved?.tagName)
+    //console.log('swipe move', e.type, this.moved?.tagName, e.target)
     if (this.moved) {
-      if (e.type.indexOf('touch') == -1) e.preventDefault();
+      // avoid scroll on touch drag
+      if (e.type.match(/^touch/) && this.moved.matches(this.opt.qDrag)) e.preventDefault();
+      // avoid swipe inside scrollable elements
+      if (e.target.closest && e.target.closest('.roll')) this.moved = null;
       this.drag_(e);
     }
   }
@@ -87,10 +91,9 @@ export default class extends Plugin {
       if (!undo) {
         let xy = this.shift();
         //after touch event: handle mouse events only on A nodes without swipe
-        //if (e.type.indexOf('touch') != -1 && (dir || trg.tagName != 'A')) e.preventDefault();
+        //if (e.type.match(/^touch/) && (dir || trg.tagName != 'A')) e.preventDefault();
         if (xy[2]) {
-          //if (e.type.indexOf('touch') != -1)
-            e.preventDefault(); // does not prevent click in firefox
+          if (!e.type.match(/^touch/)) e.preventDefault(); // prevent click
           e.unfire = true; // avoid unhash()
           const url = this.moved.dataset['swipe' + xy[2]];
           if (url) location.href = url;

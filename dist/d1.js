@@ -1,4 +1,4 @@
-/*! d1-web v2.2.8 */
+/*! d1-web v2.2.9 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -5366,12 +5366,15 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
         return _this2.onMove(e);
       }, {
         passive: false
-      });
+      }); //this.app.b([window], 'scroll', e => {console.log('s');this.moved = null});
+
       this.app.b([document], ['click', 'mouseleave', 'touchend', 'touchcancel', 'dragend'
       /*, 'mouseleave'/*, 'blur', 'keydown', 'contextmenu'*/
       ], function (e) {
         return _this2.onEnd(e);
-      }, true);
+      }, true
+      /*{capture: true, passive: false}*/
+      );
     }
   }, {
     key: "onStart",
@@ -5385,7 +5388,7 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
       this.moved = e.target.closest(this.opt.qSwipe);
 
       if (this.moved) {
-        if (e.type.indexOf('touch') == -1) e.preventDefault(); // fix firefox: avoid click on dragend
+        if (!e.type.match(/^touch/)) e.preventDefault(); // fix firefox: avoid click on dragend
 
         var t = e.touches ? e.touches[0] : e;
         this.c.sX = this.c.eX = t.screenX;
@@ -5395,9 +5398,12 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "onMove",
     value: function onMove(e) {
-      //console.log('swipe move', e.type, this.moved?.tagName)
+      //console.log('swipe move', e.type, this.moved?.tagName, e.target)
       if (this.moved) {
-        if (e.type.indexOf('touch') == -1) e.preventDefault();
+        // avoid scroll on touch drag
+        if (e.type.match(/^touch/) && this.moved.matches(this.opt.qDrag)) e.preventDefault(); // avoid swipe inside scrollable elements
+
+        if (e.target.closest && e.target.closest('.roll')) this.moved = null;
         this.drag_(e);
       }
     }
@@ -5427,11 +5433,10 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
 
         if (!undo) {
           var xy = this.shift(); //after touch event: handle mouse events only on A nodes without swipe
-          //if (e.type.indexOf('touch') != -1 && (dir || trg.tagName != 'A')) e.preventDefault();
+          //if (e.type.match(/^touch/) && (dir || trg.tagName != 'A')) e.preventDefault();
 
           if (xy[2]) {
-            //if (e.type.indexOf('touch') != -1)
-            e.preventDefault(); // does not prevent click in firefox
+            if (!e.type.match(/^touch/)) e.preventDefault(); // prevent click
 
             e.unfire = true; // avoid unhash()
 
