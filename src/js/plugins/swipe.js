@@ -70,8 +70,8 @@ export default class extends Plugin {
   
   hasScroll(n, hor) {
     return hor
-      ? n.scrollWidth > n.clientWidth
-      : n.scrollHeight > n.clientHeight
+      ? n.scrollWidth > n.clientWidth + 20
+      : n.scrollHeight > n.clientHeight + 20
   }
   
   inScroll(n, hor) {

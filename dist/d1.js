@@ -1,4 +1,4 @@
-/*! d1-web v2.2.11 */
+/*! d1-web v2.2.12 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -5404,7 +5404,7 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "hasScroll",
     value: function hasScroll(n, hor) {
-      return hor ? n.scrollWidth > n.clientWidth : n.scrollHeight > n.clientHeight;
+      return hor ? n.scrollWidth > n.clientWidth + 20 : n.scrollHeight > n.clientHeight + 20;
     }
   }, {
     key: "inScroll",
