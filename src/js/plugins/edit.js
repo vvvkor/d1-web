@@ -84,7 +84,7 @@ export default class extends Plugin {
     app.b([window], 'paste', e => this.onPaste(e), true);
     //adjust
     app.h('input', this.opt.qAdjust, e => this.adjust(e.target));
-    app.h('mouseup', this.opt.qAdjust, e => this.resized(e.target));
+    app.b([window], 'mouseup', e => e.target.matches?.(this.opt.qAdjust) ? this.resized(e.target) : null);
     app.b([window], 'resize', e => this.adjustAll());
   }
   

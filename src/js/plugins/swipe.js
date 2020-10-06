@@ -35,6 +35,7 @@ export default class extends Plugin {
       }
     */
     //firefox needs also: dragover, dragend (click is not prevented!)
+    //this.app.b([document], 'mousedown', e => e.preventDefault());
     this.app.b([document], ['mousedown', 'touchstart'], e => this.onStart(e));
     this.app.b([document], ['mousemove', 'touchmove', 'dragover'], e => this.onMove(e), {passive: false});
     //this.app.b([window], 'scroll', e => {console.log('s');this.moved = null});
@@ -49,7 +50,7 @@ export default class extends Plugin {
     }
     this.moved = e.target.closest(this.opt.qSwipe);
     if (this.moved) {
-      if (!e.type.match(/^touch/)) e.preventDefault(); // fix firefox: avoid click on dragend
+      ////if (!e.type.match(/^touch/)) e.preventDefault(); // avoid click
       let t = e.touches ? e.touches[0] : e;
       this.c.sX = this.c.eX = t.screenX; 
       this.c.sY = this.c.eY = t.screenY;
@@ -62,8 +63,21 @@ export default class extends Plugin {
       // avoid scroll on touch drag
       if (e.type.match(/^touch/) && this.moved.matches(this.opt.qDrag)) e.preventDefault();
       // avoid swipe inside scrollable elements
-      if (e.target.closest && e.target.closest('.roll')) this.moved = null;
+      //if (e.target.closest && e.target.closest('.roll')) this.moved = null;
       this.drag_(e);
+    }
+  }
+  
+  hasScroll(n, hor) {
+    return hor
+      ? n.scrollWidth > n.clientWidth
+      : n.scrollHeight > n.clientHeight
+  }
+  
+  inScroll(n, hor) {
+    while (n) {
+      if (this.hasScroll(n, hor)) return true;
+      n = n.parentNode;
     }
   }
 
@@ -83,21 +97,27 @@ export default class extends Plugin {
   }
   
   onEnd(e) {
-    //console.log('swipe end', this.moved, e.which, e.button, e);
     if (this.moved) {
+      //console.log('swipe end', e.type, this.moved, e.which, e.button, e);
       let undo = (e.type == 'mouseleave' || e.type == 'touchcancel');
       if (undo || !this.moved.matches(this.opt.qKeepDrag)) this.undrag();
       else setTimeout(this.undrag.bind(this, this.moved), 500);
       if (!undo) {
         let xy = this.shift();
-        //after touch event: handle mouse events only on A nodes without swipe
-        //if (e.type.match(/^touch/) && (dir || trg.tagName != 'A')) e.preventDefault();
         if (xy[2]) {
-          if (!e.type.match(/^touch/)) e.preventDefault(); // prevent click
-          e.unfire = true; // avoid unhash()
-          const url = this.moved.dataset['swipe' + xy[2]];
-          if (url) location.href = url;
-          else this.app.fire('swipe', {e, n: this.moved, x: xy[0], y: xy[1], dir: xy[2]});
+          //if touch scroll then no swipe
+          const scrollTouch = (
+            e.type.match(/^touch/)
+            && !this.moved.matches(this.opt.qDrag)
+            && this.inScroll(e.target, xy[0])
+          );
+          if (!scrollTouch) {
+            //if (!e.type.match(/^touch/)) e.preventDefault(); // prevent click
+            e.unfire = true; // avoid unhash()
+            const url = this.moved.dataset['swipe' + xy[2]];
+            if (url) location.href = url;
+            else this.app.fire('swipe', {e, n: this.moved, x: xy[0], y: xy[1], dir: xy[2]});
+          }
         }
       }
       this.moved.classList.remove(this.opt.cDragging);

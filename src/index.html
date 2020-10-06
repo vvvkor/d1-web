@@ -17,15 +17,22 @@
 		<noscript>
 			<link href="https://unpkg.com/d1-web@0.0.0/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
-	<!-- local-npm-src REMOVE-->
+	<!-- local-npm-src REMOVE -- >
 		<link href="../src/index.css" rel="stylesheet">
 		<script src="../dist/d1.min.js"></script>
+		<noscript>
+			<link href="../dist/d1-icons.css" rel="stylesheet">
+		</noscript>
+	<!-- local-module (test with no need to compile) REMOVE-->
+		<link href="../src/index.css" rel="stylesheet">
+		<script src="../src/index.js" type="module"></script>
 		<noscript>
 			<link href="../dist/d1-icons.css" rel="stylesheet">
 		</noscript>
 	<!-- -->
 	
 	<script>
+	window.addEventListener('load', e => {
 		console.log('d1 = ', d1);
 		//d1.b([document], 'DOMContentLoaded', d1.e.bind(d1, 'code', n => n.classList.add('bg-w')));
 		
@@ -84,6 +91,7 @@
 			d1.e('#options-all-icons [' + d1.plugins.tools.opt.aSet + ']', n => d1.plugins.tools.toggleClass(n)); 
 		});
 		*/
+	});
 	</script>
 	<style>
 		/* Roboto, Open Sans, Georgia, PT Sans, PT Serif, PT Mono */
@@ -194,6 +202,7 @@ data-d1='{"hOk":"#yes","debug":false,"disable":[
 			<li><a href="#icons">Icons</a>
 			<li><a href="#code-highlight">Code highlight</a>
 			<li><a href="#code-sample">Code sample</a>
+			<li><a href="#swipe">Swipe</a>
 			<li><a href="#theme">Theme</a>
 			</ul>
 		<li><a href="#n-style">Style</a> &rsaquo;
@@ -2027,6 +2036,31 @@ let double = function(x){
 <div class="code">
 	<div class="code">
 		<abbr title="Hypertext Markup Language">HTML</abbr> code sample
+	</div>
+</div>
+
+
+<h3 id="swipe">Swipe</h3>
+
+<p>Add <code>.swipe</code> class to the element.
+Add URLs of swipe actions in some of <code>data-swipe-up</code>, <code>data-swipe-down</code>, <code>data-swipe-left</code>, <code>data-swipe-right</code> attributes.
+<p>To drag element while swiping, add also <code>.drag</code> class.
+
+<div class="code">
+	<div
+		class="swipe pad mar bg-y"
+		data-swipe-left="#swipe-left"
+		data-swipe-right="#swipe-right"
+	>
+		Swipe left and right, see URL hash
+	</div>
+	<div
+		class="swipe drag pad mar bg-w"
+		data-swipe-up="#drag-up"
+		data-swipe-down="#drag-down"
+	>
+		Drag up and down,<br>
+		see URL hash
 	</div>
 </div>
 

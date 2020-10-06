@@ -6,26 +6,33 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 
 	<!-- CDN --R E M O V E->
-		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.2.9/dist/d1.min.css" rel="stylesheet">
-		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.2.9/dist/d1.min.js"></script>
+		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.2.11/dist/d1.min.css" rel="stylesheet">
+		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.2.11/dist/d1.min.js"></script>
 		<noscript>
-			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.2.9/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.2.11/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- CDN -->
-		<link href="https://unpkg.com/d1-web@2.2.9/dist/d1.min.css" rel="stylesheet">
-		<script src="https://unpkg.com/d1-web@2.2.9/dist/d1.min.js"></script>
+		<link href="https://unpkg.com/d1-web@2.2.11/dist/d1.min.css" rel="stylesheet">
+		<script src="https://unpkg.com/d1-web@2.2.11/dist/d1.min.js"></script>
 		<noscript>
-			<link href="https://unpkg.com/d1-web@2.2.9/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://unpkg.com/d1-web@2.2.11/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
-	<!-- local-npm-src ->
+	<!-- local-npm-src REMOVE -- >
 		<link href="../src/index.css" rel="stylesheet">
 		<script src="../dist/d1.min.js"></script>
+		<noscript>
+			<link href="../dist/d1-icons.css" rel="stylesheet">
+		</noscript>
+	<!-- local-module (test with no need to compile) ->
+		<link href="../src/index.css" rel="stylesheet">
+		<script src="../src/index.js" type="module"></script>
 		<noscript>
 			<link href="../dist/d1-icons.css" rel="stylesheet">
 		</noscript>
 	<!-- -->
 	
 	<script>
+	window.addEventListener('load', e => {
 		console.log('d1 = ', d1);
 		//d1.b([document], 'DOMContentLoaded', d1.e.bind(d1, 'code', n => n.classList.add('bg-w')));
 		
@@ -84,6 +91,7 @@
 			d1.e('#options-all-icons [' + d1.plugins.tools.opt.aSet + ']', n => d1.plugins.tools.toggleClass(n)); 
 		});
 		*/
+	});
 	</script>
 	<style>
 		/* Roboto, Open Sans, Georgia, PT Sans, PT Serif, PT Mono */
@@ -108,7 +116,7 @@ data-d1='{"hOk":"#yes","debug":false,"disable":[
 	<a href="#menu" class="pad -let hide-desktop icon-menu empty" title="Menu"><span>Menu</span></a>
 	<a href="#top" class="pad -let"><b>d1</b></a>
 	<code class="-pad -nobr hide-mobile">npm i d1-web</code>
-	<a class="shift pad text-n">v2.2.9</a>
+	<a class="shift pad text-n">v2.2.11</a>
 	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1-web" title="GitHub" class="pad -let">GitHub</a>
 	<a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="pad -let icon-download empty" ><span>Download</span></a>
 </div>
@@ -194,6 +202,7 @@ data-d1='{"hOk":"#yes","debug":false,"disable":[
 			<li><a href="#icons">Icons</a>
 			<li><a href="#code-highlight">Code highlight</a>
 			<li><a href="#code-sample">Code sample</a>
+			<li><a href="#swipe">Swipe</a>
 			<li><a href="#theme">Theme</a>
 			</ul>
 		<li><a href="#n-style">Style</a> &rsaquo;
@@ -288,19 +297,19 @@ Inclusion of <code>d1.js</code> and <code>d1-icons.css</code> is optional.
 </ul>
 <div>
 	<div id="cdn-jsdelivr">
-		<pre><code class="language-html">&lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.2.9/dist/d1.min.css" rel="stylesheet"&gt;
-&lt;script src="https://cdn.jsdelivr.net/npm/d1-web@2.2.9/dist/d1.min.js"&gt;&lt;/script&gt;
+		<pre><code class="language-html">&lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.2.11/dist/d1.min.css" rel="stylesheet"&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/d1-web@2.2.11/dist/d1.min.js"&gt;&lt;/script&gt;
 &lt;noscript&gt;
-  &lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.2.9/dist/d1-icons.min.css" rel="stylesheet"&gt;
+  &lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.2.11/dist/d1-icons.min.css" rel="stylesheet"&gt;
 &lt;/noscript&gt;
 
 		</code></pre>
 	</div>
 	<div id="cdn-unpkg">
-		<pre><code class="language-html">&lt;link href="https://unpkg.com/d1-web@2.2.9/dist/d1.min.css" rel="stylesheet"&gt;
-&lt;script src="https://unpkg.com/d1-web@2.2.9/dist/d1.min.js"&gt;&lt;/script&gt;
+		<pre><code class="language-html">&lt;link href="https://unpkg.com/d1-web@2.2.11/dist/d1.min.css" rel="stylesheet"&gt;
+&lt;script src="https://unpkg.com/d1-web@2.2.11/dist/d1.min.js"&gt;&lt;/script&gt;
 &lt;noscript&gt;
-  &lt;link href="https://unpkg.com/d1-web@2.2.9/dist/d1-icons.min.css" rel="stylesheet"&gt;
+  &lt;link href="https://unpkg.com/d1-web@2.2.11/dist/d1-icons.min.css" rel="stylesheet"&gt;
 &lt;/noscript&gt		</code></pre>
 	</div>
 	<div id="cdn-unpkg-short">
@@ -2027,6 +2036,31 @@ let double = function(x){
 <div class="code">
 	<div class="code">
 		<abbr title="Hypertext Markup Language">HTML</abbr> code sample
+	</div>
+</div>
+
+
+<h3 id="swipe">Swipe</h3>
+
+<p>Add <code>.swipe</code> class to the element.
+Add URLs of swipe actions in some of <code>data-swipe-up</code>, <code>data-swipe-down</code>, <code>data-swipe-left</code>, <code>data-swipe-right</code> attributes.
+<p>To drag element while swiping, add also <code>.drag</code> class.
+
+<div class="code">
+	<div
+		class="swipe pad mar bg-y"
+		data-swipe-left="#swipe-left"
+		data-swipe-right="#swipe-right"
+	>
+		Swipe left and right, see URL hash
+	</div>
+	<div
+		class="swipe drag pad mar bg-w"
+		data-swipe-up="#drag-up"
+		data-swipe-down="#drag-down"
+	>
+		Drag up and down,<br>
+		see URL hash
 	</div>
 </div>
 

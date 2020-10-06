@@ -3,7 +3,7 @@
 // "module.exports" is used over "export default"
 // to work with build step "css-icons.js"
 
-module.exports = {
+export default {
   
   menu: [7, 'M.5 1h6v1h-6zm0 2h6v1h-6zm0 2h6v1h-6z'],
   sort: [7, 'M1 1h2v1h-2zm0 2h3.5v1h-3.5zm0 2h5v1h-5z'],

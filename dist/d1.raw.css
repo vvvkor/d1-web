@@ -1,4 +1,4 @@
-/*! d1-web v2.2.9 */
+/*! d1-web v2.2.11 */
 
 /* @import url("css/columns.css"); */
 
@@ -617,7 +617,7 @@ mark{background-color:var(--bg-warning);}
 .r{text-align:right;}
 /*.wide{width:100%;}*/
 .narrow{max-width:16em;}
-.dragging{z-index:99;}
+.dragging{z-index:200;/*cursor:pointer;*//*move*/}
 
 /* custom scrollbar */
 .scroller::-webkit-scrollbar{width:.5em;height:.5em;background:#eee;}
