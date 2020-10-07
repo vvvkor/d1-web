@@ -1,4 +1,4 @@
-/*! d1-web v2.2.12 */
+/*! d1-web v2.2.14 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -1464,6 +1464,7 @@ form .mar {
 
 .dragging {
     z-index: 200;
+    position: relative;
 }
 
 .scroller::-webkit-scrollbar {

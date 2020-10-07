@@ -1,4 +1,4 @@
-/*! d1-web v2.2.12 */
+/*! d1-web v2.2.14 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -5361,7 +5361,12 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
         return _this2.onMove(e);
       }, {
         passive: false
-      }); //this.app.b([window], 'scroll', e => {console.log('s');this.moved = null});
+      });
+      this.app.b([window], 'scroll', function (e) {
+        _this2.undrag();
+
+        _this2.moved = null;
+      }, true); // do not swipe if scrolling happened
 
       this.app.b([document], ['click', 'mouseleave', 'touchend', 'touchcancel', 'dragend'
       /*, 'mouseleave'/*, 'blur', 'keydown', 'contextmenu'*/
@@ -5374,7 +5379,7 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "onStart",
     value: function onStart(e) {
-      //console.log('swipe start', e.type, e.button, e.which);
+      // console.log('swipe start', e.type);
       if (e.button > 0) {
         this.moved = null;
         return;
@@ -5392,7 +5397,7 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "onMove",
     value: function onMove(e) {
-      //console.log('swipe move', e.type, this.moved?.tagName, e.target)
+      // console.log('swipe move', e.type, this.moved?.tagName, e.target.tagName)
       if (this.moved) {
         // avoid scroll on touch drag
         if (e.type.match(/^touch/) && this.moved.matches(this.opt.qDrag)) e.preventDefault(); // avoid swipe inside scrollable elements
@@ -5401,19 +5406,21 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
         this.drag_(e);
       }
     }
-  }, {
-    key: "hasScroll",
-    value: function hasScroll(n, hor) {
-      return hor ? n.scrollWidth > n.clientWidth + 20 : n.scrollHeight > n.clientHeight + 20;
-    }
-  }, {
-    key: "inScroll",
-    value: function inScroll(n, hor) {
-      while (n) {
-        if (this.hasScroll(n, hor)) return true;
-        n = n.parentNode;
+    /*
+      hasScroll(n, hor) {
+        return hor
+          ? n.scrollWidth > n.clientWidth + 20
+          : n.scrollHeight > n.clientHeight + 20
       }
-    }
+      
+      inScroll(n, hor) {
+        while (n) {
+          if (this.hasScroll(n, hor)) return true;
+          n = n.parentNode;
+        }
+      }
+    */
+
   }, {
     key: "drag",
     value: function drag(e) {
@@ -5434,7 +5441,7 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
     key: "onEnd",
     value: function onEnd(e) {
       if (this.moved) {
-        //console.log('swipe end', e.type, this.moved, e.which, e.button, e);
+        // console.log('swipe end', e.type, this.moved.tagName);
         var undo = e.type == 'mouseleave' || e.type == 'touchcancel';
         if (undo || !this.moved.matches(this.opt.qKeepDrag)) this.undrag();else setTimeout(this.undrag.bind(this, this.moved), 500);
 
@@ -5443,21 +5450,26 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
 
           if (xy[2]) {
             //if touch scroll then no swipe
-            var scrollTouch = e.type.match(/^touch/) && !this.moved.matches(this.opt.qDrag) && this.inScroll(e.target, xy[0]);
 
+            /*
+            const scrollTouch = (
+              e.type.match(/^touch/)
+              && !this.moved.matches(this.opt.qDrag)
+              && this.inScroll(e.target, xy[0])
+            );
             if (!scrollTouch) {
-              //if (!e.type.match(/^touch/)) e.preventDefault(); // prevent click
-              e.unfire = true; // avoid unhash()
+            */
+            //if (!e.type.match(/^touch/)) e.preventDefault(); // prevent click
+            e.unfire = true; // avoid unhash()
 
-              var url = this.moved.dataset['swipe' + xy[2]];
-              if (url) location.href = url;else this.app.fire('swipe', {
-                e: e,
-                n: this.moved,
-                x: xy[0],
-                y: xy[1],
-                dir: xy[2]
-              });
-            }
+            var url = this.moved.dataset['swipe' + xy[2]];
+            if (url) location.href = url;else this.app.fire('swipe', {
+              e: e,
+              n: this.moved,
+              x: xy[0],
+              y: xy[1],
+              dir: xy[2]
+            }); //}
           }
         }
 
@@ -5488,7 +5500,7 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
     key: "undrag",
     value: function undrag(n) {
       if (!n) n = this.moved;
-      n.style.transform = '';
+      if (n) n.style.transform = '';
     }
   }]);
 
