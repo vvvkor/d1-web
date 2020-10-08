@@ -1,4 +1,4 @@
-/*! d1-web v2.2.14 */
+/*! d1-web v2.2.15 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -4528,6 +4528,7 @@ var pickfile_default = /*#__PURE__*/function (_Plugin) {
         className: 'col-0' + (n.multiple ? ' text-i' : '')
       }, nav);
       a.ins('a', a.i('image', '#'), 'pic col-0', nav);
+      a.ins('a', a.i('download', '#'), 'pickload col-0', nav);
       /*if (n.multiple)*/
 
       a.ins('a', '', 'picknum', nav);
@@ -4611,6 +4612,11 @@ var pickfile_default = /*#__PURE__*/function (_Plugin) {
           n.href = img;
           n.title = fn;
           n.classList[img ? 'remove' : 'add'](_this3.app.opt.cHide);
+        });
+        this.app.e(this.app.qq('a.pickload', d), function (n) {
+          n.href = url;
+          n.title = fn;
+          n.classList[url && !img ? 'remove' : 'add'](_this3.app.opt.cHide);
         });
         this.app.e(this.app.qq('.picknum', d), function (n) {
           return n.textContent = num;

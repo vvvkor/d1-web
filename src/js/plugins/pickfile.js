@@ -46,6 +46,7 @@ Object.keys(window).forEach(key => {
       const nav = a.ins('nav', '', 'pad bg row', cont);
         a.ins('label', a.i('folder', '&uarr;'), {htmlFor: n.id, className: 'col-0' + (n.multiple ? ' text-i' : '')}, nav);
         a.ins('a', a.i('image', '#'), 'pic col-0', nav);
+        a.ins('a', a.i('download', '#'), 'pickload col-0', nav);
         /*if (n.multiple)*/ a.ins('a', '', 'picknum', nav);
         if (n.dataset.picked) a.ins('a', a.i('back', '&larr;'), {className: 'col-0', href: '#pickdef'}, nav);
         a.ins('a', a.i('delete', '&times;'), {className: 'col-0', href: '#unpick'}, nav);
@@ -105,6 +106,7 @@ Object.keys(window).forEach(key => {
       //preview.dataset.tip = fn;
       this.app.e(this.app.qq('[name^="remove_"]', d), n => n.checked = !url && !keep);
       this.app.e(this.app.qq('a.pic', d), n => { n.href = img; n.title = fn; n.classList[img ? 'remove' : 'add'](this.app.opt.cHide); });
+      this.app.e(this.app.qq('a.pickload', d), n => { n.href = url; n.title = fn; n.classList[url && !img ? 'remove' : 'add'](this.app.opt.cHide); });
       this.app.e(this.app.qq('.picknum', d), n => n.textContent = num);
       //this.app.e(this.app.qq('[href="#unpick"]', d), n => n.classList[url ? 'remove' : 'add']('inact'));
       preview.firstChild.classList[url && !img ? 'remove' : 'add'](this.app.opt.cHide);

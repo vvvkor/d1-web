@@ -57,10 +57,7 @@
 						re.forEach(r => d1.e('[' + r[0] + ']', n => n.setAttribute(r[1], n.getAttribute(r[0]))))
 					}
 					re.forEach(r => {
-						d1.e('[' + r[0] + ']', n => {
-							n.removeAttribute(r[0])
-							//d1.fire('update', {n});
-						})
+						d1.e('[' + r[0] + ']', n => n.removeAttribute(r[0]))
 					});
 				});
 		});

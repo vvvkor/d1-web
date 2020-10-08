@@ -8,16 +8,16 @@
 	<!--link href="https://unpkg.com/normalize.css@8.0.1/normalize.css" rel="stylesheet"-->
 	<!-- "" replaced with ""  -->
 	<!-- CDN --R E M O V E->
-		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.2.14/dist/d1.min.css" rel="stylesheet">
-		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.2.14/dist/d1.min.js"></script>
+		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.2.15/dist/d1.min.css" rel="stylesheet">
+		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.2.15/dist/d1.min.js"></script>
 		<noscript>
-			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.2.14/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.2.15/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- CDN -->
-		<link href="https://unpkg.com/d1-web@2.2.14/dist/d1.min.css" rel="stylesheet">
-		<script src="https://unpkg.com/d1-web@2.2.14/dist/d1.min.js"></script>
+		<link href="https://unpkg.com/d1-web@2.2.15/dist/d1.min.css" rel="stylesheet">
+		<script src="https://unpkg.com/d1-web@2.2.15/dist/d1.min.js"></script>
 		<noscript>
-			<link href="https://unpkg.com/d1-web@2.2.14/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://unpkg.com/d1-web@2.2.15/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- local-npm-src REMOVE -- >
 		<link href="../src/index.css" rel="stylesheet">
@@ -38,6 +38,7 @@
 		console.log('d1 = ', d1);
 		//d1.listen('beforeopt', function(){ console.log(d1.plugins.theme.opt); });
 		
+		/*
 		d1.listen('beforeopt', function(){
 			// check availability of JSON placeholder
 			var re = [
@@ -47,7 +48,7 @@
 				['data-cap-alt', 'data-cap']
 				];
 			var u ='https://restcountries.eu/rest/v2/alpha/nz';
-			let data = null;
+			var data = null;
 			fetch(u)
 				.then(d => d.json())
 				.then(d => data = d)
@@ -56,19 +57,18 @@
 						re.forEach(r => d1.e('[' + r[0] + ']', n => n.setAttribute(r[1], n.getAttribute(r[0]))))
 					}
 					re.forEach(r => {
-						d1.e('[' + r[0] + ']', n => {
-							n.removeAttribute(r[0])
-							//d1.fire('update', {n});
-						})
+						d1.e('[' + r[0] + ']', n => n.removeAttribute(r[0]))
 					});
 				});
 		});
+		*/
 		
 		if (d1.plugins.icons){
 			//inject icon
 			d1.listen('beforeinit', function(){ d1.plugins.icons.icons['js-inject'] = [5, 'M1 1v3h3z']; });
 		}
-		d1.b([document], 'DOMContentLoaded', function(n){
+		//d1.b([document], 'DOMContentLoaded', function(n)
+		{
 			var d = d1.q('#demo-all-icons');
 			if(d && d1.plugins.icons){
 				var icons = Object.keys(d1.plugins.icons.icons);
@@ -85,7 +85,8 @@
 					*/
 				}
 			}
-		});
+		}
+		//);
 	}, false);
 	</script>
 	<style>
@@ -127,11 +128,11 @@ Text
 	<header class="bg -bg-n -topbar -toggle">
 		<div class="hide-desktop">
 			<a href="#nav" class="pad hover icon-menu empty" title="Menu"><span>Menu</span></a>
-			<a href="?" class="pad"><b>d1</b> <span class="text-n">v2.2.14</span></a>
+			<a href="?" class="pad"><b>d1</b> <span class="text-n">v2.2.15</span></a>
 		</div>
 		
 		<ul class="nav flip hover target-mobile" id="nav">
-			<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v2.2.14</span></a></li>
+			<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v2.2.15</span></a></li>
 			<li><a href="index.html" class="icon-text">Docs</a>
 			<li><a href="https://github.com/vvvkor/d1-web" class="icon-folder" >GitHub</a>
 			<li><a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="icon-download empty-desktop" title="Download"><span>Download</span></a>
