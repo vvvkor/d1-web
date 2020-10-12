@@ -16,4 +16,10 @@ export default class {
     console.log('plugin.init()')
   }
   
+  arranger() {
+    this.app.listen('arrange', e => this.arrange(e));
+    this.arrange({n: null});
+  }
+  
+  arrange() {}
 }

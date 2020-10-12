@@ -34,60 +34,58 @@
 	<!-- -->
 	<!--link href="../dist/d1.min.css" rel="stylesheet"-->
 	<script>
-	window.addEventListener('load', e => {
-		console.log('d1 = ', d1);
-		//d1.listen('beforeopt', function(){ console.log(d1.plugins.theme.opt); });
-		
-		/*
-		d1.listen('beforeopt', function(){
-			// check availability of JSON placeholder
-			var re = [
-				['data-href-alt', 'href'],
-				['data-list-alt', 'data-list'],
-				['data-lookup-alt', 'data-lookup'],
-				['data-cap-alt', 'data-cap']
-				];
-			var u ='https://restcountries.eu/rest/v2/alpha/nz';
-			var data = null;
-			fetch(u)
-				.then(d => d.json())
-				.then(d => data = d)
-				.finally(() => {
-					if(!data?.name) {
-						re.forEach(r => d1.e('[' + r[0] + ']', n => n.setAttribute(r[1], n.getAttribute(r[0]))))
-					}
-					re.forEach(r => {
-						d1.e('[' + r[0] + ']', n => n.removeAttribute(r[0]))
-					});
+	
+	var checkApi = function() {
+		// check availability of JSON placeholder
+		var re = [
+			['data-href-alt', 'href'],
+			['data-list-alt', 'data-list'],
+			['data-lookup-alt', 'data-lookup'],
+			['data-cap-alt', 'data-cap']
+			];
+		var u ='https://restcountries.eu/rest/v2/alpha/nz';
+		var data = null;
+		fetch(u)
+			.then(d => d.json())
+			.then(d => data = d)
+			.finally(() => {
+				console.log('API', data?.name ? 'OK' : 'FAILED');
+				if(!data?.name) {
+					re.forEach(r => d1.e('[' + r[0] + ']', n => n.setAttribute(r[1], n.getAttribute(r[0]))))
+				}
+				re.forEach(r => {
+					d1.e('[' + r[0] + ']', n => n.removeAttribute(r[0]))
 				});
-		});
-		*/
-		
+			});
+	}
+	
+	var injectIcon = function() {
+		d1.plugins.icons.icons['js-injected'] = [5, 'M1 1v3h3z'];
+	}
+	
+	var demoIcons = function(){
 		if (d1.plugins.icons){
-			//inject icon
-			d1.listen('beforeinit', function(){ d1.plugins.icons.icons['js-inject'] = [5, 'M1 1v3h3z']; });
-		}
-		//d1.b([document], 'DOMContentLoaded', function(n)
-		{
 			var d = d1.q('#demo-all-icons');
 			if(d && d1.plugins.icons){
 				var icons = Object.keys(d1.plugins.icons.icons);
-				for(i=0; i<icons.length; i++){
+				for (i=0; i<icons.length; i++) {
 					var dd = d1.ins('a', icons[i], {title: i+1, className: 'pad hover'}, d);
 					dd.style.width = '6.4em';
 					d1.plugins.icons.addIcon(icons[i], dd, 0);
-					//for alignment debug
-					/*
-					var dd = d1.ins('a', '', {title: i+1, className: 'bord hover'}, d);
-					dd.style.padding = '.2em .5em';
-					dd.style.display = 'inline-block';
-					d1.plugins.icons.addIcon(icons[i], dd, 0);
-					*/
 				}
 			}
 		}
-		//);
-	}, false);
+	}
+	
+	document.addEventListener('DOMContentLoaded', e => {
+		console.log('d1 = ', d1);
+		d1.listen('beforeopt', checkApi);
+		if (d1.plugins.icons) {
+			d1.listen('beforeinit', injectIcon);
+			d1.listen('ready', demoIcons);
+		}
+	});
+	
 	</script>
 	<style>
 		@media (min-width: 900px){
@@ -744,8 +742,16 @@ let double = function (x) {
 		</div>
 		</div>
 		-->
+		<div class="pad mar shade">
+			<a href="#insert" onclick="plus.innerHTML='<form><p>Date: <input class=\'calendar\'><p>Lookup: <input data-lookup=\'https://restcountries.eu/rest/v2/name/{q}##alpha2Code#name#languages.0.name\'><p>File: <input type=\'file\' class=\'pick\' name=\'f9\'><p><textarea class=\'edit adjust\'></textarea></form>';d1.fire('arrange', {n: plus});">Insert</a>
+			<a href="#clone" onclick="plus.parentNode.appendChild(plus.cloneNode(true)).id = 'plus2';">Clone</a>
+			<div id="plus">
+			</div>
+		</div>
 	</div>
 
+	<!-- /central -->
+	
 	<!-- left -->
 	
 	<div class="row-left">

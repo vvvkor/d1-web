@@ -37,6 +37,7 @@ export default class {
     this.dbg(['opt', this.opt])
 
     this.initPlugins(opt) // plugins
+    //this.fire('arrange', {n: document.body})
 
     // bind events
     this.b([window], 'hashchange', e => this.on('hashchange', e)) // on window

@@ -35,14 +35,18 @@ export default class extends Plugin {
     this.closeList();
     document.body.appendChild(this.win);
 
-    app.e('input[data-' + this.opt.dLookup + ']', n => this.prepare(n));
-    app.e('[data-chain]', n => this.updateChain(n));
     const f = Func.debounce(this.find.bind(this), this.opt.wait);
     app.h('input', '.lookup-input', f); // e => f(e)
     app.h('keydown', '.lookup-input', e => this.key(e));
     app.h('click', '.lookup-item', e => this.choose(e));
     app.h('click', '.lookup-goto', e => this.go(e));
     app.h('change', '[data-chain]', e => this.updateChain(e.target));
+    this.arranger();
+  }
+  
+  arrange({n}) {
+    this.app.e(this.app.qq('input[data-' + this.opt.dLookup + ']', n), m => this.prepare(m));
+    this.app.e(this.app.qq('[data-chain]', n), m => this.updateChain(m));
   }
 
   prepare(n) {

@@ -122,6 +122,21 @@ var _default = /*#__PURE__*/function () {
     value: function init() {
       console.log('plugin.init()');
     }
+  }, {
+    key: "arranger",
+    value: function arranger() {
+      var _this2 = this;
+
+      this.app.listen('arrange', function (e) {
+        return _this2.arrange(e);
+      });
+      this.arrange({
+        n: null
+      });
+    }
+  }, {
+    key: "arrange",
+    value: function arrange() {}
   }]);
 
   return _default;
@@ -246,6 +261,7 @@ var _default = /*#__PURE__*/function () {
       this.setOpt(opt);
       this.dbg(['opt', this.opt]);
       this.initPlugins(opt); // plugins
+      //this.fire('arrange', {n: document.body})
       // bind events
 
       this.b([window], 'hashchange', function (e) {
@@ -1408,52 +1424,80 @@ var _default = /*#__PURE__*/function (_Plugin) {
     value: function init() {
       var _this2 = this;
 
+      this.app.h('click', this.opt.qGal, function (e) {
+        return _this2.next(e);
+      });
       this.app.listen('hashchange', function (e) {
         return _this2.onHash(e);
       });
       this.app.listen('keydown', function (e) {
         return _this2.onKey(e);
       });
-      this.app.h('click', this.opt.qGal, function (e) {
-        return _this2.next(e);
-      }); //this.app.listen('swipe', e => this.swipe(e));
-
-      this.app.listen('exhibit', function (e) {
-        return _this2.reinit(e);
-      });
-      this.prepareAll();
+      this.arranger();
     }
   }, {
-    key: "reinit",
-    value: function reinit(_ref) {
-      var n = _ref.n,
-          opt = _ref.opt;
-      if (n.vGal) n.vGal.parentNode.removeChild(n.vGal);
-      this.app.e(this.app.qq(this.opt.qLinks, n), function (a) {
-        return delete a.vDone;
-      });
-      n.vGal = this.prepare(n, opt);
-    }
-  }, {
-    key: "prepareAll",
-    value: function prepareAll(d) {
+    key: "arrange",
+    value: function arrange(_ref) {
       var _this3 = this;
 
-      this.app.e(this.app.qq(this.opt.qGallery, d), function (n) {
-        return _this3.prepare(n);
+      var n = _ref.n,
+          opt = _ref.opt;
+      if (n && n.matches(this.opt.qGallery)) this.prepare(n, opt === null || opt === void 0 ? void 0 : opt.gallery);
+      this.app.e(this.app.qq(this.opt.qGallery, n), function (m) {
+        return _this3.prepare(m, opt === null || opt === void 0 ? void 0 : opt.gallery);
       });
     }
-    /*
-    swipe(e) {
-      if (e.n.matches(this.opt.qGal)) {
-        if (e.dir == 4) this.browse(e.n); // left
-        else if (e.dir == 2) this.browse(e.n, true); // right
-        else if (e.dir == 3) this.app.fire('esc'); // down
-        else if (e.dir == 1) this.visit(e.n); // up
-      }
-    }
-    */
+  }, {
+    key: "prepare",
+    value: function prepare(n, opt) {
+      opt = opt ? _objectSpread(_objectSpread({}, this.opt), opt) : this.opt;
+      var app = this.app;
+      var g = app.ins('div', '', {
+        className: opt.cGal
+      });
+      var a = app.qq(opt.qLinks, n);
+      var z = a.length;
 
+      if (opt.rebuild) {
+        if (n.vGal) n.vGal.parentNode.removeChild(n.vGal);
+        this.app.e(this.app.qq(this.opt.qLinks, n), function (a) {
+          return delete a.vDone;
+        });
+      }
+
+      var first = 0;
+
+      for (var i = 0; i < z; i++) {
+        if (!a[i].vDone) {
+          var s = app.seq();
+          if (!i) first = s;
+          var next = '#' + opt.idPrefix + (i == z - 1 ? first : s + 1);
+          var prev = '#' + opt.idPrefix + (i == 0 ? first + z - 1 : s - 1);
+          var p = app.ins('a', '', {
+            className: 'gallery-pic swipe drag',
+            id: opt.idPrefix + s,
+            href: next,
+            'data-swipe-up': a[i].href || '',
+            'data-swipe-right': prev,
+            'data-swipe-down': this.app.opt.hClose,
+            'data-swipe-left': next
+          }, g); //p.style.setProperty('--img', 'url("' + (a[i].getAttribute('href') || '') + '")');
+          //p.style.backgroundImage = 'url("' + (a[i].getAttribute('href') || '') + '")';//preload all
+
+          p.vLink = a[i].getAttribute('href') || ''; //real link
+
+          p.vImg = p.vLink; //keep image url but do not load yet
+
+          p.dataset[opt.dCaption] = (opt.num ? i + 1 + '/' + z + (a[i].title ? ' - ' : '') : '') + (a[i].title || '');
+          a[i].href = '#' + p.id;
+          a[i].vDone = 1;
+        }
+      }
+
+      app.x(g);
+      document.body.appendChild(g);
+      n.vGal = g;
+    }
   }, {
     key: "next",
     value: function next(e) {
@@ -1493,49 +1537,6 @@ var _default = /*#__PURE__*/function (_Plugin) {
         n.style.backgroundImage = 'url("' + n.vImg + '")';
         n.vImg = '';
       }
-    }
-  }, {
-    key: "prepare",
-    value: function prepare(n, opt) {
-      opt = opt ? _objectSpread(_objectSpread({}, this.opt), opt) : this.opt;
-      var app = this.app;
-      var g = app.ins('div', '', {
-        className: opt.cGal
-      });
-      var a = app.qq(opt.qLinks, n);
-      var z = a.length;
-      var first = 0;
-
-      for (var i = 0; i < z; i++) {
-        if (!a[i].vDone) {
-          var s = app.seq();
-          if (!i) first = s;
-          var next = '#' + opt.idPrefix + (i == z - 1 ? first : s + 1);
-          var prev = '#' + opt.idPrefix + (i == 0 ? first + z - 1 : s - 1);
-          var p = app.ins('a', '', {
-            className: 'gallery-pic swipe drag',
-            id: opt.idPrefix + s,
-            href: next,
-            'data-swipe-up': a[i].href || '',
-            'data-swipe-right': prev,
-            'data-swipe-down': this.app.opt.hClose,
-            'data-swipe-left': next
-          }, g); //p.style.setProperty('--img', 'url("' + (a[i].getAttribute('href') || '') + '")');
-          //p.style.backgroundImage = 'url("' + (a[i].getAttribute('href') || '') + '")';//preload all
-
-          p.vLink = a[i].getAttribute('href') || ''; //real link
-
-          p.vImg = p.vLink; //keep image url but do not load yet
-
-          p.dataset[opt.dCaption] = (opt.num ? i + 1 + '/' + z + (a[i].title ? ' - ' : '') : '') + (a[i].title || '');
-          a[i].href = '#' + p.id;
-          a[i].vDone = 1;
-        }
-      }
-
-      app.x(g);
-      document.body.appendChild(g);
-      return g;
     }
   }, {
     key: "visit",
@@ -2916,9 +2917,6 @@ var calendar_default = /*#__PURE__*/function (_Plugin) {
 
       this.win.style.whiteSpace = 'nowrap';
       document.body.appendChild(this.win);
-      this.app.e(this.opt.qsCalendar, function (n) {
-        return _this2.preparePick(n);
-      });
       this.app.h('click', this.opt.qsCalendar, function (e) {
         return _this2.openDialog(e.target, null, e);
       });
@@ -2932,6 +2930,17 @@ var calendar_default = /*#__PURE__*/function (_Plugin) {
       });
       this.app.h('click', '.calendar-tools a', function (e) {
         return _this2.onClick(e, true);
+      });
+      this.arranger();
+    }
+  }, {
+    key: "arrange",
+    value: function arrange(_ref) {
+      var _this3 = this;
+
+      var n = _ref.n;
+      this.app.e(this.app.qq(this.opt.qsCalendar, n), function (m) {
+        return _this3.prepare(m);
       });
     }
     /*
@@ -2998,8 +3007,8 @@ var calendar_default = /*#__PURE__*/function (_Plugin) {
       if (!on) document.body.appendChild(this.win); //this.app.fire('after');
     }
   }, {
-    key: "preparePick",
-    value: function preparePick(n) {
+    key: "prepare",
+    value: function prepare(n) {
       n.vTime = n.type == 'datetime-local' || n.classList.contains('datetime');
       n.type = 'text';
       n.autocomplete = 'off';
@@ -3281,12 +3290,6 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
       });
       this.closeList();
       document.body.appendChild(this.win);
-      app.e('input[data-' + this.opt.dLookup + ']', function (n) {
-        return _this2.prepare(n);
-      });
-      app.e('[data-chain]', function (n) {
-        return _this2.updateChain(n);
-      });
       var f = Func.debounce(this.find.bind(this), this.opt.wait);
       app.h('input', '.lookup-input', f); // e => f(e)
 
@@ -3301,6 +3304,20 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
       });
       app.h('change', '[data-chain]', function (e) {
         return _this2.updateChain(e.target);
+      });
+      this.arranger();
+    }
+  }, {
+    key: "arrange",
+    value: function arrange(_ref) {
+      var _this3 = this;
+
+      var n = _ref.n;
+      this.app.e(this.app.qq('input[data-' + this.opt.dLookup + ']', n), function (m) {
+        return _this3.prepare(m);
+      });
+      this.app.e(this.app.qq('[data-chain]', n), function (m) {
+        return _this3.updateChain(m);
       });
     }
   }, {
@@ -3350,7 +3367,7 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "initCaption",
     value: function initCaption(n) {
-      var _this3 = this;
+      var _this4 = this;
 
       var uc = n.dataset[this.opt.dCap] || '';
 
@@ -3359,13 +3376,13 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
           time: new Date().getTime()
         })).replace(/\{q\}/, n.value));
         this.app.fetch(u, function (req) {
-          var d = _this3.app.parse(req.responseText);
+          var d = _this4.app.parse(req.responseText);
 
           if (d) {
             var h = u.split('#');
             if (!h[1] && d.data) d = d.data;
 
-            _this3.fix(n, n.value, _this3.app.path(d, h[1] || '', n.value));
+            _this4.fix(n, n.value, _this4.app.path(d, h[1] || '', n.value));
           }
         });
       }
@@ -3550,14 +3567,14 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "setOptions",
     value: function setOptions(n, a) {
-      var _this4 = this;
+      var _this5 = this;
 
       if (n.list) {
         if (n.list) {
           this.app.clr(n.list);
           n.value = '';
           if (a) a.forEach(function (v) {
-            return _this4.app.ins('option', '', {
+            return _this5.app.ins('option', '', {
               value: v.nm
             }, n.list);
           });
@@ -3569,7 +3586,7 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
           value: ''
         }, n);
         if (a) a.forEach(function (v) {
-          return _this4.app.ins('option', v.nm, {
+          return _this5.app.ins('option', v.nm, {
             value: v.id
           }, n);
         });
@@ -3588,16 +3605,16 @@ var lookup_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "norm",
     value: function norm(d, fi, fn, fa) {
-      var _this5 = this;
+      var _this6 = this;
 
       if (this.app.typeOf(d) !== 'array') return [];
       return d.map(function (v) {
-        var _ref, _v$name;
+        var _ref2, _v$name;
 
         return {
-          id: _this5.app.path(v, fi || 'id'),
-          nm: fn ? _this5.app.path(v, fn) : (_ref = (_v$name = v['name']) !== null && _v$name !== void 0 ? _v$name : v['nm']) !== null && _ref !== void 0 ? _ref : v['title'],
-          info: _this5.app.path(v, fa || 'info')
+          id: _this6.app.path(v, fi || 'id'),
+          nm: fn ? _this6.app.path(v, fn) : (_ref2 = (_v$name = v['name']) !== null && _v$name !== void 0 ? _v$name : v['nm']) !== null && _ref2 !== void 0 ? _ref2 : v['title'],
+          info: _this6.app.path(v, fa || 'info')
         };
       });
     }
@@ -3709,14 +3726,7 @@ var edit_default = /*#__PURE__*/function (_Plugin) {
     value: function init() {
       var _this2 = this;
 
-      var app = this.app;
-      app.e(this.opt.qEdit, function (n) {
-        return _this2.prepare(n);
-      });
-      app.e(this.opt.qAdjust, function (n) {
-        return _this2.setStyle(n);
-      });
-      this.adjustAll(); //wysiwyg
+      var app = this.app; //wysiwyg
 
       app.h('click', 'label[for]', function (e) {
         return _this2.setFocus(e.recv);
@@ -3752,6 +3762,21 @@ var edit_default = /*#__PURE__*/function (_Plugin) {
       app.b([window], 'resize', function (e) {
         return _this2.adjustAll();
       });
+      this.arranger();
+    }
+  }, {
+    key: "arrange",
+    value: function arrange(_ref) {
+      var _this3 = this;
+
+      var n = _ref.n;
+      this.app.e(this.app.qq(this.opt.qEdit, n), function (m) {
+        return _this3.prepare(m);
+      });
+      this.app.e(this.app.qq(this.opt.qAdjust, n), function (m) {
+        return _this3.setStyle(m);
+      });
+      this.adjustAll(n);
     }
   }, {
     key: "setFocus",
@@ -3866,7 +3891,7 @@ var edit_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "mode",
     value: function mode(w, z) {
-      var _this3 = this;
+      var _this4 = this;
 
       this.app.toggle(z, w);
       this.app.toggle(z.theArea, !w);
@@ -3877,7 +3902,7 @@ var edit_default = /*#__PURE__*/function (_Plugin) {
 
       this.up(w, z);
       this.app.e(this.app.qq('a', z.theNav), function (n) {
-        return n.hash == '#cmd-src' ? null : _this3.app.toggle(n, w);
+        return n.hash == '#cmd-src' ? null : _this4.app.toggle(n, w);
       });
       z.theArea.theManual = 0;
       z.theArea.style.width = '100%';
@@ -3905,11 +3930,11 @@ var edit_default = /*#__PURE__*/function (_Plugin) {
     }
   }, {
     key: "adjustAll",
-    value: function adjustAll() {
-      var _this4 = this;
+    value: function adjustAll(n) {
+      var _this5 = this;
 
-      this.app.e(this.opt.qAdjust, function (n) {
-        return _this4.adjust(n);
+      this.app.e(this.app.qq(this.opt.qAdjust, n), function (m) {
+        return _this5.adjust(m);
       });
     }
   }, {
@@ -3934,7 +3959,7 @@ var edit_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "onPaste",
     value: function onPaste(e) {
-      var _this5 = this;
+      var _this6 = this;
 
       var n = e.target.closest('.edit-wysiwyg');
       if (!n) return; //this.app.a(e.clipboardData.items).forEach(i => console.log(i)); // kind: 'file', type: 'image/...'
@@ -3948,7 +3973,7 @@ var edit_default = /*#__PURE__*/function (_Plugin) {
         var reader = new FileReader();
 
         reader.onload = function (e) {
-          return _this5.cmd(n, ['insertimage', e.target.result]);
+          return _this6.cmd(n, ['insertimage', e.target.result]);
         };
 
         reader.readAsDataURL(img.getAsFile()); //get blob as data url
@@ -4477,9 +4502,6 @@ var pickfile_default = /*#__PURE__*/function (_Plugin) {
       var _this2 = this;
 
       //pick
-      this.app.e(this.opt.qPick, function (n) {
-        return _this2.prepare(n);
-      });
       this.app.h('click', '.picker [href="#pickdef"]', function (e) {
         return _this2.pick(e.recv, false, e);
       });
@@ -4506,19 +4528,32 @@ var pickfile_default = /*#__PURE__*/function (_Plugin) {
         this.app.b([b], 'drop', function (e) {
           return _this2.drop(e);
         });
-      } //listen to all events
+      }
+
+      this.arranger(); //listen to all events
 
       /*
       Object.keys(window).forEach(key => {
           if (/^on/.test(key)) window.addEventListener(key.slice(2), e => console.log('EVENT', e.type));
       });
       */
+    }
+  }, {
+    key: "arrange",
+    value: function arrange(_ref) {
+      var _this3 = this;
 
+      var n = _ref.n;
+      this.app.e(this.app.qq(this.opt.qPick, n), function (m) {
+        return _this3.prepare(m);
+      });
     }
   }, {
     key: "prepare",
     value: function prepare(n) {
       var a = this.app;
+      if (n.vDone) return;
+      n.vDone = 1;
       if (!n.id) n.id = 'pick-' + this.app.seq();
       var nn = n.closest('label') || n;
       var cont = a.ins('div', '', 'picker gallery', nn, -1);
@@ -4556,7 +4591,7 @@ var pickfile_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "pick",
     value: function pick(n, url, e) {
-      var _this3 = this;
+      var _this4 = this;
 
       if (e) e.preventDefault();
       var d = n.closest('.picker');
@@ -4611,12 +4646,12 @@ var pickfile_default = /*#__PURE__*/function (_Plugin) {
         this.app.e(this.app.qq('a.pic', d), function (n) {
           n.href = img;
           n.title = fn;
-          n.classList[img ? 'remove' : 'add'](_this3.app.opt.cHide);
+          n.classList[img ? 'remove' : 'add'](_this4.app.opt.cHide);
         });
         this.app.e(this.app.qq('a.pickload', d), function (n) {
           n.href = url;
           n.title = fn;
-          n.classList[url && !img ? 'remove' : 'add'](_this3.app.opt.cHide);
+          n.classList[url && !img ? 'remove' : 'add'](_this4.app.opt.cHide);
         });
         this.app.e(this.app.qq('.picknum', d), function (n) {
           return n.textContent = num;
@@ -4625,10 +4660,13 @@ var pickfile_default = /*#__PURE__*/function (_Plugin) {
         preview.firstChild.classList[url && !img ? 'remove' : 'add'](this.app.opt.cHide);
       }
 
-      if (url) this.app.fire('exhibit', {
+      if (url) this.app.fire('arrange', {
         n: d,
         opt: {
-          num: false
+          gallery: {
+            num: false,
+            rebuild: true
+          }
         }
       }); // re-init gallery
     }

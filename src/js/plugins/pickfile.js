@@ -15,7 +15,6 @@ export default class extends Plugin {
 
   init() {
     //pick
-    this.app.e(this.opt.qPick, n => this.prepare(n));
     this.app.h('click', '.picker [href="#pickdef"]', e => this.pick(e.recv, false, e));
     this.app.h('click', '.picker [href="#unpick"]', e => this.pick(e.recv, '', e));
     this.app.h('change', this.opt.qPick, e => this.pick(e.recv, true));
@@ -29,6 +28,7 @@ export default class extends Plugin {
       this.app.b([b], 'dragend', e => this.dragging = 0);
       this.app.b([b], 'drop', e => this.drop(e));
     }
+    this.arranger();
 //listen to all events
 /*
 Object.keys(window).forEach(key => {
@@ -37,8 +37,14 @@ Object.keys(window).forEach(key => {
 */
   }
   
+  arrange({n}) {
+    this.app.e(this.app.qq(this.opt.qPick, n), m => this.prepare(m));
+  }
+  
   prepare(n) {
     const a = this.app;
+    if(n.vDone) return;
+    n.vDone = 1;
     if (!n.id) n.id = 'pick-' + this.app.seq();
     const nn = n.closest('label') || n;
     
@@ -111,7 +117,7 @@ Object.keys(window).forEach(key => {
       //this.app.e(this.app.qq('[href="#unpick"]', d), n => n.classList[url ? 'remove' : 'add']('inact'));
       preview.firstChild.classList[url && !img ? 'remove' : 'add'](this.app.opt.cHide);
     }
-    if (url) this.app.fire('exhibit', {n: d, opt: {num: false}}); // re-init gallery
+    if (url) this.app.fire('arrange', {n: d, opt: {gallery: {num: false, rebuild: true}}}); // re-init gallery
   }
   
   detectDrag(e) {

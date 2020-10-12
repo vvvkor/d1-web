@@ -67,9 +67,6 @@ export default class extends Plugin {
 
   init() {
     const app = this.app
-    app.e(this.opt.qEdit, n => this.prepare(n));
-    app.e(this.opt.qAdjust, n => this.setStyle(n));
-    this.adjustAll();
     //wysiwyg
     app.h('click', 'label[for]', e => this.setFocus(e.recv));
     app.h('click', 'a[data-cmd]', e => this.cmd(e));
@@ -86,6 +83,13 @@ export default class extends Plugin {
     app.h('input', this.opt.qAdjust, e => this.adjust(e.target));
     app.b([window], 'mouseup', e => e.target.matches?.(this.opt.qAdjust) ? this.resized(e.target) : null);
     app.b([window], 'resize', e => this.adjustAll());
+    this.arranger();
+  }
+  
+  arrange({n}) {
+    this.app.e(this.app.qq(this.opt.qEdit, n), m => this.prepare(m));
+    this.app.e(this.app.qq(this.opt.qAdjust, n), m => this.setStyle(m));
+    this.adjustAll(n);
   }
   
   setFocus(l) {
@@ -205,8 +209,8 @@ export default class extends Plugin {
     if (n.theH !== n.clientHeight || n.theW !== n.clientWidth) n.theManual = 1;
   }
 
-  adjustAll() {
-    this.app.e(this.opt.qAdjust, n => this.adjust(n));
+  adjustAll(n) {
+    this.app.e(this.app.qq(this.opt.qAdjust, n), m => this.adjust(m));
   }
 
   adjust(n) {

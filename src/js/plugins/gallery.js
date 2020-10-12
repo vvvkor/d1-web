@@ -21,35 +21,57 @@ export default class extends Plugin {
   }
   
   init() {
+    this.app.h('click', this.opt.qGal, e => this.next(e));
     this.app.listen('hashchange', e => this.onHash(e));
     this.app.listen('keydown', e => this.onKey(e));
-    this.app.h('click', this.opt.qGal, e => this.next(e));
-    //this.app.listen('swipe', e => this.swipe(e));
-    this.app.listen('exhibit', e => this.reinit(e));
-    this.prepareAll();
+    this.arranger();
   }
   
-  reinit({n, opt}) {
-    if (n.vGal) n.vGal.parentNode.removeChild(n.vGal);
-    this.app.e(this.app.qq(this.opt.qLinks, n), a => delete a.vDone);
-    n.vGal = this.prepare(n, opt);
+  arrange({n, opt}) {
+    if (n && n.matches(this.opt.qGallery)) this.prepare(n, opt?.gallery);
+    this.app.e(this.app.qq(this.opt.qGallery, n), m => this.prepare(m, opt?.gallery));
   }
   
-  prepareAll(d) {
-    this.app.e(this.app.qq(this.opt.qGallery, d), n => this.prepare(n));
-  }
-  
-  /*
-  swipe(e) {
-    if (e.n.matches(this.opt.qGal)) {
-      if (e.dir == 4) this.browse(e.n); // left
-      else if (e.dir == 2) this.browse(e.n, true); // right
-      else if (e.dir == 3) this.app.fire('esc'); // down
-      else if (e.dir == 1) this.visit(e.n); // up
+  prepare(n, opt) {
+    opt = opt ? {...this.opt, ...opt} : this.opt;
+    const app = this.app;
+    const g = app.ins('div', '', {className: opt.cGal});
+    const a = app.qq(opt.qLinks, n);
+    const z = a.length;
+
+    if (opt.rebuild) {
+      if (n.vGal) n.vGal.parentNode.removeChild(n.vGal);
+      this.app.e(this.app.qq(this.opt.qLinks, n), a => delete a.vDone);
     }
+    
+    let first = 0;
+    for (let i=0; i<z; i++) if (!a[i].vDone) {
+      const s = app.seq();
+      if (!i) first = s;
+      const next = '#' + opt.idPrefix + (i == z-1 ? first : s+1);
+      const prev = '#' + opt.idPrefix + (i == 0 ? first+z-1 : s-1);
+      const p = app.ins('a', '', {
+          className: 'gallery-pic swipe drag',
+          id: opt.idPrefix + s,
+          href: next,
+          'data-swipe-up': a[i].href || '',
+          'data-swipe-right': prev,
+          'data-swipe-down': this.app.opt.hClose,
+          'data-swipe-left': next
+          }, g);
+      //p.style.setProperty('--img', 'url("' + (a[i].getAttribute('href') || '') + '")');
+      //p.style.backgroundImage = 'url("' + (a[i].getAttribute('href') || '') + '")';//preload all
+      p.vLink = a[i].getAttribute('href') || '';//real link
+      p.vImg = p.vLink;//keep image url but do not load yet
+      p.dataset[opt.dCaption] = (opt.num ? (i+1)+'/'+z+(a[i].title ? ' - ' : '') : '') + (a[i].title || '');
+      a[i].href = '#' + p.id;
+      a[i].vDone = 1;
+    }
+    app.x(g);
+    document.body.appendChild(g);
+    n.vGal = g;
   }
-  */
-  
+
   next(e) {
     if (e.defaultPrevented) return;
     const n = e.recv;
@@ -83,40 +105,6 @@ export default class extends Plugin {
     }
   }
   
-  prepare(n, opt) {
-    opt = opt ? {...this.opt, ...opt} : this.opt;
-    const app = this.app;
-    const g = app.ins('div', '', {className: opt.cGal});
-    const a = app.qq(opt.qLinks, n);
-    const z = a.length;
-    let first = 0;
-    for (let i=0; i<z; i++) if (!a[i].vDone) {
-      const s = app.seq();
-      if (!i) first = s;
-      const next = '#' + opt.idPrefix + (i == z-1 ? first : s+1);
-      const prev = '#' + opt.idPrefix + (i == 0 ? first+z-1 : s-1);
-      const p = app.ins('a', '', {
-          className: 'gallery-pic swipe drag',
-          id: opt.idPrefix + s,
-          href: next,
-          'data-swipe-up': a[i].href || '',
-          'data-swipe-right': prev,
-          'data-swipe-down': this.app.opt.hClose,
-          'data-swipe-left': next
-          }, g);
-      //p.style.setProperty('--img', 'url("' + (a[i].getAttribute('href') || '') + '")');
-      //p.style.backgroundImage = 'url("' + (a[i].getAttribute('href') || '') + '")';//preload all
-      p.vLink = a[i].getAttribute('href') || '';//real link
-      p.vImg = p.vLink;//keep image url but do not load yet
-      p.dataset[opt.dCaption] = (opt.num ? (i+1)+'/'+z+(a[i].title ? ' - ' : '') : '') + (a[i].title || '');
-      a[i].href = '#' + p.id;
-      a[i].vDone = 1;
-    }
-    app.x(g);
-    document.body.appendChild(g);
-    return g;
-  }
-
   visit(a) {
     let h = a.vLink;
     if (!h) {

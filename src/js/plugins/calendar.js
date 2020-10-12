@@ -37,13 +37,17 @@ export default class extends Plugin {
     this.win.style.whiteSpace = 'nowrap';
     document.body.appendChild(this.win);
 
-    this.app.e(this.opt.qsCalendar, n => this.preparePick(n));
     this.app.h('click', this.opt.qsCalendar, e => this.openDialog(e.target, null, e));
     this.app.h('input', this.opt.qsCalendar, e => this.validate(e.target, 0));
     //this.app.h('keydown', this.opt.qsCalendar, e => this.key(e));
     //this.app.h('click', '#' + this.opt.idPicker, e => app.pf('toggle', 'setShown', e.recv.vRel));
     this.app.h('click', '#' + this.opt.idPicker + ' a', e => this.onClick(e));
     this.app.h('click', '.calendar-tools a', e => this.onClick(e, true));
+    this.arranger();
+  }
+  
+  arrange({n}) {
+    this.app.e(this.app.qq(this.opt.qsCalendar, n), m => this.prepare(m));
   }
   
   /*
@@ -115,7 +119,7 @@ export default class extends Plugin {
     //this.app.fire('after');
   }
   
-  preparePick(n) {
+  prepare(n) {
     n.vTime = (n.type == 'datetime-local' || n.classList.contains('datetime'));
     n.type = 'text';
     n.autocomplete = 'off';

@@ -122,6 +122,21 @@ var _default = /*#__PURE__*/function () {
     value: function init() {
       console.log('plugin.init()');
     }
+  }, {
+    key: "arranger",
+    value: function arranger() {
+      var _this2 = this;
+
+      this.app.listen('arrange', function (e) {
+        return _this2.arrange(e);
+      });
+      this.arrange({
+        n: null
+      });
+    }
+  }, {
+    key: "arrange",
+    value: function arrange() {}
   }]);
 
   return _default;
@@ -246,6 +261,7 @@ var _default = /*#__PURE__*/function () {
       this.setOpt(opt);
       this.dbg(['opt', this.opt]);
       this.initPlugins(opt); // plugins
+      //this.fire('arrange', {n: document.body})
       // bind events
 
       this.b([window], 'hashchange', function (e) {
@@ -1408,52 +1424,80 @@ var _default = /*#__PURE__*/function (_Plugin) {
     value: function init() {
       var _this2 = this;
 
+      this.app.h('click', this.opt.qGal, function (e) {
+        return _this2.next(e);
+      });
       this.app.listen('hashchange', function (e) {
         return _this2.onHash(e);
       });
       this.app.listen('keydown', function (e) {
         return _this2.onKey(e);
       });
-      this.app.h('click', this.opt.qGal, function (e) {
-        return _this2.next(e);
-      }); //this.app.listen('swipe', e => this.swipe(e));
-
-      this.app.listen('exhibit', function (e) {
-        return _this2.reinit(e);
-      });
-      this.prepareAll();
+      this.arranger();
     }
   }, {
-    key: "reinit",
-    value: function reinit(_ref) {
-      var n = _ref.n,
-          opt = _ref.opt;
-      if (n.vGal) n.vGal.parentNode.removeChild(n.vGal);
-      this.app.e(this.app.qq(this.opt.qLinks, n), function (a) {
-        return delete a.vDone;
-      });
-      n.vGal = this.prepare(n, opt);
-    }
-  }, {
-    key: "prepareAll",
-    value: function prepareAll(d) {
+    key: "arrange",
+    value: function arrange(_ref) {
       var _this3 = this;
 
-      this.app.e(this.app.qq(this.opt.qGallery, d), function (n) {
-        return _this3.prepare(n);
+      var n = _ref.n,
+          opt = _ref.opt;
+      if (n && n.matches(this.opt.qGallery)) this.prepare(n, opt === null || opt === void 0 ? void 0 : opt.gallery);
+      this.app.e(this.app.qq(this.opt.qGallery, n), function (m) {
+        return _this3.prepare(m, opt === null || opt === void 0 ? void 0 : opt.gallery);
       });
     }
-    /*
-    swipe(e) {
-      if (e.n.matches(this.opt.qGal)) {
-        if (e.dir == 4) this.browse(e.n); // left
-        else if (e.dir == 2) this.browse(e.n, true); // right
-        else if (e.dir == 3) this.app.fire('esc'); // down
-        else if (e.dir == 1) this.visit(e.n); // up
-      }
-    }
-    */
+  }, {
+    key: "prepare",
+    value: function prepare(n, opt) {
+      opt = opt ? _objectSpread(_objectSpread({}, this.opt), opt) : this.opt;
+      var app = this.app;
+      var g = app.ins('div', '', {
+        className: opt.cGal
+      });
+      var a = app.qq(opt.qLinks, n);
+      var z = a.length;
 
+      if (opt.rebuild) {
+        if (n.vGal) n.vGal.parentNode.removeChild(n.vGal);
+        this.app.e(this.app.qq(this.opt.qLinks, n), function (a) {
+          return delete a.vDone;
+        });
+      }
+
+      var first = 0;
+
+      for (var i = 0; i < z; i++) {
+        if (!a[i].vDone) {
+          var s = app.seq();
+          if (!i) first = s;
+          var next = '#' + opt.idPrefix + (i == z - 1 ? first : s + 1);
+          var prev = '#' + opt.idPrefix + (i == 0 ? first + z - 1 : s - 1);
+          var p = app.ins('a', '', {
+            className: 'gallery-pic swipe drag',
+            id: opt.idPrefix + s,
+            href: next,
+            'data-swipe-up': a[i].href || '',
+            'data-swipe-right': prev,
+            'data-swipe-down': this.app.opt.hClose,
+            'data-swipe-left': next
+          }, g); //p.style.setProperty('--img', 'url("' + (a[i].getAttribute('href') || '') + '")');
+          //p.style.backgroundImage = 'url("' + (a[i].getAttribute('href') || '') + '")';//preload all
+
+          p.vLink = a[i].getAttribute('href') || ''; //real link
+
+          p.vImg = p.vLink; //keep image url but do not load yet
+
+          p.dataset[opt.dCaption] = (opt.num ? i + 1 + '/' + z + (a[i].title ? ' - ' : '') : '') + (a[i].title || '');
+          a[i].href = '#' + p.id;
+          a[i].vDone = 1;
+        }
+      }
+
+      app.x(g);
+      document.body.appendChild(g);
+      n.vGal = g;
+    }
   }, {
     key: "next",
     value: function next(e) {
@@ -1493,49 +1537,6 @@ var _default = /*#__PURE__*/function (_Plugin) {
         n.style.backgroundImage = 'url("' + n.vImg + '")';
         n.vImg = '';
       }
-    }
-  }, {
-    key: "prepare",
-    value: function prepare(n, opt) {
-      opt = opt ? _objectSpread(_objectSpread({}, this.opt), opt) : this.opt;
-      var app = this.app;
-      var g = app.ins('div', '', {
-        className: opt.cGal
-      });
-      var a = app.qq(opt.qLinks, n);
-      var z = a.length;
-      var first = 0;
-
-      for (var i = 0; i < z; i++) {
-        if (!a[i].vDone) {
-          var s = app.seq();
-          if (!i) first = s;
-          var next = '#' + opt.idPrefix + (i == z - 1 ? first : s + 1);
-          var prev = '#' + opt.idPrefix + (i == 0 ? first + z - 1 : s - 1);
-          var p = app.ins('a', '', {
-            className: 'gallery-pic swipe drag',
-            id: opt.idPrefix + s,
-            href: next,
-            'data-swipe-up': a[i].href || '',
-            'data-swipe-right': prev,
-            'data-swipe-down': this.app.opt.hClose,
-            'data-swipe-left': next
-          }, g); //p.style.setProperty('--img', 'url("' + (a[i].getAttribute('href') || '') + '")');
-          //p.style.backgroundImage = 'url("' + (a[i].getAttribute('href') || '') + '")';//preload all
-
-          p.vLink = a[i].getAttribute('href') || ''; //real link
-
-          p.vImg = p.vLink; //keep image url but do not load yet
-
-          p.dataset[opt.dCaption] = (opt.num ? i + 1 + '/' + z + (a[i].title ? ' - ' : '') : '') + (a[i].title || '');
-          a[i].href = '#' + p.id;
-          a[i].vDone = 1;
-        }
-      }
-
-      app.x(g);
-      document.body.appendChild(g);
-      return g;
     }
   }, {
     key: "visit",
