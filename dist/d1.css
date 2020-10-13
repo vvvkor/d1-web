@@ -1,4 +1,4 @@
-/*! d1-web v2.2.15 */
+/*! d1-web v2.2.16 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -832,8 +832,8 @@ mark {
         margin-bottom: var(--gap-n);
     }
 
-    table.flip caption, table.flip tbody, table.flip tfoot, table.flip tr,
-    table.flip tr>* {
+    table.flip caption, table.flip thead, table.flip tbody, table.flip tfoot,
+    table.flip tr, table.flip tr>* {
         display: block;
         text-align: left;
     }

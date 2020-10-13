@@ -36,7 +36,7 @@ export default class extends Plugin {
   
   validateInput(n) {
     if (n.willValidate) {
-      if (n.type == 'radio') this.app.e(this.app.qq('[name="'+n.name+'"]', n.form), m => m.setCustomValidity(''));
+      if (n.type == 'radio') this.app.ee(n.form, '[name="' + n.name + '"]', m => m.setCustomValidity(''));
       else n.setCustomValidity('');
       n.checkValidity();
       if (this.isLive(n.form)) this.validateForm(n.form);
@@ -68,8 +68,8 @@ export default class extends Plugin {
       }
     }
     if (this.isLive(n)) {
-      //this.app.e(this.app.qq('[type="submit"]', n), m => m.disabled = !ok);//if no cUnhint
-      this.app.e(this.app.qq('[type="submit"]', n), m => m.classList[ok ? 'remove' : 'add']('bg-n'));//if cUnhint used
+      //this.app.ee(n, '[type="submit"]', m => m.disabled = !ok);//if no cUnhint
+      this.app.ee(n, '[type="submit"]', m => m.classList[ok ? 'remove' : 'add']('bg-n'));//if cUnhint used
     }
   }
 

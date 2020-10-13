@@ -7,7 +7,7 @@ export default class extends Plugin {
   constructor() {
     super('pickfile')
     this.opt = {
-      qPick: '.pick[name]',
+      qPick: 'input.pick',
       qDrop: 'input.drop'
     };
     this.dragging = 0;
@@ -28,20 +28,16 @@ export default class extends Plugin {
       this.app.b([b], 'dragend', e => this.dragging = 0);
       this.app.b([b], 'drop', e => this.drop(e));
     }
-    this.arranger();
-//listen to all events
-/*
-Object.keys(window).forEach(key => {
-    if (/^on/.test(key)) window.addEventListener(key.slice(2), e => console.log('EVENT', e.type));
-});
-*/
   }
   
   arrange({n}) {
-    this.app.e(this.app.qq(this.opt.qPick, n), m => this.prepare(m));
+    this.app.ee(n, this.opt.qPick, m => this.prepare(m));
   }
   
   prepare(n) {
+    if (n.dataset.ready) return;
+    n.dataset.ready = 1;
+    
     const a = this.app;
     if(n.vDone) return;
     n.vDone = 1;
@@ -49,6 +45,7 @@ Object.keys(window).forEach(key => {
     const nn = n.closest('label') || n;
     
     const cont = a.ins('div', '', 'picker gallery', nn, -1);
+    cont.dataset.num = '';
       const nav = a.ins('nav', '', 'pad bg row', cont);
         a.ins('label', a.i('folder', '&uarr;'), {htmlFor: n.id, className: 'col-0' + (n.multiple ? ' text-i' : '')}, nav);
         a.ins('a', a.i('image', '#'), 'pic col-0', nav);
@@ -110,14 +107,14 @@ Object.keys(window).forEach(key => {
       preview.style.backgroundImage = img ? 'url("' + img + '")' : '';
       preview.title = fn;
       //preview.dataset.tip = fn;
-      this.app.e(this.app.qq('[name^="remove_"]', d), n => n.checked = !url && !keep);
-      this.app.e(this.app.qq('a.pic', d), n => { n.href = img; n.title = fn; n.classList[img ? 'remove' : 'add'](this.app.opt.cHide); });
-      this.app.e(this.app.qq('a.pickload', d), n => { n.href = url; n.title = fn; n.classList[url && !img ? 'remove' : 'add'](this.app.opt.cHide); });
-      this.app.e(this.app.qq('.picknum', d), n => n.textContent = num);
-      //this.app.e(this.app.qq('[href="#unpick"]', d), n => n.classList[url ? 'remove' : 'add']('inact'));
+      this.app.ee(d, '[name^="remove_"]', n => n.checked = !url && !keep);
+      this.app.ee(d, 'a.pic', n => { n.href = img; n.title = fn; n.classList[img ? 'remove' : 'add'](this.app.opt.cHide); });
+      this.app.ee(d, 'a.pickload', n => { n.href = url; n.title = fn; n.classList[url && !img ? 'remove' : 'add'](this.app.opt.cHide); });
+      this.app.ee(d, '.picknum', n => n.textContent = num);
+      //this.app.ee(d, '[href="#unpick"]', n => n.classList[url ? 'remove' : 'add']('inact'));
       preview.firstChild.classList[url && !img ? 'remove' : 'add'](this.app.opt.cHide);
+      delete d.dataset.ready; // re-init gallery
     }
-    if (url) this.app.fire('arrange', {n: d, opt: {gallery: {num: false, rebuild: true}}}); // re-init gallery
   }
   
   detectDrag(e) {

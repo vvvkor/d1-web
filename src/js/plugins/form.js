@@ -19,8 +19,7 @@ export default class extends Plugin {
   }
   
   checkBoxes(n) {
-    this.app.e(this.app.qq('input[type="checkbox"][class~="' + (n.dataset.group || '') + '"]', n.form),
-      m => m.checked = n.checked);
+    this.app.ee(n.form, 'input[type="checkbox"][class~="' + (n.dataset.group || '') + '"]', m => m.checked = n.checked);
   }
   
   setValue(n) {

@@ -49,7 +49,7 @@ export default class extends Plugin {
       let m = n.parentNode.insertBefore(n.cloneNode(true), before ? n : n.nextSibling);
       m.classList.remove(this.app.opt.cHide);
       m.removeAttribute('id');
-      this.app.e(this.app.qq('[id]', m), i => this.fixId(i, m));
+      this.app.fixIds(m);
       e.p = e.n; // prototype
       e.n = m; // new node
     }
@@ -74,11 +74,4 @@ export default class extends Plugin {
     return true;
   }
   
-  fixId(i, m) {
-    let old = i.id;
-    let id = i.id.replace(/-\d+$/, '') + '-' + this.app.seq();
-    i.id = id;
-    this.app.e(this.app.qq('a[href="#'+ old +'"]', m), a => a.href = '#' + id);
-  }
-
 }

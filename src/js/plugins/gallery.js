@@ -16,7 +16,7 @@ export default class extends Plugin {
       dCaption: 'caption', // data-caption
       qGal: '.gal>a[id]', // dup of toggle.opt.qGal
       qGallery: '.gallery',
-      qLinks: 'a.pic'
+      qLinks: 'a.pic:not([href^="#"])'
     };
   }
   
@@ -24,28 +24,29 @@ export default class extends Plugin {
     this.app.h('click', this.opt.qGal, e => this.next(e));
     this.app.listen('hashchange', e => this.onHash(e));
     this.app.listen('keydown', e => this.onKey(e));
-    this.arranger();
+    this.app.h('click', this.opt.qGallery + ' ' + this.opt.qLinks, e => this.prepareByClick(e));
+    this.app.e(this.opt.qGallery, n => this.prepare(n)); // show by initial hash
   }
   
-  arrange({n, opt}) {
-    if (n && n.matches(this.opt.qGallery)) this.prepare(n, opt?.gallery);
-    this.app.e(this.app.qq(this.opt.qGallery, n), m => this.prepare(m, opt?.gallery));
+  prepareByClick(e) {
+    //e.preventDefault();
+    this.prepare(e.target.closest(this.opt.qGallery));
   }
   
   prepare(n, opt) {
+    if (n.dataset.ready) return;
+    n.dataset.ready = 1;
+    
     opt = opt ? {...this.opt, ...opt} : this.opt;
     const app = this.app;
     const g = app.ins('div', '', {className: opt.cGal});
     const a = app.qq(opt.qLinks, n);
     const z = a.length;
 
-    if (opt.rebuild) {
-      if (n.vGal) n.vGal.parentNode.removeChild(n.vGal);
-      this.app.e(this.app.qq(this.opt.qLinks, n), a => delete a.vDone);
-    }
+    if (n.vGal) n.vGal.parentNode.removeChild(n.vGal);
     
     let first = 0;
-    for (let i=0; i<z; i++) if (!a[i].vDone) {
+    for (let i=0; i<z; i++) if ((a[i].getAttribute('href') || '').substr(0, 1) != '#') {
       const s = app.seq();
       if (!i) first = s;
       const next = '#' + opt.idPrefix + (i == z-1 ? first : s+1);
@@ -53,7 +54,7 @@ export default class extends Plugin {
       const p = app.ins('a', '', {
           className: 'gallery-pic swipe drag',
           id: opt.idPrefix + s,
-          href: next,
+          //href: next,
           'data-swipe-up': a[i].href || '',
           'data-swipe-right': prev,
           'data-swipe-down': this.app.opt.hClose,
@@ -63,9 +64,10 @@ export default class extends Plugin {
       //p.style.backgroundImage = 'url("' + (a[i].getAttribute('href') || '') + '")';//preload all
       p.vLink = a[i].getAttribute('href') || '';//real link
       p.vImg = p.vLink;//keep image url but do not load yet
-      p.dataset[opt.dCaption] = (opt.num ? (i+1)+'/'+z+(a[i].title ? ' - ' : '') : '') + (a[i].title || '');
+      let num = opt.num;
+      if('num' in n.dataset) num = !!n.dataset.num;
+      p.dataset[opt.dCaption] = (num ? (i+1)+'/'+z+(a[i].title ? ' - ' : '') : '') + (a[i].title || '');
       a[i].href = '#' + p.id;
-      a[i].vDone = 1;
     }
     app.x(g);
     document.body.appendChild(g);
@@ -75,18 +77,17 @@ export default class extends Plugin {
   next(e) {
     if (e.defaultPrevented) return;
     const n = e.recv;
-    if (e.clientX > 0 /* not Enter key */ && e.clientX < n.clientWidth / 3) {
-      this.browse(n, true);
-      e.preventDefault();
-    }
+    const back = (n && e.clientX > 0 /* not Enter key */ && e.clientX < n.clientWidth / 3);
+    this.browse(n, back);
+    e.preventDefault();
   }
   
   browse(n, back) {
-    if (back) {
-      const p = n.previousElementSibling || this.app.qq('a[id]', n.parentNode).pop();
-      if (p.id) location.hash = '#' + p.id;
-    }
-    else location.hash = n.hash;
+    const p = back
+      ? n.previousElementSibling || this.app.qq('a[id]', n.parentNode).pop()
+      : (n.nextElementSibling?.id ? n.nextElementSibling : n.parentNode.firstChild);
+    if (p.id) location.hash = '#' + p.id;
+    //else location.hash = n.hash;
     //return p.id;
   }
   

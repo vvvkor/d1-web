@@ -56,8 +56,8 @@ export default class extends Plugin {
     let f = {};
     this.forAttrs(n, (a, k) => n.dataset[a].length > 0 ? f[k] = n.dataset[a].split(/;/) : null);
     this.app.dbg(['filter', n, f]);
-    this.app.e(this.app.qq(this.opt.qItem, n), m => m.classList[this.match(m, f) ? 'remove' : 'add'](this.app.opt.cHide))
-    this.app.e(this.app.qq('[data-' + this.opt.dFilter + ']', n), m => this.setUsed(m, f));
+    this.app.ee(n, this.opt.qItem, m => m.classList[this.match(m, f) ? 'remove' : 'add'](this.app.opt.cHide))
+    this.app.ee(n, '[data-' + this.opt.dFilter + ']', m => this.setUsed(m, f));
     this.store(n, f);
     this.app.fire('update', {n: n});
   }
@@ -91,7 +91,7 @@ export default class extends Plugin {
       let f = localStorage.getItem('filter-' + n.id);
       if (f) {
         //create attributes if not exist
-        this.app.e(this.app.qq('[data-' + this.opt.dFilter + ']', n), m => {
+        this.app.ee(n, '[data-' + this.opt.dFilter + ']', m => {
           let x = (m.dataset[this.opt.dFilter] || '').split(/=/);
           if (x[0]) {
             x = this.opt.dFilter + '_' + x[0];

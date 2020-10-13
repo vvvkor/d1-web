@@ -1,4 +1,4 @@
-/*! d1-web v2.2.15 */
+/*! d1-web v2.2.16 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -116,27 +116,19 @@ var _default = /*#__PURE__*/function () {
         return _this.opt[k] = opt[k];
       });
       this.init();
+
+      if (this.arrange) {
+        this.app.listen('arrange', function (e) {
+          return _this.arrange(e);
+        });
+        this.arrange({});
+      }
     }
   }, {
     key: "init",
     value: function init() {
       console.log('plugin.init()');
     }
-  }, {
-    key: "arranger",
-    value: function arranger() {
-      var _this2 = this;
-
-      this.app.listen('arrange', function (e) {
-        return _this2.arrange(e);
-      });
-      this.arrange({
-        n: null
-      });
-    }
-  }, {
-    key: "arrange",
-    value: function arrange() {}
   }]);
 
   return _default;
@@ -514,6 +506,12 @@ var _default = /*#__PURE__*/function () {
       if (f) this.nn(q).forEach(function (n) {
         return f.call(_this6, n);
       });
+    } // execute for each node inside some node
+
+  }, {
+    key: "ee",
+    value: function ee(n, q, f) {
+      this.e(this.qq(q, n), f);
     }
   }, {
     key: "typeOf",
@@ -586,11 +584,40 @@ var _default = /*#__PURE__*/function () {
     key: "vis",
     value: function vis(n) {
       return !n.classList.contains(this.opt.cOff);
+    } // fix clone IDs
+
+  }, {
+    key: "fixIds",
+    value: function fixIds(m) {
+      var _this7 = this;
+
+      this.ee(m, '[id]', function (n) {
+        var x = n.id;
+
+        var id = 'fix-' + _this7.seq();
+
+        n.id = id;
+
+        _this7.ee(m, 'a[href="#' + x + '"]', function (a) {
+          return a.href = '#' + id;
+        });
+
+        _this7.ee(m, 'label[for="' + x + '"]', function (a) {
+          return a.htmlFor = id;
+        });
+      });
     }
   }]);
 
   return _default;
-}();
+}(); // listen to all events
+
+/*
+Object.keys(window).forEach(key => {
+    if (/^on/.test(key)) window.addEventListener(key.slice(2), e => console.log('EVENT', e.type));
+});
+*/
+
 /*
 if (this.window === this) window[main.name] = main
 else module.exports = main
@@ -804,18 +831,22 @@ var _default = /*#__PURE__*/function (_Plugin) {
       //styles
 
       var modal = this.app.q(this.opt.qDlg + ':not(.' + this.app.opt.cOff + '), ' + this.opt.qGal + '[id="' + location.hash.substr(1) + '"]');
-      var bar = window.innerWidth - document.documentElement.clientWidth; //scroll bar width
 
-      var s = document.body.style;
-      document.body.classList[modal ? 'add' : 'remove'](this.opt.cFade);
+      if (true) {
+        var bar = window.innerWidth - document.documentElement.clientWidth; //scroll bar width
 
-      if (this.opt.dlgUnscroll) {
-        //hide scroll
-        s.overflow = modal ? 'hidden' : '';
-        if (!(modal && s.paddingRight)) s.paddingRight = modal ? '' + bar + 'px' : ''; // avoid width reflow
-      }
+        var s = document.body.style;
+        document.body.classList[modal ? 'add' : 'remove'](this.opt.cFade);
 
-      this.app.dbg(['modalStyle', n, modal, s.paddingRight]); //focus first input
+        if (this.opt.dlgUnscroll) {
+          //hide scroll
+          s.overflow = modal ? 'hidden' : '';
+          if (!(modal && s.paddingRight)) s.paddingRight = modal ? '' + bar + 'px' : ''; // avoid width reflow
+        }
+
+        this.app.dbg(['modalStyle', n, modal, s.paddingRight]);
+      } //focus first input
+
 
       if (modal) {
         //let f1 = this.app.q('input, a:not(.' + this.app.opt.cClose + ')', modal);
@@ -977,7 +1008,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
         else if (d.matches(this.opt.qTab)) this.app.e(d.parentNode.children, function (n) {
             return n == d ? null : _this3.toggle(n, false, 1);
           }); //hide sibling tabs
-          else if (d.matches(this.opt.qAcc)) this.app.e(this.app.qq(this.opt.qAcc, d.closest(this.opt.qAccRoot)), function (n) {
+          else if (d.matches(this.opt.qAcc)) this.app.ee(d.closest(this.opt.qAccRoot), this.opt.qAcc, function (n) {
               return n.contains(d) ? null : _this3.toggle(n, false, 1);
             }); //hide other ul
       }
@@ -1414,7 +1445,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
       qGal: '.gal>a[id]',
       // dup of toggle.opt.qGal
       qGallery: '.gallery',
-      qLinks: 'a.pic'
+      qLinks: 'a.pic:not([href^="#"])'
     };
     return _this;
   }
@@ -1433,23 +1464,24 @@ var _default = /*#__PURE__*/function (_Plugin) {
       this.app.listen('keydown', function (e) {
         return _this2.onKey(e);
       });
-      this.arranger();
+      this.app.h('click', this.opt.qGallery + ' ' + this.opt.qLinks, function (e) {
+        return _this2.prepareByClick(e);
+      });
+      this.app.e(this.opt.qGallery, function (n) {
+        return _this2.prepare(n);
+      }); // show by initial hash
     }
   }, {
-    key: "arrange",
-    value: function arrange(_ref) {
-      var _this3 = this;
-
-      var n = _ref.n,
-          opt = _ref.opt;
-      if (n && n.matches(this.opt.qGallery)) this.prepare(n, opt === null || opt === void 0 ? void 0 : opt.gallery);
-      this.app.e(this.app.qq(this.opt.qGallery, n), function (m) {
-        return _this3.prepare(m, opt === null || opt === void 0 ? void 0 : opt.gallery);
-      });
+    key: "prepareByClick",
+    value: function prepareByClick(e) {
+      //e.preventDefault();
+      this.prepare(e.target.closest(this.opt.qGallery));
     }
   }, {
     key: "prepare",
     value: function prepare(n, opt) {
+      if (n.dataset.ready) return;
+      n.dataset.ready = 1;
       opt = opt ? _objectSpread(_objectSpread({}, this.opt), opt) : this.opt;
       var app = this.app;
       var g = app.ins('div', '', {
@@ -1457,18 +1489,11 @@ var _default = /*#__PURE__*/function (_Plugin) {
       });
       var a = app.qq(opt.qLinks, n);
       var z = a.length;
-
-      if (opt.rebuild) {
-        if (n.vGal) n.vGal.parentNode.removeChild(n.vGal);
-        this.app.e(this.app.qq(this.opt.qLinks, n), function (a) {
-          return delete a.vDone;
-        });
-      }
-
+      if (n.vGal) n.vGal.parentNode.removeChild(n.vGal);
       var first = 0;
 
       for (var i = 0; i < z; i++) {
-        if (!a[i].vDone) {
+        if ((a[i].getAttribute('href') || '').substr(0, 1) != '#') {
           var s = app.seq();
           if (!i) first = s;
           var next = '#' + opt.idPrefix + (i == z - 1 ? first : s + 1);
@@ -1476,7 +1501,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
           var p = app.ins('a', '', {
             className: 'gallery-pic swipe drag',
             id: opt.idPrefix + s,
-            href: next,
+            //href: next,
             'data-swipe-up': a[i].href || '',
             'data-swipe-right': prev,
             'data-swipe-down': this.app.opt.hClose,
@@ -1488,9 +1513,10 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
           p.vImg = p.vLink; //keep image url but do not load yet
 
-          p.dataset[opt.dCaption] = (opt.num ? i + 1 + '/' + z + (a[i].title ? ' - ' : '') : '') + (a[i].title || '');
+          var num = opt.num;
+          if ('num' in n.dataset) num = !!n.dataset.num;
+          p.dataset[opt.dCaption] = (num ? i + 1 + '/' + z + (a[i].title ? ' - ' : '') : '') + (a[i].title || '');
           a[i].href = '#' + p.id;
-          a[i].vDone = 1;
         }
       }
 
@@ -1503,22 +1529,20 @@ var _default = /*#__PURE__*/function (_Plugin) {
     value: function next(e) {
       if (e.defaultPrevented) return;
       var n = e.recv;
-
-      if (e.clientX > 0
+      var back = n && e.clientX > 0
       /* not Enter key */
-      && e.clientX < n.clientWidth / 3) {
-        this.browse(n, true);
-        e.preventDefault();
-      }
+      && e.clientX < n.clientWidth / 3;
+      this.browse(n, back);
+      e.preventDefault();
     }
   }, {
     key: "browse",
     value: function browse(n, back) {
-      if (back) {
-        var p = n.previousElementSibling || this.app.qq('a[id]', n.parentNode).pop();
-        if (p.id) location.hash = '#' + p.id;
-      } else location.hash = n.hash; //return p.id;
+      var _n$nextElementSibling;
 
+      var p = back ? n.previousElementSibling || this.app.qq('a[id]', n.parentNode).pop() : ((_n$nextElementSibling = n.nextElementSibling) === null || _n$nextElementSibling === void 0 ? void 0 : _n$nextElementSibling.id) ? n.nextElementSibling : n.parentNode.firstChild;
+      if (p.id) location.hash = '#' + p.id; //else location.hash = n.hash;
+      //return p.id;
     }
   }, {
     key: "onHash",

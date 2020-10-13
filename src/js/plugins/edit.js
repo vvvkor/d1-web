@@ -73,9 +73,12 @@ export default class extends Plugin {
     app.h(['input', 'blur'], '.edit-wysiwyg', e => this.up(0, e.target));//for validation
     //app.listen('value', e => e.n.theWys ? (e.modeAuto ? this.modeAuto(e.n) : this.up(1, e.n.theWys)) : null);
     app.listen('value', e => {
-      if (e.n.theWys) {
-        this.up(1, e.n.theWys) // update wysiwyg from area
-        if (e.modeAuto) this.modeAuto(e.n)
+      if(e.n.matches(this.opt.qEdit)){
+        const z = this.getWys(e.n);
+        if (z) {
+          this.up(1, z) // update wysiwyg from area
+          if (e.modeAuto) this.modeAuto(e.n)
+        }
       }
     });
     app.b([window], 'paste', e => this.onPaste(e), true);
@@ -83,49 +86,62 @@ export default class extends Plugin {
     app.h('input', this.opt.qAdjust, e => this.adjust(e.target));
     app.b([window], 'mouseup', e => e.target.matches?.(this.opt.qAdjust) ? this.resized(e.target) : null);
     app.b([window], 'resize', e => this.adjustAll());
-    this.arranger();
   }
   
   arrange({n}) {
-    this.app.e(this.app.qq(this.opt.qEdit, n), m => this.prepare(m));
-    this.app.e(this.app.qq(this.opt.qAdjust, n), m => this.setStyle(m));
+    this.app.ee(n, this.opt.qEdit, m => this.prepare(m));
+    this.app.ee(n, this.opt.qAdjust, m => this.setStyle(m));
     this.adjustAll(n);
   }
   
   setFocus(l) {
     let a = this.app.q('#' + l.htmlFor);
-    if (a && a.theWys && this.app.vis(a.theWys)) a.theWys.focus();
+    const z = a ? this.getWys(a) : null;
+    if (z && this.app.vis(z)) z.focus();
   }
 
   prepare(n) {
-    if (!n.theWys) {
-      const app = this.app
-      let m = app.ins('nav', '', 'bg', /*d*/ n, -1);
-      let mm = app.ins('div', '', {className: app.opt.cToggle + ' ' + app.opt.cOff});
-      //let zc = app.ins('div', '', 'subinput', n, 1)
-      let z = app.ins('div', '', {className: app.opt.cToggle + ' bord pad subinput edit-wysiwyg'}, n, 1/*zc*/);
-      z.setAttribute('contenteditable', true);
-      z.theArea = n;
-      z.theNav = m;
-      n.theWys = z;
-      n.classList.add(app.opt.cToggle);
-      if (n.id) z.id = 'wys-' + n.id;
-      let t = (n.dataset.tools || this.opt.tools).split('');
-      let to = m;
-      for (let i in t) {
-        let b = this.btn[t[i]];
-        let a = app.ins('a', b[2], {href: '#cmd-' + b[0]/*i*/, title: b[3], className: app.opt.cToggle + ' pad hover', 'data-cmd': t[i]}, to);
-        if (b[0] == 'tools') to = mm;
-      }
-      m.appendChild(mm);
-      n.className += ' bord pad';
-      n.style.width = '100%';
-      this.setStyle(n);
-      this.setStyle(z);
-      //let l = n.closest('label') || n;
+    if (n.dataset.ready) return;
+    n.dataset.ready = 1;
+    
+    const app = this.app
+    let m = app.ins('nav', '', 'bg', /*d*/ n, -1);
+    let mm = app.ins('div', '', {className: app.opt.cToggle + ' ' + app.opt.cOff});
+    //let zc = app.ins('div', '', 'subinput', n, 1)
+    let z = app.ins('div', '', {className: app.opt.cToggle + ' bord pad subinput edit-wysiwyg'}, n, 1/*zc*/);
+    z.setAttribute('contenteditable', true);
+//    z.theArea = n;
+//    n.theWys = z;
+    n.classList.add(app.opt.cToggle);
+    if (n.id) z.id = 'wys-' + n.id;
+    let t = (n.dataset.tools || this.opt.tools).split('');
+    let to = m;
+    for (let i in t) {
+      let b = this.btn[t[i]];
+      let a = app.ins('a', b[2], {href: '#cmd-' + b[0]/*i*/, title: b[3], className: app.opt.cToggle + ' pad hover', 'data-cmd': t[i]}, to);
+      if (b[0] == 'tools') to = mm;
     }
-    this.up(1, n.theWys);
+    m.appendChild(mm);
+    n.className += ' bord pad';
+    n.style.width = '100%';
+    this.setStyle(n);
+    this.setStyle(z);
+    //let l = n.closest('label') || n;
+
+    this.up(1, this.getWys(n));
     this.modeAuto(n);
+  }
+  
+  getNav(z) {
+    return z.previousElementSibling.previousElementSibling;
+  }
+  
+  getArea(z) {
+    return z.previousElementSibling;
+  }
+  
+  getWys(a) {
+    return a.nextElementSibling;
   }
   
   modeAuto(n) {
@@ -135,7 +151,7 @@ export default class extends Plugin {
       wys = ((n.dataset.tools || this.opt.tools).indexOf('/') == -1)
         || (n.value.match(/(>|&\w+;)/) && !n.value.match(/<script/i));
     }
-    this.mode(wys, n.theWys);
+    this.mode(wys, this.getWys(n));
   }
 
   cmd(e, bb/*, nn*/) { // (e) or (z, b)
@@ -171,25 +187,29 @@ export default class extends Plugin {
   }
 
   up(w, z) {
-    if (w) z.innerHTML = z.theArea.value;
-    else z.theArea.value = z.innerHTML.
+    const a = this.getArea(z);
+    if (w) z.innerHTML = a.value;
+    else a.value = z.innerHTML.
       replace(/(\shref=")!/ig, ' target="_blank"$1').
       replace(/(\ssrc="[^"]+#[a-z]*)(\d+%?)"/ig, ' width="$2"$1"');
       //.replace(/(\ssrc="[^"]+)#([lrc])"/ig,' class="$2"$1"');
-    if (!w) this.app.dispatch(z.theArea, ['input', 'change']);
+    if (!w) this.app.dispatch(a, ['input', 'change']);
   }
 
   mode(w, z) {
+    const a = this.getArea(z);
     this.app.toggle(z, w);
-    this.app.toggle(z.theArea, !w);
+    this.app.toggle(a, !w);
     if (!w) {
-      if (z.style.height) z.theArea.style.height = z.style.height;
-      else this.adjust(z.theArea);
+      if (z.style.height) a.style.height = z.style.height;
+      else if(a.matches(this.opt.qAdjust)) this.adjust(a);
     }
     this.up(w, z);
-    this.app.e(this.app.qq('a', z.theNav), n => (n.hash == '#cmd-src') ? null : this.app.toggle(n, w));
-    z.theArea.theManual = 0;
-    z.theArea.style.width = '100%';
+    const nav = this.getNav(z);
+    //this.app.ee(nav, 'a', n => (n.hash == '#cmd-src') ? null : this.app.toggle(n, w));//slow
+    this.app.ee(nav, 'a', n => (n.hash == '#cmd-src') ? null : n.classList[w ? 'remove' : 'add'](this.app.opt.cOff));//faster
+    a.theManual = 0;
+    a.style.width = '100%';
   }
 
   setStyle(n) {
@@ -210,7 +230,7 @@ export default class extends Plugin {
   }
 
   adjustAll(n) {
-    this.app.e(this.app.qq(this.opt.qAdjust, n), m => this.adjust(m));
+    this.app.ee(n, this.opt.qAdjust, m => this.adjust(m));
   }
 
   adjust(n) {

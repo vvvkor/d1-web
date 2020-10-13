@@ -97,14 +97,16 @@ export default class extends Plugin{
     
     //styles
     let modal = this.app.q(this.opt.qDlg+':not(.'+this.app.opt.cOff+'), '+this.opt.qGal+'[id="' + location.hash.substr(1) + '"]');
-    let bar = window.innerWidth - document.documentElement.clientWidth; //scroll bar width
-    let s = document.body.style;
-    document.body.classList[modal ? 'add' : 'remove'](this.opt.cFade);
-    if (this.opt.dlgUnscroll) {//hide scroll
-      s.overflow = modal ? 'hidden' : '';
-      if (!(modal && s.paddingRight)) s.paddingRight = modal ? '' + bar + 'px' : ''; // avoid width reflow
+    if (1 || e || modal) {
+      let bar = window.innerWidth - document.documentElement.clientWidth; //scroll bar width
+      let s = document.body.style;
+      document.body.classList[modal ? 'add' : 'remove'](this.opt.cFade);
+      if (this.opt.dlgUnscroll) {//hide scroll
+        s.overflow = modal ? 'hidden' : '';
+        if (!(modal && s.paddingRight)) s.paddingRight = modal ? '' + bar + 'px' : ''; // avoid width reflow
+      }
+      this.app.dbg(['modalStyle', n, modal, s.paddingRight]);
     }
-    this.app.dbg(['modalStyle', n, modal, s.paddingRight]);
     
     //focus first input
     if (modal) {
@@ -234,7 +236,7 @@ export default class extends Plugin{
     if (this.app.vis(d)) {
       if (d.matches(this.opt.qDlg)) ;//this.app.e(this.opt.qDlg, n => n == d ? null : this.toggle(n, false, 1)); //hide other dialogs
       else if (d.matches(this.opt.qTab)) this.app.e(d.parentNode.children, n => n == d ? null : this.toggle(n, false, 1)); //hide sibling tabs
-      else if (d.matches(this.opt.qAcc)) this.app.e(this.app.qq(this.opt.qAcc, d.closest(this.opt.qAccRoot)), n => n.contains(d) ? null : this.toggle(n, false, 1)); //hide other ul
+      else if (d.matches(this.opt.qAcc)) this.app.ee(d.closest(this.opt.qAccRoot), this.opt.qAcc, n => n.contains(d) ? null : this.toggle(n, false, 1)); //hide other ul
     }
   }
 

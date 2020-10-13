@@ -10,16 +10,14 @@ export default class {
     this.app = app
     if (opt) Object.keys(opt).forEach(k => this.opt[k] = opt[k])
     this.init()
+    if (this.arrange) {
+      this.app.listen('arrange', e => this.arrange(e));
+      this.arrange({});
+    }
   }
   
   init() {
     console.log('plugin.init()')
   }
   
-  arranger() {
-    this.app.listen('arrange', e => this.arrange(e));
-    this.arrange({n: null});
-  }
-  
-  arrange() {}
 }

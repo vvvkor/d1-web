@@ -299,7 +299,7 @@ export default class extends Plugin {
   }
   
   updateTotals(n, cnt) {
-    this.app.e(this.app.qq('[' + this.opt.aTotal + ']', n), m => m.textContent = this.countTotal(n, m, cnt));
+    this.app.ee(n, '[' + this.opt.aTotal + ']', m => m.textContent = this.countTotal(n, m, cnt));
   }
   
   countTotal(n, m, cnt) {

@@ -36,7 +36,7 @@ export default class extends Plugin {
         td.appendChild(c);
       //}
     }
-    this.app.e(this.app.qq('thead', t), n => n.classList.add('hide-mobile'));
+    this.app.ee(t, 'thead', n => n.classList.add('hide-mobile'));
   }
 
 }

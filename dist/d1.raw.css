@@ -1,4 +1,4 @@
-/*! d1-web v2.2.15 */
+/*! d1-web v2.2.16 */
 
 /* @import url("css/columns.css"); */
 
@@ -439,7 +439,7 @@ mark{background-color:var(--bg-warning);}
 	.row[class].flip[class]>*{margin-right:0;}
 		/*.row.flip.mar[class]>*+*:not(.mar){margin-top:var(--gap-xs);}*/
 	.row.flip.mar>:not(:last-child){margin-bottom:var(--gap-n);} /* keep cell margin */
-	table.flip caption, table.flip tbody, table.flip tfoot, table.flip tr, table.flip tr>*{display:block;text-align:left;}
+	table.flip caption, table.flip thead, table.flip tbody, table.flip tfoot, table.flip tr, table.flip tr>*{display:block;text-align:left;}
 	table.flip tr{margin-bottom:var(--gap-n);border:var(--border);border-width:medium;}
 	table.flip.let tr>*{border-bottom:var(--border);}
 		table.let:not(.flip)>*:last-child>tr:last-child>*{border-bottom:none;}

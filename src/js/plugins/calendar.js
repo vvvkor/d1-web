@@ -43,11 +43,10 @@ export default class extends Plugin {
     //this.app.h('click', '#' + this.opt.idPicker, e => app.pf('toggle', 'setShown', e.recv.vRel));
     this.app.h('click', '#' + this.opt.idPicker + ' a', e => this.onClick(e));
     this.app.h('click', '.calendar-tools a', e => this.onClick(e, true));
-    this.arranger();
   }
   
   arrange({n}) {
-    this.app.e(this.app.qq(this.opt.qsCalendar, n), m => this.prepare(m));
+    this.app.ee(n, this.opt.qsCalendar, m => this.prepare(m));
   }
   
   /*
@@ -75,7 +74,6 @@ export default class extends Plugin {
           ? this.app.next(p, c, true)
           : this.app.next(p.parentNode, c);
       }
-      
       
       //data
       let x = this.win.vCur;
@@ -105,7 +103,7 @@ export default class extends Plugin {
       else m = this.opt.showModal || (Math.min(window.innerWidth, window.innerHeight) < this.opt.sizeLimit);
       if (on) {
         this.win.className = this.app.opt.cToggle + ' ' + this.app.opt.cOff + ' pad ' + (m ? 'dlg' : '');
-        (m ? document.body : n.thePop).appendChild(this.win);
+        (m ? document.body : (this.opt.inPop ? n.parentNode : n.previousElementSibling)).appendChild(this.win);
         if (m) {
           let s = this.win.style;
           s.left = s.right = s.top = s.bottom = '';
@@ -120,13 +118,15 @@ export default class extends Plugin {
   }
   
   prepare(n) {
-    n.vTime = (n.type == 'datetime-local' || n.classList.contains('datetime'));
+    if (n.dataset.ready) return;
+    n.dataset.ready = 1;
+    
+    n.dataset.tm = (n.type == 'datetime-local' || n.classList.contains('datetime'));
     n.type = 'text';
     n.autocomplete = 'off';
-    if (n.value) n.value = this.fmt(this.parse(n.value), 0, n.vTime);
+    if (n.value) n.value = this.fmt(this.parse(n.value), 0, n.dataset.tm);
     let pop = this.app.ins('div', '', 'pop l', n, -1); //''
     if (!this.opt.inPop) pop.style.verticalAlign = 'bottom';
-    n.thePop = pop;
     if (this.opt.addIcons.length>0) {
       let ic = this.app.ins('span', '', 'input-tools calendar-tools nobr', n, 1);//icons container
       for (let i in this.opt.addIcons) {
@@ -138,11 +138,13 @@ export default class extends Plugin {
   }
   
   openDialog(n, d, e) {
-    if (e) e.preventDefault();
-    this.build(n, d || n.value);
-    this.toggle(true, n);
-    //let f = (this.app.q('.bg-w', this.win) || this.app.q('#1', this.win));
-    //if (f) f.focus();
+    if (n.dataset.ready) {
+      if (e) e.preventDefault();
+      this.build(n, d || n.value);
+      this.toggle(true, n);
+      //let f = (this.app.q('.bg-w', this.win) || this.app.q('#1', this.win));
+      //if (f) f.focus();
+    }
   }
 
   closeDialog(n, d) {
@@ -162,9 +164,9 @@ export default class extends Plugin {
   }
   
   errLimits(n) {
-    let min = this.getLimit(n, 'min', n.vTime);
-    let max = this.getLimit(n, 'max', n.vTime);
-    let v = this.fmt(this.parse(n.value), 0, n.vTime, 'y');
+    let min = this.getLimit(n, 'min', n.dataset.tm);
+    let max = this.getLimit(n, 'max', n.dataset.tm);
+    let v = this.fmt(this.parse(n.value), 0, n.dataset.tm, 'y');
     return (min && v<min) || (max && v>max) ? min + ' .. ' + max : '';
   }
   
@@ -184,8 +186,8 @@ export default class extends Plugin {
     let max = this.getLimit(n, 'max', 0);
     //y,m,h,mi
     this.win.vNodeCur.textContent = this.n(m+1) + '.' + y;
-    this.win.vHours.textContent = this.n(n.vTime ? x.getHours() : 0);
-    this.win.vMinutes.textContent = this.n(n.vTime ? x.getMinutes() : 0);
+    this.win.vHours.textContent = this.n(n.dataset.tm ? x.getHours() : 0);
+    this.win.vMinutes.textContent = this.n(n.dataset.tm ? x.getMinutes() : 0);
     //days
     let days = (new Date(y, m+1, 0)).getDate();//days in month
     let skip = ((new Date(y, m, 1)).getDay() + 6) % 7;//skip weekdays
@@ -208,7 +210,7 @@ export default class extends Plugin {
       }
     }
     //time
-    this.win.vNodeTime.classList[n.vTime ? 'remove' : 'add'](this.app.opt.cHide);
+    this.win.vNodeTime.classList[n.dataset.tm ? 'remove' : 'add'](this.app.opt.cHide);
   }
   
   build(n, x) {
@@ -269,10 +271,11 @@ export default class extends Plugin {
 
   setValue(n, d) {
     if (d !== null) {
-      n.value = (d === true) ? this.fmt(0, 0, n.vTime) : d;
+      n.value = (d === true) ? this.fmt(0, 0, n.dataset.tm) : d;
       let h = this.win.vHours;
       let m = this.win.vMinutes;
-      if (n.vTime && d !== true && d !== '' && h && m) n.value += ' ' + this.n(h.textContent) + ':' + this.n(m.textContent);
+      if (n.dataset.tm && d !== true && d !== '' && h && m) n.value += ' ' + this.n(h.textContent) + ':' + this.n(m.textContent);
+      this.app.dispatch(n, ['input', 'change']);
       this.validate(n, 0);
     }
   }

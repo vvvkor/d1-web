@@ -41,17 +41,18 @@ export default class extends Plugin {
     app.h('click', '.lookup-item', e => this.choose(e));
     app.h('click', '.lookup-goto', e => this.go(e));
     app.h('change', '[data-chain]', e => this.updateChain(e.target));
-    this.arranger();
   }
   
   arrange({n}) {
-    this.app.e(this.app.qq('input[data-' + this.opt.dLookup + ']', n), m => this.prepare(m));
-    this.app.e(this.app.qq('[data-chain]', n), m => this.updateChain(m));
+    this.app.ee(n, 'input[data-' + this.opt.dLookup + ']', m => this.prepare(m));
+    this.app.ee(n, '[data-chain]', m => this.updateChain(m));
   }
 
   prepare(n) {
+    if (n.dataset.ready) return;
+    n.dataset.ready = 1;
+    
     const app = this.app
-    if (this.cap(n)) return;
     n.vLabel = (this.opt.dLabel in n.dataset)
       ? n.dataset[this.opt.dLabel]
       : (n.value || '');
@@ -141,11 +142,10 @@ export default class extends Plugin {
   }
 
   openList(n, d, e) {
-    if (e) e.stopPropagation();
+    //if (e) e.stopPropagation();
     this.closeList();
     let pop = this.pop(n);
     pop.appendChild(this.win);
-    //this.win.vRel = n.vCap;
     this.app.toggle(this.win, true);
     this.build(n, d);
     //this.app.pf('toggle', 'setShown', null);
@@ -200,7 +200,6 @@ export default class extends Plugin {
   
   fix(n, v, c) {
     n.vCur = null;
-    if (n.vWait) clearTimeout(n.vWait);
     n.value = v;
     n.vLabel = this.cap(n).value = c;
     this.app.dispatch(n, ['input', 'change']);
@@ -210,7 +209,7 @@ export default class extends Plugin {
   key(e) {
     let n = e.target ? this.ident(e.target) : null;
     if (n) {
-      if (e.keyCode == 27) this.fix(n, n.value, n.vLabel);
+      if (e.keyCode == 27) this.fix(n, n.value, n.vLabel || '');
       else if (e.keyCode == 40 && !this.app.vis(this.win)) this.find(e);
       else if (e.keyCode == 38 || e.keyCode == 40) this.hiliteNext(n, e.keyCode == 38);
       else if (e.keyCode == 13 && n.vCur) {

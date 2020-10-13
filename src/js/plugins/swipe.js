@@ -8,6 +8,7 @@ export default class extends Plugin {
   constructor() {
     super('swipe')
     this.moved = null;
+    this.startTime = 0;
     this.c = {}; // current move params
     this.opt = {
       qSwipe: '.swipe',
@@ -15,7 +16,8 @@ export default class extends Plugin {
       qKeepDrag: '.drawer',//', .gal a[id]',
       cDragging: 'dragging',
       maxClick: 20,
-      minSwipe: 25
+      minSwipe: 25,
+      timeLimit: 300 //ms
     };
   }
 
@@ -36,10 +38,10 @@ export default class extends Plugin {
     */
     //firefox needs also: dragover, dragend (click is not prevented!)
     //this.app.b([document], 'mousedown', e => e.preventDefault());
-    this.app.b([document], ['mousedown', 'touchstart'], e => this.onStart(e));
+    this.app.b([document], ['mousedown', 'touchstart', 'dragstart'], e => this.onStart(e));
     this.app.b([document], ['mousemove', 'touchmove', 'dragover'], e => this.onMove(e), {passive: false});
     this.app.b([window], 'scroll', e => { this.undrag(); this.moved = null; }, true); // do not swipe if scrolling happened
-    this.app.b([document], ['click', 'mouseleave', 'touchend', 'touchcancel', 'dragend'/*, 'mouseleave'/*, 'blur', 'keydown', 'contextmenu'*/], e => this.onEnd(e), true /*{capture: true, passive: false}*/);
+    this.app.b([document], ['click'/*'mouseup'*/, 'mouseleave', 'touchend', 'touchcancel', 'dragend'/*, 'mouseleave'/*, 'blur', 'keydown', 'contextmenu'*/], e => this.onEnd(e), true /*{capture: true, passive: false}*/);
   }
 
   onStart(e) {
@@ -48,12 +50,13 @@ export default class extends Plugin {
       this.moved = null;
       return;
     }
-    this.moved = e.target.closest(this.opt.qSwipe);
+    this.moved = e.target.closest?.(this.opt.qSwipe);
     if (this.moved) {
       ////if (!e.type.match(/^touch/)) e.preventDefault(); // avoid click
       let t = e.touches ? e.touches[0] : e;
       this.c.sX = this.c.eX = t.screenX; 
       this.c.sY = this.c.eY = t.screenY;
+      this.startTime = Date.now();
     }
   }
 
@@ -97,33 +100,37 @@ export default class extends Plugin {
   }
   
   onEnd(e) {
+    // console.log('swipe end', e.type, this.moved?.tagName);
     if (this.moved) {
-      // console.log('swipe end', e.type, this.moved.tagName);
-      let undo = (e.type == 'mouseleave' || e.type == 'touchcancel');
-      if (undo || !this.moved.matches(this.opt.qKeepDrag)) this.undrag();
-      else setTimeout(this.undrag.bind(this, this.moved), 500);
-      if (!undo) {
-        let xy = this.shift();
-        if (xy[2]) {
-          //if touch scroll then no swipe
-          /*
-          const scrollTouch = (
-            e.type.match(/^touch/)
-            && !this.moved.matches(this.opt.qDrag)
-            && this.inScroll(e.target, xy[0])
-          );
-          if (!scrollTouch) {
-          */
-          //if (!e.type.match(/^touch/)) e.preventDefault(); // prevent click
-          e.unfire = true; // avoid unhash()
-          const url = this.moved.dataset['swipe' + xy[2]];
-          if (url) location.href = url;
-          else this.app.fire('swipe', {e, n: this.moved, x: xy[0], y: xy[1], dir: xy[2]});
-          //}
+      if((Date.now() - this.startTime < this.opt.timeLimit) || this.moved.matches(this.opt.qDrag)) {
+        let undo = (e.type == 'mouseleave' || e.type == 'touchcancel');
+        if (undo || !this.moved.matches(this.opt.qKeepDrag)) this.undrag();
+        else setTimeout(this.undrag.bind(this, this.moved), 500);
+        if (!undo) {
+          let xy = this.shift();
+          if (xy[2]) {
+            //if touch scroll then no swipe
+            /*
+            const scrollTouch = (
+              e.type.match(/^touch/)
+              && !this.moved.matches(this.opt.qDrag)
+              && this.inScroll(e.target, xy[0])
+            );
+            if (!scrollTouch) {
+            */
+            //if (!e.type.match(/^touch/)) e.preventDefault(); // prevent click
+            e.unfire = true; // avoid unhash()
+            const url = this.moved.dataset['swipe' + xy[2]];
+            if (url) location.href = url;
+            else this.app.fire('swipe', {e, n: this.moved, x: xy[0], y: xy[1], dir: xy[2]});
+            e.preventDefault();
+            // console.log('swipe done', e.type, this.moved.tagName, xy[2], url);
+            //}
+          }
         }
+        this.moved.classList.remove(this.opt.cDragging);
+        this.moved = null;
       }
-      this.moved.classList.remove(this.opt.cDragging);
-      this.moved = null;
     }
   }
   

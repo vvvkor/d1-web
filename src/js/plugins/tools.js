@@ -19,25 +19,27 @@ export default class extends Plugin {
   }
   
   init() {
-    const app = this.app
-    this.opt.qSet = '[data-' + this.opt.dSet + '], [data-' + this.opt.dNodes + ']';
     this.opt.qSetClick = 'a[data-' + this.opt.dSet + ']';
     this.opt.qSetChange = 'input[data-' + this.opt.dNodes + '], select[data-' + this.opt.dNodes + ']';
-    app.e('table[class]', n => this.alignCells(n));
-    app.e(this.opt.qSet, n => this.restore(n));
-    app.e(this.opt.qSet, n => this.toggleClass(n));
-    app.e(this.opt.qHeading, n => this.smartHeading(n));
-    app.h('change', this.opt.qSetChange, e => this.toggleClass(e.target));
-    app.h('click', this.opt.qSetClick, e => this.toggleClass(e.recv, e));
+    this.app.h('change', this.opt.qSetChange, e => this.toggleClass(e.target));
+    this.app.h('click', this.opt.qSetClick, e => this.toggleClass(e.recv, e));
+    this.app.b([window], 'resize', e => this.onResize(e));
+  }
+  
+  arrange({n}) {
+    this.opt.qSet = '[data-' + this.opt.dSet + '], [data-' + this.opt.dNodes + ']';
+    this.app.ee(n, 'table[class]', m => this.alignCells(m));
+    this.app.ee(n, this.opt.qSet, m => this.restore(m));
+    this.app.ee(n, this.opt.qSet, m => this.toggleClass(m));
+    this.app.ee(n, this.opt.qHeading, m => this.smartHeading(m));
     this.onResize();
-    app.b([window], 'resize', e => this.onResize(e));
   }
 
   alignCells(n) {
     let m = n.className.match(/\b[lcr]\d\d?\b/g);
     if (m) {
       for (let i = 0; i < m.length; i++) {
-        this.app.e(this.app.qq('tr>*:nth-child(' + m[i].substr(1) + ')', n), c => c.classList.add(m[i].substr(0, 1)) );
+        this.app.ee(n, 'tr>*:nth-child(' + m[i].substr(1) + ')', c => c.classList.add(m[i].substr(0, 1)) );
       }
     }
   }

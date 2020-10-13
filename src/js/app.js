@@ -209,6 +209,11 @@ export default class {
     if (f) this.nn(q).forEach(n => f.call(this, n))
   }
 
+  // execute for each node inside some node
+  ee(n, q, f) {
+    this.e(this.qq(q, n), f)
+  }
+  
   typeOf(v) {
     return Object.prototype.toString.call(v).slice(8, -1).toLowerCase()
   }
@@ -270,8 +275,26 @@ export default class {
   vis(n) {
     return !n.classList.contains(this.opt.cOff)
   }
+  
+  // fix clone IDs
+  fixIds(m) {
+    this.ee(m, '[id]', n => {
+      const x = n.id;
+      const id = 'fix-' + this.seq();
+      n.id = id;
+      this.ee(m, 'a[href="#'+ x +'"]', a => a.href = '#' + id);
+      this.ee(m, 'label[for="'+ x +'"]', a => a.htmlFor = id);
+    });
+  }
 
 }
+
+// listen to all events
+/*
+Object.keys(window).forEach(key => {
+    if (/^on/.test(key)) window.addEventListener(key.slice(2), e => console.log('EVENT', e.type));
+});
+*/
 
 /*
 if (this.window === this) window[main.name] = main

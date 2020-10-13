@@ -77,6 +77,14 @@
 		}
 	}
 	
+	var testHtml = 
+		'<hr><form>'
+		+ '<p>Date: <input class="calendar" type="datetime-local">'
+		+ '<p>Lookup: <input value="NZ" data-lookup="https://restcountries.eu/rest/v2/name/{q}##alpha2Code#name#languages.0.name" data-cap="https://restcountries.eu/rest/v2/alpha/{q}#name">'
+		+ '<p>File: <input type="file" class="pick">'
+		+ '<p><textarea class="edit -adjust"></textarea>'
+		+ '</form>';
+	
 	document.addEventListener('DOMContentLoaded', e => {
 		console.log('d1 = ', d1);
 		d1.listen('beforeopt', checkApi);
@@ -743,11 +751,15 @@ let double = function (x) {
 		</div>
 		-->
 		<div class="pad mar shade">
-			<a href="#insert" onclick="plus.innerHTML='<form><p>Date: <input class=\'calendar\'><p>Lookup: <input data-lookup=\'https://restcountries.eu/rest/v2/name/{q}##alpha2Code#name#languages.0.name\'><p>File: <input type=\'file\' class=\'pick\' name=\'f9\'><p><textarea class=\'edit adjust\'></textarea></form>';d1.fire('arrange', {n: plus});">Insert</a>
-			<a href="#clone" onclick="plus.parentNode.appendChild(plus.cloneNode(true)).id = 'plus2';">Clone</a>
-			<div id="plus">
-			</div>
+			<a href="#insert" onclick="plus.innerHTML = testHtml;">Insert</a>
+			<a href="#arrange" onclick="d1.fire('arrange', {n: plus});">Arrange</a>
+			<a href="#clone" onclick="clones.appendChild(plus.cloneNode(true))">Clone</a>
+			<a href="#clone" onclick="d1.fixIds(clones)">IDs</a>
+			<a href="#clear" onclick="plus.innerHTML = clones.innerHTML = '';">Clear</a>
+			<div id="plus"></div>
+			<div id="clones"></div>
 		</div>
+		
 	</div>
 
 	<!-- /central -->

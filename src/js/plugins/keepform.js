@@ -20,7 +20,7 @@ export default class extends Plugin {
       app.e(this.opt.qRestore, f => this.restoreForm(f, true));
       app.h(['change', 'input'], q, e => this.store(e));
       app.h('click', q + ' a[href="#restore"]', e => this.restore(e));
-      app.h('click', q + ' a[href="#reset"]', e => this.reset(e));
+      app.h('click', q + ' a[href="#reset"]', e => this.resetForm(e));
       app.h('click', q + ' a[href="#unstore"]', e => this.unstore(e));
     }
   }
@@ -35,11 +35,11 @@ export default class extends Plugin {
     app.ins('a', app.i('ban', '[x]'), {href: '#unstore'}, d);
   }
   
-  reset(e) {
+  resetForm(e) {
     e.preventDefault();
     let f = e.target.closest('form');
     f.reset();
-    this.app.e(this.app.qq('[name]', f), n => this.app.fire('value', {n: n}));
+    this.app.ee(f, '[name]', n => this.app.fire('value', {n: n}));
   }
   
   unstore(e) {
