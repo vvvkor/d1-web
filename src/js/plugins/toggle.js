@@ -50,8 +50,8 @@ export default class extends Plugin{
     app.h('click', 'a[href^="#"]', e => this.onLink(e));
     app.listen('click', e => this.onClick(e));
     app.listen('after', e => (e && e.type == 'click') ? this.unpop(e.target) : null); // click out
-    app.listen('after', e => (!e || ['click', 'keydown', 'hashchange'].indexOf(e.type) != -1) ? this.modalStyle(e) : null);
-    app.listen('after', e => (!e || ['click', 'keydown', 'hashchange'].indexOf(e.type) != -1) ? (this.setShown(null)) : null);
+    app.listen('after', e => (!e || ['click', 'keydown', 'hashchange'].indexOf(e?.type) != -1) ? this.modalStyle(e, 'after.'+(e?.type || 'init')) : null);
+    app.listen('after', e => (!e || ['click', 'keydown', 'hashchange'].indexOf(e?.type) != -1) ? (this.setShown(null)) : null);
     //toggle
     let q = this.opt;
     this.opt.qTgl = this.opt.mediaSuffixes.concat(['']).map(x => /*'[id]' + */ '.' + app.opt.cToggle + x).join(', ')
@@ -90,7 +90,7 @@ export default class extends Plugin{
   }
   */
 
-  modalStyle(e) {
+  modalStyle(e, src) {
     let n = e ? e.target : null;
     //this.setShown(null);//do it just once when dialog is opened
     //let modal = this.app.q(this.opt.qDlg+':not(.'+this.app.opt.cOff+'), '+this.opt.qGal+':target'); // :target not updated after Esc key
@@ -107,6 +107,7 @@ export default class extends Plugin{
       }
       this.app.dbg(['modalStyle', n, modal, s.paddingRight]);
     }
+    //console.log('modalStyle', src, n, modal);
     
     //focus first input
     if (modal) {
@@ -126,7 +127,7 @@ export default class extends Plugin{
     if (e) e.preventDefault();
     this.unpop(null, true);
     this.unhash();
-    this.modalStyle();
+    this.modalStyle(null, 'esc');
   }
 
   onHash(e) {
@@ -143,7 +144,7 @@ export default class extends Plugin{
           this.toggle(d, true);
           if (!this.opt.keepHash) this.unhash();
         }
-        if (t || g) this.modalStyle();
+        if (t || g) this.modalStyle(null, 'hash.'+(t ? 'tgl' : 'gal'));
         else this.unpop();//this.app.fire('esc', e);
       }
     }
