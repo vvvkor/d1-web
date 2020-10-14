@@ -105,7 +105,7 @@ export default class extends Plugin{
   esc(e) {
     this.app.dbg(['esc', e]);
     if (e) e.preventDefault();
-    this.unpop(null, true);
+    this.unpop();
     //if (e.type != 'hashchange') {
       this.unhash();
       //this.modalStyle(null, 'esc');
@@ -148,7 +148,7 @@ export default class extends Plugin{
         let t = d.matches(this.opt.qTgl);
         let g = d.matches(this.opt.qGal);
         if (t) {
-          this.unpop(null, true);
+          this.unpop();
           this.toggle(d, true);
           if (!this.opt.keepHash) this.unhash();
         }
@@ -245,7 +245,7 @@ export default class extends Plugin{
     }
   }
 
-  unpop(x, seq) {
+  unpop(x, force) {
     let keep = [x];
     if (x) {
       let a = x.closest('a');
@@ -255,11 +255,13 @@ export default class extends Plugin{
     //this.app.e(this.opt.qUnpop, n => (keep && keep.filter(m => m && m.tagName && n.contains(m)).length) ? null : this.toggle(n, false, 1));
     let nn = this.app.qq(this.opt.qUnpopOn)
       .filter(n => !(keep && keep.filter(m => m && m.tagName && n.contains(m)).length)); // skip if contains one of [keep]
-    if (seq){
-      nn = nn.filter(n => !this.app.q(this.opt.qUnpopOn, n)); // to close nested subsequently
-      nn = nn.filter(n => !this.containsRels(n)); // to close vRel subsequently
-    }
-    this.app.e(nn, n => this.toggle(n, false/*, 1*/));
+    //if (!force) {
+      // to close nested subsequently
+      nn = nn.filter(n => !this.app.q(this.opt.qUnpopOn, n)); 
+      // to close vRel subsequently
+      nn = nn.filter(n => !this.containsRels(n));
+    //}
+    this.app.e(nn, n => this.toggle(n, false, !force));
   }
 
   containsRels(n) {
