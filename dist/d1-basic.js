@@ -1,4 +1,4 @@
-/*! d1-web v2.2.16 */
+/*! d1-web v2.2.17 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -672,7 +672,6 @@ var _default = /*#__PURE__*/function (_Plugin) {
     _classCallCheck(this, _default);
 
     _this = _super.call(this, 'toggle');
-    _this.shown = null;
     _this.nEsc = 0;
     _this.opt = {
       keepHash: true,
@@ -697,10 +696,14 @@ var _default = /*#__PURE__*/function (_Plugin) {
       //qMedia: '[id].target-mobile, [id].target-desktop',
       qDrawer: '.drawer[id]:not(.shift)',
       qTip: '[data-tip=""][title], .tip[title]',
+      qModal: '.gal>a[id], .dlg',
       cMem: 'mem',
       cFade: 'fade',
-      cTarget: 'target' //cToggle: 'toggle',
-
+      cTarget: 'target',
+      // css
+      cToggle: 'toggle',
+      // js
+      hUnhash: '#_'
     };
     return _this;
   }
@@ -714,30 +717,30 @@ var _default = /*#__PURE__*/function (_Plugin) {
       app.e('a[data-href]', function (n) {
         return n.href = n.dataset.href;
       });
-      app.listen('esc', function (e) {
-        return _this2.esc(e);
-      });
-      app.listen('hashchange', function (e) {
-        return _this2.onHash(e);
-      });
+      app.listen('before', function (e) {
+        return (e === null || e === void 0 ? void 0 : e.type) == 'click' ? _this2.beforeClick(e) : null;
+      }); // click out
+
       app.listen('keydown', function (e) {
         return _this2.onKey(e);
-      });
-      app.h('click', 'a[href^="#"]', function (e) {
-        return _this2.onLink(e);
-      });
+      }); //esc
+
       app.listen('click', function (e) {
         return _this2.onClick(e);
       });
-      app.listen('after', function (e) {
-        return e && e.type == 'click' ? _this2.unpop(e.target) : null;
-      }); // click out
-
-      app.listen('after', function (e) {
-        return !e || ['click', 'keydown', 'hashchange'].indexOf(e.type) != -1 ? _this2.modalStyle(e) : null;
+      app.h('click', 'a[href^="#"]', function (e) {
+        return _this2.onClickHash(e);
       });
-      app.listen('after', function (e) {
-        return !e || ['click', 'keydown', 'hashchange'].indexOf(e.type) != -1 ? _this2.setShown(null) : null;
+      app.listen('hashchange', function (e) {
+        return _this2.onHash(e);
+      }); //initial state, #
+
+      app.listen('esc', function (e) {
+        return _this2.esc(e);
+      }); //click #cancel, hash #cancel, key-27
+
+      app.listen('modal', function (e) {
+        return _this2.modalStyle(e);
       }); //toggle
 
       var q = this.opt;
@@ -804,57 +807,33 @@ var _default = /*#__PURE__*/function (_Plugin) {
         n.setAttribute('data-tip', n.title.replace(/\s\s+/g, '\n'));
         n.title = '';
       }); //init tooltips
-      //app.listen('swipe', e => this.swipe(e));
-
-      /*
-      app.e(this.opt.qTip, n => {
-        let p = app.ins('div',app.ins('div', n.title.replace(/\s\s+/g, '<br>'), 'btn bg-n'), 'pop', n, 1);
-        n.title = '';
-        p.insertBefore(n, p.firstChild);
-      });//init tooltips as popup
-      */
     }
-    /*
-    swipe(e) {
-      if (e.n.matches(this.opt.qDrw)) {
-        this.tgl(e.n, false);
-        setTimeout(() => e.n.style.transform = '', 500);
-      }
-    }
-    */
-
   }, {
     key: "modalStyle",
-    value: function modalStyle(e) {
-      var n = e ? e.target : null; //this.setShown(null);//do it just once when dialog is opened
-      //let modal = this.app.q(this.opt.qDlg+':not(.'+this.app.opt.cOff+'), '+this.opt.qGal+':target'); // :target not updated after Esc key
+    value: function modalStyle(e, src) {
+      //console.log('modalStyle', e)
       //styles
-
       var modal = this.app.q(this.opt.qDlg + ':not(.' + this.app.opt.cOff + '), ' + this.opt.qGal + '[id="' + location.hash.substr(1) + '"]');
+      var bar = window.innerWidth - document.documentElement.clientWidth; //scroll bar width
 
-      if (true) {
-        var bar = window.innerWidth - document.documentElement.clientWidth; //scroll bar width
+      var s = document.body.style;
+      document.body.classList[modal ? 'add' : 'remove'](this.opt.cFade);
 
-        var s = document.body.style;
-        document.body.classList[modal ? 'add' : 'remove'](this.opt.cFade);
+      if (this.opt.dlgUnscroll) {
+        //hide scroll
+        s.overflow = modal ? 'hidden' : '';
+        if (!(modal && s.paddingRight)) s.paddingRight = modal ? '' + bar + 'px' : ''; // avoid width reflow
+      }
 
-        if (this.opt.dlgUnscroll) {
-          //hide scroll
-          s.overflow = modal ? 'hidden' : '';
-          if (!(modal && s.paddingRight)) s.paddingRight = modal ? '' + bar + 'px' : ''; // avoid width reflow
-        }
-
-        this.app.dbg(['modalStyle', n, modal, s.paddingRight]);
-      } //focus first input
-
+      this.app.dbg(['modalStyle', modal, s.paddingRight]); //focus first input
 
       if (modal) {
         //let f1 = this.app.q('input, a:not(.' + this.app.opt.cClose + ')', modal);
-        var f1 = this.app.q('input:not([type="hidden"]), select, textarea, a.btn, a:not([href="' + this.app.opt.hClose + '"])', modal);
+        var f1 = this.app.q('input:not([type="hidden"]), select, textarea, a.btn', modal);
         var f = this.app.q(':focus', modal);
 
-        if (f1 && !f && (!n || !n.nodeType || !modal.contains(n))) {
-          this.app.dbg(['focus', n, modal, f1, f]);
+        if (f1 && !f) {
+          this.app.dbg(['focus', modal, f1, f]);
           f1.focus(); //focus just once when dialog is opened
 
           if (f1.type == 'text') f1.select();
@@ -866,16 +845,47 @@ var _default = /*#__PURE__*/function (_Plugin) {
     value: function esc(e) {
       this.app.dbg(['esc', e]);
       if (e) e.preventDefault();
-      this.unpop(null, true);
-      this.unhash();
-      this.modalStyle();
+      this.unpop(null, true); //if (e.type != 'hashchange') {
+
+      this.unhash(); //this.modalStyle(null, 'esc');
+
+      this.app.fire('modal', {
+        n: null,
+        act: 'esc'
+      }); //}
+    }
+  }, {
+    key: "unhash",
+    value: function unhash() {
+      //v1.
+      if (location.hash) location.hash = this.opt.hUnhash; //this.app.opt.hClose; // update :target styles
+      //v2.
+
+      if (location.hash) history.replaceState({}, '', location.pathname + location.search); //this.addHistory(location.pathname + location.search /* + this.app.opt.hClose*/); // remove hash in url
+    }
+  }, {
+    key: "addHistory",
+    value: function addHistory(h) {
+      history.pushState({}, '', h); //following required to re-render hash changes (test: open gallery, esc)
+      //history.pushState({}, '', h);
+      //history.go(-1);
+    }
+  }, {
+    key: "onKey",
+    value: function onKey(e) {
+      var k = e.keyCode;
+      this.app.dbg(['keydown', k, this.nEsc]);
+      if (k == 27 && this.nEsc >= 2) localStorage.clear();
+      if (k == 27) this.app.fire('esc', e);
+      this.nEsc = k == 27 && this.nEsc < 2 ? this.nEsc + 1 : 0;
     }
   }, {
     key: "onHash",
     value: function onHash(e) {
+      if ((e ? e.newURL : location.hash).match(new RegExp(this.opt.hUnhash + '$'))) return;
       this.app.dbg(['hashchange', location.hash]);
       this.nEsc = 0;
-      if (location.hash === this.app.opt.hClose) this.app.fire('esc', e);else if (location.hash) {
+      if (!location.hash || location.hash === this.app.opt.hClose) this.app.fire('esc', e);else if (location.hash) {
         var d = this.app.q(location.hash);
 
         if (d) {
@@ -883,33 +893,43 @@ var _default = /*#__PURE__*/function (_Plugin) {
           var g = d.matches(this.opt.qGal);
 
           if (t) {
-            this.unpop();
+            this.unpop(null, true);
             this.toggle(d, true);
             if (!this.opt.keepHash) this.unhash();
+          } else if (g) {
+            this.app.fire('modal', {
+              n: g,
+              act: 'gal'
+            });
           }
-
-          if (t || g) this.modalStyle();else this.unpop(); //this.app.fire('esc', e);
         }
       }
     }
   }, {
-    key: "onKey",
-    value: function onKey(e) {
-      var k = e.keyCode;
-      this.app.dbg(['keydown', k, this.nEsc]);
-      if (k == 27 && this.nEsc >= 2) localStorage.clear();else if (k == 27) this.app.fire('esc', e);
-      this.nEsc = k == 27 && this.nEsc < 2 ? this.nEsc + 1 : 0;
+    key: "beforeClick",
+    value: function beforeClick(e) {
+      this.unpop(e.target, true);
+      this.unhash();
     }
   }, {
-    key: "onLink",
-    value: function onLink(e) {
+    key: "onClickHash",
+    value: function onClickHash(e) {
       var a = e.recv;
 
       if (a && a.hash === this.app.opt.hClose) {
         e.preventDefault();
         var d = a.closest(this.opt.qTgl);
         this.app.dbg(['close', this.opt.qTgl, a, d]);
-        if (d) this.tgl(d, false);else this.app.fire('esc', e);
+
+        if (d) {
+          this.tgl(d, false);
+          this.unhash(); //this.app.fire('esc', e);
+
+          if (d.matches(this.opt.qModal)) this.app.fire('modal', {
+            n: d,
+            act: '[x]'
+          });
+        } else this.app.fire('esc', e);
       } else {
         var _d = this.app.q(a.hash);
 
@@ -923,9 +943,8 @@ var _default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "onClick",
     value: function onClick(e) {
-      this.nEsc = 0;
-      if (!e.target.closest('a, input, select, textarea')) this.unhash();
-      if (e.clientX >= 0 && e.clientX <= 10 && e.clientY > 5 && this.opt.qDrawer) this.toggle(this.opt.qDrawer);
+      this.nEsc = 0; //if (!e.target.closest('a, input, select, textarea')) this.unhash();
+      //if (e.clientX>=0 && e.clientX<=10 && e.clientY>5 && this.opt.qDrawer) this.toggle(this.opt.qDrawer);
     }
   }, {
     key: "initToggler",
@@ -949,11 +968,6 @@ var _default = /*#__PURE__*/function (_Plugin) {
         if (!n.id) n.id = 'ul-' + this.app.seq();
         a.href = '#' + n.id;
       }
-    }
-  }, {
-    key: "setShown",
-    value: function setShown(n) {
-      this.shown = n;
     } //deep: -1=prepare, 0=click|hash, 1=deps|clo
 
   }, {
@@ -963,7 +977,6 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
       if (d) {
         if (d.matches(this.opt.qTab) && on === undefined) on = true; //tabs: show instead of toggle
-        //console.log('toggle '+d.id, on, deep);
 
         this.app.fire('beforetoggle', {
           n: d,
@@ -972,16 +985,17 @@ var _default = /*#__PURE__*/function (_Plugin) {
         });
         this.tgl(d, on);
         this.app.dbg(['toggle' + (deep ? ' deep' : ''), on, d], deep ? 2 : 1);
-
-        if (this.app.vis(d)) {
-          this.fixPosition(d);
-          if (!deep) this.setShown(d);
-        }
+        if (this.app.vis(d)) this.fixPosition(d);
 
         if (deep != -1) {
           if (!deep) this.toggleDependent(d);
           this.hiliteLinks(d);
           this.storeVisibility(d); //if (!deep) this.modalStyle(d);
+
+          if (!deep && d.matches(this.opt.qModal)) this.app.fire('modal', {
+            n: d,
+            act: on === undefined ? 'toggle' : on ? 'on' : 'off'
+          });
         }
 
         this.app.fire('aftertoggle', {
@@ -1019,16 +1033,10 @@ var _default = /*#__PURE__*/function (_Plugin) {
       var _this4 = this;
 
       var keep = [x];
-      keep.push(this.shown); // click out: keep
 
       if (x) {
         var a = x.closest('a');
-
-        if (a && a.hash) {
-          //if (a.hash == this.app.opt.hClose) keep = []; //return this.app.fire('esc'); //to close all, even container
-          //else
-          keep.push(this.app.q(a.hash)); //keep hash target
-        }
+        if (a && a.hash) keep.push(this.app.q(a.hash)); //keep hash target
       }
 
       this.app.dbg(['unpop', keep]); //this.app.e(this.opt.qUnpop, n => (keep && keep.filter(m => m && m.tagName && n.contains(m)).length) ? null : this.toggle(n, false, 1));
@@ -1039,30 +1047,33 @@ var _default = /*#__PURE__*/function (_Plugin) {
         }).length);
       }); // skip if contains one of [keep]
 
-      if (seq) nn = nn.filter(function (n) {
-        return !_this4.app.q(_this4.opt.qUnpopOn, n);
-      }); // to close nested subsequently
+      if (seq) {
+        nn = nn.filter(function (n) {
+          return !_this4.app.q(_this4.opt.qUnpopOn, n);
+        }); // to close nested subsequently
+
+        nn = nn.filter(function (n) {
+          return !_this4.containsRels(n);
+        }); // to close vRel subsequently
+      }
 
       this.app.e(nn, function (n) {
-        return _this4.toggle(n, false, 1);
+        return _this4.toggle(n, false
+        /*, 1*/
+        );
       });
     }
   }, {
-    key: "unhash",
-    value: function unhash() {
-      //v1.
-      if (location.hash) location.hash = this.app.opt.hClose; //v2.
-
-      this.addHistory(location.pathname + location.search
-      /* + this.app.opt.hClose*/
-      ); //inputs flicker
-    }
-  }, {
-    key: "addHistory",
-    value: function addHistory(h) {
-      history.pushState({}, '', h); //following required to re-render hash changes (test: open gallery, esc)
-      //history.pushState({}, '', h);
-      //history.go(-1);
+    key: "containsRels",
+    value: function containsRels(n) {
+      var rels = this.app.qq(this.opt.qUnpopOn).map(function (n) {
+        return n.vRel;
+      }).filter(function (n) {
+        return n;
+      });
+      return rels.filter(function (r) {
+        return n.contains(r);
+      }).length;
     }
   }, {
     key: "storeVisibility",

@@ -14,13 +14,13 @@ export default class extends Plugin {
       cBtn: 'pad hover',
       dateFormat: 'd', //y=Y-m-d, d=d.m.Y, m=m/d Y
       hCancel: '#close',
-      hashNow: '#now',
+      hNow: '#now',
       addIcons: [['date', '#', '#open'], ['ok', '&check;', '#now'], ['delete', '&#x2715;', '#clear']],
       idPicker: 'pick-date',
       minWidth: 801,
+      minWidthDropdown: 801,
       qsCalendar: 'input.calendar',
       showModal: 0, // ! avoid modal calendar inside modal dialog
-      sizeLimit: 801,
       stepMinutes: 1,
       inPop: 0
     };
@@ -32,7 +32,6 @@ export default class extends Plugin {
     //let i;
     //for (i in opt) this.opt[i] = opt[i];
 
-    if (window.innerWidth < this.opt.minWidth) return;
     this.win = this.app.ins('div', '', {id: this.opt.idPicker, className: this.app.opt.cToggle + ' ' + this.app.opt.cOff + ' pad'});//dlg hide pad
     this.win.style.whiteSpace = 'nowrap';
     document.body.appendChild(this.win);
@@ -40,13 +39,14 @@ export default class extends Plugin {
     this.app.h('click', this.opt.qsCalendar, e => this.openDialog(e.target, null, e));
     this.app.h('input', this.opt.qsCalendar, e => this.validate(e.target, 0));
     //this.app.h('keydown', this.opt.qsCalendar, e => this.key(e));
-    //this.app.h('click', '#' + this.opt.idPicker, e => app.pf('toggle', 'setShown', e.recv.vRel));
     this.app.h('click', '#' + this.opt.idPicker + ' a', e => this.onClick(e));
     this.app.h('click', '.calendar-tools a', e => this.onClick(e, true));
   }
   
   arrange({n}) {
-    this.app.ee(n, this.opt.qsCalendar, m => this.prepare(m));
+    if (window.innerWidth >= this.opt.minWidth) {
+      this.app.ee(n, this.opt.qsCalendar, m => this.prepare(m));
+    }
   }
   
   /*
@@ -85,12 +85,11 @@ export default class extends Plugin {
       //actions
       if (dy || dm) this.switchMonths(n, x.getFullYear()+dy, x.getMonth()+dm, x.getDate());
       else if (dh || di) this.setTime(n, dh, di);
-      else if (h == this.opt.hashNow) this.closeDialog(n, true);
+      else if (h == this.opt.hNow) this.closeDialog(n, true);
       else if (h == this.opt.hCancel) this.closeDialog(n, null); // same as esc
       else if (h == '#open') this.openDialog(n, null);
       else if (h == '#clear') this.closeDialog(n, '');
       else if (h.match(/#\d\d?/)) this.closeDialog(n, this.fmt(x, h.substr(1)));
-      this.app.pf('toggle', 'setShown', (h == '#open') ? this.win : n);
       e.preventDefault();
       e.stopPropagation();
     }
@@ -100,7 +99,7 @@ export default class extends Plugin {
     if (n) {
       let m = n.dataset.mode
       if (m) m = m[0] === 'm'; // modal | popup
-      else m = this.opt.showModal || (Math.min(window.innerWidth, window.innerHeight) < this.opt.sizeLimit);
+      else m = this.opt.showModal || (Math.min(window.innerWidth, window.innerHeight) < this.opt.minWidthDropdown);
       if (on) {
         this.win.className = this.app.opt.cToggle + ' ' + this.app.opt.cOff + ' pad ' + (m ? 'dlg' : '');
         (m ? document.body : (this.opt.inPop ? n.parentNode : n.previousElementSibling)).appendChild(this.win);
@@ -222,7 +221,7 @@ export default class extends Plugin {
       app.clr(this.win);
       //buttons
       let p1 = app.ins('p', '', 'c', this.win);
-      this.btn(this.opt.hashNow, app.i('ok', '&check;'), p1);
+      this.btn(this.opt.hNow, app.i('ok', '&check;'), p1);
       this.btn('#prev-year', app.i('prev2', '&laquo;'), p1);
       this.btn('#prev-month', app.i('prev', '&lsaquo;'), p1);
       this.win.vNodeCur = app.ins('span', '', 'pad', p1);

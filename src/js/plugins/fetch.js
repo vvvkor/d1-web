@@ -28,7 +28,7 @@ export default class extends Plugin {
 
   fetch(url, f) {
     let req = new XMLHttpRequest();
-    if (f) req.addEventListener('load', e => { f(req); this.app.fire('after'); } );
+    if (f) req.addEventListener('load', e => { f(req); this.app.fire('fetch', req); } );
     req.open('GET', url);
     req.send();
   }

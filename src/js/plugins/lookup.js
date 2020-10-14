@@ -148,7 +148,6 @@ export default class extends Plugin {
     pop.appendChild(this.win);
     this.app.toggle(this.win, true);
     this.build(n, d);
-    //this.app.pf('toggle', 'setShown', null);
   }
   
   closeList() {
