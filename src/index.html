@@ -77,11 +77,11 @@
 	
 	document.addEventListener('DOMContentLoaded', e => {
 		console.log('d1 = ', d1);
-		d1.listen('beforeopt', checkApi);
 		if (d1.plugins.icons) {
-			d1.listen('beforeinit', injectIcon);
-			d1.listen('ready', demoIcons);
+			injectIcon(); //d1.listen('beforeinit', injectIcon);
+			d1.listen('ready', demoIcons); //demoIcons();
 		}
+		checkApi(); // d1.listen('beforeopt', checkApi);
 	});
 
 	</script>
@@ -1970,7 +1970,7 @@ Replace element's content with icon <code>.empty.icon-xxx &gt; *</code>. Provide
 </fieldset>
 	<!--label><input name="demo-h" type="checkbox" data-nodes="#demo-all-icons a" data-attr="data-ico" data-set="1"> Hide labels</label-->
 
-<div class="row mar let" id="demo-all-icons">
+<div class="row -mar let" id="demo-all-icons">
 	<!--
 	<li><a href="#x" class="icon-world"></a>
 	<li><a href="#x" class="icon-open">Open</a>
