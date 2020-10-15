@@ -76,24 +76,26 @@ export default class extends Plugin{
   }
 
   modalStyle(e, src) {
-    //console.log('modalStyle', e)
-    
-    //styles
-    let modal = this.app.q(this.opt.qDlg+':not(.'+this.app.opt.cOff+'), '+this.opt.qGal+'[id="' + location.hash.substr(1) + '"]');
-    let bar = window.innerWidth - document.documentElement.clientWidth; //scroll bar width
-    let s = document.body.style;
-    document.body.classList[modal ? 'add' : 'remove'](this.opt.cFade);
-    if (this.opt.dlgUnscroll) {//hide scroll
-      s.overflow = modal ? 'hidden' : '';
-      if (!(modal && s.paddingRight)) s.paddingRight = modal ? '' + bar + 'px' : ''; // avoid width reflow
+    const wasModal = document.body.classList.contains(this.opt.cFade);
+    const modal = this.app.q(this.opt.qDlg+':not(.'+this.app.opt.cOff+'), '+this.opt.qGal+'[id="' + location.hash.substr(1) + '"]');
+    if (wasModal !== !!modal) {
+      //console.log('modalStyle', e);
+      const bar = window.innerWidth - document.documentElement.clientWidth; //scroll bar width
+      const s = document.body.style;
+      document.body.classList[modal ? 'add' : 'remove'](this.opt.cFade);
+      if (this.opt.dlgUnscroll) {//hide scroll
+        s.overflow = modal ? 'hidden' : '';
+        if (!(modal && s.paddingRight)) s.paddingRight = modal ? '' + bar + 'px' : ''; // avoid width reflow
+      }
+      this.app.dbg(['modalStyle', modal, s.paddingRight]);
     }
-    this.app.dbg(['modalStyle', modal, s.paddingRight]);
+    //else console.log('modalStyle SKIP')
     
     //focus first input
-    if (modal) {
-      //let f1 = this.app.q('input, a:not(.' + this.app.opt.cClose + ')', modal);
-      let f1 = this.app.q('input:not([type="hidden"]), select, textarea, a.btn', modal);
-      let f = this.app.q(':focus', modal);
+    if (modal && e?.show) {
+      //const f1 = this.app.q('input, a:not(.' + this.app.opt.cClose + ')', modal);
+      const f1 = this.app.q('input:not([type="hidden"]), select, textarea, a.btn', modal);
+      const f = this.app.q(':focus', modal);
       if (f1 && !f) {
         this.app.dbg(['focus', modal, f1, f]);
         f1.focus();//focus just once when dialog is opened
@@ -107,25 +109,24 @@ export default class extends Plugin{
     if (e) e.preventDefault();
     this.unpop();
     //if (e.type != 'hashchange') {
-      this.unhash();
+      this.addHistory();
       //this.modalStyle(null, 'esc');
-      this.app.fire('modal', {n: null, act: 'esc'});
+      this.app.fire('modal', {n: null, src: 'esc', show: false});
     //}
   }
 
-  unhash() {
-    //v1.
-    if (location.hash) location.hash = this.opt.hUnhash;//this.app.opt.hClose; // update :target styles
-    //v2.
-    if (location.hash) history.replaceState({}, '', location.pathname + location.search);
-    //this.addHistory(location.pathname + location.search /* + this.app.opt.hClose*/); // remove hash in url
-  }
-
   addHistory(h) {
-    history.pushState({}, '', h);
-    //following required to re-render hash changes (test: open gallery, esc)
-    //history.pushState({}, '', h);
-    //history.go(-1);
+    if (h) {
+      history.pushState({}, '', h);
+      //following required to re-render hash changes (test: open gallery, esc)
+      //history.pushState({}, '', h);
+      //history.go(-1);
+    }
+    else if (location.hash) {
+      location.hash = this.opt.hUnhash;//this.app.opt.hClose; // update :target styles
+      if (location.hash) history.replaceState({}, '', location.pathname + location.search); // remove hash in url
+      //this.addHistory(location.pathname + location.search /* + this.app.opt.hClose*/);
+    }
   }
 
   onKey(e) {
@@ -139,10 +140,10 @@ export default class extends Plugin{
   onHash(e) {
     if((e ? e.newURL : location.hash).match(new RegExp(this.opt.hUnhash + '$'))) return;
 
-    this.app.dbg(['hashchange', location.hash]);
+    this.app.dbg(['hashchange', location.hash, e?.newURL]);
     this.nEsc = 0;
     if (!location.hash || location.hash === this.app.opt.hClose) this.app.fire('esc', e);
-    else if (location.hash) {
+    else {
       let d = this.app.q(location.hash);
       if (d) {
         let t = d.matches(this.opt.qTgl);
@@ -150,18 +151,22 @@ export default class extends Plugin{
         if (t) {
           this.unpop();
           this.toggle(d, true);
-          if (!this.opt.keepHash) this.unhash();
+          if (!this.opt.keepHash) this.addHistory();
         }
+        /*
         else if (g) {
-          this.app.fire('modal', {n: g, act: 'gal'});
+          this.app.fire('modal', {n: d, src: 'gal', show: true});
         }
+        else this.app.fire('modal', {n: d, src: '#', show: false});
+        */
       }
+      this.app.fire('modal', {n: d, src: '#', show: null});
     }
   }
   
   beforeClick(e) {
     this.unpop(e.target, true);
-    this.unhash();
+    //this.addHistory();
   }
 
   onClickHash(e) {
@@ -172,9 +177,9 @@ export default class extends Plugin{
       this.app.dbg(['close', this.opt.qTgl, a, d]);
       if (d) {
         this.tgl(d, false);
-        this.unhash();
+        this.addHistory();
         //this.app.fire('esc', e);
-        if (d.matches(this.opt.qModal)) this.app.fire('modal', {n: d, act: '[x]'});
+        if (d.matches(this.opt.qModal)) this.app.fire('modal', {n: d, src: 'x', show: false});
       }
       else this.app.fire('esc', e);
     }
@@ -184,14 +189,14 @@ export default class extends Plugin{
         e.preventDefault();
         d = this.toggle(d);
         if (this.app.vis(d) && this.opt.keepHash) this.addHistory(a.hash);
-        else this.unhash();
+        else this.addHistory();
       }
     }
   }
   
   onClick(e) {
     this.nEsc = 0;
-    //if (!e.target.closest('a, input, select, textarea')) this.unhash();
+    //if (!e.target.closest('a, input, select, textarea')) this.addHistory();
     //if (e.clientX>=0 && e.clientX<=10 && e.clientY>5 && this.opt.qDrawer) this.toggle(this.opt.qDrawer);
   }
   
@@ -213,7 +218,7 @@ export default class extends Plugin{
   }
 
   //deep: -1=prepare, 0=click|hash, 1=deps|clo
-  toggle(h, on, deep) {
+  toggle(h, on, deep, hist) {
     let d = h ? (h.tagName ? h : this.app.q(h)) : null;
     if (d) {
       if (d.matches(this.opt.qTab) && on === undefined) on = true; //tabs: show instead of toggle
@@ -222,11 +227,17 @@ export default class extends Plugin{
       this.app.dbg(['toggle' + (deep ? ' deep' : ''), on, d], deep ? 2 : 1);
       if (this.app.vis(d)) this.fixPosition(d);
       if (deep != -1) {
-        if (!deep) this.toggleDependent(d);
+        if (!deep) {
+          this.toggleDependent(d);
+          if (hist && this.opt.keepHash) this.addHistory(hist);
+        }
         this.hiliteLinks(d);
         this.storeVisibility(d);
         //if (!deep) this.modalStyle(d);
-        if (!deep && d.matches(this.opt.qModal)) this.app.fire('modal', {n: d, act: on === undefined ? 'toggle' : (on ? 'on' : 'off')});
+        if (!deep && d.matches(this.opt.qModal)){
+          const show = (on === undefined) ? this.app.vis(d) : on;
+          this.app.fire('modal', {n: d, src: 'toggle', show});
+        }
       }
       this.app.fire('aftertoggle', {n: d, on: on, deep: deep});
     }
@@ -255,12 +266,12 @@ export default class extends Plugin{
     //this.app.e(this.opt.qUnpop, n => (keep && keep.filter(m => m && m.tagName && n.contains(m)).length) ? null : this.toggle(n, false, 1));
     let nn = this.app.qq(this.opt.qUnpopOn)
       .filter(n => !(keep && keep.filter(m => m && m.tagName && n.contains(m)).length)); // skip if contains one of [keep]
-    //if (!force) {
+    if (!force) {
       // to close nested subsequently
       nn = nn.filter(n => !this.app.q(this.opt.qUnpopOn, n)); 
-      // to close vRel subsequently
-      nn = nn.filter(n => !this.containsRels(n));
-    //}
+    }
+    // to close vRel subsequently
+    nn = nn.filter(n => !this.containsRels(n));
     this.app.e(nn, n => this.toggle(n, false, !force));
   }
 

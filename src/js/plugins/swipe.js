@@ -119,7 +119,7 @@ export default class extends Plugin {
             if (!scrollTouch) {
             */
             //if (!e.type.match(/^touch/)) e.preventDefault(); // prevent click
-            e.unfire = true; // avoid unhash()
+            //e.unfire = true; // avoid unhash()
             const url = this.moved.dataset['swipe' + xy[2]];
             if (url) location.href = url;
             else this.app.fire('swipe', {e, n: this.moved, x: xy[0], y: xy[1], dir: xy[2]});

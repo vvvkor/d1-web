@@ -8,7 +8,8 @@ export default class extends Plugin {
     super('pickfile')
     this.opt = {
       qPick: 'input.pick',
-      qDrop: 'input.drop'
+      qDrop: 'input.drop',
+      cMini: 'fit'
     };
     this.dragging = 0;
   }
@@ -46,6 +47,7 @@ export default class extends Plugin {
     
     const cont = a.ins('div', '', 'picker gallery', nn, -1);
     cont.dataset.num = '';
+    if (n.classList.contains(this.opt.cMini)) cont.classList.add(this.opt.cMini);
       const nav = a.ins('nav', '', 'pad bg row', cont);
         a.ins('label', a.i('folder', '&uarr;'), {htmlFor: n.id, className: 'col-0' + (n.multiple ? ' text-i' : '')}, nav);
         a.ins('a', a.i('image', '#'), 'pic col-0', nav);
@@ -109,6 +111,12 @@ export default class extends Plugin {
       //preview.dataset.tip = fn;
       this.app.ee(d, '[name^="remove_"]', n => n.checked = !url && !keep);
       this.app.ee(d, 'a.pic', n => { n.href = img; n.title = fn; n.classList[img ? 'remove' : 'add'](this.app.opt.cHide); });
+      if (f.classList.contains(this.opt.cMini)){
+        this.app.ee(d, 'a.pic', n => {
+          n.style.backgroundImage = img ? 'url("' + img + '")' : '';
+          this.app.ee(n, 'svg', s => s.style.opacity = img ? 0 : 1);
+        });
+      }
       this.app.ee(d, 'a.pickload', n => { n.href = url; n.title = fn; n.classList[url && !img ? 'remove' : 'add'](this.app.opt.cHide); });
       this.app.ee(d, '.picknum', n => n.textContent = num);
       //this.app.ee(d, '[href="#unpick"]', n => n.classList[url ? 'remove' : 'add']('inact'));

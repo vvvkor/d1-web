@@ -1,4 +1,4 @@
-/*! d1-web v2.2.17 */
+/*! d1-web v2.2.18 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -1087,6 +1087,7 @@ mark {
         display: inline-block;
         vertical-align: top;
         position: relative;
+        min-width: 8em;
     }
 
     .picker>nav {
@@ -1119,6 +1120,17 @@ mark {
 
     .picker label {
         cursor: pointer;
+    }
+
+    .picker.fit a.pic {
+        background: no-repeat 50% 50% / cover;
+        width: 1.5em;
+        transform: scale(1.4);
+        border-radius: 50%;
+    }
+
+    .picker.fit>label {
+        display: none;
     }
 
     .drag .pick, .drag .drop {

@@ -54,7 +54,7 @@ export default class extends Plugin {
       const p = app.ins('a', '', {
           className: 'gallery-pic swipe drag',
           id: opt.idPrefix + s,
-          //href: next,
+          href: next,
           'data-swipe-up': a[i].href || '',
           'data-swipe-right': prev,
           'data-swipe-down': this.app.opt.hClose,
@@ -83,9 +83,14 @@ export default class extends Plugin {
   }
   
   browse(n, back) {
+    // by position
+    /*
     const p = back
       ? n.previousElementSibling || this.app.qq('a[id]', n.parentNode).pop()
       : (n.nextElementSibling?.id ? n.nextElementSibling : n.parentNode.firstChild);
+    */
+    // by hash
+    const p = this.app.q(back ? 'a[href="#' + n.id + '"]' : n.hash, n.parentNode);
     if (p.id) location.hash = '#' + p.id;
     //else location.hash = n.hash;
     //return p.id;

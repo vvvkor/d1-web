@@ -69,11 +69,12 @@ export default class extends Plugin {
       app.b([yes], 'click', e => { e.preventDefault(); this.callback(f, inp.value, e); });
       if (inp.tagName) app.b([inp], 'keyup', e => e.keyCode == 13 ? this.callback(f, inp.value, e) : null);
     }
-    this.app.toggle(this.dlg, true)
+    this.app.toggle(this.dlg, true, false, '#dlg-' + this.app.seq());
   }
   
   closeDialog() {
-    this.app.pf('toggle', 'unpop')
+    //this.app.pf('toggle', 'unpop')
+    this.app.toggle(this.dlg, false);
   }
   
   callback(f, v, e) {
@@ -116,6 +117,7 @@ export default class extends Plugin {
       else v = prompt(t, def);//null|value
       this.onAnswer(n, v, p);
     }
+    this.dlg.vRel = n;
     return this.dlg;
   }
   

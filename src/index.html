@@ -1121,6 +1121,7 @@ Table will become stacked on small screen.
 <p>Add <code>.pick</code> class to file input for drag and drop behaviour and image preview.<br>
 Optionally set <code>[data-picked]</code> to URL of initial image.<br>
 Add <code>.drop</code> class to file input for fullscreen dropzone (use one per page).<br>
+Add <code>.fit</code> class for compact layout.<br>
 
 <div class="code">
   <input
@@ -1138,6 +1139,11 @@ Add <code>.drop</code> class to file input for fullscreen dropzone (use one per 
     multiple
     class="pick"
     data-picked="overview.html">
+  <input
+    type="file"
+    name="upload-mini[]"
+    class="pick fit"
+    data-picked="https://picsum.photos/id/360/300/200.jpg">
 </div>
   <!--input
     type="file"

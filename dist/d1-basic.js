@@ -1,4 +1,4 @@
-/*! d1-web v2.2.17 */
+/*! d1-web v2.2.18 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -82,7 +82,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 17);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -200,7 +200,9 @@ var Url = /*#__PURE__*/function () {
 
 
 /***/ }),
-/* 2 */
+/* 2 */,
+/* 3 */,
+/* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -628,7 +630,7 @@ else module.exports = main
 
 
 /***/ }),
-/* 3 */
+/* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -811,24 +813,29 @@ var _default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "modalStyle",
     value: function modalStyle(e, src) {
-      //console.log('modalStyle', e)
-      //styles
+      var wasModal = document.body.classList.contains(this.opt.cFade);
       var modal = this.app.q(this.opt.qDlg + ':not(.' + this.app.opt.cOff + '), ' + this.opt.qGal + '[id="' + location.hash.substr(1) + '"]');
-      var bar = window.innerWidth - document.documentElement.clientWidth; //scroll bar width
 
-      var s = document.body.style;
-      document.body.classList[modal ? 'add' : 'remove'](this.opt.cFade);
+      if (wasModal !== !!modal) {
+        //console.log('modalStyle', e);
+        var bar = window.innerWidth - document.documentElement.clientWidth; //scroll bar width
 
-      if (this.opt.dlgUnscroll) {
-        //hide scroll
-        s.overflow = modal ? 'hidden' : '';
-        if (!(modal && s.paddingRight)) s.paddingRight = modal ? '' + bar + 'px' : ''; // avoid width reflow
-      }
+        var s = document.body.style;
+        document.body.classList[modal ? 'add' : 'remove'](this.opt.cFade);
 
-      this.app.dbg(['modalStyle', modal, s.paddingRight]); //focus first input
+        if (this.opt.dlgUnscroll) {
+          //hide scroll
+          s.overflow = modal ? 'hidden' : '';
+          if (!(modal && s.paddingRight)) s.paddingRight = modal ? '' + bar + 'px' : ''; // avoid width reflow
+        }
 
-      if (modal) {
-        //let f1 = this.app.q('input, a:not(.' + this.app.opt.cClose + ')', modal);
+        this.app.dbg(['modalStyle', modal, s.paddingRight]);
+      } //else console.log('modalStyle SKIP')
+      //focus first input
+
+
+      if (modal && (e === null || e === void 0 ? void 0 : e.show)) {
+        //const f1 = this.app.q('input, a:not(.' + this.app.opt.cClose + ')', modal);
         var f1 = this.app.q('input:not([type="hidden"]), select, textarea, a.btn', modal);
         var f = this.app.q(':focus', modal);
 
@@ -845,30 +852,29 @@ var _default = /*#__PURE__*/function (_Plugin) {
     value: function esc(e) {
       this.app.dbg(['esc', e]);
       if (e) e.preventDefault();
-      this.unpop(null, true); //if (e.type != 'hashchange') {
+      this.unpop(); //if (e.type != 'hashchange') {
 
-      this.unhash(); //this.modalStyle(null, 'esc');
+      this.addHistory(); //this.modalStyle(null, 'esc');
 
       this.app.fire('modal', {
         n: null,
-        act: 'esc'
+        src: 'esc',
+        show: false
       }); //}
-    }
-  }, {
-    key: "unhash",
-    value: function unhash() {
-      //v1.
-      if (location.hash) location.hash = this.opt.hUnhash; //this.app.opt.hClose; // update :target styles
-      //v2.
-
-      if (location.hash) history.replaceState({}, '', location.pathname + location.search); //this.addHistory(location.pathname + location.search /* + this.app.opt.hClose*/); // remove hash in url
     }
   }, {
     key: "addHistory",
     value: function addHistory(h) {
-      history.pushState({}, '', h); //following required to re-render hash changes (test: open gallery, esc)
-      //history.pushState({}, '', h);
-      //history.go(-1);
+      if (h) {
+        history.pushState({}, '', h); //following required to re-render hash changes (test: open gallery, esc)
+        //history.pushState({}, '', h);
+        //history.go(-1);
+      } else if (location.hash) {
+        location.hash = this.opt.hUnhash; //this.app.opt.hClose; // update :target styles
+
+        if (location.hash) history.replaceState({}, '', location.pathname + location.search); // remove hash in url
+        //this.addHistory(location.pathname + location.search /* + this.app.opt.hClose*/);
+      }
     }
   }, {
     key: "onKey",
@@ -883,9 +889,9 @@ var _default = /*#__PURE__*/function (_Plugin) {
     key: "onHash",
     value: function onHash(e) {
       if ((e ? e.newURL : location.hash).match(new RegExp(this.opt.hUnhash + '$'))) return;
-      this.app.dbg(['hashchange', location.hash]);
+      this.app.dbg(['hashchange', location.hash, e === null || e === void 0 ? void 0 : e.newURL]);
       this.nEsc = 0;
-      if (!location.hash || location.hash === this.app.opt.hClose) this.app.fire('esc', e);else if (location.hash) {
+      if (!location.hash || location.hash === this.app.opt.hClose) this.app.fire('esc', e);else {
         var d = this.app.q(location.hash);
 
         if (d) {
@@ -893,23 +899,30 @@ var _default = /*#__PURE__*/function (_Plugin) {
           var g = d.matches(this.opt.qGal);
 
           if (t) {
-            this.unpop(null, true);
+            this.unpop();
             this.toggle(d, true);
-            if (!this.opt.keepHash) this.unhash();
-          } else if (g) {
-            this.app.fire('modal', {
-              n: g,
-              act: 'gal'
-            });
+            if (!this.opt.keepHash) this.addHistory();
           }
+          /*
+          else if (g) {
+            this.app.fire('modal', {n: d, src: 'gal', show: true});
+          }
+          else this.app.fire('modal', {n: d, src: '#', show: false});
+          */
+
         }
+
+        this.app.fire('modal', {
+          n: d,
+          src: '#',
+          show: null
+        });
       }
     }
   }, {
     key: "beforeClick",
     value: function beforeClick(e) {
-      this.unpop(e.target, true);
-      this.unhash();
+      this.unpop(e.target, true); //this.addHistory();
     }
   }, {
     key: "onClickHash",
@@ -923,11 +936,12 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
         if (d) {
           this.tgl(d, false);
-          this.unhash(); //this.app.fire('esc', e);
+          this.addHistory(); //this.app.fire('esc', e);
 
           if (d.matches(this.opt.qModal)) this.app.fire('modal', {
             n: d,
-            act: '[x]'
+            src: 'x',
+            show: false
           });
         } else this.app.fire('esc', e);
       } else {
@@ -936,14 +950,14 @@ var _default = /*#__PURE__*/function (_Plugin) {
         if (_d && _d.matches(this.opt.qTgl)) {
           e.preventDefault();
           _d = this.toggle(_d);
-          if (this.app.vis(_d) && this.opt.keepHash) this.addHistory(a.hash);else this.unhash();
+          if (this.app.vis(_d) && this.opt.keepHash) this.addHistory(a.hash);else this.addHistory();
         }
       }
     }
   }, {
     key: "onClick",
     value: function onClick(e) {
-      this.nEsc = 0; //if (!e.target.closest('a, input, select, textarea')) this.unhash();
+      this.nEsc = 0; //if (!e.target.closest('a, input, select, textarea')) this.addHistory();
       //if (e.clientX>=0 && e.clientX<=10 && e.clientY>5 && this.opt.qDrawer) this.toggle(this.opt.qDrawer);
     }
   }, {
@@ -972,7 +986,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
   }, {
     key: "toggle",
-    value: function toggle(h, on, deep) {
+    value: function toggle(h, on, deep, hist) {
       var d = h ? h.tagName ? h : this.app.q(h) : null;
 
       if (d) {
@@ -988,14 +1002,22 @@ var _default = /*#__PURE__*/function (_Plugin) {
         if (this.app.vis(d)) this.fixPosition(d);
 
         if (deep != -1) {
-          if (!deep) this.toggleDependent(d);
+          if (!deep) {
+            this.toggleDependent(d);
+            if (hist && this.opt.keepHash) this.addHistory(hist);
+          }
+
           this.hiliteLinks(d);
           this.storeVisibility(d); //if (!deep) this.modalStyle(d);
 
-          if (!deep && d.matches(this.opt.qModal)) this.app.fire('modal', {
-            n: d,
-            act: on === undefined ? 'toggle' : on ? 'on' : 'off'
-          });
+          if (!deep && d.matches(this.opt.qModal)) {
+            var show = on === undefined ? this.app.vis(d) : on;
+            this.app.fire('modal', {
+              n: d,
+              src: 'toggle',
+              show: show
+            });
+          }
         }
 
         this.app.fire('aftertoggle', {
@@ -1029,7 +1051,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
     }
   }, {
     key: "unpop",
-    value: function unpop(x, seq) {
+    value: function unpop(x, force) {
       var _this4 = this;
 
       var keep = [x];
@@ -1047,20 +1069,19 @@ var _default = /*#__PURE__*/function (_Plugin) {
         }).length);
       }); // skip if contains one of [keep]
 
-      if (seq) {
+      if (!force) {
+        // to close nested subsequently
         nn = nn.filter(function (n) {
           return !_this4.app.q(_this4.opt.qUnpopOn, n);
-        }); // to close nested subsequently
+        });
+      } // to close vRel subsequently
 
-        nn = nn.filter(function (n) {
-          return !_this4.containsRels(n);
-        }); // to close vRel subsequently
-      }
 
+      nn = nn.filter(function (n) {
+        return !_this4.containsRels(n);
+      });
       this.app.e(nn, function (n) {
-        return _this4.toggle(n, false
-        /*, 1*/
-        );
+        return _this4.toggle(n, false, !force);
       });
     }
   }, {
@@ -1148,7 +1169,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
 
 /***/ }),
-/* 4 */
+/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1286,12 +1307,13 @@ var _default = /*#__PURE__*/function (_Plugin) {
         });
       }
 
-      this.app.toggle(this.dlg, true);
+      this.app.toggle(this.dlg, true, false, '#dlg-' + this.app.seq());
     }
   }, {
     key: "closeDialog",
     value: function closeDialog() {
-      this.app.pf('toggle', 'unpop');
+      //this.app.pf('toggle', 'unpop')
+      this.app.toggle(this.dlg, false);
     }
   }, {
     key: "callback",
@@ -1344,6 +1366,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
           this.onAnswer(n, v, p);
         }
+      this.dlg.vRel = n;
       return this.dlg;
     }
   }, {
@@ -1398,7 +1421,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
 
 /***/ }),
-/* 5 */
+/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1512,7 +1535,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
           var p = app.ins('a', '', {
             className: 'gallery-pic swipe drag',
             id: opt.idPrefix + s,
-            //href: next,
+            href: next,
             'data-swipe-up': a[i].href || '',
             'data-swipe-right': prev,
             'data-swipe-down': this.app.opt.hClose,
@@ -1549,9 +1572,15 @@ var _default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "browse",
     value: function browse(n, back) {
-      var _n$nextElementSibling;
+      // by position
 
-      var p = back ? n.previousElementSibling || this.app.qq('a[id]', n.parentNode).pop() : ((_n$nextElementSibling = n.nextElementSibling) === null || _n$nextElementSibling === void 0 ? void 0 : _n$nextElementSibling.id) ? n.nextElementSibling : n.parentNode.firstChild;
+      /*
+      const p = back
+        ? n.previousElementSibling || this.app.qq('a[id]', n.parentNode).pop()
+        : (n.nextElementSibling?.id ? n.nextElementSibling : n.parentNode.firstChild);
+      */
+      // by hash
+      var p = this.app.q(back ? 'a[href="#' + n.id + '"]' : n.hash, n.parentNode);
       if (p.id) location.hash = '#' + p.id; //else location.hash = n.hash;
       //return p.id;
     }
@@ -1606,7 +1635,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
 
 /***/ }),
-/* 6 */
+/* 8 */
 /***/ (function(module, exports) {
 
 if (!Element.prototype.matches) {
@@ -1627,17 +1656,25 @@ if (!Element.prototype.closest) {
 }
 
 /***/ }),
-/* 7 */
+/* 9 */,
+/* 10 */,
+/* 11 */,
+/* 12 */,
+/* 13 */,
+/* 14 */,
+/* 15 */,
+/* 16 */,
+/* 17 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _js_polyfill_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6);
+/* harmony import */ var _js_polyfill_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8);
 /* harmony import */ var _js_polyfill_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_js_polyfill_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _js_app_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
-/* harmony import */ var _js_plugins_toggle_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
-/* harmony import */ var _js_plugins_dialog_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4);
-/* harmony import */ var _js_plugins_gallery_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(5);
+/* harmony import */ var _js_app_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
+/* harmony import */ var _js_plugins_toggle_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5);
+/* harmony import */ var _js_plugins_dialog_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(6);
+/* harmony import */ var _js_plugins_gallery_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(7);
 
 
 
