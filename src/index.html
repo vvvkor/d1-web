@@ -5,33 +5,8 @@
 	<title>d1-web / documentation</title>
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 
-	<!-- CDN --R E M O V E->
-		<link href="https://cdn.jsdelivr.net/npm/d1-web@0.0.0/dist/d1.min.css" rel="stylesheet">
-		<script src="https://cdn.jsdelivr.net/npm/d1-web@0.0.0/dist/d1.min.js"></script>
-		<noscript>
-			<link href="https://cdn.jsdelivr.net/npm/d1-web@0.0.0/dist/d1-icons.min.css" rel="stylesheet">
-		</noscript>
-	<!-- CDN --REMOVE->
-		<link href="https://unpkg.com/d1-web@0.0.0/dist/d1.min.css" rel="stylesheet">
-		<script src="https://unpkg.com/d1-web@0.0.0/dist/d1.min.js"></script>
-		<noscript>
-			<link href="https://unpkg.com/d1-web@0.0.0/dist/d1-icons.min.css" rel="stylesheet">
-		</noscript>
-	<!-- local-npm-src REMOVE -- >
-		<link href="../src/index.css" rel="stylesheet">
-		<script src="../dist/d1.min.js"></script>
-		<noscript>
-			<link href="../dist/d1-icons.css" rel="stylesheet">
-		</noscript>
-	<!-- local-module (test with no need to compile) REMOVE-->
-		<link href="../src/index.css" rel="stylesheet">
-		<script src="../src/index.js" type="module"></script>
-		<noscript>
-			<link href="../dist/d1-icons.css" rel="stylesheet">
-		</noscript>
-	<!-- -->
-	
-	<script>
+<script>
+	d1 = null;
 
 	var checkApi = function() {
 		// check availability of JSON placeholder
@@ -75,16 +50,50 @@
 		}
 	}
 	
+	var testHtml = 
+		'<hr><form>'
+		+ '<p>Date: <input class="calendar" type="datetime-local">'
+		+ '<p>Lookup: <input value="NZ" data-lookup="https://restcountries.eu/rest/v2/name/{q}##alpha2Code#name#languages.0.name" data-cap="https://restcountries.eu/rest/v2/alpha/{q}#name">'
+		+ '<p>File: <input type="file" class="pick">'
+		+ '<p><textarea class="edit -adjust"></textarea>'
+		+ '</form>';
+
 	document.addEventListener('DOMContentLoaded', e => {
 		console.log('d1 = ', d1);
 		if (d1.plugins.icons) {
-			injectIcon(); //d1.listen('beforeinit', injectIcon);
-			d1.listen('ready', demoIcons); //demoIcons();
+			d1.listen('beforeinit', injectIcon);
+			d1.listen('ready', demoIcons);
 		}
 		checkApi(); // d1.listen('beforeopt', checkApi);
 	});
+</script>
 
-	</script>
+	<!-- CDN --R E M O V E->
+		<link href="https://cdn.jsdelivr.net/npm/d1-web@0.0.0/dist/d1.min.css" rel="stylesheet">
+		<script src="https://cdn.jsdelivr.net/npm/d1-web@0.0.0/dist/d1.min.js"></script>
+		<noscript>
+			<link href="https://cdn.jsdelivr.net/npm/d1-web@0.0.0/dist/d1-icons.min.css" rel="stylesheet">
+		</noscript>
+	<!-- CDN --REMOVE->
+		<link href="https://unpkg.com/d1-web@0.0.0/dist/d1.min.css" rel="stylesheet">
+		<script src="https://unpkg.com/d1-web@0.0.0/dist/d1.min.js"></script>
+		<noscript>
+			<link href="https://unpkg.com/d1-web@0.0.0/dist/d1-icons.min.css" rel="stylesheet">
+		</noscript>
+	<!-- local-npm-src REMOVE -- >
+		<link href="../src/index.css" rel="stylesheet">
+		<script src="../dist/d1.min.js"></script>
+		<noscript>
+			<link href="../dist/d1-icons.css" rel="stylesheet">
+		</noscript>
+	<!-- local-module (test with no need to compile) REMOVE-->
+		<link href="../src/index.css" rel="stylesheet">
+		<script src="../src/index.js" type="module"></script>
+		<noscript>
+			<link href="../dist/d1-icons.css" rel="stylesheet">
+		</noscript>
+	<!-- -->
+
 	<style>
 		/* Roboto, Open Sans, Georgia, PT Sans, PT Serif, PT Mono */
 		@import url('https://fonts.googleapis.com/css?family=PT+Sans&display=swap');
@@ -261,8 +270,8 @@ Inclusion of <code>d1.js</code> and <code>d1-icons.css</code> is optional.
 <pre><code class="language-html">&lt;!doctype html&gt;
 &lt;html lang="en"&gt;
   &lt;head&gt;
-    &lt;title&gt;Title&lt;/title&gt;
     &lt;meta charset="utf-8"&gt;
+    &lt;title&gt;Title&lt;/title&gt;
     &lt;meta name="viewport" 
       content="width=device-width, initial-scale=1"&gt;
     &lt;link rel="stylesheet" href="/css/d1.min.css"&gt;
@@ -315,8 +324,8 @@ Inclusion of <code>d1.js</code> and <code>d1-icons.css</code> is optional.
 <pre class="scroller"><code class="language-html">&lt;!doctype html&gt;
 &lt;html lang="en"&gt;
   &lt;head&gt;
-    &lt;title&gt;Title&lt;/title&gt;
     &lt;meta charset="utf-8"&gt;
+    &lt;title&gt;Title&lt;/title&gt;
     &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
     &lt;link rel="stylesheet" href="https://unpkg.com/d1-web"&gt;
     &lt;script src="https://unpkg.com/d1-web/dist/d1.min.js"&gt;&lt;/script&gt;
