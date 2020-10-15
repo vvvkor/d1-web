@@ -1,4 +1,4 @@
-/*! d1-web v2.2.18 */
+/*! d1-web v2.2.19 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -1955,8 +1955,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
       hNow: '#now',
       addIcons: [['date', '#', '#open'], ['ok', '&check;', '#now'], ['delete', '&#x2715;', '#clear']],
       idPicker: 'pick-date',
-      minWidth: 1,
-      //801,
+      minWidth: 801,
       minWidthDropdown: 801,
       qsCalendar: 'input.calendar',
       showModal: 0,

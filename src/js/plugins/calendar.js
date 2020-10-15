@@ -17,7 +17,7 @@ export default class extends Plugin {
       hNow: '#now',
       addIcons: [['date', '#', '#open'], ['ok', '&check;', '#now'], ['delete', '&#x2715;', '#clear']],
       idPicker: 'pick-date',
-      minWidth: 1,//801,
+      minWidth: 801,
       minWidthDropdown: 801,
       qsCalendar: 'input.calendar',
       showModal: 0, // ! avoid modal calendar inside modal dialog
