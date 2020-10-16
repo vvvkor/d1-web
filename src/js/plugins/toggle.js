@@ -78,6 +78,11 @@ export default class extends Plugin{
   modalStyle(e, src) {
     const wasModal = document.body.classList.contains(this.opt.cFade);
     const modal = this.app.q(this.opt.qDlg+':not(.'+this.app.opt.cOff+'), '+this.opt.qGal+'[id="' + location.hash.substr(1) + '"]');
+    
+    // add / remove overlay for every opened modal
+    // ...
+    
+    // hide / show scrollbar
     if (wasModal !== !!modal) {
       //console.log('modalStyle', e);
       const bar = window.innerWidth - document.documentElement.clientWidth; //scroll bar width
@@ -191,6 +196,8 @@ export default class extends Plugin{
         if (this.app.vis(d) && this.opt.keepHash) this.addHistory(a.hash);
         else this.addHistory();
       }
+      const par = e.recv.closest(this.opt.qUnpopOn);
+      if(d && par && !par.contains(d)) this.toggle(par, false);
     }
   }
   

@@ -1,4 +1,4 @@
-/*! d1-web v2.2.21 */
+/*! d1-web v2.2.22 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -814,7 +814,9 @@ var _default = /*#__PURE__*/function (_Plugin) {
     key: "modalStyle",
     value: function modalStyle(e, src) {
       var wasModal = document.body.classList.contains(this.opt.cFade);
-      var modal = this.app.q(this.opt.qDlg + ':not(.' + this.app.opt.cOff + '), ' + this.opt.qGal + '[id="' + location.hash.substr(1) + '"]');
+      var modal = this.app.q(this.opt.qDlg + ':not(.' + this.app.opt.cOff + '), ' + this.opt.qGal + '[id="' + location.hash.substr(1) + '"]'); // add / remove overlay for every opened modal
+      // ...
+      // hide / show scrollbar
 
       if (wasModal !== !!modal) {
         //console.log('modalStyle', e);
@@ -952,6 +954,9 @@ var _default = /*#__PURE__*/function (_Plugin) {
           _d = this.toggle(_d);
           if (this.app.vis(_d) && this.opt.keepHash) this.addHistory(a.hash);else this.addHistory();
         }
+
+        var par = e.recv.closest(this.opt.qUnpopOn);
+        if (_d && par && !par.contains(_d)) this.toggle(par, false);
       }
     }
   }, {

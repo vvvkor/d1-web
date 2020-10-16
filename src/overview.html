@@ -72,19 +72,19 @@
 	<!-- "REMOVE-" replaced with ""  -->
 	<!-- CDN --R E M O V E->
 		<link href="https://cdn.jsdelivr.net/npm/d1-web@0.0.0/dist/d1.min.css" rel="stylesheet">
-		<script src="https://cdn.jsdelivr.net/npm/d1-web@0.0.0/dist/d1.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/d1-web@0.0.0/dist/d1.min.js" defer></script>
 		<noscript>
 			<link href="https://cdn.jsdelivr.net/npm/d1-web@0.0.0/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- CDN --REMOVE->
 		<link href="https://unpkg.com/d1-web@0.0.0/dist/d1.min.css" rel="stylesheet">
-		<script src="https://unpkg.com/d1-web@0.0.0/dist/d1.min.js"></script>
+		<script src="https://unpkg.com/d1-web@0.0.0/dist/d1.min.js" defer></script>
 		<noscript>
 			<link href="https://unpkg.com/d1-web@0.0.0/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- local-npm-src REMOVE -- >
 		<link href="../src/index.css" rel="stylesheet">
-		<script src="../dist/d1.min.js"></script>
+		<script src="../dist/d1.min.js" defer></script>
 		<noscript>
 			<link href="../dist/d1-icons.css" rel="stylesheet">
 		</noscript>
@@ -839,7 +839,21 @@ let double = function (x) {
 			<div id="modal" class="dlg rad c pad">
 				<!--a class="close pad icon-close empty" href="#cancel">Close</a-->
 				<a class="close pad icon-close empty" href="#cancel" title="Close"><b>&times;</b></a>
-				<p>Modal. <a href="#confirm-nested" class="dialog" title="Confirm nested?">Nested dialog</a></p>
+				<p id="modal-p">Modal</p>
+				<ul class="l">
+					<li><a href="#confirm-nested" class="dialog" title="Confirm nested?">Nested dialog</a>
+					<li><a href="#modal-p">Local</a>
+					<li><a href="#modal-modal">Local modal</a>
+					<li>
+						<div class="pop">
+							<a href="#modal-pop">Local pop</a>
+							<div id="modal-pop" class="pad">Local pop</div>
+						</div>
+					<li><a href="#typo">Outside</a>
+					<li><a href="#menu">Outside menu</a>
+					<li><a href="#x">Absent</a>
+				</ul>
+				<div id="modal-modal" class="dlg pad">Modal modal</div>
 			</div>
 			<div id="full" class="dlg full center pad bg-w">
 				<a class="close pad icon-close empty" href="#cancel"><i>Close</i></a>
@@ -851,6 +865,7 @@ let double = function (x) {
 				<a id="gal3" href="#gal1" style="--img:url(https://picsum.photos/id/830/1000/700.jpg)" data-caption="3/3 - Blue"></a>
 				<a class="close icon-close empty" href="#cancel"><span>Close</span></a>
 			</div>
+			
 			<div class="drawer pad swipe drag" id="menu" data-swipe-left="#cancel">
 				<a class="close pad icon-close empty" href="#cancel"><span>Close</span></a>
 				<h3 class="icon-flag">Languages</h3>
@@ -875,10 +890,28 @@ let double = function (x) {
 						<ul id="ul2">
 							<li>English</li>
 							<li>Spanish</li>
-							<li>Russial</li>
+							<li>Russian</li>
 						</ul>
 					</li>
 				</ul>
+				
+				<h3 id="#anchors">Anchors</h3>
+				
+				<ul>
+					<li><a href="#anchors">Local</a>
+					<li><a href="#ul2">Local nav</a>
+					<li><a href="#drawer-modal">Local modal*</a>
+					<li>
+						<div class="pop">
+							<a href="#drawer-pop">Local pop</a>
+							<div id="drawer-pop" class="pad">Local pop</div>
+						</div>
+					<li><a href="#typo">Outside</a>
+					<li><a href="#modal">Outside modal</a>
+					<li><a href="#x">Absent</a>
+				</ul>
+				
+				<!--div id="drawer-modal" class="dlg pad">Drawer modal</div-->
 			</div>
 		</div>
 		

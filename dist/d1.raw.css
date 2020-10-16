@@ -1,4 +1,4 @@
-/*! d1-web v2.2.21 */
+/*! d1-web v2.2.22 */
 
 /* @import url("css/columns.css"); */
 
@@ -348,13 +348,6 @@ ul.nav, .nav ul{list-style:none;padding:0;margin:0;}
 	.gal a[data-caption]:after{content:attr(data-caption);left:0;display:block;}
 	.gal a:not([id]){right:0;}
 	.gal a.dragging:after{content:"";}
-/* swipe fade */	
-/*
-.gal a.fade{display:block;}
-.gal a.fade-out[class]{z-index:111;outline:none;background-position:50% 50%;opacity:0;left:-100%;transition:left .3s, opacity .3s;}
-.gal a.fade-2[class]{left:100%;}
-.gal a.fade-in:after{content:"";background:#000;position:fixed;top:0;left:0;right:0;bottom:0;opacity:0;transition:opacity .3s;}
-*/
 /* topbar */
 .topbar{z-index:70;position:fixed;top:0;left:0;width:100%;min-height:var(--topbar);transition:top .2s;/*align-items:center;*/}
 
