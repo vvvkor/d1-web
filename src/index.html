@@ -147,7 +147,11 @@ data-d1='{"hOk":"#yes","debug":false,"disable":[
 			<li><a href="#blocks">Blocks</a>
 			<li><a href="#headings">Headings</a>
 			</ul-->
-		<li><a href="#grid">Grid</a>
+		<li><a href="#n-grid">Grid</a> &rsaquo;
+			<ul id="n-grid" class="-toggle">
+			<li><a href="#grid-fractional">Fractional</a>
+			<li><a href="#grid-regular">Regular</a>
+			</ul>
 		<li><a href="#n-list">Lists</a> &rsaquo;
 			<ul id="n-list" class="-toggle">
 			<li><a href="#list-basic">Basic</a>
@@ -404,6 +408,8 @@ Mostly, default styling is kept.
 
 <h2 id="grid" class="-let">Grid</h2>
 
+<h3 id="grid-fractional">Fractional grid</h3>
+
 <p>
 Grid row (container) <code>div.row</code>.
 Direct descendants of the container are columns.
@@ -479,7 +485,28 @@ By default, they all have equal width.
 	</div>
 </div>
 
+<h3 id="grid-regular">Regular grid</h3>
 
+<fieldset class="mar">
+<legend>Options</legend>
+<label><input name="grids-cols" type="radio" data-nodes="#grid-reg" value="grid-2"> 2 columns <code>.grid-2</code></label><br>
+<label><input name="grids-cols" type="radio" data-nodes="#grid-reg" value="grid-3" checked> 3 columns <code>.grid-3</code></label><br>
+<label><input name="grids-cols" type="radio" data-nodes="#grid-reg" value="grid-4"> 4 columns <code>.grid-4</code></label>
+<p>
+<label><input name="grids-mar" type="checkbox" checked data-nodes='#grid-reg' data-set="mar"> Margins <code>.mar</code></label><br>
+<label><input name="grids-flip" type="checkbox" checked data-nodes='#grid-reg' data-set="flip"> Stack on small screen <code>.flip</code></label>
+</p>
+</fieldset>
+
+<div class="code">
+	<div class="grid-3 mar flip" id="grid-reg">
+		<div class="pad bg-n">1<br>1</div>
+		<div class="pad bg-i">2</div>
+		<div class="pad bg-y">3</div>
+		<div class="pad bg-w">4</div>
+		<div class="pad bg-e">5</div>
+	</div>
+</div>
 
 
 <h2 id="lists">Lists</h2>
@@ -799,7 +826,7 @@ For color options see <a href="#colors-buttons">Colors</a> section.
 <h3 id="form-stacked">Stacked form</h3>
 
 <div class="code">
-<form method="post">
+<form>
 	<p>
 		<label for="name">Name</label><br>
 		<input type="text" name="name" id="name" required>
@@ -818,7 +845,7 @@ For color options see <a href="#colors-buttons">Colors</a> section.
 <h3 id="form-grid">Form as grid</h3>
 
 <div class="code">
-<form method="post">
+<form>
 	<div class="row flip">
 		<label for="i1">Label one</label>
 		<div class="-col-3"><input type="text" name="i1" id="i1"></div>
@@ -855,7 +882,7 @@ In this case, <code>table</code> must be a direct descendant of <code>form</code
 Table will become stacked on small screen.
 
 <div class="code">
-	<form method="post" class="store restore">
+	<form class="store restore">
 		<table class="flip">
 		<tr>
 			<td><label for="nm">Name</label>
@@ -990,7 +1017,7 @@ Table will become stacked on small screen.
 
 
 <div class="code">
-	<form action="?" method="get" id="form-cld">
+	<form action="?" id="form-cld">
 	<table class="flip">
 	<tr><td>Text<td><input name="txt" type="text">
 	<tr><td>Date<td><input name="dt" class="calendar" type="date">
@@ -1179,7 +1206,7 @@ Add <code>.fit</code> class for compact layout.<br>
   maxlength="4"&gt;</pre-->
 
 <div class="code">
-	<form method="post">
+	<form>
 		<table>
 		<tbody>
 		<tr>
@@ -1236,14 +1263,14 @@ Add <code>.fit</code> class for compact layout.<br>
 <h4 id="validate-hints">Custom hint elements for input validation</h4>
 
 <p>Another option is to add sibling element with class <code>.text-e</code> after input. It will be visible only if input value is not valid. Contrary, sibling element with class <code>.text-y</code> will be visible only if input value is valid.
-<p>To improve usability, add class <code>.js-unhint</code> to <code>form</code>. This will disble default brower-specific tooltips and disables reporting empty required inputs as invalid until submitting.
+<p>To improve usability, add class <code>.js-unhint</code> to <code>form</code>. This disables default brower-specific tooltips and also disables reporting empty required inputs as invalid until submitting.
 
 <!--pre class="">
   &lt;input type="text" name="nm" required&gt;
   &lt;p class="small text-e">Value required&lt;/p&gt;</pre-->
 
 <div class="code">
-	<form method="post" class="js-unhint -js-live-val">
+	<form class="js-unhint -js-live-val">
 		<table>
 		<tbody>
 		<tr>
@@ -1313,7 +1340,7 @@ Add <code>.fit</code> class for compact layout.<br>
   maxlength="4"&gt;</pre>
 
 <p>Another option is to add sibling element with class <code>small</code> after <code>input</code>. It will be visible only if input value is not valid.
-<p>To improve usability, add class <code>js-unhint</code> to <code>form</code>. This will disble default brower-specific tooltips and disables reporting empty required inputs as invalid until submitting.
+<p>To improve usability, add class <code>js-unhint</code> to <code>form</code>. This disables default brower-specific tooltips and also disables reporting empty required inputs as invalid until submitting.
 
 <pre class="">
   &lt;input type="text" name="nm" required&gt;
@@ -1327,7 +1354,7 @@ Buttons will be shown above the form: to restore input values, to reset inputs t
 <p>To restore input values on page reload, add <code>.restore</code> class to the form.
 
 <div class="code">
-	<form method="post" class="store restore" id="form-keep">
+	<form class="store restore" id="form-keep">
 		<table class="flip">
 		<tbody>
 		<tr>

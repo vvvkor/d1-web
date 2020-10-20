@@ -64,7 +64,7 @@ export default class extends Plugin {
     // console.log('swipe move', e.type, this.moved?.tagName, e.target.tagName)
     if (this.moved) {
       // avoid scroll on touch drag
-      if (e.type.match(/^touch/) && this.moved.matches(this.opt.qDrag)) e.preventDefault();
+      if (e.type.match(/^touch/) && this.moved.matches(this.opt.qDrag) && ('swipeUp' in this.moved.dataset || 'swipeDown' in this.moved.dataset)) e.preventDefault();
       // avoid swipe inside scrollable elements
       //if (e.target.closest && e.target.closest('.roll')) this.moved = null;
       this.drag_(e);
@@ -96,6 +96,9 @@ export default class extends Plugin {
       this.moved.classList.add(this.opt.cDragging);
       //this.moved.style.zIndex = 99;
       //});
+      // avoid scroll on touch drag
+      //if (e.type.match(/^touch/) && xy[3]) e.preventDefault();
+      return xy[3];
     }
   }
   
@@ -139,16 +142,17 @@ export default class extends Plugin {
     let dx = this.c.eX - this.c.sX;
     let dy = this.c.eY - this.c.sY;
     let adx = Math.abs(dx);
-    let ady = Math.abs(dy); 
-    let r = [0, 0, 0];
+    let ady = Math.abs(dy);
+    let z = adx + ady;
+    let r = [0, 0, 0, z];
     if (adx >= this.opt.minSwipe || ady >= this.opt.minSwipe) {
       // r = (adx > ady) ? [dx, 0, dx>0 ? 2 : 4] : [0, dy, dy>0 ? 3 : 1];
       r = (adx > ady)
-        ? [dx, 0, dx>0 ? 'Right' : 'Left']
-        : [0, dy, dy>0 ? 'Down' : 'Up'];
+        ? [dx, 0, dx>0 ? 'Right' : 'Left', z]
+        : [0, dy, dy>0 ? 'Down' : 'Up', z];
     }
     //if (dirs.indexOf(r[2]) ===-1) r = [0, 0, 0];
-    if (!('swipe' + r[2] in this.moved.dataset)) r = [0, 0, 0];
+    if (!('swipe' + r[2] in this.moved.dataset)) r = [0, 0, 0, z];
     return r;
   }
   

@@ -27,7 +27,8 @@ export default class extends Plugin {
     this.app.h('invalid', inputs, e => this.setCustomMessage(e.target));
     this.app.e('form.' + this.opt.cUnhint, n => this.unhint(n));
     this.app.e('form.' + this.opt.cLiveVal, n => this.validateForm(n));
-    this.app.h('submit', this.opt.qValidate, e => e.target.getAttribute('novalidate') ? this.validateForm(e.target, e) : null);//custom validation
+    this.app.h('submit', this.opt.qValidate, e => this.customValidate(e));//custom validation
+    this.app.listen('validate', e => this.customValidate(e));
   }
   
   isLive(f) {
@@ -53,6 +54,11 @@ export default class extends Plugin {
   
   unhint(n) {
     n.setAttribute('novalidate', true);
+  }
+  
+  customValidate(e) {
+    const f = e.target.closest('form');
+    if (f && f.getAttribute('novalidate')) this.validateForm(f, e);
   }
   
   validateForm(n, e) {

@@ -34,11 +34,6 @@ export default class extends Plugin {
     this.app.h('click', this.opt.qAlert+', '+this.opt.qDialog, e => this.onClick(e));
   }
   
-  onClick(e) {
-      e.preventDefault();
-      return this.openByNode(e.recv);
-  }
-
   //setup object keys: [ok, cancel, icon, class, btn, rev, def]
   openDialog(h, t, f, setup) {
     setup = setup || {};
@@ -81,11 +76,13 @@ export default class extends Plugin {
     if (!f.call(this, v, e)) this.closeDialog(); // close dialog unless callback returns true
   }
   
-  openByNode(n, f) {
+  onClick(e) {
+    const n = e.recv;
     if (n.form && !n.form.checkValidity()) {
-      if (n.form.reportValidity) n.form.reportValidity();
+      this.app.fire('validate', e);
       return;
     }
+    e.preventDefault();
     const app = this.app
     let h = (n.dataset[this.opt.dHead] || '').replace(/%([\w\-]+)%/g, (m, a) => n.getAttribute(a));
     let icon = n.dataset[this.opt.dPic] || '';
