@@ -1,4 +1,4 @@
-/*! d1-web v2.2.24 */
+/*! d1-web v2.2.25 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -876,7 +876,7 @@ mark {
         display: block;
     }
 
-    .row.shift.flip[class]>* {
+    .row.shift.flip[class][class]>* {
         width: auto;
     }
 
