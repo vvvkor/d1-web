@@ -69,16 +69,16 @@
 </script>
 
 	<!-- CDN --R E M O V E->
-		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.2.23/dist/d1.min.css" rel="stylesheet">
-		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.2.23/dist/d1.min.js" defer></script>
+		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.2.24/dist/d1.min.css" rel="stylesheet">
+		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.2.24/dist/d1.min.js" defer></script>
 		<noscript>
-			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.2.23/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.2.24/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- CDN -->
-		<link href="https://unpkg.com/d1-web@2.2.23/dist/d1.min.css" rel="stylesheet">
-		<script src="https://unpkg.com/d1-web@2.2.23/dist/d1.min.js" defer></script>
+		<link href="https://unpkg.com/d1-web@2.2.24/dist/d1.min.css" rel="stylesheet">
+		<script src="https://unpkg.com/d1-web@2.2.24/dist/d1.min.js" defer></script>
 		<noscript>
-			<link href="https://unpkg.com/d1-web@2.2.23/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://unpkg.com/d1-web@2.2.24/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- local-npm-src REMOVE -- >
 		<link href="../src/index.css" rel="stylesheet">
@@ -117,7 +117,7 @@ data-d1='{"hOk":"#yes","debug":false,"disable":[
 	<a href="#menu" class="pad -let hide-desktop icon-menu empty" title="Menu"><span>Menu</span></a>
 	<a href="#top" class="pad -let"><b>d1</b></a>
 	<code class="-pad -nobr hide-mobile">npm i d1-web</code>
-	<a class="shift pad text-n">v2.2.23</a>
+	<a class="shift pad text-n">v2.2.24</a>
 	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1-web" title="GitHub" class="pad -let">GitHub</a>
 	<a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="pad -let icon-download empty" ><span>Download</span></a>
 </div>
@@ -302,19 +302,19 @@ Inclusion of <code>d1.js</code> and <code>d1-icons.css</code> is optional.
 </ul>
 <div>
 	<div id="cdn-jsdelivr">
-		<pre><code class="language-html">&lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.2.23/dist/d1.min.css" rel="stylesheet"&gt;
-&lt;script src="https://cdn.jsdelivr.net/npm/d1-web@2.2.23/dist/d1.min.js"&gt;&lt;/script&gt;
+		<pre><code class="language-html">&lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.2.24/dist/d1.min.css" rel="stylesheet"&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/d1-web@2.2.24/dist/d1.min.js"&gt;&lt;/script&gt;
 &lt;noscript&gt;
-  &lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.2.23/dist/d1-icons.min.css" rel="stylesheet"&gt;
+  &lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.2.24/dist/d1-icons.min.css" rel="stylesheet"&gt;
 &lt;/noscript&gt;
 
 		</code></pre>
 	</div>
 	<div id="cdn-unpkg">
-		<pre><code class="language-html">&lt;link href="https://unpkg.com/d1-web@2.2.23/dist/d1.min.css" rel="stylesheet"&gt;
-&lt;script src="https://unpkg.com/d1-web@2.2.23/dist/d1.min.js"&gt;&lt;/script&gt;
+		<pre><code class="language-html">&lt;link href="https://unpkg.com/d1-web@2.2.24/dist/d1.min.css" rel="stylesheet"&gt;
+&lt;script src="https://unpkg.com/d1-web@2.2.24/dist/d1.min.js"&gt;&lt;/script&gt;
 &lt;noscript&gt;
-  &lt;link href="https://unpkg.com/d1-web@2.2.23/dist/d1-icons.min.css" rel="stylesheet"&gt;
+  &lt;link href="https://unpkg.com/d1-web@2.2.24/dist/d1-icons.min.css" rel="stylesheet"&gt;
 &lt;/noscript&gt		</code></pre>
 	</div>
 	<div id="cdn-unpkg-short">
@@ -494,24 +494,34 @@ Grid row(s) container <code>div.row.shift</code>. Direct descendants of the cont
 <fieldset class="mar">
 <legend>Options</legend>
 <!--label><input name="grids-mar" type="checkbox" data-nodes='#grid-reg' data-set="fit"> Remove horizontal margins <code>.fit</code></label><br-->
-<label><input name="grids-mar" type="checkbox" data-nodes='#grid-reg' data-set="mar"> Add vertical and horizontal margins <code>.mar</code></label><br>
+<label><input name="grids-mar" type="checkbox" checked data-nodes='#grid-reg' data-set="mar"> Add vertical and horizontal margins <code>.mar</code></label><br>
 <label><input name="grids-flip" type="checkbox" checked data-nodes='#grid-reg' data-set="flip"> Stack on small screen <code>.flip</code></label>
 </fieldset>
 <fieldset class="mar">
 <legend>Cell width options</legend>
-<label><input name="grids-num" type="radio" data-nodes="#grid-reg" value="" checked> As indicated in cells (all cells 1/2 by default)</label><br>
-<label><input name="grids-num" type="radio" data-nodes="#grid-reg" value="col-4"> All cells 1/3<code>.col-4</code></label><br>
-<label><input name="grids-num" type="radio" data-nodes="#grid-reg" value="col-3"> All cells 1/4<code>.col-3</code></label>
+<label><input name="grids-num" type="radio" data-nodes="#grid-reg" value="" checked> Default cell width 1/2 (default)</label><br>
+<label><input name="grids-num" type="radio" data-nodes="#grid-reg" value="col-4"> Default cell width 1/3<code>.col-4</code></label><br>
+<label><input name="grids-num" type="radio" data-nodes="#grid-reg" value="col-3"> Default cell width 1/4<code>.col-3</code></label>
 </fieldset>
 
 <div class="code">
-	<div class="row shift flip" id="grid-reg">
-		<div class="pad bg-i">1/2 (default)</div>
-		<div class="pad bg-y">1/2 (default)</div>
-		<div class="col-4 pad bg-w">1/3 <code>.col-4</code></div>
-		<div class="col-8 pad bg-e">2/3 <code>.col-8</code></div>
-		<div class="col-3 pad bg-i">1/4 <code>.col-3</code></div>
-		<div class="col-9 pad bg-y">3/4 <code>.col-9</code></div>
+	<div class="row shift flip mar" id="grid-reg">
+		<div class="pad bg-n">#1</div>
+		<div class="pad bg-n">#2</div>
+		<div class="pad bg-n">#3</div>
+		<div class="pad bg-n">#4</div>
+		<div class="pad bg-n">#5</div>
+		<div class="pad bg-n">#6</div>
+		<div class="pad bg-n">#7</div>
+		<div class="pad bg-n">#8</div>
+		<div class="pad bg-n">#9</div>
+		<div class="pad bg-n">#10</div>
+		<div class="pad bg-n">#11</div>
+		<div class="pad bg-n">#12</div>
+		<div class="col-4 pad bg-y">1/3 <code>.col-4</code></div>
+		<div class="col-8 pad bg-y">2/3 <code>.col-8</code></div>
+		<div class="col-3 pad bg-w">1/4 <code>.col-3</code></div>
+		<div class="col-9 pad bg-w">3/4 <code>.col-9</code></div>
 	</div>
 </div>
 
@@ -2438,7 +2448,7 @@ most important:
 	<tr><th>Item<th>Description<th>Used with<th>Modifications
 </thead>
 <tbody>
-<tr><th>.row<td><a href="#grid">Grid</a><td>div ul .col-0 .col-2 .col-3<td>.flip .let .margin .fit .center .roll<i>.shift .stick .center .wrap .read .narrow</i>
+<tr><th>.row<td><a href="#grid">Grid</a><td>div ul .col-0 .col-2 .col-3<td>.flip .let .margin .fit .center .shift .roll <i>.shift .stick .center .wrap .read .narrow</i>
 <tr><th>table<td><a href="#table">Table</a><td>.roll<td>.hover .fit .let .shift .flip
 <tr><th>ul, ol, dl<td><a href="#list">List</a><td><td>.fit .row
 <tr><th>.tree<td><a href="#list-tree">Tree</a><td>ul<td>.accordion .fit
@@ -2465,6 +2475,7 @@ most important:
 <tr><th>.shift<td>Something about right side positioning<td>
 	<span class="tip shift" title="Shift item to the right">.row &gt; *</span><br>
 	<span class="tip shift" title="Shift item to the right">.nav &gt; li</span><br>
+	<span class="tip shift" title="Wrap and justify items">.row</span><br>
 	<span class="tip shift" title="Full width">table</span><br>
 	<span class="tip shift" title="Pop to the left">.pop</span><br>
 	<span class="tip shift" title="Pop to the left">[data-tip]</span><br>

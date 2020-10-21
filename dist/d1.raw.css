@@ -1,4 +1,4 @@
-/*! d1-web v2.2.23 */
+/*! d1-web v2.2.24 */
 
 /* @import url("css/columns.css"); */
 
@@ -422,8 +422,8 @@ mark{background-color:var(--bg-warning);}
 .row.shift.mar{justify-content:space-between;}
 .row.shift>*{flex:none;box-sizing:border-box;}
 .row.shift>*{width:50%;}
-.row.shift>.col-3, .row.shift.col-3[class]>*{width:25%;}
-.row.shift>.col-4, .row.shift.col-4[class]>*{width:33.33%;}
+.row.shift>.col-3[class], .row.shift.col-3>*{width:25%;}
+.row.shift>.col-4[class], .row.shift.col-4>*{width:33.33%;}
 .row.shift>.col-8{width:66.66%;}
 .row.shift>.col-9{width:75%;}
 /* gap 2% * /
@@ -434,8 +434,8 @@ mark{background-color:var(--bg-warning);}
 .row.shift.mar>.col-9{width:74.5%;}
 /* gap 3% */
 .row.shift.mar>*{width:48.5%;}
-.row.shift.mar>.col-3, .row.shift.mar.col-3[class]>*{width:22.75%;}
-.row.shift.mar>.col-4, .row.shift.mar.col-4[class]>*{width:31.33%;}
+.row.shift.mar>.col-3[class], .row.shift.mar.col-3>*{width:22.75%;}
+.row.shift.mar>.col-4[class], .row.shift.mar.col-4>*{width:31.33%;}
 .row.shift.mar>.col-8{width:65.66%;}
 .row.shift.mar>.col-9{width:74.25%;}
 

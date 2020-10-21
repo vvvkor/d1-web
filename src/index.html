@@ -494,24 +494,34 @@ Grid row(s) container <code>div.row.shift</code>. Direct descendants of the cont
 <fieldset class="mar">
 <legend>Options</legend>
 <!--label><input name="grids-mar" type="checkbox" data-nodes='#grid-reg' data-set="fit"> Remove horizontal margins <code>.fit</code></label><br-->
-<label><input name="grids-mar" type="checkbox" data-nodes='#grid-reg' data-set="mar"> Add vertical and horizontal margins <code>.mar</code></label><br>
+<label><input name="grids-mar" type="checkbox" checked data-nodes='#grid-reg' data-set="mar"> Add vertical and horizontal margins <code>.mar</code></label><br>
 <label><input name="grids-flip" type="checkbox" checked data-nodes='#grid-reg' data-set="flip"> Stack on small screen <code>.flip</code></label>
 </fieldset>
 <fieldset class="mar">
 <legend>Cell width options</legend>
-<label><input name="grids-num" type="radio" data-nodes="#grid-reg" value="" checked> As indicated in cells (all cells 1/2 by default)</label><br>
-<label><input name="grids-num" type="radio" data-nodes="#grid-reg" value="col-4"> All cells 1/3<code>.col-4</code></label><br>
-<label><input name="grids-num" type="radio" data-nodes="#grid-reg" value="col-3"> All cells 1/4<code>.col-3</code></label>
+<label><input name="grids-num" type="radio" data-nodes="#grid-reg" value="" checked> Default cell width 1/2 (default)</label><br>
+<label><input name="grids-num" type="radio" data-nodes="#grid-reg" value="col-4"> Default cell width 1/3<code>.col-4</code></label><br>
+<label><input name="grids-num" type="radio" data-nodes="#grid-reg" value="col-3"> Default cell width 1/4<code>.col-3</code></label>
 </fieldset>
 
 <div class="code">
-	<div class="row shift flip" id="grid-reg">
-		<div class="pad bg-i">1/2 (default)</div>
-		<div class="pad bg-y">1/2 (default)</div>
-		<div class="col-4 pad bg-w">1/3 <code>.col-4</code></div>
-		<div class="col-8 pad bg-e">2/3 <code>.col-8</code></div>
-		<div class="col-3 pad bg-i">1/4 <code>.col-3</code></div>
-		<div class="col-9 pad bg-y">3/4 <code>.col-9</code></div>
+	<div class="row shift flip mar" id="grid-reg">
+		<div class="pad bg-n">#1</div>
+		<div class="pad bg-n">#2</div>
+		<div class="pad bg-n">#3</div>
+		<div class="pad bg-n">#4</div>
+		<div class="pad bg-n">#5</div>
+		<div class="pad bg-n">#6</div>
+		<div class="pad bg-n">#7</div>
+		<div class="pad bg-n">#8</div>
+		<div class="pad bg-n">#9</div>
+		<div class="pad bg-n">#10</div>
+		<div class="pad bg-n">#11</div>
+		<div class="pad bg-n">#12</div>
+		<div class="col-4 pad bg-y">1/3 <code>.col-4</code></div>
+		<div class="col-8 pad bg-y">2/3 <code>.col-8</code></div>
+		<div class="col-3 pad bg-w">1/4 <code>.col-3</code></div>
+		<div class="col-9 pad bg-w">3/4 <code>.col-9</code></div>
 	</div>
 </div>
 
