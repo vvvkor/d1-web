@@ -71,16 +71,16 @@
 	<!--link href="https://unpkg.com/normalize.css@8.0.1/normalize.css" rel="stylesheet"-->
 	<!-- "" replaced with ""  -->
 	<!-- CDN --R E M O V E->
-		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.2.22/dist/d1.min.css" rel="stylesheet">
-		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.2.22/dist/d1.min.js" defer></script>
+		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.2.23/dist/d1.min.css" rel="stylesheet">
+		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.2.23/dist/d1.min.js" defer></script>
 		<noscript>
-			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.2.22/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.2.23/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- CDN -->
-		<link href="https://unpkg.com/d1-web@2.2.22/dist/d1.min.css" rel="stylesheet">
-		<script src="https://unpkg.com/d1-web@2.2.22/dist/d1.min.js" defer></script>
+		<link href="https://unpkg.com/d1-web@2.2.23/dist/d1.min.css" rel="stylesheet">
+		<script src="https://unpkg.com/d1-web@2.2.23/dist/d1.min.js" defer></script>
 		<noscript>
-			<link href="https://unpkg.com/d1-web@2.2.22/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://unpkg.com/d1-web@2.2.23/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- local-npm-src REMOVE -- >
 		<link href="../src/index.css" rel="stylesheet">
@@ -135,11 +135,11 @@ Text
 	<header class="bg -bg-n -topbar -toggle">
 		<div class="hide-desktop">
 			<a href="#nav" class="pad hover icon-menu empty" title="Menu"><span>Menu</span></a>
-			<a href="?" class="pad"><b>d1</b> <span class="text-n">v2.2.22</span></a>
+			<a href="?" class="pad"><b>d1</b> <span class="text-n">v2.2.23</span></a>
 		</div>
 		
 		<ul class="nav flip hover target-mobile" id="nav">
-			<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v2.2.22</span></a></li>
+			<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v2.2.23</span></a></li>
 			<li><a href="index.html" class="icon-text">Docs</a>
 			<li><a href="https://github.com/vvvkor/d1-web" class="icon-folder" >GitHub</a>
 			<li><a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="icon-download empty-desktop" title="Download"><span>Download</span></a>
@@ -319,7 +319,7 @@ let double = function (x) {
 			<a href="#cancel" class="close pad icon-close empty"><span>Close</span></a>
 			<h3 class="fit pad bg">Inline form</h3>
 			<div class="mar pad nobr">
-			<form>
+			<form action="?">
 				<input type="search" name="nm">
 				<input type="submit" value="Search">
 			</form>
@@ -842,18 +842,18 @@ let double = function (x) {
 				<p id="modal-p">Modal</p>
 				<ul class="l">
 					<li><a href="#confirm-nested" class="dialog" title="Confirm nested?">Nested dialog</a>
-					<li><a href="#modal-p">Local</a>
-					<li><a href="#modal-modal">Local modal</a>
+					<li><a href="#modal-p">Local anchor</a>
+					<li><a href="#modal-modal"><s title="Limited support, considered bad practice">Nested modal</s></a>
 					<li>
 						<div class="pop">
-							<a href="#modal-pop">Local pop</a>
-							<div id="modal-pop" class="pad">Local pop</div>
+							<a href="#modal-pop">Nested popup</a>
+							<div id="modal-pop" class="pad">Nested popup</div>
 						</div>
-					<li><a href="#typo">Outside</a>
-					<li><a href="#menu">Outside menu</a>
-					<li><a href="#x">Absent</a>
+					<li><a href="#typo">Outside anchor</a>
+					<li><a href="#menu">Outside drawer</a>
+					<li><a href="#x">Absent anchor</a>
 				</ul>
-				<div id="modal-modal" class="dlg pad">Modal modal</div>
+				<div id="modal-modal" class="dlg pad">Nested modal</div>
 			</div>
 			<div id="full" class="dlg full center pad bg-w">
 				<a class="close pad icon-close empty" href="#cancel"><i>Close</i></a>
@@ -898,17 +898,18 @@ let double = function (x) {
 				<h3 id="#anchors">Anchors</h3>
 				
 				<ul>
-					<li><a href="#anchors">Local</a>
-					<li><a href="#ul2">Local nav</a>
-					<li><a href="#drawer-modal">Local modal*</a>
+					<li><a href="#confirm-nested-drawer" class="dialog" title="Confirm nested?">Nested dialog</a>
+					<li><a href="#anchors">Local anchor</a>
+					<li><a href="#ul2">Local tree anchor</a>
+					<li><a href="#drawer-modal"><s title="Not supported, considered bad practice">Nested modal</s></a>
 					<li>
 						<div class="pop">
-							<a href="#drawer-pop">Local pop</a>
-							<div id="drawer-pop" class="pad">Local pop</div>
+							<a href="#drawer-pop">Nested popup</a>
+							<div id="drawer-pop" class="pad">Nested popup</div>
 						</div>
-					<li><a href="#typo">Outside</a>
+					<li><a href="#typo">Outside anchor</a>
 					<li><a href="#modal">Outside modal</a>
-					<li><a href="#x">Absent</a>
+					<li><a href="#x">Absent anchor</a>
 				</ul>
 				
 				<!--div id="drawer-modal" class="dlg pad">Drawer modal</div-->
@@ -1046,6 +1047,25 @@ let double = function (x) {
 			<h6 class="mar">Heading 6</h6>
 			</div>
 		</div>
+		
+		<div class="">
+			<div class="row shift flip mar c">
+				<div class="bg-n">&frac12;</div>
+				<div class="bg-n">&frac12;</div>
+					<div class="col-4 bg-i">&frac13;</code></div>
+					<div class="col-4 bg-i">&frac13;</code></div>
+					<div class="col-4 bg-i">&frac13;</code></div>
+				<div class="col-4 bg-y">&frac13;</code></div>
+				<div class="col-8 bg-y">&frac23;</code></div>
+					<div class="col-3 bg-w">&frac14;</code></div>
+					<div class="col-3 bg-w">&frac14;</code></div>
+					<div class="col-3 bg-w">&frac14;</code></div>
+					<div class="col-3 bg-w">&frac14;</code></div>
+				<div class="col-3 bg-e">&frac14;</code></div>
+				<div class="col-9 bg-e">&frac34;</code></div>
+			</div>
+		</div>
+	
 	</div><!-- /right -->
   </div><!-- /row -->
 </div><!-- container -->

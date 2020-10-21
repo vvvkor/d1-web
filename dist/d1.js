@@ -1,4 +1,4 @@
-/*! d1-web v2.2.22 */
+/*! d1-web v2.2.23 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -1383,12 +1383,6 @@ var _default = /*#__PURE__*/function (_Plugin) {
       this.app.h('click', this.opt.qAlert + ', ' + this.opt.qDialog, function (e) {
         return _this2.onClick(e);
       });
-    }
-  }, {
-    key: "onClick",
-    value: function onClick(e) {
-      e.preventDefault();
-      return this.openByNode(e.recv);
     } //setup object keys: [ok, cancel, icon, class, btn, rev, def]
 
   }, {
@@ -1460,15 +1454,18 @@ var _default = /*#__PURE__*/function (_Plugin) {
       if (!f.call(this, v, e)) this.closeDialog(); // close dialog unless callback returns true
     }
   }, {
-    key: "openByNode",
-    value: function openByNode(n, f) {
+    key: "onClick",
+    value: function onClick(e) {
       var _this4 = this;
 
+      var n = e.recv;
+
       if (n.form && !n.form.checkValidity()) {
-        if (n.form.reportValidity) n.form.reportValidity();
+        this.app.fire('validate', e);
         return;
       }
 
+      e.preventDefault();
       var app = this.app;
       var h = (n.dataset[this.opt.dHead] || '').replace(/%([\w\-]+)%/g, function (m, a) {
         return n.getAttribute(a);
@@ -3176,8 +3173,12 @@ var _default = /*#__PURE__*/function (_Plugin) {
         return _this2.validateForm(n);
       });
       this.app.h('submit', this.opt.qValidate, function (e) {
-        return e.target.getAttribute('novalidate') ? _this2.validateForm(e.target, e) : null;
+        return _this2.customValidate(e);
       }); //custom validation
+
+      this.app.listen('validate', function (e) {
+        return _this2.customValidate(e);
+      });
     }
   }, {
     key: "isLive",
@@ -3211,6 +3212,12 @@ var _default = /*#__PURE__*/function (_Plugin) {
     key: "unhint",
     value: function unhint(n) {
       n.setAttribute('novalidate', true);
+    }
+  }, {
+    key: "customValidate",
+    value: function customValidate(e) {
+      var f = e.target.closest('form');
+      if (f && f.getAttribute('novalidate')) this.validateForm(f, e);
     }
   }, {
     key: "validateForm",
@@ -5629,7 +5636,7 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
       // console.log('swipe move', e.type, this.moved?.tagName, e.target.tagName)
       if (this.moved) {
         // avoid scroll on touch drag
-        if (e.type.match(/^touch/) && this.moved.matches(this.opt.qDrag)) e.preventDefault(); // avoid swipe inside scrollable elements
+        if (e.type.match(/^touch/) && this.moved.matches(this.opt.qDrag) && ('swipeUp' in this.moved.dataset || 'swipeDown' in this.moved.dataset)) e.preventDefault(); // avoid swipe inside scrollable elements
         //if (e.target.closest && e.target.closest('.roll')) this.moved = null;
 
         this.drag_(e);
@@ -5664,6 +5671,10 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
         this.moved.style.transform = 'translate(' + xy[0] + 'px, ' + xy[1] + 'px)';
         this.moved.classList.add(this.opt.cDragging); //this.moved.style.zIndex = 99;
         //});
+        // avoid scroll on touch drag
+        //if (e.type.match(/^touch/) && xy[3]) e.preventDefault();
+
+        return xy[3];
       }
     }
   }, {
@@ -5717,15 +5728,16 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
       var dy = this.c.eY - this.c.sY;
       var adx = Math.abs(dx);
       var ady = Math.abs(dy);
-      var r = [0, 0, 0];
+      var z = adx + ady;
+      var r = [0, 0, 0, z];
 
       if (adx >= this.opt.minSwipe || ady >= this.opt.minSwipe) {
         // r = (adx > ady) ? [dx, 0, dx>0 ? 2 : 4] : [0, dy, dy>0 ? 3 : 1];
-        r = adx > ady ? [dx, 0, dx > 0 ? 'Right' : 'Left'] : [0, dy, dy > 0 ? 'Down' : 'Up'];
+        r = adx > ady ? [dx, 0, dx > 0 ? 'Right' : 'Left', z] : [0, dy, dy > 0 ? 'Down' : 'Up', z];
       } //if (dirs.indexOf(r[2]) ===-1) r = [0, 0, 0];
 
 
-      if (!('swipe' + r[2] in this.moved.dataset)) r = [0, 0, 0];
+      if (!('swipe' + r[2] in this.moved.dataset)) r = [0, 0, 0, z];
       return r;
     }
   }, {

@@ -1,4 +1,4 @@
-/*! d1-web v2.2.22 */
+/*! d1-web v2.2.23 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -1383,12 +1383,6 @@ var _default = /*#__PURE__*/function (_Plugin) {
       this.app.h('click', this.opt.qAlert + ', ' + this.opt.qDialog, function (e) {
         return _this2.onClick(e);
       });
-    }
-  }, {
-    key: "onClick",
-    value: function onClick(e) {
-      e.preventDefault();
-      return this.openByNode(e.recv);
     } //setup object keys: [ok, cancel, icon, class, btn, rev, def]
 
   }, {
@@ -1460,15 +1454,18 @@ var _default = /*#__PURE__*/function (_Plugin) {
       if (!f.call(this, v, e)) this.closeDialog(); // close dialog unless callback returns true
     }
   }, {
-    key: "openByNode",
-    value: function openByNode(n, f) {
+    key: "onClick",
+    value: function onClick(e) {
       var _this4 = this;
 
+      var n = e.recv;
+
       if (n.form && !n.form.checkValidity()) {
-        if (n.form.reportValidity) n.form.reportValidity();
+        this.app.fire('validate', e);
         return;
       }
 
+      e.preventDefault();
       var app = this.app;
       var h = (n.dataset[this.opt.dHead] || '').replace(/%([\w\-]+)%/g, function (m, a) {
         return n.getAttribute(a);
@@ -3176,8 +3173,12 @@ var _default = /*#__PURE__*/function (_Plugin) {
         return _this2.validateForm(n);
       });
       this.app.h('submit', this.opt.qValidate, function (e) {
-        return e.target.getAttribute('novalidate') ? _this2.validateForm(e.target, e) : null;
+        return _this2.customValidate(e);
       }); //custom validation
+
+      this.app.listen('validate', function (e) {
+        return _this2.customValidate(e);
+      });
     }
   }, {
     key: "isLive",
@@ -3211,6 +3212,12 @@ var _default = /*#__PURE__*/function (_Plugin) {
     key: "unhint",
     value: function unhint(n) {
       n.setAttribute('novalidate', true);
+    }
+  }, {
+    key: "customValidate",
+    value: function customValidate(e) {
+      var f = e.target.closest('form');
+      if (f && f.getAttribute('novalidate')) this.validateForm(f, e);
     }
   }, {
     key: "validateForm",

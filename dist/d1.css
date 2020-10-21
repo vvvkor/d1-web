@@ -1,4 +1,4 @@
-/*! d1-web v2.2.22 */
+/*! d1-web v2.2.23 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -763,7 +763,7 @@ mark {
     min-width: 0;
 }
 
-.row:not(.fit)>*:not(:last-child):not(.center) {
+.row:not(.fit):not(.shift)>*:not(:last-child):not(.center) {
     margin-right: 1em;
     margin-right: var(--gap-n);
 }
@@ -796,15 +796,68 @@ mark {
     margin-left: auto;
 }
 
-.row.let.mar {
+.row.let.mar, .row.shift.mar {
     margin-bottom: 0;
 }
 
 /* ! will not collapse with following element */
 
-.row.let.mar>* {
+.row.let.mar>*, .row.shift.mar>* {
     margin-bottom: 1em;
     margin-bottom: var(--gap-n);
+}
+
+.row.shift {
+    flex-wrap: wrap;
+}
+
+.row.shift.mar {
+    justify-content: space-between;
+}
+
+.row.shift>* {
+    flex: none;
+    box-sizing: border-box;
+}
+
+.row.shift>* {
+    width: 50%;
+}
+
+.row.shift>.col-3, .row.shift.col-3[class]>* {
+    width: 25%;
+}
+
+.row.shift>.col-4, .row.shift.col-4[class]>* {
+    width: 33.33%;
+}
+
+.row.shift>.col-8 {
+    width: 66.66%;
+}
+
+.row.shift>.col-9 {
+    width: 75%;
+}
+
+.row.shift.mar>* {
+    width: 48.5%;
+}
+
+.row.shift.mar>.col-3, .row.shift.mar.col-3[class]>* {
+    width: 22.75%;
+}
+
+.row.shift.mar>.col-4, .row.shift.mar.col-4[class]>* {
+    width: 31.33%;
+}
+
+.row.shift.mar>.col-8 {
+    width: 65.66%;
+}
+
+.row.shift.mar>.col-9 {
+    width: 74.25%;
 }
 
 @media (min-height: 600px) {
@@ -821,6 +874,10 @@ mark {
 
     ul.flip, .flip {
         display: block;
+    }
+
+    .row.shift.flip[class]>* {
+        width: auto;
     }
 
     .row[class].flip[class]>* {
@@ -874,6 +931,15 @@ mark {
     .nav:not(.let):not(.flip)>li.shift~li>ul {
         left: auto;
         right: 0;
+    }
+
+    [class*="grid-"].flip {
+        margin-right: 0;
+    }
+
+    [class*="grid-"].flip>* {
+        width: 100%;
+        margin-right: 0%;
     }
 }
 

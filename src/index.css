@@ -405,7 +405,7 @@ mark{background-color:var(--bg-warning);}
 /* grid-fractional */
 .row{display:flex;  /*for lists*/list-style:none;padding:0;}
 .row>*{flex:1;/*1 0 auto;does not wrap text*/min-width:0;}
-.row:not(.fit)>*:not(:last-child):not(.center){margin-right:var(--gap-n);}
+.row:not(.fit):not(.shift)>*:not(:last-child):not(.center){margin-right:var(--gap-n);}
 .row>.col-0{flex:0 1 auto;/*for ie*/ /*flex:initial;*/}
 .row>.col-2{flex:2;}
 .row>.col-3{flex:3;}
@@ -414,21 +414,31 @@ mark{background-color:var(--bg-warning);}
 	.row.center:not(.wrap){align-items:center;}
 	.shift{margin-left:auto;} /* .nav>li.shift, .row>*.shift */
 
-.row.let.mar{margin-bottom:0;} /* ! will not collapse with following element */
-.row.let.mar>*{margin-bottom:var(--gap-n);}
+.row.let.mar, .row.shift.mar{margin-bottom:0;} /* ! will not collapse with following element */
+.row.let.mar>*, .row.shift.mar>*{margin-bottom:var(--gap-n);}
 
 /* grid-regular */
-[class*="grid-"][class]{display:flex;flex-wrap:wrap;}
-[class*="grid-"][class]>*{box-sizing:border-box;}
-[class*="grid-"].mar{margin:var(--gap-s) -3% var(--gap-s) 0;}
-[class*="grid-"].mar>*{margin:var(--gap-s) 3% var(--gap-s) 0;}
-.grid-2>*{width:50%;}
-.grid-3>*{width:33.33%;}
-.grid-4>*{width:25%;}
-.grid-2.mar>*{width:47%;}
-.grid-3.mar>*{width:30.33%;}
-.grid-4.mar>*{width:22%;}
-	
+.row.shift{flex-wrap:wrap;}
+.row.shift.mar{justify-content:space-between;}
+.row.shift>*{flex:none;box-sizing:border-box;}
+.row.shift>*{width:50%;}
+.row.shift>.col-3, .row.shift.col-3[class]>*{width:25%;}
+.row.shift>.col-4, .row.shift.col-4[class]>*{width:33.33%;}
+.row.shift>.col-8{width:66.66%;}
+.row.shift>.col-9{width:75%;}
+/* gap 2% * /
+.row.shift.mar>*{width:49%;}
+.row.shift.mar>.col-3{width:23.5%;}
+.row.shift.mar>.col-4{width:32%;}
+.row.shift.mar>.col-8{width:66%;}
+.row.shift.mar>.col-9{width:74.5%;}
+/* gap 3% */
+.row.shift.mar>*{width:48.5%;}
+.row.shift.mar>.col-3, .row.shift.mar.col-3[class]>*{width:22.75%;}
+.row.shift.mar>.col-4, .row.shift.mar.col-4[class]>*{width:31.33%;}
+.row.shift.mar>.col-8{width:65.66%;}
+.row.shift.mar>.col-9{width:74.25%;}
+
 /* media */
 
 @media (min-height: 600px){
@@ -441,6 +451,7 @@ mark{background-color:var(--bg-warning);}
 	/*input[name],select[name],[contenteditable]{max-width:50%;}*/
 
 	ul.flip, .flip /*.row.flip, .nav.flip*/{display:block;} /* should have less priority then hiding (like .off) */
+		.row.shift.flip[class]>*{width:auto;}
 	.row[class].flip[class]>*{margin-right:0;}
 		/*.row.flip.mar[class]>*+*:not(.mar){margin-top:var(--gap-xs);}*/
 	.row.flip.mar>:not(:last-child){margin-bottom:var(--gap-n);} /* keep cell margin */
