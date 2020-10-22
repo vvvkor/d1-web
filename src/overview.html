@@ -50,6 +50,18 @@
 		}
 	}
 	
+	var reportScreen = function() {
+		// document.documentElement.clientWidth - without scrollbar
+		// window.innerWidth - with scrollbar
+		var r = ruler.clientWidth / 10;
+		var w = document.documentElement.clientWidth;
+		var h = document.documentElement.clientHeight;
+		screener.innerHTML = 
+			w + ' x ' + h + ' px<br>'
+			+ Math.ceil(w/r) + ' x ' + Math.ceil(h/r) + ' em<br>'
+			+ r + ' px/em';
+	}
+	
 	var testHtml = 
 		'<hr><form>'
 		+ '<p>Date: <input class="calendar" type="datetime-local">'
@@ -60,11 +72,13 @@
 
 	document.addEventListener('DOMContentLoaded', e => {
 		console.log('d1 = ', d1);
+		window.addEventListener('resize', e => reportScreen(e), false);
 		if (d1.plugins.icons) {
 			d1.listen('beforeinit', injectIcon);
 			d1.listen('ready', demoIcons);
 		}
 		checkApi(); // d1.listen('beforeopt', checkApi);
+		reportScreen();
 	});
 </script>
 
@@ -203,6 +217,8 @@ Text
 			data-swipe-down="#swipe-downs"
 			data-swipe-left="#swipe-lefts"
 			>Note</p>
+		
+		<div class="c bg-w" id="ruler" style="width:10em;">10em</div>
 		
 		<h2 class="mem" id="typo">Typography</h2>
 		
@@ -778,6 +794,7 @@ let double = function (x) {
 				<b class="btn bg-i hide-desktop">Mobile layout</b>
 				<b class="btn bg-n hide-mobile">Desktop layout</b>
 			</p>
+			<p id="screener" class="small"></p>
 		</div>
 		<div class="pad mar shade">
 			<h3 class="mar">Page setup <b class="small btn bg-e hide-js" title="Requires Javascript">JS</b></h3>
@@ -1049,20 +1066,22 @@ let double = function (x) {
 		</div>
 		
 		<div class="">
-			<div class="row shift -flip mar c">
-				<div class="bg-n">&frac12;</div>
-				<div class="bg-n">&frac12;</div>
-					<div class="col-4 bg-i">&frac13;</code></div>
-					<div class="col-4 bg-i">&frac13;</code></div>
-					<div class="col-4 bg-i">&frac13;</code></div>
-				<div class="col-4 bg-y">&frac13;</code></div>
-				<div class="col-8 bg-y">&frac23;</code></div>
-					<div class="col-3 bg-w">&frac14;</code></div>
-					<div class="col-3 bg-w">&frac14;</code></div>
-					<div class="col-3 bg-w">&frac14;</code></div>
-					<div class="col-3 bg-w">&frac14;</code></div>
-				<div class="col-3 bg-e">&frac14;</code></div>
-				<div class="col-9 bg-e">&frac34;</code></div>
+			<div class="row shift -flip -fit mar c">
+				<div class="bg-n col-1-2">&frac12;</div>
+				<div class="bg-n col-1-2">&frac12;</div>
+					<div class="col-1-3 bg-i">&frac13;</code></div>
+					<div class="col-1-3 bg-i">&frac13;</code></div>
+					<div class="col-1-3 bg-i">&frac13;</code></div>
+				<div class="col-1-3 bg-y">&frac13;</code></div>
+				<div class="col-2-3 bg-y">&frac23;</code></div>
+					<div class="col-1-4 bg-w">&frac14;</code></div>
+					<div class="col-1-4 bg-w">&frac14;</code></div>
+					<div class="col-1-4 bg-w">&frac14;</code></div>
+					<div class="col-1-4 bg-w">&frac14;</code></div>
+				<div class="col-1-4 bg-e">&frac14;</code></div>
+				<div class="col-3-4 bg-e">&frac34;</code></div>
+				<div class="col-1 bg-n">full</code></div>
+				<div class="col-0 bg-i">auto</code></div>
 			</div>
 		</div>
 	
