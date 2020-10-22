@@ -421,7 +421,7 @@ mark{background-color:var(--bg-warning);}
 .row.shift{flex-wrap:wrap;}
 .row.shift>*{flex:none;box-sizing:border-box;}
 /**/
-.row.shift>.col-1[class][class]{width:100%;}
+.row.shift>.col-1[class][class][class]{width:100%;}
 .row.shift>.col-1-4[class], .row.shift.col-1-4>*{width:25%;}
 .row.shift>.col-1-3[class], .row.shift>*{width:33.33%;}
 .row.shift>.col-1-2[class], .row.shift.col-1-2>*{width:50%;}
@@ -446,7 +446,7 @@ mark{background-color:var(--bg-warning);}
 /* but has aberration -0.1% width if gap 3% and may cause horizontal scroll * /
 .row.shift.mar{margin-right:-3%;}
 .row.shift.mar>*{margin-right:3%;}
-.row.shift.mar>.col-1[class]{width:97%;}
+.row.shift.mar>.col-1[class][class]{width:97%;}
 .row.shift.mar>.col-1-4[class], .row.shift.mar.col-1-4>*{width:22%;}
 .row.shift.mar>.col-1-3[class], .row.shift.mar>*{width:30.33%;}
 .row.shift.mar>.col-1-2[class], .row.shift.mar.col-1-2>*{width:47%;}
@@ -469,7 +469,7 @@ mark{background-color:var(--bg-warning);}
 	ul.flip, .flip /*.row.flip, .nav.flip*/{display:block;} /* should have less priority then hiding (like .off) */
 		.row.shift.flip[class][class]>*{width:auto;}
 		.row.shift.fit[class][class]>*{width:50%;}
-		.row.shift.fit.mar[class][class]>*{width:47%;/*48.5%;*/}
+		.row.shift.fit.mar[class]>*{width:47%;/*48.5%;*/}
 	.row[class].flip[class]:not(.shift)>*{margin-right:0;}
 		/*.row.flip.mar[class]>*+*:not(.mar){margin-top:var(--gap-xs);}*/
 	.row.flip.mar>:not(:last-child){margin-bottom:var(--gap-n);} /* keep cell margin */
@@ -488,7 +488,7 @@ mark{background-color:var(--bg-warning);}
 @media (max-width: 479px){
 	/* phone */
 	.row.shift.fit{display:block;}
-	.row.shift.fit[class][class][class]>*{width:auto;}
+	.row.shift.fit[class][class]>*{width:auto;}
 }
 
 @media (min-width: 900px){

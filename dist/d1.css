@@ -1,4 +1,4 @@
-/*! d1-web v2.3.0 */
+/*! d1-web v2.3.1 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -816,7 +816,7 @@ mark {
     box-sizing: border-box;
 }
 
-.row.shift>.col-1[class][class] {
+.row.shift>.col-1[class][class][class] {
     width: 100%;
 }
 
@@ -892,7 +892,7 @@ mark {
         width: 50%;
     }
 
-    .row.shift.fit.mar[class][class]>* {
+    .row.shift.fit.mar[class]>* {
         width: 47%;
     }
 
@@ -964,7 +964,7 @@ mark {
         display: block;
     }
 
-    .row.shift.fit[class][class][class]>* {
+    .row.shift.fit[class][class]>* {
         width: auto;
     }
 }
