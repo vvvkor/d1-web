@@ -1,4 +1,4 @@
-/*! d1-web v2.3.1 */
+/*! d1-web v2.3.3 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -4589,7 +4589,7 @@ var tools_default = /*#__PURE__*/function (_Plugin) {
       var box = n.type == 'checkbox' || n.type == 'radio';
       var sel = n.tagName == 'SELECT' || n.type == 'radio';
       var q = n.dataset[this.opt.dNodes] || n.hash;
-      var c = sel ? n.value : n.dataset[this.opt.dSet];
+      var c = sel ? n.value : n.dataset[this.opt.dSet] || n.value;
       var on = sel ? true : box ? n.checked : n.classList.contains(this.app.opt.cAct);
 
       if (e && !box && !sel) {

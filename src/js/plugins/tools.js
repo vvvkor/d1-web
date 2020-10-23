@@ -93,7 +93,7 @@ export default class extends Plugin {
     let box = (n.type == 'checkbox' || n.type == 'radio');
     let sel = (n.tagName == 'SELECT' || n.type == 'radio');
     let q = n.dataset[this.opt.dNodes] || n.hash;
-    let c = sel ? n.value : n.dataset[this.opt.dSet];
+    let c = sel ? n.value : (n.dataset[this.opt.dSet] || n.value);
     let on = sel ? true : (box ? n.checked : n.classList.contains(this.app.opt.cAct));
     if (e && !box && !sel) {
       on = !on;

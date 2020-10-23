@@ -1,4 +1,4 @@
-/*! d1-web v2.3.1 */
+/*! d1-web v2.3.3 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -763,7 +763,7 @@ mark {
     min-width: 0;
 }
 
-.row:not(.fit):not(.shift)>*:not(:last-child):not(.center) {
+.row:not(.fit)>*:not(:last-child):not(.center) {
     margin-right: 1em;
     margin-right: var(--gap-n);
 }
@@ -796,76 +796,51 @@ mark {
     margin-left: auto;
 }
 
-.row.let.mar, .row.shift.mar {
+.row.let.mar {
     margin-bottom: 0;
 }
 
 /* ! will not collapse with following element */
 
-.row.let.mar>*, .row.shift.mar>* {
+.row.let.mar>* {
     margin-bottom: 1em;
     margin-bottom: var(--gap-n);
 }
 
-.row.shift {
+.grid {
+    display: flex;
     flex-wrap: wrap;
 }
 
-.row.shift>* {
-    flex: none;
-    box-sizing: border-box;
+.grid>* {
+    background-clip: padding-box;
 }
 
-.row.shift>.col-1[class][class][class] {
-    width: 100%;
+.grid.let>* {
+    border: .5em solid transparent;
+    border: var(--gap-s) solid transparent;
 }
 
-.row.shift>.col-1-4[class], .row.shift.col-1-4>* {
+.grid.shift>* {
+    border: 1em solid transparent;
+    border: var(--gap-n) solid transparent;
+}
+
+.grid.col-6>* {
+    width: 16.66%;
+}
+
+.grid.col-4>* {
     width: 25%;
 }
 
-.row.shift>.col-1-3[class], .row.shift>* {
+.grid>* {
     width: 33.33%;
+    box-sizing: border-box;
 }
 
-.row.shift>.col-1-2[class], .row.shift.col-1-2>* {
+.grid.col-2>* {
     width: 50%;
-}
-
-.row.shift>.col-2-3[class] {
-    width: 66.66%;
-}
-
-.row.shift>.col-3-4[class] {
-    width: 75%;
-}
-
-.row.shift.mar {
-    justify-content: space-between;
-}
-
-.row.shift.mar>.col-1-4[class], .row.shift.mar.col-1-4>* {
-    width: 22.75%;
-}
-
-.row.shift.mar>.col-1-3[class], .row.shift.mar>* {
-    width: 31.33%;
-}
-
-.row.shift.mar>.col-1-2[class], .row.shift.mar.col-1-2>* {
-    width: 48.5%;
-}
-
-.row.shift.mar>.col-2-3[class] {
-    width: 65.66%;
-}
-
-.row.shift.mar>.col-3-4[class] {
-    width: 74.25%;
-}
-
-.row.shift>.col-0[class] {
-    width: auto;
 }
 
 @media (min-height: 600px) {
@@ -884,20 +859,28 @@ mark {
         display: block;
     }
 
-    .row.shift.flip[class][class]>* {
-        width: auto;
+    .row[class].flip[class]>* {
+        margin-right: 0;
     }
 
-    .row.shift.fit[class][class]>* {
+    .grid.flip {
+        display: flex;
+    }
+
+    .grid.flip>* {
+        width: 100%;
+    }
+
+    .grid.col-2-mobile>* {
         width: 50%;
     }
 
-    .row.shift.fit.mar[class]>* {
-        width: 47%;
+    .grid.col-3-mobile>* {
+        width: 33.3%;
     }
 
-    .row[class].flip[class]:not(.shift)>* {
-        margin-right: 0;
+    .grid.col-4-mobile>* {
+        width: 25%;
     }
 
     .row.flip.mar>:not(:last-child) {
@@ -959,13 +942,17 @@ mark {
     }
 }
 
-@media (max-width: 479px) {
-    .row.shift.fit {
-        display: block;
+@media (max-width: 480px) {
+    .grid.flip[class]>* {
+        width: 100%;
     }
 
-    .row.shift.fit[class][class]>* {
-        width: auto;
+    .grid.col-2-phone[class]>* {
+        width: 50%;
+    }
+
+    .grid.col-3-phone[class]>* {
+        width: 33.3%;
     }
 }
 
