@@ -56,10 +56,11 @@
 		var r = ruler.clientWidth / 10;
 		var w = document.documentElement.clientWidth;
 		var h = document.documentElement.clientHeight;
-		screener.innerHTML = 
-			w + ' x ' + h + ' px<br>'
-			+ Math.ceil(w/r) + ' x ' + Math.ceil(h/r) + ' em<br>'
-			+ r + ' px/em';
+		var sep = ' &bull; ';
+		screener.innerHTML = sep + ' ' + 
+			+ w + 'x' + h + 'px' + sep +
+			+ Math.ceil(w/r) + 'x' + Math.ceil(h/r) + 'em' + sep +
+			+ r + 'px/em';
 	}
 	
 	var testHtml = 
@@ -210,7 +211,7 @@ Text
 			<a href="#delete" class="pad close icon-close empty"><span>Dismiss</span></a>
 			Sticky success message
 		</p>
-		<p class="drag pad bg-i text-i icon-info">Info</p>
+		<p class="drag pad bg-i text-i icon-info">Info<span id="screener" class="small"></span></p>
 		<p class="drag pad bg-n text-n icon-text swipe"
 			data-swipe-up="#swipe-ups"
 			data-swipe-right="#swipe-rights"
@@ -794,7 +795,6 @@ let double = function (x) {
 				<b class="btn bg-i hide-desktop">Mobile layout</b>
 				<b class="btn bg-n hide-mobile">Desktop layout</b>
 			</p>
-			<p id="screener" class="small"></p>
 		</div>
 		<div class="pad mar shade">
 			<h3 class="mar">Page setup <b class="small btn bg-e hide-js" title="Requires Javascript">JS</b></h3>
