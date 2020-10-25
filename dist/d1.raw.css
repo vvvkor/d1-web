@@ -1,4 +1,4 @@
-/*! d1-web v2.3.4 */
+/*! d1-web v2.3.5 */
 
 /* @import url("css/columns.css"); */
 /* @import url("css/grid.css"); */
@@ -64,7 +64,7 @@ css restructure (maybe)
 
 */
 
-:root{
+:root, .invert .invert{
 --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
 --font-cap: var(--font); /*"PT Serif", serif;*/
 --font-mono: "PT Mono", monospace;
@@ -534,7 +534,7 @@ mark{background-color:var(--bg-warning);}
 		[type="checkbox"]:invalid+span, [type="radio"]:invalid+span{color:var(--text-danger);}
 		[name]:invalid:focus, [name]:invalid~.subinput:focus{box-shadow:0 0 0 .15em var(--focus-danger);}
 		/*form:not(:focus-within) input~.text-e, form:focus-within input:valid~.text-e{display:none;}*/
-		:valid:not(.subinput)~.text-e, :invalid~.text-y, /*.js-unhint :valid~.text-y,*/ .js-unhint :invalid~.text-e, .js-unhint:invalid~.text-e{display:none;}
+		:valid:not(.subinput)~.text-e, :invalid~.text-y, /*.js-unhint :valid~.text-y,*/ /*.js*/ .js-unhint :invalid~.text-e, /*.js*/ .js-unhint:invalid~.text-e{display:none;}
 	input[type="range"], input[type="color"]{vertical-align:middle;padding:unset;}
 		input[type="range"]{border:initial;}
 	

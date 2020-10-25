@@ -1498,7 +1498,7 @@ This approach is semantic, but has some drawbacks:
 </ul>
 <p>
 To overcome these drawbacks, JavaScript is used.
-<!--To control elements with Javascript, add <code>toggle</code> class like in following examples for popup, toggle, tabs, tree.-->
+<!--To control elements with JavaScript, add <code>toggle</code> class like in following examples for popup, toggle, tabs, tree.-->
 To store elements state in local storage, add <code>.mem</code> class like in following examples for target, tabs, tree.
 Dialogs and drawers do not require such enhancements.
 
@@ -1507,6 +1507,9 @@ Dialogs and drawers do not require such enhancements.
 
 <p>
 Use link pointing at element with <code>.target</code> class.
+<p>
+If target element should be visible with JavaScript disabled, use <code>.toggle</code> class instead.
+If target element should be visible with JavaScript disabled, but initially invisible with JavaScript enabled, use <code>.toggle.off</code> classes.
 </p>
 
 <div class="code">
@@ -1678,7 +1681,7 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 
 <h3 id="dialog">Dialog</h3>
 	
-	<p>Replacement for standard Javascript dialogs.
+	<p>Replacement for standard JavaScript dialogs.
 	<ul class="opts-dlg">
 		<li>Alert <code>.alert[title][data-caption][data-head][data-pic][data-ok]</code>
 		<li>Confirm <code>.dialog[title][data-caption][data-head][data-pic][data-ok][data-cancel][data-reverse]</code>
@@ -1840,7 +1843,7 @@ Toggles on resize.
  
 <h3 id="conditional-link">Conditional link</h3>
 
-<p>To make link change its URL when Javascript is enabled, use <code>[data-href]</code> attribute.</p>
+<p>To make link change its URL when JavaScript is enabled, use <code>[data-href]</code> attribute.</p>
 
 <div class="code">
   <a href="#no-js" data-href="#with-js">link</a>

@@ -18,7 +18,7 @@ export default class extends Plugin {
         ]
       },
       js: {
-        nm: 'Javascript',
+        nm: 'JavaScript',
         re: [
           [/".*?"|'.*?'/g, 'w'], // string // |'.*?'
           [/(\b|\b\d+\.|\.)\d+\b/g, 'e'], // number

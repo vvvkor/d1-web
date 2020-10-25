@@ -1,4 +1,4 @@
-/*! dialog - replacement of standard Javascript dialogs: alert, confirm, prompt */
+/*! dialog - replacement of standard JavaScript dialogs: alert, confirm, prompt */
 
 // a.alert([title]|[data-caption])
 // a.dialog[href]([title]|[data-caption])[data-prompt] [data-src][data-go][data-ok][data-cancel][data-reverse][data-head][data-pic]

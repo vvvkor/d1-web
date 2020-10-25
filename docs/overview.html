@@ -86,16 +86,16 @@
 	<!--link href="https://unpkg.com/normalize.css@8.0.1/normalize.css" rel="stylesheet"-->
 	<!-- "" replaced with ""  -->
 	<!-- CDN --R E M O V E->
-		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.3.4/dist/d1.min.css" rel="stylesheet">
-		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.3.4/dist/d1.min.js" defer></script>
+		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.3.5/dist/d1.min.css" rel="stylesheet">
+		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.3.5/dist/d1.min.js" defer></script>
 		<noscript>
-			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.3.4/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.3.5/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- CDN -->
-		<link href="https://unpkg.com/d1-web@2.3.4/dist/d1.min.css" rel="stylesheet">
-		<script src="https://unpkg.com/d1-web@2.3.4/dist/d1.min.js" defer></script>
+		<link href="https://unpkg.com/d1-web@2.3.5/dist/d1.min.css" rel="stylesheet">
+		<script src="https://unpkg.com/d1-web@2.3.5/dist/d1.min.js" defer></script>
 		<noscript>
-			<link href="https://unpkg.com/d1-web@2.3.4/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://unpkg.com/d1-web@2.3.5/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- local-npm-src REMOVE -- >
 		<link href="../src/index.css" rel="stylesheet">
@@ -150,11 +150,11 @@ Text
 	<header class="bg -bg-n -topbar -toggle">
 		<div class="hide-desktop">
 			<a href="#nav" class="pad hover icon-menu empty" title="Menu"><span>Menu</span></a>
-			<a href="?" class="pad"><b>d1</b> <span class="text-n">v2.3.4</span></a>
+			<a href="?" class="pad"><b>d1</b> <span class="text-n">v2.3.5</span></a>
 		</div>
 		
 		<ul class="nav flip hover target-mobile" id="nav">
-			<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v2.3.4</span></a></li>
+			<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v2.3.5</span></a></li>
 			<li><a href="index.html" class="icon-text">Docs</a>
 			<li><a href="https://github.com/vvvkor/d1-web" class="icon-folder" >GitHub</a>
 			<li><a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="icon-download empty-desktop" title="Download"><span>Download</span></a>
@@ -375,7 +375,7 @@ let double = function (x) {
 			  </div>
 			  <fieldset>
 				<legend><a href="#fs0">Fieldset</a></legend>
-				<div id="fs0" class="target">
+				<div id="fs0" class="toggle off"><!-- no-js: visible, js: hide by default -->
 				  <div class="row flip">
 					<label for="i3">Age</label>
 					<div><input type="number" name="i3" id="i3"></div>
@@ -424,7 +424,7 @@ let double = function (x) {
 				<tr><td colspan="2">
 				<fieldset>
 					<legend><a href="#fs1">Input types</a></legend>
-					<table id="fs1" class="target mem">
+					<table id="fs1" class="toggle off mem">
 					
 					<tr>
 						<td><label for="usr_id">Lookup</label>
@@ -523,7 +523,7 @@ let double = function (x) {
 				</fieldset>
 				<fieldset>
 					<legend><a href="#fs2">Switches</a></legend>
-					<table id="fs2" class="target mem">
+					<table id="fs2" class="toggle off mem">
 						<tr>
 							<td>Box
 							<td>
@@ -560,9 +560,9 @@ let double = function (x) {
 		
 		<!--h2 id="utils">Utilities</h2-->
 		
-		<h2 class="" id="icons">Icons</h2>
+		<h2 class="icon-image" id="icons">Icons</h2>
 		
-		<div class="mar pad shade">
+		<div class="mar pad shade hide-nojs">
 			<a href="#demo-all-icons"><span class="is-off text-i icon-down"><i></i></span><span class="is-on icon-up"><i></i></span> Show icons &nbsp; <i class="icon-sun text-w"></i></a>
 			<div id="demo-all-icons" class="target"><hr>
 			</div>
@@ -579,7 +579,7 @@ let double = function (x) {
 			<a href="#icon" class="bord icon-close empty-desktop" title="Mobile label"><span>Mobile label</span></a>
 		</div>
 		
-		<h2 class="" id="table">Responsive table sort and filter</h2>
+		<h2 class="" id="table">Responsive table sort and filter <b class="small btn bg-e hide-js" title="Requires JavaScript for sort and filter">JS</b></h2>
 		
 		<!-- tablex -->
 		<p>
@@ -629,7 +629,9 @@ let double = function (x) {
 		</table>
 		</div>
 
-		<h2 class="" id="code-sample">Code sample and toggle class</h2>
+<div class="hide-nojs">
+		
+		<h2 class="" id="code-sample">Code sample and toggle class <b class="small btn bg-e hide-js" title="Requires JavaScript">JS</b></h2>
 
 		<div class="mar pad shade">
 			<p>
@@ -653,7 +655,8 @@ let double = function (x) {
 				<input type="checkbox" data-nodes="#code b" data-set="bord"> bord</label>
 			-->
 			</p>
-			<div class="code" id="code">
+			<!-- by default data-lang="html" -->
+			<div class="code" id="code" -data-lang="html">
 <!-- HTML -->
 <abbr title="Hypertext Markup Language">HTML</abbr>
 <code>code</code>
@@ -661,7 +664,7 @@ let double = function (x) {
 			</div>
 		</div>
 		
-		<h2 class="" id="items">Manage items</h2>
+		<h2 class="" id="items">Manage items <b class="small btn bg-e hide-js" title="Requires JavaScript">JS</b></h2>
 		
 		<div class="mar pad shade">
 		<div class="roll">
@@ -684,7 +687,7 @@ let double = function (x) {
 		</div>
 		</div>
 		
-		<h2 class="" id="filter">Filter items</h2>
+		<h2 class="" id="filter">Filter items <b class="small btn bg-e hide-js" title="Requires JavaScript">JS</b></h2>
 		
 		<!-- filter -->
 		<div class="filters mem item mar pad shade" id="filter-items" data-filter_color="green;yellow">
@@ -728,7 +731,7 @@ let double = function (x) {
 			</div>
 		</div>
 		
-		<h2 class="" id="fetch">Fetch URL</h2>
+		<h2 class="" id="fetch">Fetch URL <b class="small btn bg-e hide-js" title="Requires JavaScript">JS</b></h2>
 		
 		<!-- fetch -->
 		<div class="shade">
@@ -769,6 +772,9 @@ let double = function (x) {
 		</div>
 		</div>
 		-->
+		
+		<h2 class="" id="dynamic">Dynamic content <b class="small btn bg-e hide-js" title="Requires JavaScript">JS</b></h2>
+		
 		<div class="pad mar shade">
 			<a href="#insert" onclick="plus.innerHTML = testHtml;">Insert</a>
 			<a href="#arrange" onclick="d1.fire('arrange', {n: plus});">Arrange</a>
@@ -778,7 +784,8 @@ let double = function (x) {
 			<div id="plus"></div>
 			<div id="clones"></div>
 		</div>
-		
+</div><!-- .hide-nojs -->
+
 	</div>
 
 	<!-- /central -->
@@ -797,7 +804,7 @@ let double = function (x) {
 			</p>
 		</div>
 		<div class="pad mar shade">
-			<h3 class="mar">Page setup <b class="small btn bg-e hide-js" title="Requires Javascript">JS</b></h3>
+			<h3 class="mar">Page setup <b class="small btn bg-e hide-js" title="Requires JavaScript">JS</b></h3>
 			<p>
 			<label><input type="checkbox" data-nodes="#topbar" data-set="topbar toggle shade  row let center fit" data-unset="topbar hide off" id="setup-topbar" class="mem"> Topbar</label><br>
 			<label><input type="checkbox" data-nodes="body" data-set="invert" id="setup-invert" class="mem"> Invert</label>
@@ -845,7 +852,7 @@ let double = function (x) {
 					<span class="text-i tip c icon-info empty" title="Not supported in  IE and Edge 15-"><i>[!]</i></span>
 				<li><a href="#menu">Drawer & tree</a>
 				<!--li><a href="#x" data-nodes="#topbar" data-set="topbar toggle shade  row let center fit" data-unset="hide">Topbar</a>
-					<b class="small btn bg-e hide-js" title="Requires Javascript">JS</b-->
+					<b class="small btn bg-e hide-js" title="Requires JavaScript">JS</b-->
 				<!--details>
 					<summary>Summary</summary>
 					<div class="bg pad">Details</div>
@@ -960,7 +967,7 @@ let double = function (x) {
 
 		<div class="pad mar shade">
 			<!-- dialogs -->
-			<h3 class="mar">Dialogs <b class="small btn bg-e hide-js" title="Requires Javascript">JS</b></h3>
+			<h3 class="mar">Dialogs <b class="small btn bg-e hide-js" title="Requires JavaScript">JS</b></h3>
 			<ul>
 				<li><a href="#done" class="alert" title="This is a simple alert." data-head="Hello" data-pic="info text-i">Alert</a>
 				<li><a href="?a=1&b=2" class="dialog" title="Continue?">Confirm</a>
@@ -978,7 +985,7 @@ let double = function (x) {
 		
 		<div class="shade pad c">
 			<!-- file upload -->
-			<h3 class="mar">File picker with dropzone <b class="small btn bg-e hide-js" title="Requires Javascript">JS</b></h3>
+			<h3 class="mar">File picker with dropzone <b class="small btn bg-e hide-js" title="Requires JavaScript">JS</b></h3>
 			<label>Files: <input type="file" multiple name="fm[]" class="pick" data-picked="https://picsum.photos/id/360/300/200.jpg"></label>
 			<hr>
 			<input type="file" name="f1" class="pick drop fit" id="f1" data-mini>
@@ -1036,7 +1043,7 @@ let double = function (x) {
 				<a href="#x">popup</a>
 				<div class="btn bg-e shift">This is  a popup tooltip</div>
 			</div>,
-			<a href="#x" class="tip shift" title="This tooltip is Javascript driven">js</a>
+			<a href="#x" class="tip shift" title="This tooltip is JavaScript driven">js</a>
 		</div>
 		<div class="-pad mar -shade">
 			<b class="btn">Tag</b>
