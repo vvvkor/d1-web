@@ -27,18 +27,28 @@ export default class extends Plugin {
   }
   
   iconize(n, x) {
+    let m = n.className.match(new RegExp('(?:^|\\s)' + (x ? '(?:act-)' : '') + this.opt.pIcon + '([\\w\\-_]+)'));
+    if (m) {
+      this.app.ee(n, 'svg', s => s.parentNode.removeChild(s));
+      this.addIcon(m[1], n);
+    }
+  }
+  
+/*
+  iconize2(n, x) {
     const p = x === undefined ? '' : (x ? '(?:act-)' : '(?:inact-)');
-    let m = n.className.match(new RegExp(/*'\\b'*/'(?:^|\\s)(' + p + this.opt.pIcon + '([\\w\\-_]+))'));
+    let m = n.className.match(new RegExp('(?:^|\\s)(' + p + this.opt.pIcon + '([\\w\\-_]+))'));
     if (m && m[2]) {
       if(!p){
         n.classList.remove(m[1]);
         n.classList.add('inact-' + this.opt.pIcon + m[2]);
       }
-      else this.app.ee(n, 'svg', m => m.parentNode.removeChild(m));
+      else this.app.ee(n, 'svg', s => s.parentNode.removeChild(s));
       this.addIcon(m[2], n);
     }
   }
-
+*/
+  
   addIcon(i, n) {
     let t = n.textContent;
     let icon = this.i(i);
