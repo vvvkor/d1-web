@@ -1,6 +1,6 @@
 /*! d1-web icons v2.3.8 */
 
-.js [class*="icon-"]:before {
+.js-icons [class*="icon-"]:before {
     content: none;
 }
 

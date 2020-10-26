@@ -20,7 +20,9 @@ export default class extends Plugin {
     this.icons = iconset;
   }
 
-  init() {}
+  init() {
+    document.body.classList.add('js-icons');
+  }
   
   arrange() {
     this.app.e('[class*="' + this.opt.pIcon + '"]', n => this.iconize(n));

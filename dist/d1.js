@@ -3522,7 +3522,9 @@ var icons_default = /*#__PURE__*/function (_Plugin) {
 
   _createClass(_default, [{
     key: "init",
-    value: function init() {}
+    value: function init() {
+      document.body.classList.add('js-icons');
+    }
   }, {
     key: "arrange",
     value: function arrange() {
