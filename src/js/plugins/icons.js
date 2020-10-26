@@ -28,14 +28,14 @@ export default class extends Plugin {
   
   iconize(n, x) {
     const p = x === undefined ? '' : (x ? '(?:act-)' : '(?:inact-)');
-    let m = n.className.match(new RegExp('\\b' + p + this.opt.pIcon + '([\\w\\-_]+)'));
-    if (m && m[1]) {
+    let m = n.className.match(new RegExp(/*'\\b'*/'(?:^|\\s)(' + p + this.opt.pIcon + '([\\w\\-_]+))'));
+    if (m && m[2]) {
       if(!p){
-        n.classList.remove(m[0]);
-        n.classList.add('inact-' + this.opt.pIcon + m[1]);
+        n.classList.remove(m[1]);
+        n.classList.add('inact-' + this.opt.pIcon + m[2]);
       }
       else this.app.ee(n, 'svg', m => m.parentNode.removeChild(m));
-      this.addIcon(m[1], n);
+      this.addIcon(m[2], n);
     }
   }
 

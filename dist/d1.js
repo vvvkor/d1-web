@@ -1,4 +1,4 @@
-/*! d1-web v2.3.6 */
+/*! d1-web v2.3.7 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -3536,17 +3536,19 @@ var icons_default = /*#__PURE__*/function (_Plugin) {
     key: "iconize",
     value: function iconize(n, x) {
       var p = x === undefined ? '' : x ? '(?:act-)' : '(?:inact-)';
-      var m = n.className.match(new RegExp('\\b' + p + this.opt.pIcon + '([\\w\\-_]+)'));
+      var m = n.className.match(new RegExp(
+      /*'\\b'*/
+      '(?:^|\\s)(' + p + this.opt.pIcon + '([\\w\\-_]+))'));
 
-      if (m && m[1]) {
+      if (m && m[2]) {
         if (!p) {
-          n.classList.remove(m[0]);
-          n.classList.add('inact-' + this.opt.pIcon + m[1]);
+          n.classList.remove(m[1]);
+          n.classList.add('inact-' + this.opt.pIcon + m[2]);
         } else this.app.ee(n, 'svg', function (m) {
           return m.parentNode.removeChild(m);
         });
 
-        this.addIcon(m[1], n);
+        this.addIcon(m[2], n);
       }
     }
   }, {
