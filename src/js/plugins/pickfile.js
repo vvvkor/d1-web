@@ -154,7 +154,7 @@ export default class extends Plugin {
 
   drop(e) {
     //if (e.target.tagName !== 'INPUT') e.preventDefault();
-    if (e.target.form && e.target.hasAttribute('data-submit') || e.ctrlKey || e.shiftKey) {
+    if (e.target.form && (('submit' in e.target.dataset) || e.ctrlKey || e.shiftKey)) {
       setTimeout(() => e.target.form.submit(), 200);
     }
   }

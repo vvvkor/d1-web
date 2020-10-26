@@ -2074,12 +2074,14 @@ If link needs to be outside of the item, point at item with query selector in li
 <!--opts-icon-->
 <p>
 Add icon before element's content <code>.icon-xxx</code>.<br>
-Replace element's content with icon <code>.empty.icon-xxx &gt; *</code>. Provide <code>[title]</code> for accessibility.
+Replace element's content with icon <code>.empty.icon-xxx &gt; *</code>. Provide <code>[title]</code> for accessibility.<br>
+Toggle icon on active link <code>.act-icon-xxx</code>.
 
 <div class="code">
 	<a href="#x" class="pad rad hover icon-menu empty" title="Menu"><span>Menu</span></a>
 	<a href="#x" class="btn icon-ok">OK</a>
 	<a href="#x" class="btn bg-n icon-ban">Cancel</a>
+	<a href="#switch" class="btn bg-w icon-folder act-icon-open">Switch</a><span id="switch" class="target pad">Target</span>
 </div>
 
 <h4 id="iconset">Available icons</h4>
@@ -2520,7 +2522,7 @@ most important:
 </thead>
 <tbody>
 <tr><th>.row<td><a href="#grid">Grid</a><td>div ul .col-0 .col-2 .col-3<td>.flip .let .margin .fit .center .roll <i>.shift .stick .center .wrap .read .narrow</i>
-<tr><th>.grid<td><a href="#grid-regular">Regular grid</a><td>div .col-2 .col-3 .col-4 .col-6<td>.flip .let .shift
+<tr><th>.grid<td><a href="#grid-regular">Regular grid</a><td>div .col-2 .col-3 .col-4 .col-6<td>.flip .let .shift .bord
 <tr><th>table<td><a href="#table">Table</a><td>.roll<td>.hover .fit .let .shift .flip
 <tr><th>ul, ol, dl<td><a href="#list">List</a><td><td>.fit .row
 <tr><th>.tree<td><a href="#list-tree">Tree</a><td>ul<td>.accordion .fit

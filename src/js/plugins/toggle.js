@@ -57,9 +57,9 @@ export default class extends Plugin{
     //toggle
     let q = this.opt;
     this.opt.qTgl = this.opt.mediaSuffixes.concat(['']).map(x => /*'[id]' + */ '.' + app.opt.cToggle + x).join(', ')
-    let togglers = [q.qTrg, q.qPop, q.qNav, q.qDlg, q.qTab, q.qTre, q.qDrw/*, q.qMedia/*, q.qGal*/].join(', ');
     this.opt.qUnpop = [q.qPop, q.qNav, q.qDlg, q.qDrw/*, q.qGal*/].join(', ');
     this.opt.qUnpopOn = [q.qPop, q.qNav, q.qDlg, q.qDrw/*, q.qGal*/].map(n => n + ':not(.' + app.opt.cOff + ')').join(', ');
+    let togglers = [q.qTrg, q.qPop, q.qNav, q.qDlg, q.qTab, q.qTre, q.qDrw/*, q.qMedia/*, q.qGal*/].join(', ');
     app.e(this.opt.qNav + ', ' + this.opt.qTre, n => this.attachSubNav(n)); //nav, tree: attach to links
     app.e(togglers, n => this.initToggler(n)); //initialize togglers
     this.opt.mediaSuffixes.forEach(x => app.e(this.opt.qTrg + x, n => this.initToggler(n, x))); //initialize togglers by media
@@ -301,8 +301,13 @@ export default class extends Plugin{
   }
 
   hiliteLinks(d) {
-    let op = this.app.vis(d) ? 'add' : 'remove';
-    this.app.e('a[href="#'+d.id+'"]', a => a.classList[op](this.app.opt.cAct));
+    let v = this.app.vis(d);
+    this.app.e('a[href="#'+d.id+'"]', a => this.hiliteLink(a, v));
+  }
+  
+  hiliteLink(n, on) {
+    n.classList[on ? 'add' : 'remove'](this.app.opt.cAct);
+    this.app.pf('icons', 'iconize', n, on);
   }
 
   fixPosition(n) {

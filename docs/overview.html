@@ -64,7 +64,13 @@
 	}
 	
 	var testHtml = 
-		'<hr><form>'
+		'<hr>'
+		+ '<a class="icon-pin">Icon</a> '
+		+ '<div class="pop"><a href="#dyn-pop">Pop</a><div id="dyn-pop" class="pad toggle off">Hello</div></div> '
+		+ '<a href="#dyn-modal">Modal</a><div id="dyn-modal" class="dlg pad c toggle off"><p>Modal</p></div> '
+		+ '<a href="#dyn-confirm" class="dialog" title="Confirm?">Confirm</a> '
+		+ '<table class="let filter sort totals" data-limit="2"><tr><th>Name<th>Number<tr><td>Alpha<td>100<tr><td>Beta<td>1<tr><td>Gamma<td>2</table>'
+		+ '<form>'
 		+ '<p>Date: <input class="calendar" type="datetime-local">'
 		+ '<p>Lookup: <input value="NZ" data-lookup="https://restcountries.eu/rest/v2/name/{q}##alpha2Code#name#languages.0.name" data-cap="https://restcountries.eu/rest/v2/alpha/{q}#name">'
 		+ '<p>File: <input type="file" class="pick">'
@@ -86,16 +92,16 @@
 	<!--link href="https://unpkg.com/normalize.css@8.0.1/normalize.css" rel="stylesheet"-->
 	<!-- "" replaced with ""  -->
 	<!-- CDN --R E M O V E->
-		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.3.5/dist/d1.min.css" rel="stylesheet">
-		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.3.5/dist/d1.min.js" defer></script>
+		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.3.6/dist/d1.min.css" rel="stylesheet">
+		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.3.6/dist/d1.min.js" defer></script>
 		<noscript>
-			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.3.5/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.3.6/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- CDN -->
-		<link href="https://unpkg.com/d1-web@2.3.5/dist/d1.min.css" rel="stylesheet">
-		<script src="https://unpkg.com/d1-web@2.3.5/dist/d1.min.js" defer></script>
+		<link href="https://unpkg.com/d1-web@2.3.6/dist/d1.min.css" rel="stylesheet">
+		<script src="https://unpkg.com/d1-web@2.3.6/dist/d1.min.js" defer></script>
 		<noscript>
-			<link href="https://unpkg.com/d1-web@2.3.5/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://unpkg.com/d1-web@2.3.6/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- local-npm-src REMOVE -- >
 		<link href="../src/index.css" rel="stylesheet">
@@ -150,11 +156,11 @@ Text
 	<header class="bg -bg-n -topbar -toggle">
 		<div class="hide-desktop">
 			<a href="#nav" class="pad hover icon-menu empty" title="Menu"><span>Menu</span></a>
-			<a href="?" class="pad"><b>d1</b> <span class="text-n">v2.3.5</span></a>
+			<a href="?" class="pad"><b>d1</b> <span class="text-n">v2.3.6</span></a>
 		</div>
 		
 		<ul class="nav flip hover target-mobile" id="nav">
-			<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v2.3.5</span></a></li>
+			<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v2.3.6</span></a></li>
 			<li><a href="index.html" class="icon-text">Docs</a>
 			<li><a href="https://github.com/vvvkor/d1-web" class="icon-folder" >GitHub</a>
 			<li><a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="icon-download empty-desktop" title="Download"><span>Download</span></a>
@@ -175,7 +181,7 @@ Text
 				</form>
 			</li>
 			<li>
-				<a>Last</a>
+				<a class="icon-add act-icon-no">Last</a>
 				<ul>
 					<li><a href="#n3">Subitem</a></li>
 				</ul>
@@ -205,10 +211,10 @@ Text
 			data-swipe-right="#swipe-right"
 			data-swipe-down="#swipe-down"
 			data-swipe-left="#swipe-left"
-			>Alert (swipe me)</p>
+			>Alert <span class="hide-nojs">(swipe me)</span></p>
 		<p class="drag pad bg-w text-w icon-warning">Warning</p>
 		<p class="drag pad bg-y text-y stick item shade bord icon-ok">
-			<a href="#delete" class="pad close icon-close empty"><span>Dismiss</span></a>
+			<a href="#delete" class="pad close icon-close empty hide-nojs"><span>Dismiss</span></a>
 			Sticky success message
 		</p>
 		<p class="drag pad bg-i text-i icon-info">Info<span id="screener" class="small"></span></p>
@@ -368,10 +374,10 @@ let double = function (x) {
 			<a href="#cancel" class="close pad icon-close empty"><span>Close</span></a>
 			<h3 class="fit pad bg">Responsive flex form with custom validation tooltips</h3>
 			<div class="pad read center">
-			<form class="mar pad shade">
+			<form class="mar pad shade" action="?">
 			  <div class="row flip">
 				<label for="i1">Name</label>
-				<div><input type="text" name="i1" id="i1" required pattern="[A-Za-z]{2,}" title="Two up to four letters" autocomplete="off" minlength="2" maxlength="4" data-hint="Enter %minlength% up to %maxlength% letters"></div>
+				<div><input type="text" name="i1" id="i1" required pattern="[A-Za-z]{2,}" title="Two up to four letters" autocomplete="off" minlength="2" maxlength="4" data-hint="Enter %minlength% up to %maxlength% letters"> <small class="text-e">Needs 2..4 letters</small> <small class="text-y">Fine</small></div>
 			  </div>
 			  <fieldset>
 				<legend><a href="#fs0">Fieldset</a></legend>
@@ -579,10 +585,10 @@ let double = function (x) {
 			<a href="#icon" class="bord icon-close empty-desktop" title="Mobile label"><span>Mobile label</span></a>
 		</div>
 		
-		<h2 class="" id="table">Responsive table sort and filter <b class="small btn bg-e hide-js" title="Requires JavaScript for sort and filter">JS</b></h2>
+		<h2 class="" id="table">Responsive table <span class="hide-nojs">sort and filter</span></h2>
 		
 		<!-- tablex -->
-		<p>
+		<p class="hide-nojs">
 			<input name="q" value="" type="search" id="table-filter" placeholder="Filter table" autocomplete="off">
 			<span id="filter-info"></span> &nbsp;
 			<label><input type="checkbox" data-nodes="#totals" data-set="bg-i" data-unset="hide"> more totals</label>
@@ -803,7 +809,7 @@ let double = function (x) {
 				<b class="btn bg-n hide-mobile">Desktop layout</b>
 			</p>
 		</div>
-		<div class="pad mar shade">
+		<div class="pad mar shade hide-nojs">
 			<h3 class="mar">Page setup <b class="small btn bg-e hide-js" title="Requires JavaScript">JS</b></h3>
 			<p>
 			<label><input type="checkbox" data-nodes="#topbar" data-set="topbar toggle shade  row let center fit" data-unset="topbar hide off" id="setup-topbar" class="mem"> Topbar</label><br>
@@ -848,6 +854,7 @@ let double = function (x) {
 					<a href="https://picsum.photos/id/844/1000/700.jpg" class="pic" title="Green">#2</a>
 					<a href="https://picsum.photos/id/830/1000/700.jpg" class="pic" title="Blue">#3</a>
 					</span>
+					<b class="small btn bg-e hide-js" title="Requires JavaScript">JS</b>
 				<li><a href="#gal1">Pure CSS Gallery</a>
 					<span class="text-i tip c icon-info empty" title="Not supported in  IE and Edge 15-"><i>[!]</i></span>
 				<li><a href="#menu">Drawer & tree</a>
@@ -983,14 +990,16 @@ let double = function (x) {
 			</form>
 		</div>
 		
-		<div class="shade pad c">
+		<div class="shade pad c hide-nojs">
 			<!-- file upload -->
 			<h3 class="mar">File picker with dropzone <b class="small btn bg-e hide-js" title="Requires JavaScript">JS</b></h3>
-			<label>Files: <input type="file" multiple name="fm[]" class="pick" data-picked="https://picsum.photos/id/360/300/200.jpg"></label>
-			<hr>
-			<input type="file" name="f1" class="pick drop fit" id="f1" data-mini>
-			<!--hr>
-			<input type="file" name="f2" class="drop" id="f2"-->
+			<form method="post" enctype="multipart/form-data" action="#upload">
+				<label>Files: <input type="file" multiple name="fm[]" class="pick" data-picked="https://picsum.photos/id/360/300/200.jpg" data-submit></label>
+				<hr>
+				<input type="file" name="f1" class="pick drop fit" id="f1" data-mini>
+				<!--hr>
+				<input type="file" name="f2" class="drop" id="f2"-->
+			</form>
 		</div>
 	</div>
 
@@ -1037,13 +1046,17 @@ let double = function (x) {
 			</div>
 		</div>
 		<div class="pad mar shade">
-			Tooltips: 
-			<a href="#x" class="shift" data-tip="This is a tooltip">simple</a>,
+			Tooltips
+			&bull;
+			<a href="#x" class="shift" data-tip="This is a tooltip">simple</a>
+			&bull;
 			<div class="pop">
 				<a href="#x">popup</a>
 				<div class="btn bg-e shift">This is  a popup tooltip</div>
-			</div>,
-			<a href="#x" class="tip shift" title="This tooltip is JavaScript driven">js</a>
+			</div>
+			<span class="hide-nojs">
+			&bull; <a href="#x" class="tip shift" title="This tooltip is JavaScript driven">js</a>
+			</span>
 		</div>
 		<div class="-pad mar -shade">
 			<b class="btn">Tag</b>

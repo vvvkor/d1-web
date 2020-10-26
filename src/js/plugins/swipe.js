@@ -132,8 +132,8 @@ export default class extends Plugin {
           }
         }
         this.moved.classList.remove(this.opt.cDragging);
-        this.moved = null;
       }
+      this.moved = null;
     }
   }
   

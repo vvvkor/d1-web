@@ -67,9 +67,12 @@ export default class extends Plugin {
   init() {
     this.lang = document.documentElement.getAttribute('lang') || 'en';
     this.skipComma = (this.lang == 'en');
+    this.app.h('click', '.tablex-pagenav a', e => this.page(e));
+  }
+  
+  arrange() {
     let q = 'table.' + this.opt.cSort + ', table.' + this.opt.cFilter + ', table.' + this.opt.cTotals + ', table[' + this.opt.aFilter + ']' + ', table[data-' + this.opt.dLimit + ']';
     this.app.e(q, this.prepare.bind(this));
-    this.app.h('click', '.tablex-pagenav a', e => this.page(e));
   }
   
   page(e) {
@@ -79,6 +82,8 @@ export default class extends Plugin {
   }
 
   prepare(n) {
+    if (n.dataset.ready) return;
+    n.dataset.ready = 1;
     let i, j, start = 0;
     let tb = n.querySelector('tbody');
     let rh = n.querySelector('thead tr');

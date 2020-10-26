@@ -1,4 +1,4 @@
-/*! d1-web v2.3.5 */
+/*! d1-web v2.3.6 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -886,9 +886,6 @@ var _default = /*#__PURE__*/function (_Plugin) {
           '.' + app.opt.cToggle + x
         );
       }).join(', ');
-      var togglers = [q.qTrg, q.qPop, q.qNav, q.qDlg, q.qTab, q.qTre, q.qDrw
-      /*, q.qMedia/*, q.qGal*/
-      ].join(', ');
       this.opt.qUnpop = [q.qPop, q.qNav, q.qDlg, q.qDrw
       /*, q.qGal*/
       ].join(', ');
@@ -897,6 +894,9 @@ var _default = /*#__PURE__*/function (_Plugin) {
       ].map(function (n) {
         return n + ':not(.' + app.opt.cOff + ')';
       }).join(', ');
+      var togglers = [q.qTrg, q.qPop, q.qNav, q.qDlg, q.qTab, q.qTre, q.qDrw
+      /*, q.qMedia/*, q.qGal*/
+      ].join(', ');
       app.e(this.opt.qNav + ', ' + this.opt.qTre, function (n) {
         return _this2.attachSubNav(n);
       }); //nav, tree: attach to links
@@ -1255,10 +1255,16 @@ var _default = /*#__PURE__*/function (_Plugin) {
     value: function hiliteLinks(d) {
       var _this5 = this;
 
-      var op = this.app.vis(d) ? 'add' : 'remove';
+      var v = this.app.vis(d);
       this.app.e('a[href="#' + d.id + '"]', function (a) {
-        return a.classList[op](_this5.app.opt.cAct);
+        return _this5.hiliteLink(a, v);
       });
+    }
+  }, {
+    key: "hiliteLink",
+    value: function hiliteLink(n, on) {
+      n.classList[on ? 'add' : 'remove'](this.app.opt.cAct);
+      this.app.pf('icons', 'iconize', n, on);
     }
   }, {
     key: "fixPosition",
@@ -3516,7 +3522,10 @@ var icons_default = /*#__PURE__*/function (_Plugin) {
 
   _createClass(_default, [{
     key: "init",
-    value: function init() {
+    value: function init() {}
+  }, {
+    key: "arrange",
+    value: function arrange() {
       var _this2 = this;
 
       this.app.e('[class*="' + this.opt.pIcon + '"]', function (n) {
@@ -3525,12 +3534,19 @@ var icons_default = /*#__PURE__*/function (_Plugin) {
     }
   }, {
     key: "iconize",
-    value: function iconize(n) {
-      var m = n.className.match(new RegExp('\\b' + this.opt.pIcon + '([\\w\\-_]+)'));
+    value: function iconize(n, x) {
+      var p = x === undefined ? '' : x ? '(?:act-)' : '(?:inact-)';
+      var m = n.className.match(new RegExp('\\b' + p + this.opt.pIcon + '([\\w\\-_]+)'));
 
       if (m && m[1]) {
+        if (!p) {
+          n.classList.remove(m[0]);
+          n.classList.add('inact-' + this.opt.pIcon + m[1]);
+        } else this.app.ee(n, 'svg', function (m) {
+          return m.parentNode.removeChild(m);
+        });
+
         this.addIcon(m[1], n);
-        n.classList.remove(m[0]);
       }
     }
   }, {
