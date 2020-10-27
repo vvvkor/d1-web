@@ -424,10 +424,11 @@ mark{background-color:var(--bg-warning);}
 	.grid>.bord{box-shadow:inset 0 0 0 1px rgba(0,0,0,.16);}
 .grid.let>*{border:var(--gap-s) solid transparent;}
 .grid.shift>*{border:var(--gap-n) solid transparent;}
-.grid.col-6>*{width:16.66%;}
-.grid.col-4>*{width:25%;}
-.grid>*{width:33.33%;box-sizing:border-box;}
+.grid>*{width:100%;box-sizing:border-box;}
 .grid.col-2>*{width:50%;}
+.grid.col-3>*{width:33.33%;}
+.grid.col-4>*{width:25%;}
+.grid.col-6>*{width:16.66%;}
 
 /* justify: requires parent style: overflow-x:hidden; */
 /*
@@ -449,7 +450,7 @@ mark{background-color:var(--bg-warning);}
 	ul.flip, .flip /*.row.flip, .nav.flip*/{display:block;} /* should have less priority then hiding (like .off) */
 	.row[class].flip[class]>*{margin-right:0;}
 	.grid.flip{display:flex;}
-	.grid.flip>*{width:100%;}
+	.grid.col-1-mobile>*, .grid.flip>*{width:100%;}
 		.grid.col-2-mobile>*{width:50%;}
 		.grid.col-3-mobile>*{width:33.3%;}
 		.grid.col-4-mobile>*{width:25%;}
@@ -463,13 +464,11 @@ mark{background-color:var(--bg-warning);}
 		form table.flip tr>*{padding:0;}
 	.nav.flip ul{left:3em;top:90%;}
 	.nav:not(.let):not(.flip)>li.shift>ul, .nav:not(.let):not(.flip)>li.shift~li>ul{left:auto;right:0;}
-	[class*="grid-"].flip{/*display:block;*/margin-right:0;}
-	[class*="grid-"].flip>*{width:100%;/*auto*/margin-right:0%;} 
 }
 
 @media (max-width: 480px){
 	/* phone */
-	.grid.flip[class]>*{width:100%;}
+	.grid.col-1-phone[class]>*{width:100%;}
 	.grid.col-2-phone[class]>*{width:50%;}
 	.grid.col-3-phone[class]>*{width:33.3%;}
 }

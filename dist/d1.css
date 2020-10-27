@@ -1,4 +1,4 @@
-/*! d1-web v2.3.9 */
+/*! d1-web v2.3.10 */
 
 :root, .invert .invert {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -785,21 +785,25 @@ mark {
     border: var(--gap-n) solid transparent;
 }
 
-.grid.col-6>* {
-    width: 16.66%;
+.grid>* {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.grid.col-2>* {
+    width: 50%;
+}
+
+.grid.col-3>* {
+    width: 33.33%;
 }
 
 .grid.col-4>* {
     width: 25%;
 }
 
-.grid>* {
-    width: 33.33%;
-    box-sizing: border-box;
-}
-
-.grid.col-2>* {
-    width: 50%;
+.grid.col-6>* {
+    width: 16.66%;
 }
 
 @media (min-height: 600px) {
@@ -826,7 +830,7 @@ mark {
         display: flex;
     }
 
-    .grid.flip>* {
+    .grid.col-1-mobile>*, .grid.flip>* {
         width: 100%;
     }
 
@@ -885,19 +889,10 @@ mark {
         left: auto;
         right: 0;
     }
-
-    [class*="grid-"].flip {
-        margin-right: 0;
-    }
-
-    [class*="grid-"].flip>* {
-        width: 100%;
-        margin-right: 0%;
-    }
 }
 
 @media (max-width: 480px) {
-    .grid.flip[class]>* {
+    .grid.col-1-phone[class]>* {
         width: 100%;
     }
 
