@@ -22,34 +22,20 @@ export default class extends Plugin {
 
   init() {
     document.body.classList.add('js-icons');
+    this.app.listen('active', e => this.iconize(e.n, e.on));
   }
   
-  arrange() {
-    this.app.e('[class*="' + this.opt.pIcon + '"]', n => this.iconize(n));
+  arrange({n}) {
+    this.app.ee(n, '[class*="' + this.opt.pIcon + '"]', n => this.iconize(n));
   }
   
-  iconize(n, x) {
-    let m = n.className.match(new RegExp('(?:^|\\s)' + (x ? '(?:act-)' : '') + this.opt.pIcon + '([\\w\\-_]+)'));
-    if (m) {
+  iconize(n, on) {
+    let m = n.className.match(new RegExp('(?:^|\\s)' + (on ? '(?:act-)' : '') + this.opt.pIcon + '([\\w\\-_]+)'));
+    if (m && (on === undefined || n.matches('[class*="act-"]'))) {
       this.app.ee(n, 'svg', s => s.parentNode.removeChild(s));
       this.addIcon(m[1], n);
     }
   }
-  
-/*
-  iconize2(n, x) {
-    const p = x === undefined ? '' : (x ? '(?:act-)' : '(?:inact-)');
-    let m = n.className.match(new RegExp('(?:^|\\s)(' + p + this.opt.pIcon + '([\\w\\-_]+))'));
-    if (m && m[2]) {
-      if(!p){
-        n.classList.remove(m[1]);
-        n.classList.add('inact-' + this.opt.pIcon + m[2]);
-      }
-      else this.app.ee(n, 'svg', s => s.parentNode.removeChild(s));
-      this.addIcon(m[2], n);
-    }
-  }
-*/
   
   addIcon(i, n) {
     let t = n.textContent;

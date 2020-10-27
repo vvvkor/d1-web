@@ -69,16 +69,16 @@
 </script>
 
 	<!-- CDN --R E M O V E->
-		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.3.8/dist/d1.min.css" rel="stylesheet">
-		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.3.8/dist/d1.min.js" defer></script>
+		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.3.9/dist/d1.min.css" rel="stylesheet">
+		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.3.9/dist/d1.min.js" defer></script>
 		<noscript>
-			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.3.8/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.3.9/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- CDN -->
-		<link href="https://unpkg.com/d1-web@2.3.8/dist/d1.min.css" rel="stylesheet">
-		<script src="https://unpkg.com/d1-web@2.3.8/dist/d1.min.js" defer></script>
+		<link href="https://unpkg.com/d1-web@2.3.9/dist/d1.min.css" rel="stylesheet">
+		<script src="https://unpkg.com/d1-web@2.3.9/dist/d1.min.js" defer></script>
 		<noscript>
-			<link href="https://unpkg.com/d1-web@2.3.8/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://unpkg.com/d1-web@2.3.9/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- local-npm-src REMOVE -- >
 		<link href="../src/index.css" rel="stylesheet">
@@ -117,7 +117,7 @@ data-d1='{"hOk":"#yes","debug":false,"disable":[
 	<a href="#menu" class="pad -let hide-desktop icon-menu empty" title="Menu"><span>Menu</span></a>
 	<a href="#top" class="pad -let"><b>d1</b></a>
 	<code class="-pad -nobr hide-mobile">npm i d1-web</code>
-	<a class="shift pad text-n">v2.3.8</a>
+	<a class="shift pad text-n">v2.3.9</a>
 	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1-web" title="GitHub" class="pad -let">GitHub</a>
 	<a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="pad -let icon-download empty" ><span>Download</span></a>
 </div>
@@ -303,19 +303,19 @@ Inclusion of <code>d1.js</code> and <code>d1-icons.css</code> is optional.
 </ul>
 <div>
 	<div id="cdn-jsdelivr">
-		<pre><code class="language-html">&lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.3.8/dist/d1.min.css" rel="stylesheet"&gt;
-&lt;script src="https://cdn.jsdelivr.net/npm/d1-web@2.3.8/dist/d1.min.js"&gt;&lt;/script&gt;
+		<pre><code class="language-html">&lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.3.9/dist/d1.min.css" rel="stylesheet"&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/d1-web@2.3.9/dist/d1.min.js"&gt;&lt;/script&gt;
 &lt;noscript&gt;
-  &lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.3.8/dist/d1-icons.min.css" rel="stylesheet"&gt;
+  &lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.3.9/dist/d1-icons.min.css" rel="stylesheet"&gt;
 &lt;/noscript&gt;
 
 		</code></pre>
 	</div>
 	<div id="cdn-unpkg">
-		<pre><code class="language-html">&lt;link href="https://unpkg.com/d1-web@2.3.8/dist/d1.min.css" rel="stylesheet"&gt;
-&lt;script src="https://unpkg.com/d1-web@2.3.8/dist/d1.min.js"&gt;&lt;/script&gt;
+		<pre><code class="language-html">&lt;link href="https://unpkg.com/d1-web@2.3.9/dist/d1.min.css" rel="stylesheet"&gt;
+&lt;script src="https://unpkg.com/d1-web@2.3.9/dist/d1.min.js"&gt;&lt;/script&gt;
 &lt;noscript&gt;
-  &lt;link href="https://unpkg.com/d1-web@2.3.8/dist/d1-icons.min.css" rel="stylesheet"&gt;
+  &lt;link href="https://unpkg.com/d1-web@2.3.9/dist/d1-icons.min.css" rel="stylesheet"&gt;
 &lt;/noscript&gt		</code></pre>
 	</div>
 	<div id="cdn-unpkg-short">
@@ -1300,8 +1300,8 @@ Add <code>.fit</code> class for compact layout.<br>
 		<tr>
 			<td><label for="v-nm">Name</label>
 			<td><input type="text" name="nm" id="v-nm" required pattern="[A-Za-z]{2,}" data-hint="Enter %minlength% up to %maxlength% letters" title="Two up to four letters" autocomplete="off" minlength="2" maxlength="4">
-				<div class="small text-e mar">Enter 2 up to 4 latin letters</div>
-				<div class="small text-y mar">Looks good</div>
+				<div class="hint small text-e mar">Enter 2 up to 4 latin letters</div>
+				<div class="hint small text-y mar">Looks good</div>
 		<tr>
 			<td><label for="v-lng">Select</label>
 			<td>
@@ -1337,10 +1337,10 @@ Add <code>.fit</code> class for compact layout.<br>
 </div>
 
 <!--form class="mar pad bg js-unhint js-live-val" id="testform">
-<div><input type="text" name="tx1" required xvalue="1"> <span class="text-e">required</span><span class="text-y">ok</span></div>
-<div><input type="datetime-local" name="dt1" class="calendar" required xvalue="2019-01-01T01:01"> <span class="text-e">required</span><span class="text-y">ok</span></div>
-<div><input type="text" name="lu1" data-lookup="data.json?q={q}#data" data-xlabel="1" data-url="/x/{id}" xvalue="1" required> <span class="text-e">required</span><span class="text-y">ok</span></div>
-<div><textarea name="ta1" required class="adjust edit"></textarea> <span class="text-e">required</span><span class="text-y">ok</span></div>
+<div><input type="text" name="tx1" required xvalue="1"> <span class="hint text-e">required</span><span class="hint text-y">ok</span></div>
+<div><input type="datetime-local" name="dt1" class="calendar" required xvalue="2019-01-01T01:01"> <span class="hint text-e">required</span><span class="hint text-y">ok</span></div>
+<div><input type="text" name="lu1" data-lookup="data.json?q={q}#data" data-xlabel="1" data-url="/x/{id}" xvalue="1" required> <span class="hint text-e">required</span><span class="hint text-y">ok</span></div>
+<div><textarea name="ta1" required class="adjust edit"></textarea> <span class="hint text-e">required</span><span class="hint text-y">ok</span></div>
 <div><input type="submit" value="ok" id="testsubmit">
 <a href="#x" onclick="testsubmit.click();return false;">submit</a></div>
 </form-->
@@ -1352,7 +1352,7 @@ Add <code>.fit</code> class for compact layout.<br>
 
 <!--pre class="">
   &lt;input type="text" name="nm" required&gt;
-  &lt;p class="small text-e">Value required&lt;/p&gt;</pre-->
+  &lt;p class="hint small text-e">Value required&lt;/p&gt;</pre-->
 
 <div class="code">
 	<form class="js-unhint -js-live-val">
@@ -1361,9 +1361,9 @@ Add <code>.fit</code> class for compact layout.<br>
 		<tr>
 			<td><label for="vv-nm">Name</label>
 			<td><input type="text" name="nm" id="vv-nm" required pattern="[A-Za-z]{2,}" title="Two up to four letters" autocomplete="off" minlength="2" maxlength="4">
-				<small class="text-e">Validation hint inside small</small>
-				<div class="small text-e mar">Validation hint inside div</div>
-				<div class="small text-y mar">Looks good</div>
+				<small class="hint text-e">Validation hint inside small</small>
+				<div class="hint small text-e mar">Validation hint inside div</div>
+				<div class="hint small text-y mar">Looks good</div>
 		<tr>
 			<td><label for="vv-lng">Select</label>
 			<td>
@@ -1372,21 +1372,21 @@ Add <code>.fit</code> class for compact layout.<br>
 				<option value="en">English</option>
 				<option value="ru">Russian</option>
 			</select>
-			<div class="small text-e mar">Select language</div>
+			<div class="hint small text-e mar">Select language</div>
 		<tr>
 			<td><label for="vv-num">Number</label>
 			<td><input type="number" name="num" id="vv-num" required min="1" max="10" step="0.1" data-info="some info">
-			<div class="small text-e mar">Enter number between 1 and 10, step 0.1</div>
+			<div class="hint small text-e mar">Enter number between 1 and 10, step 0.1</div>
 		<tr>
 			<td><label for="vv-msg">Textarea</label>
 			<td><textarea class="wys" name="msg" id="vv-msg" cols="20" rows="5" required></textarea>
-				<div class="small text-e mar">Type something</div>
+				<div class="hint small text-e mar">Type something</div>
 		<tr>
 			<td>Box
 			<td>
 				<input id="vv-bx0" type="checkbox" required class="" name="bx0" value="1" title="You need to check the box to continue">
 				<span><label for="vv-bx0">Required box</label></span>
-				<div class="small text-e mar">Check to continue</div>
+				<div class="hint small text-e mar">Check to continue</div>
 			
 		<tr>
 			<td>Radio
@@ -1394,7 +1394,7 @@ Add <code>.fit</code> class for compact layout.<br>
 				<label for="vv-rd1"><input id="vv-rd1" type="radio" name="ra1" required value="sun"> <span>Sun</span></label><br>
 				<input id="vv-rd2" type="radio" name="ra1" value="moon">
 				<span><label for="vv-rd2">Moon</label></span>
-				<div class="small text-e mar">Select to continue</div>
+				<div class="hint small text-e mar">Select to continue</div>
 		<tr>
 			<td>
 			<td>
@@ -1404,8 +1404,8 @@ Add <code>.fit</code> class for compact layout.<br>
 		</tbody>
 		</table>
 	</form>
-	<!--div class="small text-e mar">Fieldset not valid</div-->
-	<div class="small text-e mar">Form not valid</div>
+	<!--div class="hint small text-e mar">Fieldset not valid</div-->
+	<div class="hint small text-e mar">Form not valid</div>
 
 </div>
 
@@ -1429,7 +1429,7 @@ Add <code>.fit</code> class for compact layout.<br>
 
 <pre class="">
   &lt;input type="text" name="nm" required&gt;
-  &lt;p class="small text-e">Value required&lt;/p&gt;</pre>
+  &lt;p class="hint small text-e">Value required&lt;/p&gt;</pre>
 -->
   
 <h3 id="keepform">Form inputs storage</h3>
@@ -2537,7 +2537,7 @@ most important:
 <tr><th>.gal<td><a href="#gallery">Gallery</a><td>a .close<td><i>[data-info]</i>
 <tr><th>.drawer<td><a href="#drawer">Drawer</a><td>div a.close<td>.shift
 <tr><th>.topbar<td><a href="#topbar">Top bar</a><td><td>.toggle
-<tr><th>.pick<td><a href="#pickfile">File picker</a><td>input[type="file"]<td>.drop
+<tr><th>.pick<td><a href="#pickfile">File picker</a><td>input[type="file"]<td>.drop [data-submit]
 <tr><th>.swipe<td><a href="#swipe">Swipe</a><td>body, *<td>.drag
 <tr><th>.let<td>Specific modifications to components<td>
 	<span class="tip shift" title="Allow wrapping">.row</span><br>
@@ -2562,7 +2562,7 @@ most important:
 <tr><th>.icon<td>Small image<td>img svg a button<td>.is-on .is-off .icon-x
 <tr><th>.bar<td>Progress bar<td>div<td>.text-x
 <tr><th>.fix<td>Fixed block<td><td>.r .l
-<tr><th>.text-<td><a href="#colors">Text color</a><td>* .invert<td>.text-e .text-w .text-i .text-y .text-n
+<tr><th>.text-<td><a href="#colors">Text color</a><td>* .invert .hint<td>.text-e .text-w .text-i .text-y .text-n
 <tr><th>.bg<td><a href="#colors">Background color</a><td>* .invert<td>.back .bg-e .bg-w .bg-i .bg-y .bg-n .yel
 <tr><th>.r .c .l<td>Align<td>*, [data-tip]<td>
 <tr><th>.center<td>Centrify<td>* .row .nav .full<td>
@@ -2638,6 +2638,7 @@ most important:
 <li><code>.hide-print</code> &mdash; hidden on print
 <li><code>.hide-screen</code> &mdash; hidden on screen
 <li><code>.hover</code> &mdash; highlight link or table row on hover
+<li><code>.hint</code> &mdash; form input hint
 <li><code>.icon</code> &mdash; small image
 <li><code>.inact</code> &mdash; inactive element
 <li><code>.invert</code> &mdash; invert colors

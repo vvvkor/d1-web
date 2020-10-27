@@ -307,7 +307,7 @@ export default class extends Plugin{
   
   hiliteLink(n, on) {
     n.classList[on ? 'add' : 'remove'](this.app.opt.cAct);
-    this.app.pf('icons', 'iconize', n, on);
+    this.app.fire('active', {n, on});
   }
 
   fixPosition(n) {

@@ -1,4 +1,4 @@
-/*! d1-web v2.3.8 */
+/*! d1-web v2.3.9 */
 
 :root, .invert .invert {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -1082,8 +1082,8 @@ mark {
         box-shadow: 0 0 0 .15em var(--focus-danger);
     }
 
-    :valid:not(.subinput)~.text-e, :invalid~.text-y, .js-unhint :invalid~.text-e,
-    .js-unhint:invalid~.text-e {
+    :valid:not(.subinput)~.hint.text-e, :invalid~.hint.text-y,
+    .js .js-unhint :invalid~.hint.text-e, .js .js-unhint:invalid~.hint.text-e {
         display: none;
     }
 

@@ -70,9 +70,9 @@ export default class extends Plugin {
     this.app.h('click', '.tablex-pagenav a', e => this.page(e));
   }
   
-  arrange() {
+  arrange({n}) {
     let q = 'table.' + this.opt.cSort + ', table.' + this.opt.cFilter + ', table.' + this.opt.cTotals + ', table[' + this.opt.aFilter + ']' + ', table[data-' + this.opt.dLimit + ']';
-    this.app.e(q, this.prepare.bind(this));
+    this.app.ee(n, q, this.prepare.bind(this));
   }
   
   page(e) {

@@ -1,4 +1,4 @@
-/*! d1-web v2.3.8 */
+/*! d1-web v2.3.9 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -1130,7 +1130,10 @@ var _default = /*#__PURE__*/function (_Plugin) {
     key: "hiliteLink",
     value: function hiliteLink(n, on) {
       n.classList[on ? 'add' : 'remove'](this.app.opt.cAct);
-      this.app.pf('icons', 'iconize', n, on);
+      this.app.fire('active', {
+        n: n,
+        on: on
+      });
     }
   }, {
     key: "fixPosition",

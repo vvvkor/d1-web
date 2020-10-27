@@ -1,4 +1,4 @@
-/*! d1-web v2.3.8 */
+/*! d1-web v2.3.9 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -1264,7 +1264,10 @@ var _default = /*#__PURE__*/function (_Plugin) {
     key: "hiliteLink",
     value: function hiliteLink(n, on) {
       n.classList[on ? 'add' : 'remove'](this.app.opt.cAct);
-      this.app.pf('icons', 'iconize', n, on);
+      this.app.fire('active', {
+        n: n,
+        on: on
+      });
     }
   }, {
     key: "fixPosition",
@@ -3523,44 +3526,35 @@ var icons_default = /*#__PURE__*/function (_Plugin) {
   _createClass(_default, [{
     key: "init",
     value: function init() {
+      var _this2 = this;
+
       document.body.classList.add('js-icons');
+      this.app.listen('active', function (e) {
+        return _this2.iconize(e.n, e.on);
+      });
     }
   }, {
     key: "arrange",
-    value: function arrange() {
-      var _this2 = this;
+    value: function arrange(_ref) {
+      var _this3 = this;
 
-      this.app.e('[class*="' + this.opt.pIcon + '"]', function (n) {
-        return _this2.iconize(n);
+      var n = _ref.n;
+      this.app.ee(n, '[class*="' + this.opt.pIcon + '"]', function (n) {
+        return _this3.iconize(n);
       });
     }
   }, {
     key: "iconize",
-    value: function iconize(n, x) {
-      var m = n.className.match(new RegExp('(?:^|\\s)' + (x ? '(?:act-)' : '') + this.opt.pIcon + '([\\w\\-_]+)'));
+    value: function iconize(n, on) {
+      var m = n.className.match(new RegExp('(?:^|\\s)' + (on ? '(?:act-)' : '') + this.opt.pIcon + '([\\w\\-_]+)'));
 
-      if (m) {
+      if (m && (on === undefined || n.matches('[class*="act-"]'))) {
         this.app.ee(n, 'svg', function (s) {
           return s.parentNode.removeChild(s);
         });
         this.addIcon(m[1], n);
       }
     }
-    /*
-      iconize2(n, x) {
-        const p = x === undefined ? '' : (x ? '(?:act-)' : '(?:inact-)');
-        let m = n.className.match(new RegExp('(?:^|\\s)(' + p + this.opt.pIcon + '([\\w\\-_]+))'));
-        if (m && m[2]) {
-          if(!p){
-            n.classList.remove(m[1]);
-            n.classList.add('inact-' + this.opt.pIcon + m[2]);
-          }
-          else this.app.ee(n, 'svg', s => s.parentNode.removeChild(s));
-          this.addIcon(m[2], n);
-        }
-      }
-    */
-
   }, {
     key: "addIcon",
     value: function addIcon(i, n) {
@@ -3959,9 +3953,10 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
     }
   }, {
     key: "arrange",
-    value: function arrange() {
+    value: function arrange(_ref) {
+      var n = _ref.n;
       var q = 'table.' + this.opt.cSort + ', table.' + this.opt.cFilter + ', table.' + this.opt.cTotals + ', table[' + this.opt.aFilter + ']' + ', table[data-' + this.opt.dLimit + ']';
-      this.app.e(q, this.prepare.bind(this));
+      this.app.ee(n, q, this.prepare.bind(this));
     }
   }, {
     key: "page",
