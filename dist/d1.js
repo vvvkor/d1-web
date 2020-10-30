@@ -1,4 +1,4 @@
-/*! d1-web v2.3.12 */
+/*! d1-web v2.3.14 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -5628,15 +5628,15 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
         _this2.moved = null;
       }, true); // do not swipe if scrolling happened
 
-      this.app.b([document], ['click'
-      /*'mouseup'*/
-      , 'mouseleave', 'touchend', 'touchcancel', 'dragend'
+      this.app.b([document], [
+      /*'click'*/
+      'mouseup', 'mouseleave', 'touchend', 'touchcancel', 'dragend'
       /*, 'mouseleave'/*, 'blur', 'keydown', 'contextmenu'*/
       ], function (e) {
         return _this2.onEnd(e);
       }, true
       /*{capture: true, passive: false}*/
-      );
+      ); // click not fires in opera; use mouseup
     }
   }, {
     key: "onStart",

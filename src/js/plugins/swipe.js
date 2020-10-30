@@ -41,7 +41,8 @@ export default class extends Plugin {
     this.app.b([document], ['mousedown', 'touchstart', 'dragstart'], e => this.onStart(e));
     this.app.b([document], ['mousemove', 'touchmove', 'dragover'], e => this.onMove(e), {passive: false});
     this.app.b([window], 'scroll', e => { this.undrag(); this.moved = null; }, true); // do not swipe if scrolling happened
-    this.app.b([document], ['click'/*'mouseup'*/, 'mouseleave', 'touchend', 'touchcancel', 'dragend'/*, 'mouseleave'/*, 'blur', 'keydown', 'contextmenu'*/], e => this.onEnd(e), true /*{capture: true, passive: false}*/);
+    this.app.b([document], [/*'click'*/'mouseup', 'mouseleave', 'touchend', 'touchcancel', 'dragend'/*, 'mouseleave'/*, 'blur', 'keydown', 'contextmenu'*/], e => this.onEnd(e), true /*{capture: true, passive: false}*/);
+    // click not fires in opera; use mouseup
   }
 
   onStart(e) {
