@@ -4,6 +4,7 @@
 // import dialog from './dialog.js'
 
 import Plugin from './plugin.js'
+import Url from '../util/url.js'
 
 export default class extends Plugin {
 

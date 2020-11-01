@@ -1805,6 +1805,7 @@ if (!Element.prototype.closest) {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _default; });
 /* harmony import */ var _plugin_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var _util_url_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1830,6 +1831,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 /*! fetch - asynchronous requests */
 // import toggle from './toggle.js'
 // import dialog from './dialog.js'
+
 
 
 var _default = /*#__PURE__*/function (_Plugin) {
@@ -1873,7 +1875,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
     value: function fetch(url, f) {
       var _this3 = this;
 
-      if (url && this.app.typeOf(url) === 'array') url = Url.build(url[0], url[1]);
+      if (url && this.app.typeOf(url) === 'array') url = _util_url_js__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].build(url[0], url[1]);
       var req = new XMLHttpRequest();
       if (f) req.addEventListener('load', function (e) {
         f(req);
