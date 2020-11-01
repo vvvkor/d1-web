@@ -158,8 +158,6 @@ var Url = /*#__PURE__*/function () {
     key: "build",
     // build url from link node or string, with additional parameters
     value: function build(a, args) {
-      this;
-
       if (!a.tagName) {
         //a = this.ins('a', '', {href: a})
         var h = a;

@@ -158,8 +158,6 @@ var Url = /*#__PURE__*/function () {
     key: "build",
     // build url from link node or string, with additional parameters
     value: function build(a, args) {
-      this;
-
       if (!a.tagName) {
         //a = this.ins('a', '', {href: a})
         var h = a;
@@ -1875,6 +1873,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
     value: function fetch(url, f) {
       var _this3 = this;
 
+      if (url && this.app.typeOf(url) === 'array') url = Url.build(url[0], url[1]);
       var req = new XMLHttpRequest();
       if (f) req.addEventListener('load', function (e) {
         f(req);

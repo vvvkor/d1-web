@@ -3,7 +3,7 @@
 export default class Url {
 
   // build url from link node or string, with additional parameters
-  static build(a, args) {this
+  static build(a, args) {
     if (!a.tagName) {
       //a = this.ins('a', '', {href: a})
       const h = a
