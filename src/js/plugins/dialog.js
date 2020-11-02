@@ -18,10 +18,6 @@ export default class extends Plugin {
       ccDlg: 'dlg rad',
       customDialog: true,
       aConfirm: '_confirm',
-      dHead: 'head', // data-
-      dPic: 'pic',
-      dPrompt: 'prompt',
-      dCaption: 'caption',
       cBtn: 'btn pad',
       qAlert: 'a.alert',
       qDialog: 'a.dialog, input.dialog'
@@ -41,7 +37,7 @@ export default class extends Plugin {
     const app = this.app
     d.className = this.opt.ccDlg + (setup.class ? ' '+setup.class : '');
     app.clr(d);
-    if (h.nodeType) h = h.dataset[this.opt.dHead] || '';
+    if (h.nodeType) h = h.dataset.head || '';
     let hh = app.ins('div', '', 'row bg', d);
     let hhh = app.ins('h3', ' ' + (h || ''), 'fit pad', hh);
     if (setup.icon) {
@@ -84,10 +80,10 @@ export default class extends Plugin {
     }
     e.preventDefault();
     const app = this.app
-    let h = (n.dataset[this.opt.dHead] || '').replace(/%([\w\-]+)%/g, (m, a) => n.getAttribute(a));
-    let icon = n.dataset[this.opt.dPic] || '';
-    let p = n.dataset[this.opt.dPrompt] || '';
-    let t = (n.dataset[this.opt.dCaption] || n.title || p || '!').replace(/%([\w\-]+)%/g, (m, a) => n.getAttribute(a));
+    let h = (n.dataset.head || '').replace(/%([\w\-]+)%/g, (m, a) => n.getAttribute(a));
+    let icon = n.dataset.pic || '';
+    let p = n.dataset.prompt || '';
+    let t = (n.dataset.caption || n.title || p || '!').replace(/%([\w\-]+)%/g, (m, a) => n.getAttribute(a));
     let rev = 'reverse' in n.dataset;
     let src = n.dataset.src;
     src = src ? app.q(src) : null;

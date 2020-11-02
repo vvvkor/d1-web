@@ -42,13 +42,7 @@ export default class extends Plugin {
     this.opt = {
       cSort: 'sort',
       cTotals: 'totals',
-      dFilter: 'filter', // data-filter
-      dRep: 'filterReport', // data-filter-report
       aTotal: 'data-total',
-      dLabels: 'labels',
-      dLimit: 'limit', // data-limit
-      dPages: 'pages', // data-pages
-      dPageNavAfter: 'pagesAfter', // data-pages-after
       cFilter: 'filter',
       cFiltered: 'bg-w', // filter-on - non-empty filter field
       cScan: 'text-i', // col-scan - searchable columns' header (used if "data-filter-cols" is set)
@@ -71,7 +65,7 @@ export default class extends Plugin {
   }
   
   arrange({n}) {
-    let q = 'table.' + this.opt.cSort + ', table.' + this.opt.cFilter + ', table.' + this.opt.cTotals + ', table[' + this.opt.aFilter + ']' + ', table[data-' + this.opt.dLimit + ']';
+    let q = 'table.' + this.opt.cSort + ', table.' + this.opt.cFilter + ', table.' + this.opt.cTotals + ', table[' + this.opt.aFilter + ']' + ', table[data-limit]';
     this.app.ee(n, q, this.prepare.bind(this));
   }
   
@@ -100,12 +94,12 @@ export default class extends Plugin {
     }
     //let inp = this.app.ins('input','',{type:'search',size:4},rh.cells[0]);
     n.vCase = (n.getAttribute('data-case') !== null);
-    let fq = n.dataset[this.opt.dFilter];
+    let fq = n.dataset.filter;
     n.vInp = fq
       ? document.querySelector(fq)
       : n.querySelector('[name="_q"]');
-    n.vRep = this.app.q((n.dataset[this.opt.dRep] || ''));
-    n.vLimit = 1 * (n.dataset[this.opt.dLimit] || 0);
+    n.vRep = this.app.q((n.dataset.filterReport || '')); // dataset.filterReport
+    n.vLimit = 1 * (n.dataset.limit || 0);
     n.vPage = 1;
     if (!n.vInp /* && !n.vRep */ && n.classList.contains(this.opt.cFilter)) this.addFilter(n);
     if (n.vLimit && tb.rows.length>n.vLimit) this.addPageNav(n);
@@ -190,12 +184,12 @@ export default class extends Plugin {
     let t = n.parentNode.classList.contains('roll') ? n.parentNode : n;
     n.vPageNav = this.app.ins('ul', '', 'nav hover tablex-pagenav');
     n.vPageNav.vTable = n;
-    this.app.ins('div', n.vPageNav, 'mar small', t, this.opt.dPageNavAfter in n.dataset ? 1 : -1);
+    this.app.ins('div', n.vPageNav, 'mar small', t, 'pagesAfter' in n.dataset ? 1 : -1); // dataset.pagesAfter
   }
   
   setPageNav(n) {
     const app = this.app
-    let m = 1 * (n.dataset[this.opt.dPages] || 10);
+    let m = 1 * (n.dataset.pages || 10);
     let h = Math.floor((m + 1) / 2); // shift to first
     //let h = Math.ceil((m + 1) / 2); // shift to last
     let ul = n.vPageNav;
@@ -223,7 +217,7 @@ export default class extends Plugin {
       const t = n.vTypes[h.cellIndex];
       const func = t == 's' ? 'count' : (t == 'd' ? 'max' : 'sum');
       const th = this.app.ins('th', this.app.ins(t == 's' ? 'i' : 'span', '', {[this.opt.aTotal]: func, className: (t == 's' ? 'text-n' : '')}), {title: func}, f.firstChild);
-      if (this.opt.dLabels in n.dataset) this.app.ins('div', func, 'small text-n', th, false);
+      if ('labels' in n.dataset) this.app.ins('div', func, 'small text-n', th, false);
     }
     );
   }

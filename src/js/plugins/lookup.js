@@ -13,12 +13,6 @@ export default class extends Plugin {
     super('lookup')
 
     this.opt = {
-      dLabel: 'label', // data-label
-      dLookup: 'lookup',
-      dCap: 'cap',
-      dList: 'list',
-      dUrl: 'url',
-      dGoto: 'goto',
       cacheLimit: 0,
       pList: 'lookup-list-',
       max: 10,
@@ -44,7 +38,7 @@ export default class extends Plugin {
   }
   
   arrange({n}) {
-    this.app.ee(n, 'input[data-' + this.opt.dLookup + ']', m => this.prepare(m));
+    this.app.ee(n, 'input[data-lookup]', m => this.prepare(m));
     this.app.ee(n, '[data-chain]', m => this.updateChain(m));
   }
 
@@ -53,8 +47,8 @@ export default class extends Plugin {
     n.dataset.ready = 1;
     
     const app = this.app
-    n.vLabel = (this.opt.dLabel in n.dataset)
-      ? n.dataset[this.opt.dLabel]
+    n.vLabel = ('label' in n.dataset)
+      ? n.dataset.label
       : (n.value || '');
     let pop = app.ins('div', '', 'pop l lookup-pop', n, 1);
     if (!this.opt.inPop) pop.style.verticalAlign = 'bottom';
@@ -73,7 +67,7 @@ export default class extends Plugin {
     if (n.placeholder) m.placeholder = n.placeholder;
     m.autocomplete = 'off';
     let i = null;
-    if (this.opt.dUrl in n.dataset) {
+    if ('url' in n.dataset) {
       let ic = app.ins('span', '', 'input-tools nobr', this.opt.inPop ? pop : m, 1);//icons container
       i = app.ins('a', app.i('forward', '&rarr;'), {href: '#goto', className: 'let lookup-goto'}, ic);
       i.style.cursor = 'pointer';
@@ -83,8 +77,8 @@ export default class extends Plugin {
   }
   
   initCaption(n) {
-    let uc = n.dataset[this.opt.dCap] || '';
-    if (uc && n.value && !(this.opt.dLabel in n.dataset)) {
+    let uc = n.dataset.cap || '';
+    if (uc && n.value && !('label' in n.dataset)) {
       let u = encodeURI(decodeURI(Url.build(uc, {time: (new Date()).getTime()}))
         .replace(/\{q\}/, n.value));
       this.app.fetch(u, req => {
@@ -121,7 +115,7 @@ export default class extends Plugin {
     if (v === '') this.fix(n, '', ''); //empty
     else if (n.vCache && n.vCache[v]) this.openList(n, n.vCache[v]); //cached
     else {
-      let u = encodeURI(decodeURI(Url.build((n.dataset[this.opt.dLookup] || ''), {
+      let u = encodeURI(decodeURI(Url.build((n.dataset.lookup || ''), {
           //value: v,
           time: (new Date()).getTime()
       })).replace(/\{q\}/, v));
@@ -159,7 +153,7 @@ export default class extends Plugin {
     app.clr(this.win);
     let ul = app.ins('ul', '', 'nav let hover', this.win);
     let w, j = 0;
-    let go = n.dataset[this.opt.dGoto] || '';
+    let go = n.dataset.goto || '';
     for (let i in d) {
       w = app.ins('li', '', {}, ul);
       let a = app.ins('a', '', {href: go ? go.replace(/\{id\}/, d[i].id) : '#' + d[i].id, className: '-pad -hover' + (go ? '' : ' lookup-item')}, w);
@@ -222,7 +216,7 @@ export default class extends Plugin {
     let n = e.recv ? this.ident(e.recv.parentNode, 't') : null;
     if (n) {
       e.preventDefault();
-      let u = n.dataset[this.opt.dUrl] || '';
+      let u = n.dataset.url || '';
       if (n.value.length>0 && u) location.href = encodeURI(decodeURI(u).replace(/\{id\}/, n.value));
     }
   }
@@ -234,7 +228,7 @@ export default class extends Plugin {
     if (m) {
       if (!n.value) this.setOptions(m,[]);
       else {
-        let u = (m.dataset[this.opt.dList] || '').replace(/\{q\}/,n.value);
+        let u = (m.dataset.list || '').replace(/\{q\}/,n.value);
         if (m.vCache && m.vCache[u]) this.setOptions(m,m.vCache[u]);
         else this.app.fetch(u, this.onChainData.bind(this, u, m));
       }

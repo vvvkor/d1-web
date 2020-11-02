@@ -41,7 +41,6 @@ export default class extends Plugin {
     };
 
     this.opt = {
-      dLang: 'lang',//data-lang
       defLang: 'html',
       qCode: '.code'
     };
@@ -62,7 +61,7 @@ export default class extends Plugin {
   }
   
   showCode(src) {
-    let lang = src.dataset[this.opt.dLang] || this.opt.defLang;
+    let lang = src.dataset.lang || this.opt.defLang;
     let t = this.spaces(src.innerHTML);
     if (!src.vCode) {
       let cont = this.app.ins('div', '', {classList: 'bord'}, src, 1);

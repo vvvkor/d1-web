@@ -8,10 +8,6 @@ export default class extends Plugin {
     super('tools')
 
     this.opt = {
-      dNodes: 'nodes', // data-nodes
-      dSet: 'set',
-      dUnset: 'unset',
-      dAttr: 'attr',
       cMem: 'mem',
       qHeading: 'h2[id], h3[id], h4[id], h5[id], h6[id]', // h1[id],
       minDesktop: 900
@@ -19,15 +15,15 @@ export default class extends Plugin {
   }
   
   init() {
-    this.opt.qSetClick = 'a[data-' + this.opt.dSet + ']';
-    this.opt.qSetChange = 'input[data-' + this.opt.dNodes + '], select[data-' + this.opt.dNodes + ']';
+    this.opt.qSetClick = 'a[data-set]';
+    this.opt.qSetChange = 'input[data-nodes], select[data-nodes]';
     this.app.h('change', this.opt.qSetChange, e => this.toggleClass(e.target));
     this.app.h('click', this.opt.qSetClick, e => this.toggleClass(e.recv, e));
     this.app.b([window], 'resize', e => this.onResize(e));
   }
   
   arrange({n}) {
-    this.opt.qSet = '[data-' + this.opt.dSet + '], [data-' + this.opt.dNodes + ']';
+    this.opt.qSet = '[data-set], [data-nodes]';
     this.app.ee(n, 'table[class]', m => this.alignCells(m));
     this.app.ee(n, this.opt.qSet, m => this.restore(m));
     this.app.ee(n, this.opt.qSet, m => this.toggleClass(m));
@@ -66,8 +62,8 @@ export default class extends Plugin {
   setClass(n, on, m, c) {
     this.app.dbg(['setclass', m, c]);
     let sel = (n.type == 'radio' || n.tagName == 'SELECT');
-    let u = sel ? null /*''*/ : n.dataset[this.opt.dUnset];
-    let attr = n.dataset[this.opt.dAttr] || 'class';
+    let u = sel ? null /*''*/ : n.dataset.unset;
+    let attr = n.dataset.attr || 'class';
     if (attr !== 'class') {
       let v = on ? c : (u || '');
       if (v) m.setAttribute(attr, v);
@@ -78,7 +74,7 @@ export default class extends Plugin {
       if (sel) {
         //unset other select/radio values
         let u = (n.type == 'radio')
-          ? this.app.qq('input[type="radio"][name="' + n.name + '"]').map(nn => /*(nn.dataset[this.opt.dSet] || '')*/nn.value).join(' ')
+          ? this.app.qq('input[type="radio"][name="' + n.name + '"]').map(nn => /*(nn.dataset.set || '')*/nn.value).join(' ')
           : this.app.qq('option', n).map(nn => nn.value).join(' ');
         u.split(/\s+/).filter(cc => cc).forEach(cc => m.classList.remove(cc));
       }
@@ -92,8 +88,8 @@ export default class extends Plugin {
     if (n.type == 'radio' && !n.checked) return;
     let box = (n.type == 'checkbox' || n.type == 'radio');
     let sel = (n.tagName == 'SELECT' || n.type == 'radio');
-    let q = n.dataset[this.opt.dNodes] || n.hash;
-    let c = sel ? n.value : (n.dataset[this.opt.dSet] || n.value);
+    let q = n.dataset.nodes || n.hash;
+    let c = sel ? n.value : (n.dataset.set || n.value);
     let on = sel ? true : (box ? n.checked : n.classList.contains(this.app.opt.cAct));
     if (e && !box && !sel) {
       on = !on;

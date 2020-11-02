@@ -13,7 +13,6 @@ export default class extends Plugin {
       idPrefix: 'pic-',
       num: true,
       cGal: 'gal',
-      dCaption: 'caption', // data-caption
       qGal: '.gal>a[id]', // dup of toggle.opt.qGal
       qGallery: '.gallery',
       qLinks: 'a.pic:not([href^="#"])'
@@ -66,7 +65,7 @@ export default class extends Plugin {
       p.vImg = p.vLink;//keep image url but do not load yet
       let num = opt.num;
       if('num' in n.dataset) num = !!n.dataset.num;
-      p.dataset[opt.dCaption] = (num ? (i+1)+'/'+z+(a[i].title ? ' - ' : '') : '') + (a[i].title || '');
+      p.dataset.caption = (num ? (i+1)+'/'+z+(a[i].title ? ' - ' : '') : '') + (a[i].title || '');
       a[i].href = '#' + p.id;
     }
     app.x(g);
