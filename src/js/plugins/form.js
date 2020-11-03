@@ -10,12 +10,15 @@ export default class extends Plugin {
   }
 
   init() {
-    this.app.e('input[type="color"]', n => this.prepareColor(n));
     this.app.h('click', 'a[href^="#"][data-value]', e => {
       e.preventDefault();
       this.setValue(e.recv);
     });
     this.app.h('click', 'input[data-group]', e => this.checkBoxes(e.target));
+  }
+  
+  arrange({n}) {
+    this.app.ee(n, 'input[type="color"]', n => this.prepareColor(n));
   }
   
   checkBoxes(n) {

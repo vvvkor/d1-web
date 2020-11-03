@@ -1,4 +1,4 @@
-/*! d1-web v2.4.0 */
+/*! d1-web v2.4.1 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -3305,9 +3305,6 @@ var _default = /*#__PURE__*/function (_Plugin) {
     value: function init() {
       var _this2 = this;
 
-      this.app.e('input[type="color"]', function (n) {
-        return _this2.prepareColor(n);
-      });
       this.app.h('click', 'a[href^="#"][data-value]', function (e) {
         e.preventDefault();
 
@@ -3315,6 +3312,16 @@ var _default = /*#__PURE__*/function (_Plugin) {
       });
       this.app.h('click', 'input[data-group]', function (e) {
         return _this2.checkBoxes(e.target);
+      });
+    }
+  }, {
+    key: "arrange",
+    value: function arrange(_ref) {
+      var _this3 = this;
+
+      var n = _ref.n;
+      this.app.ee(n, 'input[type="color"]', function (n) {
+        return _this3.prepareColor(n);
       });
     }
   }, {
