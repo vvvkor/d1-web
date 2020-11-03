@@ -1,4 +1,4 @@
-/*! d1-web v2.4.1 */
+/*! d1-web v2.4.2 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -3344,6 +3344,8 @@ var _default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "prepareColor",
     value: function prepareColor(n) {
+      if (n.dataset.ready) return;
+      n.dataset.ready = 1;
       var m = this.app.ins('input', '', {
         type: 'text',
         value: n.value,

@@ -35,6 +35,8 @@ export default class extends Plugin {
   }
 
   prepareColor(n) {
+    if (n.dataset.ready) return;
+    n.dataset.ready = 1;
     let m = this.app.ins('input', '', {type: 'text', value: n.value, size: 7, className: 'color'}, n, -1);
     this.app.ins('', ' ', {}, m, 1);
     this.app.b([n, m], 'input', e => (e.target == n ? m : n).value = e.target.value );
