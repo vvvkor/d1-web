@@ -6,14 +6,19 @@ export default class {
     this.opt = {}
   }
   
-  install(app, opt) {
+  install(app) {
+    if (!app.opt.plug[this.name]) app.opt.plug[this.name] = {};
+    const opt = app.opt.plug[this.name];
+    Object.keys(this.opt).forEach(k => (k in opt) ? null : opt[k] = this.opt[k])
+    this.opt = opt;
+    //
     this.app = app
-    if (opt) Object.keys(opt).forEach(k => this.opt[k] = opt[k])
     this.init()
     if (this.arrange) {
       this.app.listen('arrange', e => this.arrange(e));
       this.arrange({});
     }
+    this.app.fire('plugin', {name: this.name});
   }
   
   init() {

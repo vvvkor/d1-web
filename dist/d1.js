@@ -1,4 +1,4 @@
-/*! d1-web v2.3.15 */
+/*! d1-web v2.4.0 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -108,13 +108,17 @@ var _default = /*#__PURE__*/function () {
 
   _createClass(_default, [{
     key: "install",
-    value: function install(app, opt) {
+    value: function install(app) {
       var _this = this;
 
-      this.app = app;
-      if (opt) Object.keys(opt).forEach(function (k) {
-        return _this.opt[k] = opt[k];
+      if (!app.opt.plug[this.name]) app.opt.plug[this.name] = {};
+      var opt = app.opt.plug[this.name];
+      Object.keys(this.opt).forEach(function (k) {
+        return k in opt ? null : opt[k] = _this.opt[k];
       });
+      this.opt = opt; //
+
+      this.app = app;
       this.init();
 
       if (this.arrange) {
@@ -123,6 +127,10 @@ var _default = /*#__PURE__*/function () {
         });
         this.arrange({});
       }
+
+      this.app.fire('plugin', {
+        name: this.name
+      });
     }
   }, {
     key: "init",
@@ -356,6 +364,7 @@ var _default = /*#__PURE__*/function () {
     this.plugins = {};
     this.handlers = {};
     this.opt = {
+      plug: {},
       debug: 0,
       cAct: 'act',
       cHide: 'hide',
@@ -377,7 +386,7 @@ var _default = /*#__PURE__*/function () {
 
       document.body.classList.add(this.opt.cJs); // prepare body: anti-hover, anti-target
 
-      this.fire('beforeopt'); //options
+      this.fire('init'); //options
 
       if (!opt) {
         opt = document.body.dataset.d1;
@@ -386,9 +395,11 @@ var _default = /*#__PURE__*/function () {
 
       this.setOpt(opt);
       this.dbg(['opt', this.opt]);
-      this.initPlugins(opt); // plugins
+      this.fire('options');
+      this.initPlugins(); // plugins
       //this.fire('arrange', {n: document.body})
-      // bind events
+
+      this.fire('plugins'); // bind events
 
       this.b([window], 'hashchange', function (e) {
         return _this.on('hashchange', e);
@@ -422,9 +433,9 @@ var _default = /*#__PURE__*/function () {
     value: function setOpt(opt) {
       var _this2 = this;
 
-      if (opt) Object.keys(opt).filter(function (k) {
-        return k != 'plug';
-      }).forEach(function (k) {
+      if (opt) Object.keys(opt)
+      /*.filter(k => k != 'plug')*/
+      .forEach(function (k) {
         return _this2.opt[k] = opt[k];
       });
     }
@@ -436,20 +447,16 @@ var _default = /*#__PURE__*/function () {
     }
   }, {
     key: "initPlugins",
-    value: function initPlugins(opt) {
+    value: function initPlugins() {
       var _this3 = this;
 
       if (this.opt.disable) this.opt.disable.forEach(function (p) {
         return delete _this3.plugins[p];
       });
       this.dbg(['plugins', this.plugins]);
-      this.fire('beforeinit');
       Object.keys(this.plugins).forEach(function (k) {
-        var _opt$plug;
-
-        return _this3.plugins[k].install(_this3, opt === null || opt === void 0 ? void 0 : (_opt$plug = opt.plug) === null || _opt$plug === void 0 ? void 0 : _opt$plug[k]);
+        return _this3.plugins[k].install(_this3);
       });
-      this.fire('afterinit');
     } // call method of plugin
 
   }, {
@@ -1366,11 +1373,6 @@ var _default = /*#__PURE__*/function (_Plugin) {
       ccDlg: 'dlg rad',
       customDialog: true,
       aConfirm: '_confirm',
-      dHead: 'head',
-      // data-
-      dPic: 'pic',
-      dPrompt: 'prompt',
-      dCaption: 'caption',
       cBtn: 'btn pad',
       qAlert: 'a.alert',
       qDialog: 'a.dialog, input.dialog'
@@ -1402,7 +1404,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
       var app = this.app;
       d.className = this.opt.ccDlg + (setup.class ? ' ' + setup.class : '');
       app.clr(d);
-      if (h.nodeType) h = h.dataset[this.opt.dHead] || '';
+      if (h.nodeType) h = h.dataset.head || '';
       var hh = app.ins('div', '', 'row bg', d);
       var hhh = app.ins('h3', ' ' + (h || ''), 'fit pad', hh);
 
@@ -1474,12 +1476,12 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
       e.preventDefault();
       var app = this.app;
-      var h = (n.dataset[this.opt.dHead] || '').replace(/%([\w\-]+)%/g, function (m, a) {
+      var h = (n.dataset.head || '').replace(/%([\w\-]+)%/g, function (m, a) {
         return n.getAttribute(a);
       });
-      var icon = n.dataset[this.opt.dPic] || '';
-      var p = n.dataset[this.opt.dPrompt] || '';
-      var t = (n.dataset[this.opt.dCaption] || n.title || p || '!').replace(/%([\w\-]+)%/g, function (m, a) {
+      var icon = n.dataset.pic || '';
+      var p = n.dataset.prompt || '';
+      var t = (n.dataset.caption || n.title || p || '!').replace(/%([\w\-]+)%/g, function (m, a) {
         return n.getAttribute(a);
       });
       var rev = ('reverse' in n.dataset);
@@ -1617,8 +1619,6 @@ var _default = /*#__PURE__*/function (_Plugin) {
       idPrefix: 'pic-',
       num: true,
       cGal: 'gal',
-      dCaption: 'caption',
-      // data-caption
       qGal: '.gal>a[id]',
       // dup of toggle.opt.qGal
       qGallery: '.gallery',
@@ -1692,7 +1692,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
           var num = opt.num;
           if ('num' in n.dataset) num = !!n.dataset.num;
-          p.dataset[opt.dCaption] = (num ? i + 1 + '/' + z + (a[i].title ? ' - ' : '') : '') + (a[i].title || '');
+          p.dataset.caption = (num ? i + 1 + '/' + z + (a[i].title ? ' - ' : '') : '') + (a[i].title || '');
           a[i].href = '#' + p.id;
         }
       }
@@ -2349,13 +2349,6 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
     _this = _super.call(this, 'lookup');
     _this.opt = {
-      dLabel: 'label',
-      // data-label
-      dLookup: 'lookup',
-      dCap: 'cap',
-      dList: 'list',
-      dUrl: 'url',
-      dGoto: 'goto',
       cacheLimit: 0,
       pList: 'lookup-list-',
       max: 10,
@@ -2400,7 +2393,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
       var _this3 = this;
 
       var n = _ref.n;
-      this.app.ee(n, 'input[data-' + this.opt.dLookup + ']', function (m) {
+      this.app.ee(n, 'input[data-lookup]', function (m) {
         return _this3.prepare(m);
       });
       this.app.ee(n, '[data-chain]', function (m) {
@@ -2413,7 +2406,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
       if (n.dataset.ready) return;
       n.dataset.ready = 1;
       var app = this.app;
-      n.vLabel = this.opt.dLabel in n.dataset ? n.dataset[this.opt.dLabel] : n.value || '';
+      n.vLabel = 'label' in n.dataset ? n.dataset.label : n.value || '';
       var pop = app.ins('div', '', 'pop l lookup-pop', n, 1);
       if (!this.opt.inPop) pop.style.verticalAlign = 'bottom';
       n.classList.add('bg-n', 'lookup-id');
@@ -2439,7 +2432,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
       m.autocomplete = 'off';
       var i = null;
 
-      if (this.opt.dUrl in n.dataset) {
+      if ('url' in n.dataset) {
         var ic = app.ins('span', '', 'input-tools nobr', this.opt.inPop ? pop : m, 1); //icons container
 
         i = app.ins('a', app.i('forward', '&rarr;'), {
@@ -2457,9 +2450,9 @@ var _default = /*#__PURE__*/function (_Plugin) {
     value: function initCaption(n) {
       var _this4 = this;
 
-      var uc = n.dataset[this.opt.dCap] || '';
+      var uc = n.dataset.cap || '';
 
-      if (uc && n.value && !(this.opt.dLabel in n.dataset)) {
+      if (uc && n.value && !('label' in n.dataset)) {
         var u = encodeURI(decodeURI(_util_url_js__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].build(uc, {
           time: new Date().getTime()
         })).replace(/\{q\}/, n.value));
@@ -2501,7 +2494,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
       if (v === '') this.fix(n, '', ''); //empty
       else if (n.vCache && n.vCache[v]) this.openList(n, n.vCache[v]); //cached
         else {
-            var u = encodeURI(decodeURI(_util_url_js__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].build(n.dataset[this.opt.dLookup] || '', {
+            var u = encodeURI(decodeURI(_util_url_js__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].build(n.dataset.lookup || '', {
               //value: v,
               time: new Date().getTime()
             })).replace(/\{q\}/, v));
@@ -2545,7 +2538,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
       var ul = app.ins('ul', '', 'nav let hover', this.win);
       var w,
           j = 0;
-      var go = n.dataset[this.opt.dGoto] || '';
+      var go = n.dataset.goto || '';
 
       for (var i in d) {
         w = app.ins('li', '', {}, ul);
@@ -2620,7 +2613,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
       if (n) {
         e.preventDefault();
-        var u = n.dataset[this.opt.dUrl] || '';
+        var u = n.dataset.url || '';
         if (n.value.length > 0 && u) location.href = encodeURI(decodeURI(u).replace(/\{id\}/, n.value));
       }
     } // update chain
@@ -2632,7 +2625,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
       if (m) {
         if (!n.value) this.setOptions(m, []);else {
-          var u = (m.dataset[this.opt.dList] || '').replace(/\{q\}/, n.value);
+          var u = (m.dataset.list || '').replace(/\{q\}/, n.value);
           if (m.vCache && m.vCache[u]) this.setOptions(m, m.vCache[u]);else this.app.fetch(u, this.onChainData.bind(this, u, m));
         }
       }
@@ -3643,6 +3636,15 @@ var polyfill = __webpack_require__(8);
 // EXTERNAL MODULE: ./src/js/app.js
 var app = __webpack_require__(4);
 
+// EXTERNAL MODULE: ./src/js/util/func.js
+var func = __webpack_require__(2);
+
+// EXTERNAL MODULE: ./src/js/util/dt.js
+var dt = __webpack_require__(3);
+
+// EXTERNAL MODULE: ./src/js/util/url.js
+var url = __webpack_require__(1);
+
 // EXTERNAL MODULE: ./src/js/plugins/plugin.js
 var plugins_plugin = __webpack_require__(0);
 
@@ -3713,8 +3715,6 @@ var code_default = /*#__PURE__*/function (_Plugin) {
       }
     };
     _this.opt = {
-      dLang: 'lang',
-      //data-lang
       defLang: 'html',
       qCode: '.code'
     };
@@ -3749,7 +3749,7 @@ var code_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "showCode",
     value: function showCode(src) {
-      var lang = src.dataset[this.opt.dLang] || this.opt.defLang;
+      var lang = src.dataset.lang || this.opt.defLang;
       var t = this.spaces(src.innerHTML);
 
       if (!src.vCode) {
@@ -3828,12 +3828,6 @@ var gallery = __webpack_require__(7);
 // EXTERNAL MODULE: ./src/js/plugins/fetch.js
 var fetch = __webpack_require__(9);
 
-// EXTERNAL MODULE: ./src/js/util/dt.js
-var dt = __webpack_require__(3);
-
-// EXTERNAL MODULE: ./src/js/util/func.js
-var func = __webpack_require__(2);
-
 // CONCATENATED MODULE: ./src/js/plugins/tablex.js
 function tablex_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { tablex_typeof = function _typeof(obj) { return typeof obj; }; } else { tablex_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return tablex_typeof(obj); }
 
@@ -3906,18 +3900,7 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
     _this.opt = {
       cSort: 'sort',
       cTotals: 'totals',
-      dFilter: 'filter',
-      // data-filter
-      dRep: 'filterReport',
-      // data-filter-report
       aTotal: 'data-total',
-      dLabels: 'labels',
-      dLimit: 'limit',
-      // data-limit
-      dPages: 'pages',
-      // data-pages
-      dPageNavAfter: 'pagesAfter',
-      // data-pages-after
       cFilter: 'filter',
       cFiltered: 'bg-w',
       // filter-on - non-empty filter field
@@ -3956,7 +3939,7 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
     key: "arrange",
     value: function arrange(_ref) {
       var n = _ref.n;
-      var q = 'table.' + this.opt.cSort + ', table.' + this.opt.cFilter + ', table.' + this.opt.cTotals + ', table[' + this.opt.aFilter + ']' + ', table[data-' + this.opt.dLimit + ']';
+      var q = 'table.' + this.opt.cSort + ', table.' + this.opt.cFilter + ', table.' + this.opt.cTotals + ', table[' + this.opt.aFilter + ']' + ', table[data-limit]';
       this.app.ee(n, q, this.prepare.bind(this));
     }
   }, {
@@ -4001,10 +3984,11 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
 
 
       n.vCase = n.getAttribute('data-case') !== null;
-      var fq = n.dataset[this.opt.dFilter];
+      var fq = n.dataset.filter;
       n.vInp = fq ? document.querySelector(fq) : n.querySelector('[name="_q"]');
-      n.vRep = this.app.q(n.dataset[this.opt.dRep] || '');
-      n.vLimit = 1 * (n.dataset[this.opt.dLimit] || 0);
+      n.vRep = this.app.q(n.dataset.filterReport || ''); // dataset.filterReport
+
+      n.vLimit = 1 * (n.dataset.limit || 0);
       n.vPage = 1;
       if (!n.vInp
       /* && !n.vRep */
@@ -4113,13 +4097,13 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
       var t = n.parentNode.classList.contains('roll') ? n.parentNode : n;
       n.vPageNav = this.app.ins('ul', '', 'nav hover tablex-pagenav');
       n.vPageNav.vTable = n;
-      this.app.ins('div', n.vPageNav, 'mar small', t, this.opt.dPageNavAfter in n.dataset ? 1 : -1);
+      this.app.ins('div', n.vPageNav, 'mar small', t, 'pagesAfter' in n.dataset ? 1 : -1); // dataset.pagesAfter
     }
   }, {
     key: "setPageNav",
     value: function setPageNav(n) {
       var app = this.app;
-      var m = 1 * (n.dataset[this.opt.dPages] || 10);
+      var m = 1 * (n.dataset.pages || 10);
       var h = Math.floor((m + 1) / 2); // shift to first
       //let h = Math.ceil((m + 1) / 2); // shift to last
 
@@ -4172,7 +4156,7 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
           title: func
         }, f.firstChild);
 
-        if (_this3.opt.dLabels in n.dataset) _this3.app.ins('div', func, 'small text-n', th, false);
+        if ('labels' in n.dataset) _this3.app.ins('div', func, 'small text-n', th, false);
       });
     }
   }, {
@@ -4479,11 +4463,6 @@ var tools_default = /*#__PURE__*/function (_Plugin) {
 
     _this = _super.call(this, 'tools');
     _this.opt = {
-      dNodes: 'nodes',
-      // data-nodes
-      dSet: 'set',
-      dUnset: 'unset',
-      dAttr: 'attr',
       cMem: 'mem',
       qHeading: 'h2[id], h3[id], h4[id], h5[id], h6[id]',
       // h1[id],
@@ -4497,8 +4476,8 @@ var tools_default = /*#__PURE__*/function (_Plugin) {
     value: function init() {
       var _this2 = this;
 
-      this.opt.qSetClick = 'a[data-' + this.opt.dSet + ']';
-      this.opt.qSetChange = 'input[data-' + this.opt.dNodes + '], select[data-' + this.opt.dNodes + ']';
+      this.opt.qSetClick = 'a[data-set]';
+      this.opt.qSetChange = 'input[data-nodes], select[data-nodes]';
       this.app.h('change', this.opt.qSetChange, function (e) {
         return _this2.toggleClass(e.target);
       });
@@ -4515,7 +4494,7 @@ var tools_default = /*#__PURE__*/function (_Plugin) {
       var _this3 = this;
 
       var n = _ref.n;
-      this.opt.qSet = '[data-' + this.opt.dSet + '], [data-' + this.opt.dNodes + ']';
+      this.opt.qSet = '[data-set], [data-nodes]';
       this.app.ee(n, 'table[class]', function (m) {
         return _this3.alignCells(m);
       });
@@ -4575,8 +4554,8 @@ var tools_default = /*#__PURE__*/function (_Plugin) {
       var sel = n.type == 'radio' || n.tagName == 'SELECT';
       var u = sel ? null
       /*''*/
-      : n.dataset[this.opt.dUnset];
-      var attr = n.dataset[this.opt.dAttr] || 'class';
+      : n.dataset.unset;
+      var attr = n.dataset.attr || 'class';
 
       if (attr !== 'class') {
         var v = on ? c : u || '';
@@ -4586,7 +4565,7 @@ var tools_default = /*#__PURE__*/function (_Plugin) {
           //unset other select/radio values
           var _u = n.type == 'radio' ? this.app.qq('input[type="radio"][name="' + n.name + '"]').map(function (nn) {
             return (
-              /*(nn.dataset[this.opt.dSet] || '')*/
+              /*(nn.dataset.set || '')*/
               nn.value
             );
           }).join(' ') : this.app.qq('option', n).map(function (nn) {
@@ -4618,8 +4597,8 @@ var tools_default = /*#__PURE__*/function (_Plugin) {
       if (n.type == 'radio' && !n.checked) return;
       var box = n.type == 'checkbox' || n.type == 'radio';
       var sel = n.tagName == 'SELECT' || n.type == 'radio';
-      var q = n.dataset[this.opt.dNodes] || n.hash;
-      var c = sel ? n.value : n.dataset[this.opt.dSet] || n.value;
+      var q = n.dataset.nodes || n.hash;
+      var c = sel ? n.value : n.dataset.set || n.value;
       var on = sel ? true : box ? n.checked : n.classList.contains(this.app.opt.cAct);
 
       if (e && !box && !sel) {
@@ -5153,8 +5132,6 @@ var items_default = /*#__PURE__*/function (_Plugin) {
 
     _this = _super.call(this, 'items');
     _this.opt = {
-      dItem: 'item',
-      // data-item
       qItem: '.item' // ul, tr, div
 
     };
@@ -5176,7 +5153,7 @@ var items_default = /*#__PURE__*/function (_Plugin) {
       var n = e.recv;
 
       if (n && n.hash) {
-        var q = n.dataset[this.opt.dItem];
+        var q = n.dataset.item;
         var d = q ? this.app.q(q) : e.target.closest(this.opt.qItem);
 
         if (d) {
@@ -6124,6 +6101,9 @@ var theme_default = /*#__PURE__*/function (_Plugin) {
 
 
 
+
+
+
 var src_app = new app["a" /* default */]();
 src_app.plug(code_default);
 src_app.plug(icons["a" /* default */]);
@@ -6145,7 +6125,10 @@ src_app.plug(filter_default);
 src_app.plug(fliptable_default);
 src_app.plug(swipe_default);
 src_app.plug(scroll_default);
-src_app.plug(theme_default); // const opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}}
+src_app.plug(theme_default);
+src_app.Func = func["a" /* default */];
+src_app.Dt = dt["a" /* default */];
+src_app.Url = url["a" /* default */]; // const opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}}
 
 src_app.b([document], 'DOMContentLoaded', function (e) {
   return src_app.init();

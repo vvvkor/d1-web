@@ -11,6 +11,7 @@ export default class {
     this.handlers = {}
     
     this.opt = {
+      plug: {},
       debug: 0,
       cAct: 'act',
       cHide: 'hide',
@@ -27,7 +28,7 @@ export default class {
 
   init(opt) {
     document.body.classList.add(this.opt.cJs) // prepare body: anti-hover, anti-target
-    this.fire('beforeopt')
+    this.fire('init')
     //options
     if (!opt) {
       opt = document.body.dataset.d1
@@ -35,9 +36,11 @@ export default class {
     }
     this.setOpt(opt)
     this.dbg(['opt', this.opt])
+    this.fire('options')
 
-    this.initPlugins(opt) // plugins
+    this.initPlugins() // plugins
     //this.fire('arrange', {n: document.body})
+    this.fire('plugins')
 
     // bind events
     this.b([window], 'hashchange', e => this.on('hashchange', e)) // on window
@@ -62,7 +65,7 @@ export default class {
   //plugins
 
   setOpt(opt) {
-    if (opt) Object.keys(opt).filter(k => k != 'plug').forEach(k => this.opt[k] = opt[k])
+    if (opt) Object.keys(opt)/*.filter(k => k != 'plug')*/.forEach(k => this.opt[k] = opt[k])
   }
 
   plug(c, n) {
@@ -70,12 +73,10 @@ export default class {
     this.plugins[n || p.name] = p
   }
 
-  initPlugins(opt) {
+  initPlugins() {
     if (this.opt.disable) this.opt.disable.forEach(p => delete this.plugins[p])
     this.dbg(['plugins', this.plugins])
-    this.fire('beforeinit')
-    Object.keys(this.plugins).forEach(k => this.plugins[k].install(this, opt?.plug?.[k]))
-    this.fire('afterinit')
+    Object.keys(this.plugins).forEach(k => this.plugins[k].install(this))
   }
   
   // call method of plugin

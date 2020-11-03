@@ -61,10 +61,10 @@
 	document.addEventListener('DOMContentLoaded', e => {
 		console.log('d1 = ', d1);
 		if (d1.plugins.icons) {
-			d1.listen('beforeinit', injectIcon);
+			d1.listen('init', injectIcon);
 			d1.listen('ready', demoIcons);
 		}
-		checkApi(); // d1.listen('beforeopt', checkApi);
+		checkApi(); // d1.listen('init', checkApi);
 	});
 </script>
 

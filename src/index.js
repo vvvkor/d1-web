@@ -1,6 +1,10 @@
 import './js/polyfill.js'
 
 import App from './js/app.js'
+import Func from './js/util/func.js'
+import Dt from './js/util/dt.js'
+import Url from './js/util/url.js'
+
 import Code from './js/plugins/code.js'
 import Icons from './js/plugins/icons.js'
 import Toggle from './js/plugins/toggle.js'
@@ -47,6 +51,9 @@ app.plug(Swipe)
 app.plug(Scroll)
 app.plug(Theme)
 
+app.Func = Func
+app.Dt = Dt
+app.Url = Url
 // const opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}}
 app.b([document], 'DOMContentLoaded', e => app.init(/*opt*/))
 
