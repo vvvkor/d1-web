@@ -39,7 +39,7 @@ export default class extends Plugin {
     e.preventDefault();
     let f = e.target.closest('form');
     f.reset();
-    this.app.ee(f, '[name]', n => this.app.fire('value', {n: n}));
+    this.app.ee(f, '[name]', n => this.app.fire('value', {n}));
   }
   
   unstore(e) {

@@ -30,13 +30,13 @@ export default class extends Plugin {
   fetch(url, f) {
     if(url && this.app.typeOf(url) === 'array') url = Url.build(url[0], url[1]);
     let req = new XMLHttpRequest();
-    if (f) req.addEventListener('load', e => { f(req); this.app.fire('fetch', req); } );
+    if (f) req.addEventListener('load', e => { f(req); this.app.fire('fetch', {request: req}); } );
     req.open('GET', url);
     req.send();
   }
 
   receive(u, n, req, e) {
-    // this.app..parse(req.responseText)
+    // this.app.parse(req.responseText)
     let d = this.app.q(n.dataset.target);
     if (req.status == '200') {
       const h = u.split('#');

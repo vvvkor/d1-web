@@ -18,7 +18,7 @@ export default class {
       this.app.listen('arrange', e => this.arrange(e));
       this.arrange({});
     }
-    this.app.fire('plugin', {name: this.name});
+    this.app.fire('plugin', {name: this.name, plugin: this});
   }
   
   init() {

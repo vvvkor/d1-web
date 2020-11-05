@@ -143,7 +143,7 @@ export default class extends Plugin{
   }
 
   onHash(e) {
-    if((e ? e.newURL : location.hash).match(new RegExp(this.opt.hUnhash + '$'))) return;
+    if((e ? e.newURL : location.hash)?.match(new RegExp(this.opt.hUnhash + '$'))) return;
 
     this.app.dbg(['hashchange', location.hash, e?.newURL]);
     this.nEsc = 0;
@@ -229,7 +229,7 @@ export default class extends Plugin{
     let d = h ? (h.tagName ? h : this.app.q(h)) : null;
     if (d) {
       if (d.matches(this.opt.qTab) && on === undefined) on = true; //tabs: show instead of toggle
-      this.app.fire('beforetoggle', {n: d, on: on, deep: deep});
+      this.app.fire('beforetoggle', {n: d, on, deep: deep});
       this.tgl(d, on);
       this.app.dbg(['toggle' + (deep ? ' deep' : ''), on, d], deep ? 2 : 1);
       if (this.app.vis(d)) this.fixPosition(d);
@@ -246,13 +246,15 @@ export default class extends Plugin{
           this.app.fire('modal', {n: d, src: 'toggle', show});
         }
       }
-      this.app.fire('aftertoggle', {n: d, on: on, deep: deep});
+      this.app.fire('aftertoggle', {n: d, on, deep: deep});
     }
     return d;
   }
 
-  tgl(d, on) {
-    if (d) d.classList[on ? 'remove' : (on === undefined ? 'toggle' : 'add')](this.app.opt.cOff);
+  tgl(n, on) {
+    if (n) n.classList[on ? 'remove' : (on === undefined ? 'toggle' : 'add')](this.app.opt.cOff);
+    on = on ?? this.app.vis(n);
+    this.app.fire('toggle', {n, on});
   }
 
   toggleDependent(d) {

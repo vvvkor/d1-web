@@ -87,6 +87,7 @@
 		}
 		checkApi(); // d1.listen('init', checkApi);
 		reportScreen();
+		d1.listen(['init', 'options', 'plugin', 'arrange', 'plugins', 'toggle', 'modal', 'active', 'fetch', 'swipe', 'click', 'keydown', 'hashchange', 'input', 'submit'], e => console.log('EVENT', e.type, e));
 	});
 </script>
 
@@ -783,11 +784,11 @@ let double = function (x) {
 		<h2 class="" id="dynamic">Dynamic content <b class="small btn bg-e hide-js" title="Requires JavaScript">JS</b></h2>
 		
 		<div class="pad mar shade">
-			<a href="#insert" onclick="plus.innerHTML = testHtml;">Insert</a>
-			<a href="#arrange" onclick="d1.fire('arrange', {n: plus});">Arrange</a>
-			<a href="#clone" onclick="clones.appendChild(plus.cloneNode(true))">Clone</a>
-			<a href="#clone" onclick="d1.fixIds(clones)">IDs</a>
-			<a href="#clear" onclick="plus.innerHTML = clones.innerHTML = '';">Clear</a>
+			<a href="#insert" onclick="plus.innerHTML = testHtml;return false;">Insert</a>
+			<a href="#arrange" onclick="d1.arrange(plus);return false;">Arrange</a>
+			<a href="#clone" onclick="clones.appendChild(plus.cloneNode(true));return false;">Clone</a>
+			<a href="#clone" onclick="d1.fixIds(clones);return false;">IDs</a>
+			<a href="#clear" onclick="plus.innerHTML = clones.innerHTML = '';return false;">Clear</a>
 			<div id="plus"></div>
 			<div id="clones"></div>
 		</div>

@@ -126,7 +126,7 @@ export default class extends Plugin {
             //e.unfire = true; // avoid unhash()
             const url = this.moved.dataset['swipe' + xy[2]];
             if (url) location.href = url;
-            else this.app.fire('swipe', {e, n: this.moved, x: xy[0], y: xy[1], dir: xy[2]});
+            this.app.fire('swipe', {e, n: this.moved, x: xy[0], y: xy[1], dir: xy[2], url});
             e.preventDefault();
             // console.log('swipe done', e.type, this.moved.tagName, xy[2], url);
             //}

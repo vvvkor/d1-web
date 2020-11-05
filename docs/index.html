@@ -69,16 +69,16 @@
 </script>
 
 	<!-- CDN --R E M O V E->
-		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.2/dist/d1.min.css" rel="stylesheet">
-		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.4.2/dist/d1.min.js" defer></script>
+		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.3/dist/d1.min.css" rel="stylesheet">
+		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.4.3/dist/d1.min.js" defer></script>
 		<noscript>
-			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.2/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.3/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- CDN -->
-		<link href="https://unpkg.com/d1-web@2.4.2/dist/d1.min.css" rel="stylesheet">
-		<script src="https://unpkg.com/d1-web@2.4.2/dist/d1.min.js" defer></script>
+		<link href="https://unpkg.com/d1-web@2.4.3/dist/d1.min.css" rel="stylesheet">
+		<script src="https://unpkg.com/d1-web@2.4.3/dist/d1.min.js" defer></script>
 		<noscript>
-			<link href="https://unpkg.com/d1-web@2.4.2/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://unpkg.com/d1-web@2.4.3/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- local-npm-src REMOVE -- >
 		<link href="../src/index.css" rel="stylesheet">
@@ -117,7 +117,7 @@ data-d1='{"hOk":"#yes","debug":false,"disable":[
 	<a href="#menu" class="pad -let hide-desktop icon-menu empty" title="Menu"><span>Menu</span></a>
 	<a href="#top" class="pad -let"><b>d1</b></a>
 	<code class="-pad -nobr hide-mobile">npm i d1-web</code>
-	<a class="shift pad text-n">v2.4.2</a>
+	<a class="shift pad text-n">v2.4.3</a>
 	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1-web" title="GitHub" class="pad -let">GitHub</a>
 	<a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="pad -let icon-download empty" ><span>Download</span></a>
 </div>
@@ -222,6 +222,7 @@ data-d1='{"hOk":"#yes","debug":false,"disable":[
 			<li><a href="#customize">Customization</a>
 			</ul>
 		<!--li><a href="#blocks">Images and icons</a-->
+		<li><a href="#hooks">Hooks</a>
 		<li><a href="#reference">Reference</a>
 	</ul>
 </div>
@@ -303,19 +304,19 @@ Inclusion of <code>d1.js</code> and <code>d1-icons.css</code> is optional.
 </ul>
 <div>
 	<div id="cdn-jsdelivr">
-		<pre><code class="language-html">&lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.2/dist/d1.min.css" rel="stylesheet"&gt;
-&lt;script src="https://cdn.jsdelivr.net/npm/d1-web@2.4.2/dist/d1.min.js"&gt;&lt;/script&gt;
+		<pre><code class="language-html">&lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.3/dist/d1.min.css" rel="stylesheet"&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/d1-web@2.4.3/dist/d1.min.js"&gt;&lt;/script&gt;
 &lt;noscript&gt;
-  &lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.2/dist/d1-icons.min.css" rel="stylesheet"&gt;
+  &lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.3/dist/d1-icons.min.css" rel="stylesheet"&gt;
 &lt;/noscript&gt;
 
 		</code></pre>
 	</div>
 	<div id="cdn-unpkg">
-		<pre><code class="language-html">&lt;link href="https://unpkg.com/d1-web@2.4.2/dist/d1.min.css" rel="stylesheet"&gt;
-&lt;script src="https://unpkg.com/d1-web@2.4.2/dist/d1.min.js"&gt;&lt;/script&gt;
+		<pre><code class="language-html">&lt;link href="https://unpkg.com/d1-web@2.4.3/dist/d1.min.css" rel="stylesheet"&gt;
+&lt;script src="https://unpkg.com/d1-web@2.4.3/dist/d1.min.js"&gt;&lt;/script&gt;
 &lt;noscript&gt;
-  &lt;link href="https://unpkg.com/d1-web@2.4.2/dist/d1-icons.min.css" rel="stylesheet"&gt;
+  &lt;link href="https://unpkg.com/d1-web@2.4.3/dist/d1-icons.min.css" rel="stylesheet"&gt;
 &lt;/noscript&gt		</code></pre>
 	</div>
 	<div id="cdn-unpkg-short">
@@ -2518,6 +2519,45 @@ Add URLs of swipe actions in some of <code>data-swipe-up</code>, <code>data-swip
 <a class="btn bg-i" href="#theme-config">Customize</a>
 
 
+
+
+<h2 id="hooks">Hooks</h2>
+
+<p>Use following code to add event listener:</p>
+<pre><code>d1.listen(<var>type</var>, <var>handler</var>);</code></pre>
+<dl>
+<dt>type</dt><dd>event type</dd>
+<dt>handler</dt><dd>function which receives <var>event</var> object as its single argument</dd>
+</dl>
+
+<div class="roll">
+<table class="let hover">
+	<caption>Event types</caption>
+	<thead>
+		<tr><th>Type<th>Description<th>Event object properties
+	</thead>
+	<tbody>
+	<tr><th>init<td>Starting framework initialization<td>&mdash;
+	<tr><th>options<td>Options are set<td>&mdash;
+	<tr><th>plugins<td>All plugins installed<td>&mdash;
+	
+	<tr><th>plugin<td>Plugin installed<td><var title="Plugin name" class="-tip">name</var>, <var title="Plugin instance" class="-tip">plugin</var>
+	<!--tr><th>arrange<td><td-->
+	<tr><th>toggle<td>Element visibility changed<td><var title="Target element" class="-tip">n</var>, <var title="Visibility (boolean)" class="-tip">on</var>
+	<tr><th>active<td>Toggler link activated or deactivated<td><var title="Target element" class="-tip">n</var>, <var title="Active state (boolean)" class="-tip">on</var>
+	<!--tr><th>modal<td><td-->
+	<tr><th>fetch<td>Asynchronous request completed<td><var title="XMLHttpRequest" class="-tip">request</var><!-- use request.responseText -->
+	<tr><th>swipe<td>Swipe executed on <a href="#swipe">swipe-charged</a> element<td><var title="Target element" class="-tip">n</var>, <var title="Swipe direction (Up, Down, Left, Right)" class="-tip">dir</var>
+	<!--
+	<tr><td>click<td><td>
+	<tr><td>keydown<td><td>
+	<tr><td>hashchange<td><td>
+	<tr><td>input<td><td>
+	<tr><td>submit<td><td>
+	-->
+	</tbody>
+</table>
+</div>
 
 
 <h2 id="reference">Reference</h2>

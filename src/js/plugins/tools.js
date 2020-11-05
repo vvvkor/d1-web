@@ -99,7 +99,7 @@ export default class extends Plugin {
     //this.app.dbg(['setclass?', c, on, q, e, box, sel]);
     if (c !== null && c !== undefined) {
       this.app.e(q, m => this.setClass(n, on, m, c));
-      this.app.fire('update', {q: q});
+      this.app.fire('update', {q});
     }
   }
 

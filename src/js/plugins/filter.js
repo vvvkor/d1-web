@@ -59,7 +59,7 @@ export default class extends Plugin {
     this.app.ee(n, this.opt.qItem, m => m.classList[this.match(m, f) ? 'remove' : 'add'](this.app.opt.cHide))
     this.app.ee(n, '[data-' + this.opt.dFilter + ']', m => this.setUsed(m, f));
     this.store(n, f);
-    this.app.fire('update', {n: n});
+    this.app.fire('update', {n});
   }
   
   match(n, f) {

@@ -41,8 +41,8 @@ export default class extends Plugin {
   
   process(n, x, before) {
     if (['copy', 'del', 'delete', 'delall', 'clear', 'hide'].indexOf(x) == -1) return false;
-    this.app.fire('beforeitem', {n: n, a: x});
-    let e = {n: n, a: x};
+    this.app.fire('beforeitem', {n, a: x});
+    let e = {n, a: x};
     if (x == 'copy') {
       if (before === undefined) before = n.classList.contains(this.app.opt.cHide);
       let m = n.parentNode.insertBefore(n.cloneNode(true), before ? n : n.nextSibling);

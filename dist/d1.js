@@ -1,4 +1,4 @@
-/*! d1-web v2.4.2 */
+/*! d1-web v2.4.3 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -129,7 +129,8 @@ var _default = /*#__PURE__*/function () {
       }
 
       this.app.fire('plugin', {
-        name: this.name
+        name: this.name,
+        plugin: this
       });
     }
   }, {
@@ -426,6 +427,13 @@ var _default = /*#__PURE__*/function () {
       //if (!e || !e.defaultPrevented)
 
       this.fire('after', e);
+    }
+  }, {
+    key: "arrange",
+    value: function arrange(n) {
+      if (n) this.fire('arrange', {
+        n: n
+      });
     } //plugins
 
   }, {
@@ -501,11 +509,16 @@ var _default = /*#__PURE__*/function () {
   }, {
     key: "fire",
     value: function fire(et, e) {
-      var _this4 = this;
+      var _e,
+          _this4 = this;
 
+      e = (_e = e) !== null && _e !== void 0 ? _e : {};
+      if (!e.type) e.type = et;
       this.dbg(['fire ' + et, e]);
       if (this.handlers[et]) this.handlers[et].forEach(function (h) {
-        return (e === null || e === void 0 ? void 0 : e.unfire) ? null : h.call(_this4, e);
+        var _e2;
+
+        return ((_e2 = e) === null || _e2 === void 0 ? void 0 : _e2.unfire) ? null : h.call(_this4, e);
       });
     }
   }, {
@@ -1029,7 +1042,9 @@ var _default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "onHash",
     value: function onHash(e) {
-      if ((e ? e.newURL : location.hash).match(new RegExp(this.opt.hUnhash + '$'))) return;
+      var _ref;
+
+      if ((_ref = e ? e.newURL : location.hash) === null || _ref === void 0 ? void 0 : _ref.match(new RegExp(this.opt.hUnhash + '$'))) return;
       this.app.dbg(['hashchange', location.hash, e === null || e === void 0 ? void 0 : e.newURL]);
       this.nEsc = 0;
       if (!location.hash || location.hash === this.app.opt.hClose) this.app.fire('esc', e);else {
@@ -1175,8 +1190,15 @@ var _default = /*#__PURE__*/function (_Plugin) {
     }
   }, {
     key: "tgl",
-    value: function tgl(d, on) {
-      if (d) d.classList[on ? 'remove' : on === undefined ? 'toggle' : 'add'](this.app.opt.cOff);
+    value: function tgl(n, on) {
+      var _on;
+
+      if (n) n.classList[on ? 'remove' : on === undefined ? 'toggle' : 'add'](this.app.opt.cOff);
+      on = (_on = on) !== null && _on !== void 0 ? _on : this.app.vis(n);
+      this.app.fire('toggle', {
+        n: n,
+        on: on
+      });
     }
   }, {
     key: "toggleDependent",
@@ -1880,7 +1902,9 @@ var _default = /*#__PURE__*/function (_Plugin) {
       if (f) req.addEventListener('load', function (e) {
         f(req);
 
-        _this3.app.fire('fetch', req);
+        _this3.app.fire('fetch', {
+          request: req
+        });
       });
       req.open('GET', url);
       req.send();
@@ -1888,7 +1912,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "receive",
     value: function receive(u, n, req, e) {
-      // this.app..parse(req.responseText)
+      // this.app.parse(req.responseText)
       var d = this.app.q(n.dataset.target);
 
       if (req.status == '200') {
@@ -5719,12 +5743,14 @@ var swipe_default = /*#__PURE__*/function (_Plugin) {
               //if (!e.type.match(/^touch/)) e.preventDefault(); // prevent click
               //e.unfire = true; // avoid unhash()
               var url = this.moved.dataset['swipe' + xy[2]];
-              if (url) location.href = url;else this.app.fire('swipe', {
+              if (url) location.href = url;
+              this.app.fire('swipe', {
                 e: e,
                 n: this.moved,
                 x: xy[0],
                 y: xy[1],
-                dir: xy[2]
+                dir: xy[2],
+                url: url
               });
               e.preventDefault(); // console.log('swipe done', e.type, this.moved.tagName, xy[2], url);
               //}

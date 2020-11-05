@@ -61,6 +61,10 @@ export default class {
     //if (!e || !e.defaultPrevented)
     this.fire('after', e)
   }
+  
+  arrange(n) {
+    if (n) this.fire('arrange', {n});
+  }
 
   //plugins
 
@@ -100,6 +104,8 @@ export default class {
   //events
 
   fire(et, e) {
+    e = e ?? {}
+    if (!e.type) e.type = et
     this.dbg(['fire ' + et, e])
     if (this.handlers[et]) this.handlers[et].forEach(h => e?.unfire ? null : h.call(this, e))
   }
