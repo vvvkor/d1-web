@@ -87,7 +87,7 @@
 		}
 		checkApi(); // d1.listen('init', checkApi);
 		reportScreen();
-		d1.listen(['init', 'options', 'plugin', 'arrange', 'plugins', 'toggle', 'modal', 'active', 'fetch', 'swipe', 'click', 'keydown', 'hashchange', 'input', 'submit'], e => console.log('EVENT', e.type, e));
+		d1.listen(['init', 'options', 'plugin', 'arrange', 'plugins', 'toggle', 'modal', 'active', 'switch', 'request', 'response', 'swipe', 'item', 'filter',  'click', 'keydown', 'hashchange', 'input', 'submit'], e => console.log('EVENT', e.type, e));
 	});
 </script>
 
@@ -137,6 +137,7 @@
 		data-swipe-right="#menu"
 		data-swipe-left="#theme-config"
 		data-swipe-down="#down"
+		data-swipe-up
 		data-d1='{"debug":false,"disable":["x"],"plug":{"toggle":{"keepHash":true},"theme":{"fonts":["sans-serif","serif","monospace","PT Sans","Roboto Slab"]}}}'>
 
 <!--div class="bg-w">
@@ -643,7 +644,6 @@ let double = function (x) {
 
 		<div class="mar pad shade">
 			<p>
-			Highlight: 
 			<a href="#x" data-nodes="#code abbr" data-set="bg-w" class="hover">abbreviation</a>
 			<label><input type="checkbox" data-nodes="#code code" data-set="btn bg-i"> code</label>
 			<select data-nodes="#code b">
@@ -654,6 +654,7 @@ let double = function (x) {
 				<option value="text-i">info</option>
 				<option value="text-n">note</option>
 			</select>
+			<label><input type="checkbox" data-nodes="#code input" data-set="radio" data-unset="checkbox" data-attr="type"> input</label>
 			<!--
 				<label><input type="radio" name="r" data-nodes="#code b" value="bg-e"> e</label>
 				<label><input type="radio" name="r" data-nodes="#code b" value="bg-w"> w</label>
@@ -668,7 +669,8 @@ let double = function (x) {
 <!-- HTML -->
 <abbr title="Hypertext Markup Language">HTML</abbr>
 <code>code</code>
-<b>sample</b>.
+<b>sample</b>
+<input type="checkbox">.
 			</div>
 		</div>
 		

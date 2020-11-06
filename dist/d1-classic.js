@@ -1,4 +1,4 @@
-/*! d1-web v2.4.3 */
+/*! d1-web v2.4.4 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -1898,16 +1898,19 @@ var _default = /*#__PURE__*/function (_Plugin) {
       var _this3 = this;
 
       if (url && this.app.typeOf(url) === 'array') url = _util_url_js__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].build(url[0], url[1]);
-      var req = new XMLHttpRequest();
-      if (f) req.addEventListener('load', function (e) {
-        f(req);
-
-        _this3.app.fire('fetch', {
-          request: req
+      var request = new XMLHttpRequest();
+      request.addEventListener('load', function (e) {
+        _this3.app.fire('response', {
+          request: request
         });
+
+        if (f) f(request);
       });
-      req.open('GET', url);
-      req.send();
+      this.app.fire('request', {
+        request: request
+      });
+      request.open('GET', url);
+      request.send();
     }
   }, {
     key: "receive",

@@ -87,23 +87,23 @@
 		}
 		checkApi(); // d1.listen('init', checkApi);
 		reportScreen();
-		d1.listen(['init', 'options', 'plugin', 'arrange', 'plugins', 'toggle', 'modal', 'active', 'fetch', 'swipe', 'click', 'keydown', 'hashchange', 'input', 'submit'], e => console.log('EVENT', e.type, e));
+		d1.listen(['init', 'options', 'plugin', 'arrange', 'plugins', 'toggle', 'modal', 'active', 'switch', 'request', 'response', 'swipe', 'item', 'filter',  'click', 'keydown', 'hashchange', 'input', 'submit'], e => console.log('EVENT', e.type, e));
 	});
 </script>
 
 	<!--link href="https://unpkg.com/normalize.css@8.0.1/normalize.css" rel="stylesheet"-->
 	<!-- "" replaced with ""  -->
 	<!-- CDN --R E M O V E->
-		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.3/dist/d1.min.css" rel="stylesheet">
-		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.4.3/dist/d1.min.js" defer></script>
+		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.4/dist/d1.min.css" rel="stylesheet">
+		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.4.4/dist/d1.min.js" defer></script>
 		<noscript>
-			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.3/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.4/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- CDN -->
-		<link href="https://unpkg.com/d1-web@2.4.3/dist/d1.min.css" rel="stylesheet">
-		<script src="https://unpkg.com/d1-web@2.4.3/dist/d1.min.js" defer></script>
+		<link href="https://unpkg.com/d1-web@2.4.4/dist/d1.min.css" rel="stylesheet">
+		<script src="https://unpkg.com/d1-web@2.4.4/dist/d1.min.js" defer></script>
 		<noscript>
-			<link href="https://unpkg.com/d1-web@2.4.3/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://unpkg.com/d1-web@2.4.4/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- local-npm-src REMOVE -- >
 		<link href="../src/index.css" rel="stylesheet">
@@ -137,6 +137,7 @@
 		data-swipe-right="#menu"
 		data-swipe-left="#theme-config"
 		data-swipe-down="#down"
+		data-swipe-up
 		data-d1='{"debug":false,"disable":["x"],"plug":{"toggle":{"keepHash":true},"theme":{"fonts":["sans-serif","serif","monospace","PT Sans","Roboto Slab"]}}}'>
 
 <!--div class="bg-w">
@@ -158,11 +159,11 @@ Text
 	<header class="bg -bg-n -topbar -toggle">
 		<div class="hide-desktop">
 			<a href="#nav" class="pad hover icon-menu empty" title="Menu"><span>Menu</span></a>
-			<a href="?" class="pad"><b>d1</b> <span class="text-n">v2.4.3</span></a>
+			<a href="?" class="pad"><b>d1</b> <span class="text-n">v2.4.4</span></a>
 		</div>
 		
 		<ul class="nav flip hover target-mobile" id="nav">
-			<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v2.4.3</span></a></li>
+			<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v2.4.4</span></a></li>
 			<li><a href="index.html" class="icon-text">Docs</a>
 			<li><a href="https://github.com/vvvkor/d1-web" class="icon-folder" >GitHub</a>
 			<li><a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="icon-download empty-desktop" title="Download"><span>Download</span></a>
@@ -643,7 +644,6 @@ let double = function (x) {
 
 		<div class="mar pad shade">
 			<p>
-			Highlight: 
 			<a href="#x" data-nodes="#code abbr" data-set="bg-w" class="hover">abbreviation</a>
 			<label><input type="checkbox" data-nodes="#code code" data-set="btn bg-i"> code</label>
 			<select data-nodes="#code b">
@@ -654,6 +654,7 @@ let double = function (x) {
 				<option value="text-i">info</option>
 				<option value="text-n">note</option>
 			</select>
+			<label><input type="checkbox" data-nodes="#code input" data-set="radio" data-unset="checkbox" data-attr="type"> input</label>
 			<!--
 				<label><input type="radio" name="r" data-nodes="#code b" value="bg-e"> e</label>
 				<label><input type="radio" name="r" data-nodes="#code b" value="bg-w"> w</label>
@@ -668,7 +669,8 @@ let double = function (x) {
 <!-- HTML -->
 <abbr title="Hypertext Markup Language">HTML</abbr>
 <code>code</code>
-<b>sample</b>.
+<b>sample</b>
+<input type="checkbox">.
 			</div>
 		</div>
 		

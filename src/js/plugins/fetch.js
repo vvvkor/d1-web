@@ -29,10 +29,14 @@ export default class extends Plugin {
 
   fetch(url, f) {
     if(url && this.app.typeOf(url) === 'array') url = Url.build(url[0], url[1]);
-    let req = new XMLHttpRequest();
-    if (f) req.addEventListener('load', e => { f(req); this.app.fire('fetch', {request: req}); } );
-    req.open('GET', url);
-    req.send();
+    let request = new XMLHttpRequest();
+    request.addEventListener('load', e => {
+      this.app.fire('response', {request});
+      if (f) f(request);
+    });
+    this.app.fire('request', {request});
+    request.open('GET', url);
+    request.send();
   }
 
   receive(u, n, req, e) {

@@ -2183,7 +2183,7 @@ let double = function(x){
 <h3 id="swipe">Swipe</h3>
 
 <p>Add <code>.swipe</code> class to the element.
-Add URLs of swipe actions in some of <code>data-swipe-up</code>, <code>data-swipe-down</code>, <code>data-swipe-left</code>, <code>data-swipe-right</code> attributes.
+Allowed swipe directions are defined by the presence of <code>data-swipe-up</code>, <code>data-swipe-down</code>, <code>data-swipe-left</code>, <code>data-swipe-right</code> attributes. Non-empty values of these attributes are used as URLs.
 <p>To drag element while swiping, add also <code>.drag</code> class.
 
 <div class="code">
@@ -2524,30 +2524,34 @@ Add URLs of swipe actions in some of <code>data-swipe-up</code>, <code>data-swip
 <h2 id="hooks">Hooks</h2>
 
 <p>Use following code to add event listener:</p>
-<pre><code>d1.listen(<var>type</var>, <var>handler</var>);</code></pre>
+<pre><code class="language-js">d1.listen(<var>type</var>, <var>handler</var>);</code></pre>
 <dl>
 <dt>type</dt><dd>event type</dd>
 <dt>handler</dt><dd>function which receives <var>event</var> object as its single argument</dd>
 </dl>
 
 <div class="roll">
-<table class="let hover">
+<table class="let hover flip">
 	<caption>Event types</caption>
 	<thead>
-		<tr><th>Type<th>Description<th>Event object properties
+		<tr><th>Type<th>Description<th>Plugin<th>Event object properties
 	</thead>
 	<tbody>
-	<tr><th>init<td>Starting framework initialization<td>&mdash;
-	<tr><th>options<td>Options are set<td>&mdash;
-	<tr><th>plugins<td>All plugins installed<td>&mdash;
+	<tr><th>init<td>Starting framework initialization<td class="text-n">core<td>&mdash;
+	<tr><th>options<td>Options are set<td class="text-n">core<td>&mdash;
+	<tr><th>plugins<td>All plugins installed<td class="text-n">core<td>&mdash;
 	
-	<tr><th>plugin<td>Plugin installed<td><var title="Plugin name" class="-tip">name</var>, <var title="Plugin instance" class="-tip">plugin</var>
+	<tr><th>plugin<td>Plugin installed<td class="text-n">core<td><var title="Plugin name" class="-tip">name</var>, <var title="Plugin instance" class="-tip">plugin</var>
 	<!--tr><th>arrange<td><td-->
-	<tr><th>toggle<td>Element visibility changed<td><var title="Target element" class="-tip">n</var>, <var title="Visibility (boolean)" class="-tip">on</var>
-	<tr><th>active<td>Toggler link activated or deactivated<td><var title="Target element" class="-tip">n</var>, <var title="Active state (boolean)" class="-tip">on</var>
+	<tr><th>toggle<td>Element visibility changed<td><a href="#components">toggle</a><td><var title="Target element" class="-tip">n</var>, <var title="Visibility (boolean)" class="-tip">on</var>
+	<tr><th>active<td>Toggler link activated or deactivated<td><a href="#components">toggle</a><td><var title="Target element" class="-tip">n</var>, <var title="Active state (boolean)" class="-tip">on</var>
+	<tr><th>switch<td>Element's attribute switched<td><a href="#toggle-class">tools</a><td><var title="Target element" class="-tip">n</var>, <var title="Active state (boolean)" class="-tip">on</var>, <var title="Attribute" class="-tip">attr</var>, <var title="Value" class="-tip">val</var>
 	<!--tr><th>modal<td><td-->
-	<tr><th>fetch<td>Asynchronous request completed<td><var title="XMLHttpRequest" class="-tip">request</var><!-- use request.responseText -->
-	<tr><th>swipe<td>Swipe executed on <a href="#swipe">swipe-charged</a> element<td><var title="Target element" class="-tip">n</var>, <var title="Swipe direction (Up, Down, Left, Right)" class="-tip">dir</var>
+	<tr><th>request<td>Before asynchronous request<td><a href="#fetch">fetch</a><td><var title="XMLHttpRequest" class="-tip">request</var><!-- use request.responseText -->
+	<tr><th>response<td>Asynchronous request completed<td><a href="#fetch">fetch</a><td><var title="XMLHttpRequest" class="-tip">request</var><!-- use request.responseText -->
+	<tr><th>item<td>Item added or deleted<td><a href="#items">items</a><td><var title="Target element" class="-tip">n</var>, <var title="Parent or prototype element" class="-tip">p</var>, <var title="Operation" class="-tip">a</var>
+	<tr><th>filter<td>Items fitered<td><a href="#filters">filter</a><td><var title="Items container" class="-tip">n</var>, <var title="Filter data" class="-tip">f</var>
+	<tr><th>swipe<td>Swipe executed on swipe-charged element<td><a href="#swipe">swipe</a><td><var title="Target element" class="-tip">n</var>, <var title="Swipe direction (Up, Down, Left, Right)" class="-tip">dir</var>
 	<!--
 	<tr><td>click<td><td>
 	<tr><td>keydown<td><td>

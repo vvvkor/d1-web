@@ -64,12 +64,12 @@ export default class extends Plugin {
     let sel = (n.type == 'radio' || n.tagName == 'SELECT');
     let u = sel ? null /*''*/ : n.dataset.unset;
     let attr = n.dataset.attr || 'class';
+    let val = on ? c : (u || '');
     if (attr !== 'class') {
-      let v = on ? c : (u || '');
-      if (v) m.setAttribute(attr, v);
+      if (val) m.setAttribute(attr, val);
       else m.removeAttribute(attr);
     }
-    else if (u !== null && u !== undefined) m.className = on ? c : (u || '');
+    else if (u !== null && u !== undefined) m.className = val;
     else {
       if (sel) {
         //unset other select/radio values
@@ -81,6 +81,8 @@ export default class extends Plugin {
       c.split(/\s+/).filter(cc => cc).forEach(cc => m.classList[on ? 'add' : 'remove'](cc));
     }
     n.classList[on ? 'add' : 'remove'](this.app.opt.cAct);
+    this.app.fire('active', {n, on});
+    this.app.fire('switch', {n: m, on, attr, val/*, unset: (attr === 'class' && !u) ? (on ? '' : c) : null*/});
     this.store(n, sel ? n.value : ((n.type == 'checkbox' ? n.checked : n.classList.contains(this.app.opt.cAct)) ? '1' : ''));
   }
 

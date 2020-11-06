@@ -1,4 +1,4 @@
-/*! d1-web v2.4.3 */
+/*! d1-web v2.4.4 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -1898,16 +1898,19 @@ var _default = /*#__PURE__*/function (_Plugin) {
       var _this3 = this;
 
       if (url && this.app.typeOf(url) === 'array') url = _util_url_js__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].build(url[0], url[1]);
-      var req = new XMLHttpRequest();
-      if (f) req.addEventListener('load', function (e) {
-        f(req);
-
-        _this3.app.fire('fetch', {
-          request: req
+      var request = new XMLHttpRequest();
+      request.addEventListener('load', function (e) {
+        _this3.app.fire('response', {
+          request: request
         });
+
+        if (f) f(request);
       });
-      req.open('GET', url);
-      req.send();
+      this.app.fire('request', {
+        request: request
+      });
+      request.open('GET', url);
+      request.send();
     }
   }, {
     key: "receive",
@@ -4589,11 +4592,11 @@ var tools_default = /*#__PURE__*/function (_Plugin) {
       /*''*/
       : n.dataset.unset;
       var attr = n.dataset.attr || 'class';
+      var val = on ? c : u || '';
 
       if (attr !== 'class') {
-        var v = on ? c : u || '';
-        if (v) m.setAttribute(attr, v);else m.removeAttribute(attr);
-      } else if (u !== null && u !== undefined) m.className = on ? c : u || '';else {
+        if (val) m.setAttribute(attr, val);else m.removeAttribute(attr);
+      } else if (u !== null && u !== undefined) m.className = val;else {
         if (sel) {
           //unset other select/radio values
           var _u = n.type == 'radio' ? this.app.qq('input[type="radio"][name="' + n.name + '"]').map(function (nn) {
@@ -4620,6 +4623,18 @@ var tools_default = /*#__PURE__*/function (_Plugin) {
       }
 
       n.classList[on ? 'add' : 'remove'](this.app.opt.cAct);
+      this.app.fire('active', {
+        n: n,
+        on: on
+      });
+      this.app.fire('switch', {
+        n: m,
+        on: on,
+        attr: attr,
+        val: val
+        /*, unset: (attr === 'class' && !u) ? (on ? '' : c) : null*/
+
+      });
       this.store(n, sel ? n.value : (n.type == 'checkbox' ? n.checked : n.classList.contains(this.app.opt.cAct)) ? '1' : '');
     }
   }, {
@@ -5218,14 +5233,14 @@ var items_default = /*#__PURE__*/function (_Plugin) {
     key: "process",
     value: function process(n, x, before) {
       if (['copy', 'del', 'delete', 'delall', 'clear', 'hide'].indexOf(x) == -1) return false;
-      this.app.fire('beforeitem', {
-        n: n,
-        a: x
-      });
       var e = {
         n: n,
         a: x
       };
+      this.app.fire('beforeitem', {
+        n: n,
+        a: x
+      });
 
       if (x == 'copy') {
         if (before === undefined) before = n.classList.contains(this.app.opt.cHide);
@@ -5252,7 +5267,7 @@ var items_default = /*#__PURE__*/function (_Plugin) {
         n.classList.add(this.app.opt.cHide);
       }
 
-      this.app.fire('afteritem', e);
+      this.app.fire('item', e);
       return true;
     }
   }]);
@@ -5316,10 +5331,10 @@ var filter_default = /*#__PURE__*/function (_Plugin) {
         return _this2.prepare(n);
       });
       this.app.h('click', 'a[data-' + this.opt.dFilter + ']', function (e) {
-        return _this2.applyControl(e.recv);
+        return _this2.applyControl(e);
       });
       this.app.h('input', ':not(a)[data-' + this.opt.dFilter + ']', function (e) {
-        return _this2.applyControl(e.recv);
+        return _this2.applyControl(e);
       });
     }
   }, {
@@ -5334,7 +5349,9 @@ var filter_default = /*#__PURE__*/function (_Plugin) {
     }
   }, {
     key: "applyControl",
-    value: function applyControl(n) {
+    value: function applyControl(e) {
+      e.preventDefault();
+      var n = e.recv;
       var f = n.closest(this.opt.qFilter);
       var x = (n.dataset[this.opt.dFilter] || '').split(/=/, 2);
 
@@ -5379,6 +5396,10 @@ var filter_default = /*#__PURE__*/function (_Plugin) {
       this.store(n, f);
       this.app.fire('update', {
         n: n
+      });
+      this.app.fire('filter', {
+        n: n,
+        f: f
       });
     }
   }, {

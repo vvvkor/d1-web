@@ -17,8 +17,8 @@ export default class extends Plugin {
   
   init() {
     this.app.e(this.opt.qFilter, n => this.prepare(n));
-    this.app.h('click', 'a[data-' + this.opt.dFilter + ']', e => this.applyControl(e.recv));
-    this.app.h('input', ':not(a)[data-' + this.opt.dFilter + ']', e => this.applyControl(e.recv));
+    this.app.h('click', 'a[data-' + this.opt.dFilter + ']', e => this.applyControl(e));
+    this.app.h('input', ':not(a)[data-' + this.opt.dFilter + ']', e => this.applyControl(e));
   }
 
   prepare(n) {
@@ -28,7 +28,9 @@ export default class extends Plugin {
     this.apply(n);
   }
   
-  applyControl(n) {
+  applyControl(e) {
+    e.preventDefault();
+    const n = e.recv;
     let f = n.closest(this.opt.qFilter);
     let x = (n.dataset[this.opt.dFilter] || '').split(/=/, 2);
     if (f) {
@@ -60,6 +62,7 @@ export default class extends Plugin {
     this.app.ee(n, '[data-' + this.opt.dFilter + ']', m => this.setUsed(m, f));
     this.store(n, f);
     this.app.fire('update', {n});
+    this.app.fire('filter', {n, f});
   }
   
   match(n, f) {
