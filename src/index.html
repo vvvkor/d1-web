@@ -222,7 +222,7 @@ data-d1='{"hOk":"#yes","debug":false,"disable":[
 			<li><a href="#customize">Customization</a>
 			</ul>
 		<!--li><a href="#blocks">Images and icons</a-->
-		<li><a href="#hooks">Hooks</a>
+		<li><a href="#events">Events</a>
 		<li><a href="#reference">Reference</a>
 	</ul>
 </div>
@@ -2521,13 +2521,15 @@ Allowed swipe directions are defined by the presence of <code>data-swipe-up</cod
 
 
 
-<h2 id="hooks">Hooks</h2>
+<h2 id="events">Events</h2>
 
-<p>Use following code to add event listener:</p>
-<pre><code class="language-js">d1.listen(<var>type</var>, <var>handler</var>);</code></pre>
+<p>Use the following code to add event listener:</p>
+<pre><code class-x="language-js">d1.listen(<var>type</var>, <var>handler</var>);</code></pre>
 <dl>
-<dt>type</dt><dd>event type</dd>
-<dt>handler</dt><dd>function which receives <var>event</var> object as its single argument</dd>
+	<dt>type</dt>
+		<dd>event type</dd>
+	<dt>handler</dt>
+		<dd>function which receives <var>event</var> object as its single argument</dd>
 </dl>
 
 <div class="roll">
