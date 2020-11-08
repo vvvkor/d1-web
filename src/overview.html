@@ -82,12 +82,12 @@
 		console.log('d1 = ', d1);
 		window.addEventListener('resize', e => reportScreen(e), false);
 		if (d1.plugins.icons) {
-			d1.listen('init', injectIcon);
+			d1.listen('start', injectIcon);
 			d1.listen('ready', demoIcons);
 		}
 		checkApi(); // d1.listen('init', checkApi);
 		reportScreen();
-		d1.listen(['init', 'options', 'plugin', 'arrange', 'plugins', 'toggle', 'modal', 'active', 'switch', 'request', 'response', 'swipe', 'item', 'filter',  'click', 'keydown', 'hashchange', 'input', 'submit'], e => console.log('EVENT', e.type, e));
+		d1.listen(['start', 'options', 'plugin', 'arrange', 'plugins', 'toggle', 'modal', 'active', 'switch', 'request', 'response', 'swipe', 'item', 'filter',  'click', 'keydown', 'hashchange', 'input', 'submit'], e => console.log('EVENT', e.type, e));
 	});
 </script>
 
@@ -898,7 +898,7 @@ let double = function (x) {
 				<a id="gal1" href="#gal2" style="--img:url(https://picsum.photos/id/360/1000/700.jpg)" data-caption="1/3 - Red"  ></a>
 				<a id="gal2" href="#gal3" style="--img:url(https://picsum.photos/id/844/1000/700.jpg)" data-caption-x="2/3 - Green" ></a>
 				<a id="gal3" href="#gal1" style="--img:url(https://picsum.photos/id/830/1000/700.jpg)" data-caption="3/3 - Blue"></a>
-				<a class="close icon-close empty" href="#cancel"><span>Close</span></a>
+				<!--a class="close icon-close empty" href="#cancel"><span>Close</span></a-->
 			</div>
 			
 			<div class="drawer pad swipe drag" id="menu" data-swipe-left="#cancel">

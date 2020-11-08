@@ -28,7 +28,7 @@ export default class {
 
   init(opt) {
     document.body.classList.add(this.opt.cJs) // prepare body: anti-hover, anti-target
-    this.fire('init')
+    this.fire('start')
     //options
     if (!opt) {
       opt = document.body.dataset.d1
@@ -39,8 +39,6 @@ export default class {
     this.fire('options')
 
     this.initPlugins() // plugins
-    //this.fire('arrange', {n: document.body})
-    this.fire('plugins')
 
     // bind events
     this.b([window], 'hashchange', e => this.on('hashchange', e)) // on window
@@ -80,7 +78,13 @@ export default class {
   initPlugins() {
     if (this.opt.disable) this.opt.disable.forEach(p => delete this.plugins[p])
     this.dbg(['plugins', this.plugins])
-    Object.keys(this.plugins).forEach(k => this.plugins[k].install(this))
+    Object.keys(this.plugins).forEach(k => {
+      this.plugins[k].install(this)
+      this.fire('plugin', {name: k, plugin: this.plugins[k]})
+    })
+    this.fire('arrange') // , {n: document.body}
+    this.fire('init')
+    this.fire('plugins')
   }
   
   // call method of plugin

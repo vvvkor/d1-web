@@ -13,12 +13,8 @@ export default class {
     this.opt = opt;
     //
     this.app = app
-    this.init()
-    if (this.arrange) {
-      this.app.listen('arrange', e => this.arrange(e));
-      this.arrange({});
-    }
-    this.app.fire('plugin', {name: this.name, plugin: this});
+    this.app.listen('init', e => this.init());
+    if (this.arrange) this.app.listen('arrange', e => this.arrange(e));
   }
   
   init() {

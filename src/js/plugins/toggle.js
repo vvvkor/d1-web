@@ -59,20 +59,29 @@ export default class extends Plugin{
     this.opt.qTgl = this.opt.mediaSuffixes.concat(['']).map(x => /*'[id]' + */ '.' + app.opt.cToggle + x).join(', ')
     this.opt.qUnpop = [q.qPop, q.qNav, q.qDlg, q.qDrw/*, q.qGal*/].join(', ');
     this.opt.qUnpopOn = [q.qPop, q.qNav, q.qDlg, q.qDrw/*, q.qGal*/].map(n => n + ':not(.' + app.opt.cOff + ')').join(', ');
-    let togglers = [q.qTrg, q.qPop, q.qNav, q.qDlg, q.qTab, q.qTre, q.qDrw/*, q.qMedia/*, q.qGal*/].join(', ');
-    app.e(this.opt.qNav + ', ' + this.opt.qTre, n => this.attachSubNav(n)); //nav, tree: attach to links
+    this.arrangeOnce();
+  }
+  
+  arrangeOnce() {
+    const n = null;
+    const app = this.app;
+    const q = this.opt;
+    const togglers = [q.qTrg, q.qPop, q.qNav, q.qDlg, q.qTab, q.qTre, q.qDrw/*, q.qMedia/*, q.qGal*/].join(', ');
     app.e(togglers, n => this.initToggler(n)); //initialize togglers
     this.opt.mediaSuffixes.forEach(x => app.e(this.opt.qTrg + x, n => this.initToggler(n, x))); //initialize togglers by media
     //let autohide = [        q.qPop, q.qNav, q.qDlg, q.qTab, q.qAcc, q.qDrw, q.qMedia/*, q.qGal*/].join(', ');
     //app.e(autohide, n => this.tgl(n, 0)); //autohide
+    app.ee(n, this.opt.qNav + ', ' + this.opt.qTre, m => this.attachSubNav(m)); //nav, tree: attach to links
+    app.ee(n, this.opt.qGal + ':last-child', m => app.x(m, 1));//gal: auto add close link
+    app.ee(n, this.opt.qSubMem, m => m.classList.add(this.opt.cMem)); //initialize sub mem
+    app.ee(n, '[id]', m => this.restoreVisibility(m));//restore visibility
+    app.ee(n, this.opt.qTab + ':not(.'+app.opt.cOff+') ~ [id]:not(.'+app.opt.cOff+')', m => this.tgl(m, 0)); //undup tabs
+    app.ee(n, this.opt.qTab + ':first-child', m => app.a(m.parentNode.children).filter(m => app.vis(m)).length ? null : this.tgl(app.q(app.q('a[href^="#"]', m.parentNode.previousElementSibling).hash), 1));//inactive tabs: show first
+    app.ee(n, '.' + app.opt.cToggle + '[id]', m => this.hiliteLinks(m));//init links state
+  }
 
-    app.e(this.opt.qGal + ':last-child', n => app.x(n, 1));//gal: auto add close link
-    app.e(this.opt.qSubMem, n => n.classList.add(this.opt.cMem)); //initialize sub mem
-    app.e('[id]', n => this.restoreVisibility(n));//restore visibility
-    app.e(this.opt.qTab + ':not(.'+app.opt.cOff+') ~ [id]:not(.'+app.opt.cOff+')', n => this.tgl(n, 0)); //undup tabs
-    app.e(this.opt.qTab + ':first-child', n => app.a(n.parentNode.children).filter(m => app.vis(m)).length ? null : this.tgl(app.q(app.q('a[href^="#"]', n.parentNode.previousElementSibling).hash), 1));//inactive tabs: show first
-    app.e('.' + app.opt.cToggle + '[id]', n => this.hiliteLinks(n));//init links state
-    app.e(this.opt.qTip, n => { n.setAttribute('data-tip', n.title.replace(/\s\s+/g, '\n')); n.title = ''; });//init tooltips
+  arrange({n}) {
+    this.app.ee(n, this.opt.qTip, m => { m.setAttribute('data-tip', m.title.replace(/\s\s+/g, '\n')); m.removeAttribute('title'); });//init tooltips
   }
 
   modalStyle(e, src) {
@@ -238,7 +247,7 @@ export default class extends Plugin{
           this.toggleDependent(d);
           if (hist && this.opt.keepHash) this.addHistory(hist);
         }
-        this.hiliteLinks(d);
+        //this.hiliteLinks(d);
         this.storeVisibility(d);
         //if (!deep) this.modalStyle(d);
         if (!deep && d.matches(this.opt.qModal)){
@@ -253,6 +262,7 @@ export default class extends Plugin{
 
   tgl(n, on) {
     if (n) n.classList[on ? 'remove' : (on === undefined ? 'toggle' : 'add')](this.app.opt.cOff);
+    this.hiliteLinks(n);
     on = on ?? this.app.vis(n);
     this.app.fire('toggle', {n, on});
   }
@@ -304,7 +314,7 @@ export default class extends Plugin{
 
   hiliteLinks(d) {
     let v = this.app.vis(d);
-    this.app.e('a[href="#'+d.id+'"]', a => this.hiliteLink(a, v));
+    if(d.id) this.app.e('a[href="#' + d.id + '"]', a => this.hiliteLink(a, v));
   }
   
   hiliteLink(n, on) {

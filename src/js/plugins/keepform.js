@@ -14,15 +14,17 @@ export default class extends Plugin {
 
   init() {
     if (Object.fromEntries && FormData) {
-      const app = this.app
       let q = this.opt.qStore;
-      app.e(q, f => this.addControls(f));
-      app.e(this.opt.qRestore, f => this.restoreForm(f, true));
-      app.h(['change', 'input'], q, e => this.store(e));
-      app.h('click', q + ' a[href="#restore"]', e => this.restore(e));
-      app.h('click', q + ' a[href="#reset"]', e => this.resetForm(e));
-      app.h('click', q + ' a[href="#unstore"]', e => this.unstore(e));
+      this.app.h(['change', 'input'], q, e => this.store(e));
+      this.app.h('click', q + ' a[href="#restore"]', e => this.restore(e));
+      this.app.h('click', q + ' a[href="#reset"]', e => this.resetForm(e));
+      this.app.h('click', q + ' a[href="#unstore"]', e => this.unstore(e));
     }
+  }
+  
+  arrange({n}){
+    this.app.ee(n, this.opt.qStore, f => this.addControls(f));
+    this.app.ee(n, this.opt.qRestore, f => this.restoreForm(f, true));
   }
   
   addControls(f) {

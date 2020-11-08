@@ -106,6 +106,9 @@ export default class extends Plugin {
   }
 
   smartHeading(n) {
+    if (n.dataset.ready) return;
+    n.dataset.ready = 1;
+    
     let d = this.app.ins('div', '', {});
     while (n.firstChild) d.appendChild(n.firstChild);
     n.appendChild(d);

@@ -1,4 +1,4 @@
-/*! d1-web v2.4.5 */
+/*! d1-web v2.4.6 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -119,18 +119,11 @@ var _default = /*#__PURE__*/function () {
       this.opt = opt; //
 
       this.app = app;
-      this.init();
-
-      if (this.arrange) {
-        this.app.listen('arrange', function (e) {
-          return _this.arrange(e);
-        });
-        this.arrange({});
-      }
-
-      this.app.fire('plugin', {
-        name: this.name,
-        plugin: this
+      this.app.listen('init', function (e) {
+        return _this.init();
+      });
+      if (this.arrange) this.app.listen('arrange', function (e) {
+        return _this.arrange(e);
       });
     }
   }, {
@@ -387,7 +380,7 @@ var _default = /*#__PURE__*/function () {
 
       document.body.classList.add(this.opt.cJs); // prepare body: anti-hover, anti-target
 
-      this.fire('init'); //options
+      this.fire('start'); //options
 
       if (!opt) {
         opt = document.body.dataset.d1;
@@ -398,9 +391,7 @@ var _default = /*#__PURE__*/function () {
       this.dbg(['opt', this.opt]);
       this.fire('options');
       this.initPlugins(); // plugins
-      //this.fire('arrange', {n: document.body})
-
-      this.fire('plugins'); // bind events
+      // bind events
 
       this.b([window], 'hashchange', function (e) {
         return _this.on('hashchange', e);
@@ -463,8 +454,17 @@ var _default = /*#__PURE__*/function () {
       });
       this.dbg(['plugins', this.plugins]);
       Object.keys(this.plugins).forEach(function (k) {
-        return _this3.plugins[k].install(_this3);
+        _this3.plugins[k].install(_this3);
+
+        _this3.fire('plugin', {
+          name: k,
+          plugin: _this3.plugins[k]
+        });
       });
+      this.fire('arrange'); // , {n: document.body}
+
+      this.fire('init');
+      this.fire('plugins');
     } // call method of plugin
 
   }, {
@@ -912,54 +912,68 @@ var _default = /*#__PURE__*/function (_Plugin) {
       ].map(function (n) {
         return n + ':not(.' + app.opt.cOff + ')';
       }).join(', ');
+      this.arrangeOnce();
+    }
+  }, {
+    key: "arrangeOnce",
+    value: function arrangeOnce() {
+      var _this3 = this;
+
+      var n = null;
+      var app = this.app;
+      var q = this.opt;
       var togglers = [q.qTrg, q.qPop, q.qNav, q.qDlg, q.qTab, q.qTre, q.qDrw
       /*, q.qMedia/*, q.qGal*/
       ].join(', ');
-      app.e(this.opt.qNav + ', ' + this.opt.qTre, function (n) {
-        return _this2.attachSubNav(n);
-      }); //nav, tree: attach to links
-
       app.e(togglers, function (n) {
-        return _this2.initToggler(n);
+        return _this3.initToggler(n);
       }); //initialize togglers
 
       this.opt.mediaSuffixes.forEach(function (x) {
-        return app.e(_this2.opt.qTrg + x, function (n) {
-          return _this2.initToggler(n, x);
+        return app.e(_this3.opt.qTrg + x, function (n) {
+          return _this3.initToggler(n, x);
         });
       }); //initialize togglers by media
       //let autohide = [        q.qPop, q.qNav, q.qDlg, q.qTab, q.qAcc, q.qDrw, q.qMedia/*, q.qGal*/].join(', ');
       //app.e(autohide, n => this.tgl(n, 0)); //autohide
 
-      app.e(this.opt.qGal + ':last-child', function (n) {
-        return app.x(n, 1);
+      app.ee(n, this.opt.qNav + ', ' + this.opt.qTre, function (m) {
+        return _this3.attachSubNav(m);
+      }); //nav, tree: attach to links
+
+      app.ee(n, this.opt.qGal + ':last-child', function (m) {
+        return app.x(m, 1);
       }); //gal: auto add close link
 
-      app.e(this.opt.qSubMem, function (n) {
-        return n.classList.add(_this2.opt.cMem);
+      app.ee(n, this.opt.qSubMem, function (m) {
+        return m.classList.add(_this3.opt.cMem);
       }); //initialize sub mem
 
-      app.e('[id]', function (n) {
-        return _this2.restoreVisibility(n);
+      app.ee(n, '[id]', function (m) {
+        return _this3.restoreVisibility(m);
       }); //restore visibility
 
-      app.e(this.opt.qTab + ':not(.' + app.opt.cOff + ') ~ [id]:not(.' + app.opt.cOff + ')', function (n) {
-        return _this2.tgl(n, 0);
+      app.ee(n, this.opt.qTab + ':not(.' + app.opt.cOff + ') ~ [id]:not(.' + app.opt.cOff + ')', function (m) {
+        return _this3.tgl(m, 0);
       }); //undup tabs
 
-      app.e(this.opt.qTab + ':first-child', function (n) {
-        return app.a(n.parentNode.children).filter(function (m) {
+      app.ee(n, this.opt.qTab + ':first-child', function (m) {
+        return app.a(m.parentNode.children).filter(function (m) {
           return app.vis(m);
-        }).length ? null : _this2.tgl(app.q(app.q('a[href^="#"]', n.parentNode.previousElementSibling).hash), 1);
+        }).length ? null : _this3.tgl(app.q(app.q('a[href^="#"]', m.parentNode.previousElementSibling).hash), 1);
       }); //inactive tabs: show first
 
-      app.e('.' + app.opt.cToggle + '[id]', function (n) {
-        return _this2.hiliteLinks(n);
+      app.ee(n, '.' + app.opt.cToggle + '[id]', function (m) {
+        return _this3.hiliteLinks(m);
       }); //init links state
-
-      app.e(this.opt.qTip, function (n) {
-        n.setAttribute('data-tip', n.title.replace(/\s\s+/g, '\n'));
-        n.title = '';
+    }
+  }, {
+    key: "arrange",
+    value: function arrange(_ref) {
+      var n = _ref.n;
+      this.app.ee(n, this.opt.qTip, function (m) {
+        m.setAttribute('data-tip', m.title.replace(/\s\s+/g, '\n'));
+        m.removeAttribute('title');
       }); //init tooltips
     }
   }, {
@@ -1042,9 +1056,9 @@ var _default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "onHash",
     value: function onHash(e) {
-      var _ref;
+      var _ref2;
 
-      if ((_ref = e ? e.newURL : location.hash) === null || _ref === void 0 ? void 0 : _ref.match(new RegExp(this.opt.hUnhash + '$'))) return;
+      if ((_ref2 = e ? e.newURL : location.hash) === null || _ref2 === void 0 ? void 0 : _ref2.match(new RegExp(this.opt.hUnhash + '$'))) return;
       this.app.dbg(['hashchange', location.hash, e === null || e === void 0 ? void 0 : e.newURL]);
       this.nEsc = 0;
       if (!location.hash || location.hash === this.app.opt.hClose) this.app.fire('esc', e);else {
@@ -1164,9 +1178,9 @@ var _default = /*#__PURE__*/function (_Plugin) {
           if (!deep) {
             this.toggleDependent(d);
             if (hist && this.opt.keepHash) this.addHistory(hist);
-          }
+          } //this.hiliteLinks(d);
 
-          this.hiliteLinks(d);
+
           this.storeVisibility(d); //if (!deep) this.modalStyle(d);
 
           if (!deep && d.matches(this.opt.qModal)) {
@@ -1194,6 +1208,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
       var _on;
 
       if (n) n.classList[on ? 'remove' : on === undefined ? 'toggle' : 'add'](this.app.opt.cOff);
+      this.hiliteLinks(n);
       on = (_on = on) !== null && _on !== void 0 ? _on : this.app.vis(n);
       this.app.fire('toggle', {
         n: n,
@@ -1203,22 +1218,22 @@ var _default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "toggleDependent",
     value: function toggleDependent(d) {
-      var _this3 = this;
+      var _this4 = this;
 
       if (this.app.vis(d)) {
         if (d.matches(this.opt.qDlg)) ; //this.app.e(this.opt.qDlg, n => n == d ? null : this.toggle(n, false, 1)); //hide other dialogs
         else if (d.matches(this.opt.qTab)) this.app.e(d.parentNode.children, function (n) {
-            return n == d ? null : _this3.toggle(n, false, 1);
+            return n == d ? null : _this4.toggle(n, false, 1);
           }); //hide sibling tabs
           else if (d.matches(this.opt.qAcc)) this.app.ee(d.closest(this.opt.qAccRoot), this.opt.qAcc, function (n) {
-              return n.contains(d) ? null : _this3.toggle(n, false, 1);
+              return n.contains(d) ? null : _this4.toggle(n, false, 1);
             }); //hide other ul
       }
     }
   }, {
     key: "unpop",
     value: function unpop(x, force) {
-      var _this4 = this;
+      var _this5 = this;
 
       var keep = [x];
 
@@ -1238,16 +1253,16 @@ var _default = /*#__PURE__*/function (_Plugin) {
       if (!force) {
         // to close nested subsequently
         nn = nn.filter(function (n) {
-          return !_this4.app.q(_this4.opt.qUnpopOn, n);
+          return !_this5.app.q(_this5.opt.qUnpopOn, n);
         });
       } // to close vRel subsequently
 
 
       nn = nn.filter(function (n) {
-        return !_this4.containsRels(n);
+        return !_this5.containsRels(n);
       });
       this.app.e(nn, function (n) {
-        return _this4.toggle(n, false, !force);
+        return _this5.toggle(n, false, !force);
       });
     }
   }, {
@@ -1280,11 +1295,11 @@ var _default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "hiliteLinks",
     value: function hiliteLinks(d) {
-      var _this5 = this;
+      var _this6 = this;
 
       var v = this.app.vis(d);
-      this.app.e('a[href="#' + d.id + '"]', function (a) {
-        return _this5.hiliteLink(a, v);
+      if (d.id) this.app.e('a[href="#' + d.id + '"]', function (a) {
+        return _this6.hiliteLink(a, v);
       });
     }
   }, {
@@ -1826,126 +1841,6 @@ if (!Element.prototype.closest) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _default; });
-/* harmony import */ var _plugin_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-/* harmony import */ var _util_url_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-/*! fetch - asynchronous requests */
-// import toggle from './toggle.js'
-// import dialog from './dialog.js'
-
-
-
-var _default = /*#__PURE__*/function (_Plugin) {
-  _inherits(_default, _Plugin);
-
-  var _super = _createSuper(_default);
-
-  function _default() {
-    _classCallCheck(this, _default);
-
-    return _super.call(this, 'fetch'); // this.opt = {}
-  }
-
-  _createClass(_default, [{
-    key: "init",
-    value: function init() {
-      var _this = this;
-
-      this.app.h('click', 'a[data-target]', function (e) {
-        return _this.onClick(e);
-      });
-    }
-  }, {
-    key: "onClick",
-    value: function onClick(e) {
-      e.preventDefault();
-      this.fetchBy(e.recv);
-    }
-  }, {
-    key: "fetchBy",
-    value: function fetchBy(n, f) {
-      var _this2 = this;
-
-      var u = n.getAttribute('href') || '';
-      this.fetch(u, function (r) {
-        return f ? f(n, r) : _this2.receive(u, n, r);
-      });
-    }
-  }, {
-    key: "fetch",
-    value: function fetch(url, f) {
-      var _this3 = this;
-
-      if (url && this.app.typeOf(url) === 'array') url = _util_url_js__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].build(url[0], url[1]);
-      var request = new XMLHttpRequest();
-      request.addEventListener('load', function (e) {
-        _this3.app.fire('response', {
-          request: request
-        });
-
-        if (f) f(request);
-      });
-      this.app.fire('request', {
-        request: request
-      });
-      request.open('GET', url);
-      request.send();
-    }
-  }, {
-    key: "receive",
-    value: function receive(u, n, req, e) {
-      // this.app.parse(req.responseText)
-      var d = this.app.q(n.dataset.target);
-
-      if (req.status == '200') {
-        var h = u.split('#');
-        var t = req.responseText;
-        t = h[1] ? JSON.stringify(this.app.path(this.app.parse(t), h[1])) : t; // console.log(h,t)
-
-        if (d) {
-          d.innerHTML = t;
-          var dlg = d.closest('.dlg[id]');
-          if (dlg) this.app.toggle(dlg, true);
-        } else {
-          this.app.dialog(n, t);
-        }
-      } else console.error('XHTTP request failed', req); //this.app.fire('after', e);
-
-    }
-  }]);
-
-  return _default;
-}(_plugin_js__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"]);
-
-
-
-/***/ }),
-/* 10 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _default; });
 /* harmony import */ var _util_dt_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
 /* harmony import */ var _plugin_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -2128,11 +2023,12 @@ var _default = /*#__PURE__*/function (_Plugin) {
         var ic = this.app.ins('span', '', 'input-tools calendar-tools nobr', n, 1); //icons container
 
         for (var i in this.opt.addIcons) {
+          var x = this.opt.addIcons[i];
           this.app.ins('', ' ', {}, ic);
-          this.app.ins('a', this.app.i.apply(this.app, this.opt.addIcons[i].slice(0, 2)), {
-            href: this.opt.addIcons[i][2],
+          this.app.ins('a', this.app.i.apply(this.app, x.slice(0, 2)), {
+            href: x[2],
             className: 'let'
-          }, ic);
+          }, ic); //this.app.ins('a', x[1], {href: x[2], className: 'let empty icon-' + x[0]}, ic);
         }
       }
 
@@ -2236,13 +2132,13 @@ var _default = /*#__PURE__*/function (_Plugin) {
         app.clr(this.win); //buttons
 
         var p1 = app.ins('p', '', 'c', this.win);
-        this.btn(this.opt.hNow, app.i('ok', '&check;'), p1);
-        this.btn('#prev-year', app.i('prev2', '&laquo;'), p1);
-        this.btn('#prev-month', app.i('prev', '&lsaquo;'), p1);
+        this.btn(this.opt.hNow, 'ok', '&check;', p1);
+        this.btn('#prev-year', 'prev2', '&laquo;', p1);
+        this.btn('#prev-month', 'prev', '&lsaquo;', p1);
         this.win.vNodeCur = app.ins('span', '', 'pad', p1);
-        this.btn('#next-month', app.i('next', '&rsaquo;'), p1);
-        this.btn('#next-year', app.i('next2', '&raquo;'), p1);
-        this.btn(this.opt.hCancel, app.i('close', '&#x2715;'), p1);
+        this.btn('#next-month', 'next', '&rsaquo;', p1);
+        this.btn('#next-year', 'next2', '&raquo;', p1);
+        this.btn(this.opt.hCancel, 'close', '&#x2715;', p1);
         app.ins('hr', '', {}, this.win); //dates
 
         this.win.vDays = app.ins('div', '', {}, this.win); //time
@@ -2251,13 +2147,13 @@ var _default = /*#__PURE__*/function (_Plugin) {
         this.win.vNodeTime = hm;
         app.ins('hr', '', {}, hm);
         var p2 = app.ins('p', '', 'c', hm);
-        this.btn('#prev-hour', app.i('prev', '&lsaquo;'), p2);
+        this.btn('#prev-hour', 'prev', '&lsaquo;', p2);
         this.win.vHours = app.ins('span', '', 'pad', p2);
-        this.btn('#next-hour', app.i('next', '&rsaquo;'), p2);
+        this.btn('#next-hour', 'next', '&rsaquo;', p2);
         app.ins('span', ':', 'pad', p2);
-        this.btn('#prev-min', app.i('prev', '&lsaquo;'), p2);
+        this.btn('#prev-min', 'prev', '&lsaquo;', p2);
         this.win.vMinutes = app.ins('span', '', 'pad', p2);
-        this.btn('#next-min', app.i('next', '&rsaquo;'), p2);
+        this.btn('#next-min', 'next', '&rsaquo;', p2); //this.app.pf('icons', 'arrange', {n: this.win});
       }
 
       this.update(n, x);
@@ -2313,11 +2209,12 @@ var _default = /*#__PURE__*/function (_Plugin) {
     }
   }, {
     key: "btn",
-    value: function btn(h, s, p) {
+    value: function btn(h, i, s, p) {
+      s = this.app.i(i, s);
       return this.app.ins('a', s, {
         href: h,
         className: this.opt.cBtn
-      }, p);
+      }, p); //return this.app.ins('a', s, {href: h, className: this.opt.cBtn + ' empty icon-' + i}, p);
     }
   }]);
 
@@ -2327,7 +2224,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2732,7 +2629,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3124,7 +3021,238 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
 
 /***/ }),
+/* 12 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _default; });
+/* harmony import */ var _plugin_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+/*! form - utilities for form inputs */
+
+
+var _default = /*#__PURE__*/function (_Plugin) {
+  _inherits(_default, _Plugin);
+
+  var _super = _createSuper(_default);
+
+  function _default() {
+    var _this;
+
+    _classCallCheck(this, _default);
+
+    _this = _super.call(this, 'form');
+    _this.opt = {};
+    return _this;
+  }
+
+  _createClass(_default, [{
+    key: "init",
+    value: function init() {
+      var _this2 = this;
+
+      this.app.h('click', 'a[href^="#"][data-value]', function (e) {
+        e.preventDefault();
+
+        _this2.setValue(e.recv);
+      });
+      this.app.h('click', 'input[data-group]', function (e) {
+        return _this2.checkBoxes(e.target);
+      });
+    }
+  }, {
+    key: "arrange",
+    value: function arrange(_ref) {
+      var _this3 = this;
+
+      var n = _ref.n;
+      this.app.ee(n, 'input[type="color"]', function (n) {
+        return _this3.prepareColor(n);
+      });
+    }
+  }, {
+    key: "checkBoxes",
+    value: function checkBoxes(n) {
+      this.app.ee(n.form, 'input[type="checkbox"][class~="' + (n.dataset.group || '') + '"]', function (m) {
+        return m.checked = n.checked;
+      });
+    }
+  }, {
+    key: "setValue",
+    value: function setValue(n) {
+      var d = this.app.q(n.hash);
+
+      if (d) {
+        d.value = n.dataset.value || '';
+        this.app.pf('toggle', 'unpop', d, true); // this.app.pf('toggle', 'modalStyle'); //generally not needed
+      }
+    }
+  }, {
+    key: "prepareColor",
+    value: function prepareColor(n) {
+      if (n.dataset.ready) return;
+      n.dataset.ready = 1;
+      var m = this.app.ins('input', '', {
+        type: 'text',
+        value: n.value,
+        size: 7,
+        className: 'color'
+      }, n, -1);
+      this.app.ins('', ' ', {}, m, 1);
+      this.app.b([n, m], 'input', function (e) {
+        return (e.target == n ? m : n).value = e.target.value;
+      });
+    }
+  }]);
+
+  return _default;
+}(_plugin_js__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"]);
+
+
+
+/***/ }),
 /* 13 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _default; });
+/* harmony import */ var _plugin_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var _util_url_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+/*! fetch - asynchronous requests */
+// import toggle from './toggle.js'
+// import dialog from './dialog.js'
+
+
+
+var _default = /*#__PURE__*/function (_Plugin) {
+  _inherits(_default, _Plugin);
+
+  var _super = _createSuper(_default);
+
+  function _default() {
+    _classCallCheck(this, _default);
+
+    return _super.call(this, 'fetch'); // this.opt = {}
+  }
+
+  _createClass(_default, [{
+    key: "init",
+    value: function init() {
+      var _this = this;
+
+      this.app.h('click', 'a[data-target]', function (e) {
+        return _this.onClick(e);
+      });
+    }
+  }, {
+    key: "onClick",
+    value: function onClick(e) {
+      e.preventDefault();
+      this.fetchBy(e.recv);
+    }
+  }, {
+    key: "fetchBy",
+    value: function fetchBy(n, f) {
+      var _this2 = this;
+
+      var u = n.getAttribute('href') || '';
+      this.fetch(u, function (r) {
+        return f ? f(n, r) : _this2.receive(u, n, r);
+      });
+    }
+  }, {
+    key: "fetch",
+    value: function fetch(url, f) {
+      var _this3 = this;
+
+      if (url && this.app.typeOf(url) === 'array') url = _util_url_js__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].build(url[0], url[1]);
+      var request = new XMLHttpRequest();
+      request.addEventListener('load', function (e) {
+        _this3.app.fire('response', {
+          request: request
+        });
+
+        if (f) f(request);
+      });
+      this.app.fire('request', {
+        request: request
+      });
+      request.open('GET', url);
+      request.send();
+    }
+  }, {
+    key: "receive",
+    value: function receive(u, n, req, e) {
+      // this.app.parse(req.responseText)
+      var d = this.app.q(n.dataset.target);
+
+      if (req.status == '200') {
+        var h = u.split('#');
+        var t = req.responseText;
+        t = h[1] ? JSON.stringify(this.app.path(this.app.parse(t), h[1])) : t; // console.log(h,t)
+
+        if (d) {
+          d.innerHTML = t;
+          var dlg = d.closest('.dlg[id]');
+          if (dlg) this.app.toggle(dlg, true);
+        } else {
+          this.app.dialog(n, t);
+        }
+      } else console.error('XHTTP request failed', req); //this.app.fire('after', e);
+
+    }
+  }]);
+
+  return _default;
+}(_plugin_js__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"]);
+
+
+
+/***/ }),
+/* 14 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3272,117 +3400,6 @@ var _default = /*#__PURE__*/function (_Plugin) {
           return m.classList[ok ? 'remove' : 'add']('bg-n');
         }); //if cUnhint used
       }
-    }
-  }]);
-
-  return _default;
-}(_plugin_js__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"]);
-
-
-
-/***/ }),
-/* 14 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _default; });
-/* harmony import */ var _plugin_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-/*! form - utilities for form inputs */
-
-
-var _default = /*#__PURE__*/function (_Plugin) {
-  _inherits(_default, _Plugin);
-
-  var _super = _createSuper(_default);
-
-  function _default() {
-    var _this;
-
-    _classCallCheck(this, _default);
-
-    _this = _super.call(this, 'form');
-    _this.opt = {};
-    return _this;
-  }
-
-  _createClass(_default, [{
-    key: "init",
-    value: function init() {
-      var _this2 = this;
-
-      this.app.h('click', 'a[href^="#"][data-value]', function (e) {
-        e.preventDefault();
-
-        _this2.setValue(e.recv);
-      });
-      this.app.h('click', 'input[data-group]', function (e) {
-        return _this2.checkBoxes(e.target);
-      });
-    }
-  }, {
-    key: "arrange",
-    value: function arrange(_ref) {
-      var _this3 = this;
-
-      var n = _ref.n;
-      this.app.ee(n, 'input[type="color"]', function (n) {
-        return _this3.prepareColor(n);
-      });
-    }
-  }, {
-    key: "checkBoxes",
-    value: function checkBoxes(n) {
-      this.app.ee(n.form, 'input[type="checkbox"][class~="' + (n.dataset.group || '') + '"]', function (m) {
-        return m.checked = n.checked;
-      });
-    }
-  }, {
-    key: "setValue",
-    value: function setValue(n) {
-      var d = this.app.q(n.hash);
-
-      if (d) {
-        d.value = n.dataset.value || '';
-        this.app.pf('toggle', 'unpop', d, true); // this.app.pf('toggle', 'modalStyle'); //generally not needed
-      }
-    }
-  }, {
-    key: "prepareColor",
-    value: function prepareColor(n) {
-      if (n.dataset.ready) return;
-      n.dataset.ready = 1;
-      var m = this.app.ins('input', '', {
-        type: 'text',
-        value: n.value,
-        size: 7,
-        className: 'color'
-      }, n, -1);
-      this.app.ins('', ' ', {}, m, 1);
-      this.app.b([n, m], 'input', function (e) {
-        return (e.target == n ? m : n).value = e.target.value;
-      });
     }
   }]);
 
@@ -3681,6 +3698,9 @@ var dt = __webpack_require__(3);
 // EXTERNAL MODULE: ./src/js/util/url.js
 var url = __webpack_require__(1);
 
+// EXTERNAL MODULE: ./src/js/plugins/icons.js + 1 modules
+var icons = __webpack_require__(15);
+
 // EXTERNAL MODULE: ./src/js/plugins/plugin.js
 var plugins_plugin = __webpack_require__(0);
 
@@ -3849,20 +3869,706 @@ var code_default = /*#__PURE__*/function (_Plugin) {
 }(plugins_plugin["a" /* default */]);
 
 
-// EXTERNAL MODULE: ./src/js/plugins/icons.js + 1 modules
-var icons = __webpack_require__(15);
-
 // EXTERNAL MODULE: ./src/js/plugins/toggle.js
 var toggle = __webpack_require__(5);
 
-// EXTERNAL MODULE: ./src/js/plugins/dialog.js
-var dialog = __webpack_require__(6);
+// EXTERNAL MODULE: ./src/js/plugins/calendar.js
+var calendar = __webpack_require__(9);
 
-// EXTERNAL MODULE: ./src/js/plugins/gallery.js
-var gallery = __webpack_require__(7);
+// EXTERNAL MODULE: ./src/js/plugins/lookup.js
+var lookup = __webpack_require__(10);
 
-// EXTERNAL MODULE: ./src/js/plugins/fetch.js
-var fetch = __webpack_require__(9);
+// EXTERNAL MODULE: ./src/js/plugins/edit.js
+var edit = __webpack_require__(11);
+
+// CONCATENATED MODULE: ./src/js/plugins/tools.js
+function tools_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { tools_typeof = function _typeof(obj) { return typeof obj; }; } else { tools_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return tools_typeof(obj); }
+
+function tools_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function tools_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function tools_createClass(Constructor, protoProps, staticProps) { if (protoProps) tools_defineProperties(Constructor.prototype, protoProps); if (staticProps) tools_defineProperties(Constructor, staticProps); return Constructor; }
+
+function tools_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) tools_setPrototypeOf(subClass, superClass); }
+
+function tools_setPrototypeOf(o, p) { tools_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return tools_setPrototypeOf(o, p); }
+
+function tools_createSuper(Derived) { var hasNativeReflectConstruct = tools_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = tools_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = tools_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return tools_possibleConstructorReturn(this, result); }; }
+
+function tools_possibleConstructorReturn(self, call) { if (call && (tools_typeof(call) === "object" || typeof call === "function")) { return call; } return tools_assertThisInitialized(self); }
+
+function tools_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function tools_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function tools_getPrototypeOf(o) { tools_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return tools_getPrototypeOf(o); }
+
+/*! tools - miscellaneous utilities (toggle class and attributes) */
+
+
+var tools_default = /*#__PURE__*/function (_Plugin) {
+  tools_inherits(_default, _Plugin);
+
+  var _super = tools_createSuper(_default);
+
+  function _default() {
+    var _this;
+
+    tools_classCallCheck(this, _default);
+
+    _this = _super.call(this, 'tools');
+    _this.opt = {
+      cMem: 'mem',
+      qHeading: 'h2[id], h3[id], h4[id], h5[id], h6[id]',
+      // h1[id],
+      minDesktop: 900
+    };
+    return _this;
+  }
+
+  tools_createClass(_default, [{
+    key: "init",
+    value: function init() {
+      var _this2 = this;
+
+      this.opt.qSetClick = 'a[data-set]';
+      this.opt.qSetChange = 'input[data-nodes], select[data-nodes]';
+      this.app.h('change', this.opt.qSetChange, function (e) {
+        return _this2.toggleClass(e.target);
+      });
+      this.app.h('click', this.opt.qSetClick, function (e) {
+        return _this2.toggleClass(e.recv, e);
+      });
+      this.app.b([window], 'resize', function (e) {
+        return _this2.onResize(e);
+      });
+    }
+  }, {
+    key: "arrange",
+    value: function arrange(_ref) {
+      var _this3 = this;
+
+      var n = _ref.n;
+      this.opt.qSet = '[data-set], [data-nodes]';
+      this.app.ee(n, 'table[class]', function (m) {
+        return _this3.alignCells(m);
+      });
+      this.app.ee(n, this.opt.qSet, function (m) {
+        return _this3.restore(m);
+      });
+      this.app.ee(n, this.opt.qSet, function (m) {
+        return _this3.toggleClass(m);
+      });
+      this.app.ee(n, this.opt.qHeading, function (m) {
+        return _this3.smartHeading(m);
+      });
+      this.onResize();
+    }
+  }, {
+    key: "alignCells",
+    value: function alignCells(n) {
+      var _this4 = this;
+
+      var m = n.className.match(/\b[lcr]\d\d?\b/g);
+
+      if (m) {
+        var _loop = function _loop(i) {
+          _this4.app.ee(n, 'tr>*:nth-child(' + m[i].substr(1) + ')', function (c) {
+            return c.classList.add(m[i].substr(0, 1));
+          });
+        };
+
+        for (var i = 0; i < m.length; i++) {
+          _loop(i);
+        }
+      }
+    }
+  }, {
+    key: "store",
+    value: function store(n, v) {
+      if (n && (n.id || n.name) && n.classList.contains(this.opt.cMem)) {
+        localStorage.setItem('set#' + (n.id || '#' + n.name), v);
+      }
+    }
+  }, {
+    key: "restore",
+    value: function restore(n) {
+      if (n && (n.id || n.name) && n.classList && n.classList.contains(this.opt.cMem)) {
+        var v = localStorage.getItem('set#' + (n.id || '#' + n.name));
+
+        if (v !== null) {
+          var t = n.tagName;
+          if (t == 'A') n.classList[v ? 'add' : 'remove'](this.app.opt.cAct);else if (t == 'SELECT') n.value = v;else if (n.type == 'checkbox') n.checked = !!v;else if (n.type == 'radio') n.checked = n.value == v;
+        }
+      }
+    }
+  }, {
+    key: "setClass",
+    value: function setClass(n, on, m, c) {
+      this.app.dbg(['setclass', m, c]);
+      var sel = n.type == 'radio' || n.tagName == 'SELECT';
+      var u = sel ? null
+      /*''*/
+      : n.dataset.unset;
+      var attr = n.dataset.attr || 'class';
+      var val = on ? c : u || '';
+
+      if (attr !== 'class') {
+        if (val) m.setAttribute(attr, val);else m.removeAttribute(attr);
+      } else if (u !== null && u !== undefined) m.className = val;else {
+        if (sel) {
+          //unset other select/radio values
+          var _u = n.type == 'radio' ? this.app.qq('input[type="radio"][name="' + n.name + '"]').map(function (nn) {
+            return (
+              /*(nn.dataset.set || '')*/
+              nn.value
+            );
+          }).join(' ') : this.app.qq('option', n).map(function (nn) {
+            return nn.value;
+          }).join(' ');
+
+          _u.split(/\s+/).filter(function (cc) {
+            return cc;
+          }).forEach(function (cc) {
+            return m.classList.remove(cc);
+          });
+        }
+
+        c.split(/\s+/).filter(function (cc) {
+          return cc;
+        }).forEach(function (cc) {
+          return m.classList[on ? 'add' : 'remove'](cc);
+        });
+      }
+
+      n.classList[on ? 'add' : 'remove'](this.app.opt.cAct);
+      this.app.fire('active', {
+        n: n,
+        on: on
+      });
+      this.app.fire('switch', {
+        n: m,
+        on: on,
+        attr: attr,
+        val: val
+        /*, unset: (attr === 'class' && !u) ? (on ? '' : c) : null*/
+
+      });
+      this.store(n, sel ? n.value : (n.type == 'checkbox' ? n.checked : n.classList.contains(this.app.opt.cAct)) ? '1' : '');
+    }
+  }, {
+    key: "toggleClass",
+    value: function toggleClass(n, e) {
+      var _this5 = this;
+
+      if (n.type == 'radio' && !n.checked) return;
+      var box = n.type == 'checkbox' || n.type == 'radio';
+      var sel = n.tagName == 'SELECT' || n.type == 'radio';
+      var q = n.dataset.nodes || n.hash;
+      var c = sel ? n.value : n.dataset.set || n.value;
+      var on = sel ? true : box ? n.checked : n.classList.contains(this.app.opt.cAct);
+
+      if (e && !box && !sel) {
+        on = !on;
+        e.preventDefault();
+        e.stopPropagation();
+      } //this.app.dbg(['setclass?', c, on, q, e, box, sel]);
+
+
+      if (c !== null && c !== undefined) {
+        this.app.e(q, function (m) {
+          return _this5.setClass(n, on, m, c);
+        });
+        this.app.fire('update', {
+          q: q
+        });
+      }
+    }
+  }, {
+    key: "smartHeading",
+    value: function smartHeading(n) {
+      if (n.dataset.ready) return;
+      n.dataset.ready = 1;
+      var d = this.app.ins('div', '', {});
+
+      while (n.firstChild) {
+        d.appendChild(n.firstChild);
+      }
+
+      n.appendChild(d);
+      d.style.position = 'relative';
+      d.style.paddingRight = '1em';
+      this.app.ins('', ' ', {}, d);
+      this.app.ins('a', '#', {
+        href: '#' + n.id,
+        className: 'small text-n inact  hide-print'
+      }, d);
+      this.app.ins('a', this.app.i('asc', '&uarr;'), {
+        href: '#',
+        className: 'small close text-n inact hide-print'
+      }, d); //n.style.position = 'relative';
+      //let a = this.app.ins('a', this.app.i('asc', '&uarr;'), {href:'#', className: 'small close text-n hide-print'}, n);
+    }
+  }, {
+    key: "onResize",
+    value: function onResize() {
+      var m = window.innerWidth <= this.opt.minDesktop;
+      m ? this.app.e('[data-class-mobile]', function (n) {
+        return n.className = n.dataset.classMobile || '';
+      }) : this.app.e('[data-class-desktop]', function (n) {
+        return n.className = n.dataset.classDesktop || '';
+      });
+    }
+  }]);
+
+  return _default;
+}(plugins_plugin["a" /* default */]);
+
+
+// EXTERNAL MODULE: ./src/js/plugins/form.js
+var plugins_form = __webpack_require__(12);
+
+// CONCATENATED MODULE: ./src/js/plugins/pickfile.js
+function pickfile_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { pickfile_typeof = function _typeof(obj) { return typeof obj; }; } else { pickfile_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return pickfile_typeof(obj); }
+
+function pickfile_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function pickfile_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function pickfile_createClass(Constructor, protoProps, staticProps) { if (protoProps) pickfile_defineProperties(Constructor.prototype, protoProps); if (staticProps) pickfile_defineProperties(Constructor, staticProps); return Constructor; }
+
+function pickfile_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) pickfile_setPrototypeOf(subClass, superClass); }
+
+function pickfile_setPrototypeOf(o, p) { pickfile_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return pickfile_setPrototypeOf(o, p); }
+
+function pickfile_createSuper(Derived) { var hasNativeReflectConstruct = pickfile_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = pickfile_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = pickfile_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return pickfile_possibleConstructorReturn(this, result); }; }
+
+function pickfile_possibleConstructorReturn(self, call) { if (call && (pickfile_typeof(call) === "object" || typeof call === "function")) { return call; } return pickfile_assertThisInitialized(self); }
+
+function pickfile_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function pickfile_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function pickfile_getPrototypeOf(o) { pickfile_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return pickfile_getPrototypeOf(o); }
+
+/*! example - file input decorator */
+
+
+var pickfile_default = /*#__PURE__*/function (_Plugin) {
+  pickfile_inherits(_default, _Plugin);
+
+  var _super = pickfile_createSuper(_default);
+
+  function _default() {
+    var _this;
+
+    pickfile_classCallCheck(this, _default);
+
+    _this = _super.call(this, 'pickfile');
+    _this.opt = {
+      qPick: 'input.pick',
+      qDrop: 'input.drop',
+      cMini: 'fit'
+    };
+    _this.dragging = 0;
+    return _this;
+  }
+
+  pickfile_createClass(_default, [{
+    key: "init",
+    value: function init() {
+      var _this2 = this;
+
+      //pick
+      this.app.h('click', '.picker [href="#pickdef"]', function (e) {
+        return _this2.pick(e.recv, false, e);
+      });
+      this.app.h('click', '.picker [href="#unpick"]', function (e) {
+        return _this2.pick(e.recv, '', e);
+      });
+      this.app.h('change', this.opt.qPick, function (e) {
+        return _this2.pick(e.recv, true);
+      }); //drop
+
+      if (this.app.q(this.opt.qDrop + ',' + this.opt.qPick)) {
+        var b = document.body;
+        this.app.b([b], ['dragenter', 'dragleave', 'drop', 'mouseover'], function (e) {
+          return _this2.detectDrag(e);
+        }); // fix ff - avoid dropzones for drags inside document
+        //this.app.b([b], 'dragstart', e => e.preventDefault());
+
+        this.app.b([b], 'dragstart', function (e) {
+          return _this2.dragging = -100;
+        });
+        this.app.b([b], 'dragend', function (e) {
+          return _this2.dragging = 0;
+        });
+        this.app.b([b], 'drop', function (e) {
+          return _this2.drop(e);
+        });
+      }
+    }
+  }, {
+    key: "arrange",
+    value: function arrange(_ref) {
+      var _this3 = this;
+
+      var n = _ref.n;
+      this.app.ee(n, this.opt.qPick, function (m) {
+        return _this3.prepare(m);
+      });
+    }
+  }, {
+    key: "prepare",
+    value: function prepare(n) {
+      if (n.dataset.ready) return;
+      n.dataset.ready = 1;
+      var a = this.app;
+      if (n.vDone) return;
+      n.vDone = 1;
+      if (!n.id) n.id = 'pick-' + this.app.seq();
+      var nn = n.closest('label') || n;
+      var cont = a.ins('div', '', 'picker gallery', nn, -1);
+      cont.dataset.num = '';
+      if (n.classList.contains(this.opt.cMini)) cont.classList.add(this.opt.cMini);
+      var nav = a.ins('nav', '', 'pad bg row', cont);
+      a.ins('label', a.i('folder', '&uarr;'), {
+        htmlFor: n.id,
+        className: 'col-0' + (n.multiple ? ' text-i' : '')
+      }, nav);
+      a.ins('a', a.i('image', '#'), 'pic col-0', nav);
+      a.ins('a', a.i('download', '#'), 'pickload col-0', nav);
+      /*if (n.multiple)*/
+
+      a.ins('a', '', 'picknum', nav);
+      if (n.dataset.picked) a.ins('a', a.i('back', '&larr;'), {
+        className: 'col-0',
+        href: '#pickdef'
+      }, nav);
+      a.ins('a', a.i('delete', '&times;'), {
+        className: 'col-0',
+        href: '#unpick'
+      }, nav);
+      var preview = a.ins('label', '', {
+        htmlFor: n.id
+      }, cont);
+      a.ins('span', a.i('text', '[]'), 'mar pad', preview);
+      var hide = a.ins('div', '', {}, cont);
+      hide.appendChild(nn);
+      a.ins('input', '', {
+        type: 'checkbox',
+        value: 1,
+        name: 'remove_' + n.name
+      }, hide);
+      this.pick(n, false);
+    }
+  }, {
+    key: "pick",
+    value: function pick(n, url, e) {
+      var _this4 = this;
+
+      if (e) e.preventDefault();
+      var d = n.closest('.picker');
+
+      if (d) {
+        var f = this.app.q(this.opt.qPick, d);
+        var ch = this.app.a(d.children); //const nav = ch.find(m => m.matches('nav'));
+
+        var preview = ch.find(function (m) {
+          return m.matches('label');
+        }); //const inputs = ch.find(m => m.matches('div'));
+
+        var keep = false;
+        var img = '';
+        var num = '';
+        var fn = '';
+        if (url === '' || url === false) f.value = '';
+
+        if (url === true && f.files[0]) {
+          // files selected
+          //1.
+          //const fr = new FileReader();
+          //const ref = this;
+          //fr.onload = function(e){ ref.pick(n, this.result); }
+          //if(f.files[0]) fr.readAsDataURL(f.files[0]);
+          //return;
+          //2.
+          url = URL.createObjectURL(f.files[0]);
+          if (f.files[0].type.match(/^image/)) img = url;
+          num = f.files.length;
+          fn = f.files[0].name;
+          /*
+          // free memory - if gallery not used
+          const im = document.createElement('img');
+          im.src = url;
+          im.onload = e => URL.revokeObjectURL(im.src);
+          */
+        } else if (url === true || url === false) {
+          // selection cancelled or reset to default
+          url = fn = f.dataset.picked || '';
+          keep = true;
+          img = url.match(/\.(PNG|GIF|SVG|WEBP|BMP|ICO|JPE?G)$/i) ? url : '';
+        }
+
+        d.classList[url ? 'remove' : 'add']('unpicked');
+        preview.style.backgroundImage = img ? 'url("' + img + '")' : '';
+        preview.title = fn; //preview.dataset.tip = fn;
+
+        this.app.ee(d, '[name^="remove_"]', function (n) {
+          return n.checked = !url && !keep;
+        });
+        this.app.ee(d, 'a.pic', function (n) {
+          n.href = img;
+          n.title = fn;
+          n.classList[img ? 'remove' : 'add'](_this4.app.opt.cHide);
+        });
+
+        if (f.classList.contains(this.opt.cMini)) {
+          this.app.ee(d, 'a.pic', function (n) {
+            n.style.backgroundImage = img ? 'url("' + img + '")' : '';
+
+            _this4.app.ee(n, 'svg', function (s) {
+              return s.style.opacity = img ? 0 : 1;
+            });
+          });
+        }
+
+        this.app.ee(d, 'a.pickload', function (n) {
+          n.href = url;
+          n.title = fn;
+          n.classList[url && !img ? 'remove' : 'add'](_this4.app.opt.cHide);
+        });
+        this.app.ee(d, '.picknum', function (n) {
+          return n.textContent = num;
+        }); //this.app.ee(d, '[href="#unpick"]', n => n.classList[url ? 'remove' : 'add']('inact'));
+
+        preview.firstChild.classList[url && !img ? 'remove' : 'add'](this.app.opt.cHide);
+        delete d.dataset.ready; // re-init gallery
+      }
+    }
+  }, {
+    key: "detectDrag",
+    value: function detectDrag(e) {
+      /*
+      events sequence:
+      - dragenter
+      - [dragenter dragleave] *
+      - [dragleave | drop | NOTHING]
+        - NOTHING if dropped not into file input causing download; use mouseover/focus/blur
+      */
+      if (e.type === 'drop' || e.type === 'mouseover') {
+        if (this.dragging > 0) this.dragging = 0;
+      } else {
+        if (this.dragging >= 0) e.preventDefault();
+        this.dragging += e.type === 'dragenter' ? 1 : -1;
+      }
+
+      document.body.classList[this.dragging > 0 ? 'add' : 'remove']('drag');
+
+      if (e.type !== 'mouseover') {
+        if (e.target.matches && e.target.matches('[type="file"]')) {
+          // skip text nodes
+          if (e.type === 'drop') e.target.vDragging = 0;else e.target.vDragging = (e.target.vDragging || 0) + (e.type === 'dragenter' ? 1 : -1); //fix ff
+
+          e.target.classList[e.target.vDragging > 0 && e.type !== 'drop' ? 'add' : 'remove']('act'); //e.target.classList[e.target.vDragging > 0 && e.type === 'dragenter' ? 'add' : 'remove']('act');
+          //console.log('DRAG', this.dragging, e.target.vDragging, e.type, e.target.id);
+        }
+      }
+    }
+  }, {
+    key: "drop",
+    value: function drop(e) {
+      //if (e.target.tagName !== 'INPUT') e.preventDefault();
+      if (e.target.form && ('submit' in e.target.dataset || e.ctrlKey || e.shiftKey)) {
+        setTimeout(function () {
+          return e.target.form.submit();
+        }, 200);
+      }
+    }
+  }]);
+
+  return _default;
+}(plugins_plugin["a" /* default */]);
+
+
+// CONCATENATED MODULE: ./src/js/plugins/keepform.js
+function keepform_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { keepform_typeof = function _typeof(obj) { return typeof obj; }; } else { keepform_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return keepform_typeof(obj); }
+
+function keepform_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function keepform_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function keepform_createClass(Constructor, protoProps, staticProps) { if (protoProps) keepform_defineProperties(Constructor.prototype, protoProps); if (staticProps) keepform_defineProperties(Constructor, staticProps); return Constructor; }
+
+function keepform_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) keepform_setPrototypeOf(subClass, superClass); }
+
+function keepform_setPrototypeOf(o, p) { keepform_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return keepform_setPrototypeOf(o, p); }
+
+function keepform_createSuper(Derived) { var hasNativeReflectConstruct = keepform_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = keepform_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = keepform_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return keepform_possibleConstructorReturn(this, result); }; }
+
+function keepform_possibleConstructorReturn(self, call) { if (call && (keepform_typeof(call) === "object" || typeof call === "function")) { return call; } return keepform_assertThisInitialized(self); }
+
+function keepform_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function keepform_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function keepform_getPrototypeOf(o) { keepform_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return keepform_getPrototypeOf(o); }
+
+/*! keepform - store and restore user input */
+
+
+var keepform_default = /*#__PURE__*/function (_Plugin) {
+  keepform_inherits(_default, _Plugin);
+
+  var _super = keepform_createSuper(_default);
+
+  function _default() {
+    var _this;
+
+    keepform_classCallCheck(this, _default);
+
+    _this = _super.call(this, 'keepform');
+    _this.opt = {
+      qStore: 'form.store[id]',
+      qRestore: 'form.restore[id]'
+    };
+    return _this;
+  }
+
+  keepform_createClass(_default, [{
+    key: "init",
+    value: function init() {
+      var _this2 = this;
+
+      if (Object.fromEntries && FormData) {
+        var q = this.opt.qStore;
+        this.app.h(['change', 'input'], q, function (e) {
+          return _this2.store(e);
+        });
+        this.app.h('click', q + ' a[href="#restore"]', function (e) {
+          return _this2.restore(e);
+        });
+        this.app.h('click', q + ' a[href="#reset"]', function (e) {
+          return _this2.resetForm(e);
+        });
+        this.app.h('click', q + ' a[href="#unstore"]', function (e) {
+          return _this2.unstore(e);
+        });
+      }
+    }
+  }, {
+    key: "arrange",
+    value: function arrange(_ref) {
+      var _this3 = this;
+
+      var n = _ref.n;
+      this.app.ee(n, this.opt.qStore, function (f) {
+        return _this3.addControls(f);
+      });
+      this.app.ee(n, this.opt.qRestore, function (f) {
+        return _this3.restoreForm(f, true);
+      });
+    }
+  }, {
+    key: "addControls",
+    value: function addControls(f) {
+      var app = this.app;
+      var d = app.ins('div', '', 'pad r keepform-tools', f, false);
+      app.ins('a', app.i('energy', '[^]'), {
+        href: '#restore'
+      }, d);
+      app.ins('', ' ', {}, d);
+      app.ins('a', app.i('refresh', '[-]'), {
+        href: '#reset'
+      }, d);
+      app.ins('', ' ', {}, d);
+      app.ins('a', app.i('ban', '[x]'), {
+        href: '#unstore'
+      }, d);
+    }
+  }, {
+    key: "resetForm",
+    value: function resetForm(e) {
+      var _this4 = this;
+
+      e.preventDefault();
+      var f = e.target.closest('form');
+      f.reset();
+      this.app.ee(f, '[name]', function (n) {
+        return _this4.app.fire('value', {
+          n: n
+        });
+      });
+    }
+  }, {
+    key: "unstore",
+    value: function unstore(e) {
+      e.preventDefault();
+      localStorage.removeItem(this.formId(e.target.closest('form')));
+    }
+  }, {
+    key: "restore",
+    value: function restore(e) {
+      e.preventDefault();
+      this.restoreForm(e.target.closest('form'));
+    }
+  }, {
+    key: "restoreForm",
+    value: function restoreForm(f, mode) {
+      var _this5 = this;
+
+      var id = this.formId(f);
+      var d = localStorage.getItem(id);
+
+      if (d) {
+        d = this.app.parse(d);
+        if (d) Object.keys(d).forEach(function (k) {
+          var i = f.elements[k];
+          if (i) _this5.restoreInput(i, d[k], mode);
+        });
+      }
+    }
+  }, {
+    key: "restoreInput",
+    value: function restoreInput(i, v, mode) {
+      var _this6 = this;
+
+      if (i instanceof NodeList) i.forEach(function (j) {
+        return _this6.restoreInput(j, v, mode);
+      });else {
+        if (i.type.match(/file|submit|password/)) ;else if (i.type.match(/checkbox|radio/)) i.checked = Array.isArray(v) ? v.indexOf(i.value) != -1 : i.value === v;else i.value = v;
+        this.app.fire('value', {
+          n: i,
+          modeAuto: mode
+        });
+      }
+    }
+  }, {
+    key: "store",
+    value: function store(e) {
+      var f = new FormData(e.recv); //let d = JSON.stringify(Object.fromEntries(f)); // does not support multiple
+
+      var d = {};
+      f.forEach(function (v, k) {
+        if (!d.hasOwnProperty(k)) d[k] = v;else {
+          // multiple
+          if (!Array.isArray(d[k])) d[k] = [d[k]];
+          d[k].push(v);
+        }
+      });
+      localStorage.setItem(this.formId(e.recv), JSON.stringify(d));
+    }
+  }, {
+    key: "formId",
+    value: function formId(f) {
+      return 'form#' + f.id + '@' + location.pathname;
+    }
+  }]);
+
+  return _default;
+}(plugins_plugin["a" /* default */]);
+
 
 // CONCATENATED MODULE: ./src/js/plugins/tablex.js
 function tablex_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { tablex_typeof = function _typeof(obj) { return typeof obj; }; } else { tablex_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return tablex_typeof(obj); }
@@ -4449,698 +5155,17 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
 }(plugins_plugin["a" /* default */]);
 
 
-// EXTERNAL MODULE: ./src/js/plugins/calendar.js
-var calendar = __webpack_require__(10);
+// EXTERNAL MODULE: ./src/js/plugins/dialog.js
+var dialog = __webpack_require__(6);
 
-// EXTERNAL MODULE: ./src/js/plugins/lookup.js
-var lookup = __webpack_require__(11);
+// EXTERNAL MODULE: ./src/js/plugins/gallery.js
+var gallery = __webpack_require__(7);
 
-// EXTERNAL MODULE: ./src/js/plugins/edit.js
-var edit = __webpack_require__(12);
+// EXTERNAL MODULE: ./src/js/plugins/fetch.js
+var fetch = __webpack_require__(13);
 
 // EXTERNAL MODULE: ./src/js/plugins/valid.js
-var valid = __webpack_require__(13);
-
-// CONCATENATED MODULE: ./src/js/plugins/tools.js
-function tools_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { tools_typeof = function _typeof(obj) { return typeof obj; }; } else { tools_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return tools_typeof(obj); }
-
-function tools_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function tools_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function tools_createClass(Constructor, protoProps, staticProps) { if (protoProps) tools_defineProperties(Constructor.prototype, protoProps); if (staticProps) tools_defineProperties(Constructor, staticProps); return Constructor; }
-
-function tools_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) tools_setPrototypeOf(subClass, superClass); }
-
-function tools_setPrototypeOf(o, p) { tools_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return tools_setPrototypeOf(o, p); }
-
-function tools_createSuper(Derived) { var hasNativeReflectConstruct = tools_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = tools_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = tools_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return tools_possibleConstructorReturn(this, result); }; }
-
-function tools_possibleConstructorReturn(self, call) { if (call && (tools_typeof(call) === "object" || typeof call === "function")) { return call; } return tools_assertThisInitialized(self); }
-
-function tools_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function tools_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
-function tools_getPrototypeOf(o) { tools_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return tools_getPrototypeOf(o); }
-
-/*! tools - miscellaneous utilities (toggle class and attributes) */
-
-
-var tools_default = /*#__PURE__*/function (_Plugin) {
-  tools_inherits(_default, _Plugin);
-
-  var _super = tools_createSuper(_default);
-
-  function _default() {
-    var _this;
-
-    tools_classCallCheck(this, _default);
-
-    _this = _super.call(this, 'tools');
-    _this.opt = {
-      cMem: 'mem',
-      qHeading: 'h2[id], h3[id], h4[id], h5[id], h6[id]',
-      // h1[id],
-      minDesktop: 900
-    };
-    return _this;
-  }
-
-  tools_createClass(_default, [{
-    key: "init",
-    value: function init() {
-      var _this2 = this;
-
-      this.opt.qSetClick = 'a[data-set]';
-      this.opt.qSetChange = 'input[data-nodes], select[data-nodes]';
-      this.app.h('change', this.opt.qSetChange, function (e) {
-        return _this2.toggleClass(e.target);
-      });
-      this.app.h('click', this.opt.qSetClick, function (e) {
-        return _this2.toggleClass(e.recv, e);
-      });
-      this.app.b([window], 'resize', function (e) {
-        return _this2.onResize(e);
-      });
-    }
-  }, {
-    key: "arrange",
-    value: function arrange(_ref) {
-      var _this3 = this;
-
-      var n = _ref.n;
-      this.opt.qSet = '[data-set], [data-nodes]';
-      this.app.ee(n, 'table[class]', function (m) {
-        return _this3.alignCells(m);
-      });
-      this.app.ee(n, this.opt.qSet, function (m) {
-        return _this3.restore(m);
-      });
-      this.app.ee(n, this.opt.qSet, function (m) {
-        return _this3.toggleClass(m);
-      });
-      this.app.ee(n, this.opt.qHeading, function (m) {
-        return _this3.smartHeading(m);
-      });
-      this.onResize();
-    }
-  }, {
-    key: "alignCells",
-    value: function alignCells(n) {
-      var _this4 = this;
-
-      var m = n.className.match(/\b[lcr]\d\d?\b/g);
-
-      if (m) {
-        var _loop = function _loop(i) {
-          _this4.app.ee(n, 'tr>*:nth-child(' + m[i].substr(1) + ')', function (c) {
-            return c.classList.add(m[i].substr(0, 1));
-          });
-        };
-
-        for (var i = 0; i < m.length; i++) {
-          _loop(i);
-        }
-      }
-    }
-  }, {
-    key: "store",
-    value: function store(n, v) {
-      if (n && (n.id || n.name) && n.classList.contains(this.opt.cMem)) {
-        localStorage.setItem('set#' + (n.id || '#' + n.name), v);
-      }
-    }
-  }, {
-    key: "restore",
-    value: function restore(n) {
-      if (n && (n.id || n.name) && n.classList && n.classList.contains(this.opt.cMem)) {
-        var v = localStorage.getItem('set#' + (n.id || '#' + n.name));
-
-        if (v !== null) {
-          var t = n.tagName;
-          if (t == 'A') n.classList[v ? 'add' : 'remove'](this.app.opt.cAct);else if (t == 'SELECT') n.value = v;else if (n.type == 'checkbox') n.checked = !!v;else if (n.type == 'radio') n.checked = n.value == v;
-        }
-      }
-    }
-  }, {
-    key: "setClass",
-    value: function setClass(n, on, m, c) {
-      this.app.dbg(['setclass', m, c]);
-      var sel = n.type == 'radio' || n.tagName == 'SELECT';
-      var u = sel ? null
-      /*''*/
-      : n.dataset.unset;
-      var attr = n.dataset.attr || 'class';
-      var val = on ? c : u || '';
-
-      if (attr !== 'class') {
-        if (val) m.setAttribute(attr, val);else m.removeAttribute(attr);
-      } else if (u !== null && u !== undefined) m.className = val;else {
-        if (sel) {
-          //unset other select/radio values
-          var _u = n.type == 'radio' ? this.app.qq('input[type="radio"][name="' + n.name + '"]').map(function (nn) {
-            return (
-              /*(nn.dataset.set || '')*/
-              nn.value
-            );
-          }).join(' ') : this.app.qq('option', n).map(function (nn) {
-            return nn.value;
-          }).join(' ');
-
-          _u.split(/\s+/).filter(function (cc) {
-            return cc;
-          }).forEach(function (cc) {
-            return m.classList.remove(cc);
-          });
-        }
-
-        c.split(/\s+/).filter(function (cc) {
-          return cc;
-        }).forEach(function (cc) {
-          return m.classList[on ? 'add' : 'remove'](cc);
-        });
-      }
-
-      n.classList[on ? 'add' : 'remove'](this.app.opt.cAct);
-      this.app.fire('active', {
-        n: n,
-        on: on
-      });
-      this.app.fire('switch', {
-        n: m,
-        on: on,
-        attr: attr,
-        val: val
-        /*, unset: (attr === 'class' && !u) ? (on ? '' : c) : null*/
-
-      });
-      this.store(n, sel ? n.value : (n.type == 'checkbox' ? n.checked : n.classList.contains(this.app.opt.cAct)) ? '1' : '');
-    }
-  }, {
-    key: "toggleClass",
-    value: function toggleClass(n, e) {
-      var _this5 = this;
-
-      if (n.type == 'radio' && !n.checked) return;
-      var box = n.type == 'checkbox' || n.type == 'radio';
-      var sel = n.tagName == 'SELECT' || n.type == 'radio';
-      var q = n.dataset.nodes || n.hash;
-      var c = sel ? n.value : n.dataset.set || n.value;
-      var on = sel ? true : box ? n.checked : n.classList.contains(this.app.opt.cAct);
-
-      if (e && !box && !sel) {
-        on = !on;
-        e.preventDefault();
-        e.stopPropagation();
-      } //this.app.dbg(['setclass?', c, on, q, e, box, sel]);
-
-
-      if (c !== null && c !== undefined) {
-        this.app.e(q, function (m) {
-          return _this5.setClass(n, on, m, c);
-        });
-        this.app.fire('update', {
-          q: q
-        });
-      }
-    }
-  }, {
-    key: "smartHeading",
-    value: function smartHeading(n) {
-      var d = this.app.ins('div', '', {});
-
-      while (n.firstChild) {
-        d.appendChild(n.firstChild);
-      }
-
-      n.appendChild(d);
-      d.style.position = 'relative';
-      d.style.paddingRight = '1em';
-      this.app.ins('', ' ', {}, d);
-      this.app.ins('a', '#', {
-        href: '#' + n.id,
-        className: 'small text-n inact  hide-print'
-      }, d);
-      this.app.ins('a', this.app.i('asc', '&uarr;'), {
-        href: '#',
-        className: 'small close text-n inact hide-print'
-      }, d); //n.style.position = 'relative';
-      //let a = this.app.ins('a', this.app.i('asc', '&uarr;'), {href:'#', className: 'small close text-n hide-print'}, n);
-    }
-  }, {
-    key: "onResize",
-    value: function onResize() {
-      var m = window.innerWidth <= this.opt.minDesktop;
-      m ? this.app.e('[data-class-mobile]', function (n) {
-        return n.className = n.dataset.classMobile || '';
-      }) : this.app.e('[data-class-desktop]', function (n) {
-        return n.className = n.dataset.classDesktop || '';
-      });
-    }
-  }]);
-
-  return _default;
-}(plugins_plugin["a" /* default */]);
-
-
-// EXTERNAL MODULE: ./src/js/plugins/form.js
-var plugins_form = __webpack_require__(14);
-
-// CONCATENATED MODULE: ./src/js/plugins/pickfile.js
-function pickfile_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { pickfile_typeof = function _typeof(obj) { return typeof obj; }; } else { pickfile_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return pickfile_typeof(obj); }
-
-function pickfile_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function pickfile_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function pickfile_createClass(Constructor, protoProps, staticProps) { if (protoProps) pickfile_defineProperties(Constructor.prototype, protoProps); if (staticProps) pickfile_defineProperties(Constructor, staticProps); return Constructor; }
-
-function pickfile_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) pickfile_setPrototypeOf(subClass, superClass); }
-
-function pickfile_setPrototypeOf(o, p) { pickfile_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return pickfile_setPrototypeOf(o, p); }
-
-function pickfile_createSuper(Derived) { var hasNativeReflectConstruct = pickfile_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = pickfile_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = pickfile_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return pickfile_possibleConstructorReturn(this, result); }; }
-
-function pickfile_possibleConstructorReturn(self, call) { if (call && (pickfile_typeof(call) === "object" || typeof call === "function")) { return call; } return pickfile_assertThisInitialized(self); }
-
-function pickfile_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function pickfile_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
-function pickfile_getPrototypeOf(o) { pickfile_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return pickfile_getPrototypeOf(o); }
-
-/*! example - file input decorator */
-
-
-var pickfile_default = /*#__PURE__*/function (_Plugin) {
-  pickfile_inherits(_default, _Plugin);
-
-  var _super = pickfile_createSuper(_default);
-
-  function _default() {
-    var _this;
-
-    pickfile_classCallCheck(this, _default);
-
-    _this = _super.call(this, 'pickfile');
-    _this.opt = {
-      qPick: 'input.pick',
-      qDrop: 'input.drop',
-      cMini: 'fit'
-    };
-    _this.dragging = 0;
-    return _this;
-  }
-
-  pickfile_createClass(_default, [{
-    key: "init",
-    value: function init() {
-      var _this2 = this;
-
-      //pick
-      this.app.h('click', '.picker [href="#pickdef"]', function (e) {
-        return _this2.pick(e.recv, false, e);
-      });
-      this.app.h('click', '.picker [href="#unpick"]', function (e) {
-        return _this2.pick(e.recv, '', e);
-      });
-      this.app.h('change', this.opt.qPick, function (e) {
-        return _this2.pick(e.recv, true);
-      }); //drop
-
-      if (this.app.q(this.opt.qDrop + ',' + this.opt.qPick)) {
-        var b = document.body;
-        this.app.b([b], ['dragenter', 'dragleave', 'drop', 'mouseover'], function (e) {
-          return _this2.detectDrag(e);
-        }); // fix ff - avoid dropzones for drags inside document
-        //this.app.b([b], 'dragstart', e => e.preventDefault());
-
-        this.app.b([b], 'dragstart', function (e) {
-          return _this2.dragging = -100;
-        });
-        this.app.b([b], 'dragend', function (e) {
-          return _this2.dragging = 0;
-        });
-        this.app.b([b], 'drop', function (e) {
-          return _this2.drop(e);
-        });
-      }
-    }
-  }, {
-    key: "arrange",
-    value: function arrange(_ref) {
-      var _this3 = this;
-
-      var n = _ref.n;
-      this.app.ee(n, this.opt.qPick, function (m) {
-        return _this3.prepare(m);
-      });
-    }
-  }, {
-    key: "prepare",
-    value: function prepare(n) {
-      if (n.dataset.ready) return;
-      n.dataset.ready = 1;
-      var a = this.app;
-      if (n.vDone) return;
-      n.vDone = 1;
-      if (!n.id) n.id = 'pick-' + this.app.seq();
-      var nn = n.closest('label') || n;
-      var cont = a.ins('div', '', 'picker gallery', nn, -1);
-      cont.dataset.num = '';
-      if (n.classList.contains(this.opt.cMini)) cont.classList.add(this.opt.cMini);
-      var nav = a.ins('nav', '', 'pad bg row', cont);
-      a.ins('label', a.i('folder', '&uarr;'), {
-        htmlFor: n.id,
-        className: 'col-0' + (n.multiple ? ' text-i' : '')
-      }, nav);
-      a.ins('a', a.i('image', '#'), 'pic col-0', nav);
-      a.ins('a', a.i('download', '#'), 'pickload col-0', nav);
-      /*if (n.multiple)*/
-
-      a.ins('a', '', 'picknum', nav);
-      if (n.dataset.picked) a.ins('a', a.i('back', '&larr;'), {
-        className: 'col-0',
-        href: '#pickdef'
-      }, nav);
-      a.ins('a', a.i('delete', '&times;'), {
-        className: 'col-0',
-        href: '#unpick'
-      }, nav);
-      var preview = a.ins('label', '', {
-        htmlFor: n.id
-      }, cont);
-      a.ins('span', a.i('text', '[]'), 'mar pad', preview);
-      var hide = a.ins('div', '', {}, cont);
-      hide.appendChild(nn);
-      a.ins('input', '', {
-        type: 'checkbox',
-        value: 1,
-        name: 'remove_' + n.name
-      }, hide);
-      this.pick(n, false);
-    }
-  }, {
-    key: "pick",
-    value: function pick(n, url, e) {
-      var _this4 = this;
-
-      if (e) e.preventDefault();
-      var d = n.closest('.picker');
-
-      if (d) {
-        var f = this.app.q(this.opt.qPick, d);
-        var ch = this.app.a(d.children); //const nav = ch.find(m => m.matches('nav'));
-
-        var preview = ch.find(function (m) {
-          return m.matches('label');
-        }); //const inputs = ch.find(m => m.matches('div'));
-
-        var keep = false;
-        var img = '';
-        var num = '';
-        var fn = '';
-        if (url === '' || url === false) f.value = '';
-
-        if (url === true && f.files[0]) {
-          // files selected
-          //1.
-          //const fr = new FileReader();
-          //const ref = this;
-          //fr.onload = function(e){ ref.pick(n, this.result); }
-          //if(f.files[0]) fr.readAsDataURL(f.files[0]);
-          //return;
-          //2.
-          url = URL.createObjectURL(f.files[0]);
-          if (f.files[0].type.match(/^image/)) img = url;
-          num = f.files.length;
-          fn = f.files[0].name;
-          /*
-          // free memory - if gallery not used
-          const im = document.createElement('img');
-          im.src = url;
-          im.onload = e => URL.revokeObjectURL(im.src);
-          */
-        } else if (url === true || url === false) {
-          // selection cancelled or reset to default
-          url = fn = f.dataset.picked || '';
-          keep = true;
-          img = url.match(/\.(PNG|GIF|SVG|WEBP|BMP|ICO|JPE?G)$/i) ? url : '';
-        }
-
-        d.classList[url ? 'remove' : 'add']('unpicked');
-        preview.style.backgroundImage = img ? 'url("' + img + '")' : '';
-        preview.title = fn; //preview.dataset.tip = fn;
-
-        this.app.ee(d, '[name^="remove_"]', function (n) {
-          return n.checked = !url && !keep;
-        });
-        this.app.ee(d, 'a.pic', function (n) {
-          n.href = img;
-          n.title = fn;
-          n.classList[img ? 'remove' : 'add'](_this4.app.opt.cHide);
-        });
-
-        if (f.classList.contains(this.opt.cMini)) {
-          this.app.ee(d, 'a.pic', function (n) {
-            n.style.backgroundImage = img ? 'url("' + img + '")' : '';
-
-            _this4.app.ee(n, 'svg', function (s) {
-              return s.style.opacity = img ? 0 : 1;
-            });
-          });
-        }
-
-        this.app.ee(d, 'a.pickload', function (n) {
-          n.href = url;
-          n.title = fn;
-          n.classList[url && !img ? 'remove' : 'add'](_this4.app.opt.cHide);
-        });
-        this.app.ee(d, '.picknum', function (n) {
-          return n.textContent = num;
-        }); //this.app.ee(d, '[href="#unpick"]', n => n.classList[url ? 'remove' : 'add']('inact'));
-
-        preview.firstChild.classList[url && !img ? 'remove' : 'add'](this.app.opt.cHide);
-        delete d.dataset.ready; // re-init gallery
-      }
-    }
-  }, {
-    key: "detectDrag",
-    value: function detectDrag(e) {
-      /*
-      events sequence:
-      - dragenter
-      - [dragenter dragleave] *
-      - [dragleave | drop | NOTHING]
-        - NOTHING if dropped not into file input causing download; use mouseover/focus/blur
-      */
-      if (e.type === 'drop' || e.type === 'mouseover') {
-        if (this.dragging > 0) this.dragging = 0;
-      } else {
-        if (this.dragging >= 0) e.preventDefault();
-        this.dragging += e.type === 'dragenter' ? 1 : -1;
-      }
-
-      document.body.classList[this.dragging > 0 ? 'add' : 'remove']('drag');
-
-      if (e.type !== 'mouseover') {
-        if (e.target.matches && e.target.matches('[type="file"]')) {
-          // skip text nodes
-          if (e.type === 'drop') e.target.vDragging = 0;else e.target.vDragging = (e.target.vDragging || 0) + (e.type === 'dragenter' ? 1 : -1); //fix ff
-
-          e.target.classList[e.target.vDragging > 0 && e.type !== 'drop' ? 'add' : 'remove']('act'); //e.target.classList[e.target.vDragging > 0 && e.type === 'dragenter' ? 'add' : 'remove']('act');
-          //console.log('DRAG', this.dragging, e.target.vDragging, e.type, e.target.id);
-        }
-      }
-    }
-  }, {
-    key: "drop",
-    value: function drop(e) {
-      //if (e.target.tagName !== 'INPUT') e.preventDefault();
-      if (e.target.form && ('submit' in e.target.dataset || e.ctrlKey || e.shiftKey)) {
-        setTimeout(function () {
-          return e.target.form.submit();
-        }, 200);
-      }
-    }
-  }]);
-
-  return _default;
-}(plugins_plugin["a" /* default */]);
-
-
-// CONCATENATED MODULE: ./src/js/plugins/keepform.js
-function keepform_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { keepform_typeof = function _typeof(obj) { return typeof obj; }; } else { keepform_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return keepform_typeof(obj); }
-
-function keepform_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function keepform_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function keepform_createClass(Constructor, protoProps, staticProps) { if (protoProps) keepform_defineProperties(Constructor.prototype, protoProps); if (staticProps) keepform_defineProperties(Constructor, staticProps); return Constructor; }
-
-function keepform_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) keepform_setPrototypeOf(subClass, superClass); }
-
-function keepform_setPrototypeOf(o, p) { keepform_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return keepform_setPrototypeOf(o, p); }
-
-function keepform_createSuper(Derived) { var hasNativeReflectConstruct = keepform_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = keepform_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = keepform_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return keepform_possibleConstructorReturn(this, result); }; }
-
-function keepform_possibleConstructorReturn(self, call) { if (call && (keepform_typeof(call) === "object" || typeof call === "function")) { return call; } return keepform_assertThisInitialized(self); }
-
-function keepform_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function keepform_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
-function keepform_getPrototypeOf(o) { keepform_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return keepform_getPrototypeOf(o); }
-
-/*! keepform - store and restore user input */
-
-
-var keepform_default = /*#__PURE__*/function (_Plugin) {
-  keepform_inherits(_default, _Plugin);
-
-  var _super = keepform_createSuper(_default);
-
-  function _default() {
-    var _this;
-
-    keepform_classCallCheck(this, _default);
-
-    _this = _super.call(this, 'keepform');
-    _this.opt = {
-      qStore: 'form.store[id]',
-      qRestore: 'form.restore[id]'
-    };
-    return _this;
-  }
-
-  keepform_createClass(_default, [{
-    key: "init",
-    value: function init() {
-      var _this2 = this;
-
-      if (Object.fromEntries && FormData) {
-        var app = this.app;
-        var q = this.opt.qStore;
-        app.e(q, function (f) {
-          return _this2.addControls(f);
-        });
-        app.e(this.opt.qRestore, function (f) {
-          return _this2.restoreForm(f, true);
-        });
-        app.h(['change', 'input'], q, function (e) {
-          return _this2.store(e);
-        });
-        app.h('click', q + ' a[href="#restore"]', function (e) {
-          return _this2.restore(e);
-        });
-        app.h('click', q + ' a[href="#reset"]', function (e) {
-          return _this2.resetForm(e);
-        });
-        app.h('click', q + ' a[href="#unstore"]', function (e) {
-          return _this2.unstore(e);
-        });
-      }
-    }
-  }, {
-    key: "addControls",
-    value: function addControls(f) {
-      var app = this.app;
-      var d = app.ins('div', '', 'pad r keepform-tools', f, false);
-      app.ins('a', app.i('energy', '[^]'), {
-        href: '#restore'
-      }, d);
-      app.ins('', ' ', {}, d);
-      app.ins('a', app.i('refresh', '[-]'), {
-        href: '#reset'
-      }, d);
-      app.ins('', ' ', {}, d);
-      app.ins('a', app.i('ban', '[x]'), {
-        href: '#unstore'
-      }, d);
-    }
-  }, {
-    key: "resetForm",
-    value: function resetForm(e) {
-      var _this3 = this;
-
-      e.preventDefault();
-      var f = e.target.closest('form');
-      f.reset();
-      this.app.ee(f, '[name]', function (n) {
-        return _this3.app.fire('value', {
-          n: n
-        });
-      });
-    }
-  }, {
-    key: "unstore",
-    value: function unstore(e) {
-      e.preventDefault();
-      localStorage.removeItem(this.formId(e.target.closest('form')));
-    }
-  }, {
-    key: "restore",
-    value: function restore(e) {
-      e.preventDefault();
-      this.restoreForm(e.target.closest('form'));
-    }
-  }, {
-    key: "restoreForm",
-    value: function restoreForm(f, mode) {
-      var _this4 = this;
-
-      var id = this.formId(f);
-      var d = localStorage.getItem(id);
-
-      if (d) {
-        d = this.app.parse(d);
-        if (d) Object.keys(d).forEach(function (k) {
-          var i = f.elements[k];
-          if (i) _this4.restoreInput(i, d[k], mode);
-        });
-      }
-    }
-  }, {
-    key: "restoreInput",
-    value: function restoreInput(i, v, mode) {
-      var _this5 = this;
-
-      if (i instanceof NodeList) i.forEach(function (j) {
-        return _this5.restoreInput(j, v, mode);
-      });else {
-        if (i.type.match(/file|submit|password/)) ;else if (i.type.match(/checkbox|radio/)) i.checked = Array.isArray(v) ? v.indexOf(i.value) != -1 : i.value === v;else i.value = v;
-        this.app.fire('value', {
-          n: i,
-          modeAuto: mode
-        });
-      }
-    }
-  }, {
-    key: "store",
-    value: function store(e) {
-      var f = new FormData(e.recv); //let d = JSON.stringify(Object.fromEntries(f)); // does not support multiple
-
-      var d = {};
-      f.forEach(function (v, k) {
-        if (!d.hasOwnProperty(k)) d[k] = v;else {
-          // multiple
-          if (!Array.isArray(d[k])) d[k] = [d[k]];
-          d[k].push(v);
-        }
-      });
-      localStorage.setItem(this.formId(e.recv), JSON.stringify(d));
-    }
-  }, {
-    key: "formId",
-    value: function formId(f) {
-      return 'form#' + f.id + '@' + location.pathname;
-    }
-  }]);
-
-  return _default;
-}(plugins_plugin["a" /* default */]);
-
+var valid = __webpack_require__(14);
 
 // CONCATENATED MODULE: ./src/js/plugins/items.js
 function items_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { items_typeof = function _typeof(obj) { return typeof obj; }; } else { items_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return items_typeof(obj); }
@@ -6161,21 +6186,21 @@ var theme_default = /*#__PURE__*/function (_Plugin) {
 
 
 var src_app = new app["a" /* default */]();
-src_app.plug(code_default);
 src_app.plug(icons["a" /* default */]);
+src_app.plug(code_default);
 src_app.plug(toggle["a" /* default */]);
-src_app.plug(dialog["a" /* default */]);
-src_app.plug(gallery["a" /* default */]);
-src_app.plug(fetch["a" /* default */]);
-src_app.plug(tablex_default);
 src_app.plug(calendar["a" /* default */]);
 src_app.plug(lookup["a" /* default */]);
 src_app.plug(edit["a" /* default */]);
-src_app.plug(valid["a" /* default */]);
 src_app.plug(tools_default);
 src_app.plug(plugins_form["a" /* default */]);
 src_app.plug(pickfile_default);
 src_app.plug(keepform_default);
+src_app.plug(tablex_default);
+src_app.plug(dialog["a" /* default */]);
+src_app.plug(gallery["a" /* default */]);
+src_app.plug(fetch["a" /* default */]);
+src_app.plug(valid["a" /* default */]);
 src_app.plug(items_default);
 src_app.plug(filter_default);
 src_app.plug(fliptable_default);

@@ -1,4 +1,4 @@
-/*! d1-web v2.4.5 */
+/*! d1-web v2.4.6 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -119,18 +119,11 @@ var _default = /*#__PURE__*/function () {
       this.opt = opt; //
 
       this.app = app;
-      this.init();
-
-      if (this.arrange) {
-        this.app.listen('arrange', function (e) {
-          return _this.arrange(e);
-        });
-        this.arrange({});
-      }
-
-      this.app.fire('plugin', {
-        name: this.name,
-        plugin: this
+      this.app.listen('init', function (e) {
+        return _this.init();
+      });
+      if (this.arrange) this.app.listen('arrange', function (e) {
+        return _this.arrange(e);
       });
     }
   }, {
@@ -253,7 +246,7 @@ var _default = /*#__PURE__*/function () {
 
       document.body.classList.add(this.opt.cJs); // prepare body: anti-hover, anti-target
 
-      this.fire('init'); //options
+      this.fire('start'); //options
 
       if (!opt) {
         opt = document.body.dataset.d1;
@@ -264,9 +257,7 @@ var _default = /*#__PURE__*/function () {
       this.dbg(['opt', this.opt]);
       this.fire('options');
       this.initPlugins(); // plugins
-      //this.fire('arrange', {n: document.body})
-
-      this.fire('plugins'); // bind events
+      // bind events
 
       this.b([window], 'hashchange', function (e) {
         return _this.on('hashchange', e);
@@ -329,8 +320,17 @@ var _default = /*#__PURE__*/function () {
       });
       this.dbg(['plugins', this.plugins]);
       Object.keys(this.plugins).forEach(function (k) {
-        return _this3.plugins[k].install(_this3);
+        _this3.plugins[k].install(_this3);
+
+        _this3.fire('plugin', {
+          name: k,
+          plugin: _this3.plugins[k]
+        });
       });
+      this.fire('arrange'); // , {n: document.body}
+
+      this.fire('init');
+      this.fire('plugins');
     } // call method of plugin
 
   }, {
@@ -778,54 +778,68 @@ var _default = /*#__PURE__*/function (_Plugin) {
       ].map(function (n) {
         return n + ':not(.' + app.opt.cOff + ')';
       }).join(', ');
+      this.arrangeOnce();
+    }
+  }, {
+    key: "arrangeOnce",
+    value: function arrangeOnce() {
+      var _this3 = this;
+
+      var n = null;
+      var app = this.app;
+      var q = this.opt;
       var togglers = [q.qTrg, q.qPop, q.qNav, q.qDlg, q.qTab, q.qTre, q.qDrw
       /*, q.qMedia/*, q.qGal*/
       ].join(', ');
-      app.e(this.opt.qNav + ', ' + this.opt.qTre, function (n) {
-        return _this2.attachSubNav(n);
-      }); //nav, tree: attach to links
-
       app.e(togglers, function (n) {
-        return _this2.initToggler(n);
+        return _this3.initToggler(n);
       }); //initialize togglers
 
       this.opt.mediaSuffixes.forEach(function (x) {
-        return app.e(_this2.opt.qTrg + x, function (n) {
-          return _this2.initToggler(n, x);
+        return app.e(_this3.opt.qTrg + x, function (n) {
+          return _this3.initToggler(n, x);
         });
       }); //initialize togglers by media
       //let autohide = [        q.qPop, q.qNav, q.qDlg, q.qTab, q.qAcc, q.qDrw, q.qMedia/*, q.qGal*/].join(', ');
       //app.e(autohide, n => this.tgl(n, 0)); //autohide
 
-      app.e(this.opt.qGal + ':last-child', function (n) {
-        return app.x(n, 1);
+      app.ee(n, this.opt.qNav + ', ' + this.opt.qTre, function (m) {
+        return _this3.attachSubNav(m);
+      }); //nav, tree: attach to links
+
+      app.ee(n, this.opt.qGal + ':last-child', function (m) {
+        return app.x(m, 1);
       }); //gal: auto add close link
 
-      app.e(this.opt.qSubMem, function (n) {
-        return n.classList.add(_this2.opt.cMem);
+      app.ee(n, this.opt.qSubMem, function (m) {
+        return m.classList.add(_this3.opt.cMem);
       }); //initialize sub mem
 
-      app.e('[id]', function (n) {
-        return _this2.restoreVisibility(n);
+      app.ee(n, '[id]', function (m) {
+        return _this3.restoreVisibility(m);
       }); //restore visibility
 
-      app.e(this.opt.qTab + ':not(.' + app.opt.cOff + ') ~ [id]:not(.' + app.opt.cOff + ')', function (n) {
-        return _this2.tgl(n, 0);
+      app.ee(n, this.opt.qTab + ':not(.' + app.opt.cOff + ') ~ [id]:not(.' + app.opt.cOff + ')', function (m) {
+        return _this3.tgl(m, 0);
       }); //undup tabs
 
-      app.e(this.opt.qTab + ':first-child', function (n) {
-        return app.a(n.parentNode.children).filter(function (m) {
+      app.ee(n, this.opt.qTab + ':first-child', function (m) {
+        return app.a(m.parentNode.children).filter(function (m) {
           return app.vis(m);
-        }).length ? null : _this2.tgl(app.q(app.q('a[href^="#"]', n.parentNode.previousElementSibling).hash), 1);
+        }).length ? null : _this3.tgl(app.q(app.q('a[href^="#"]', m.parentNode.previousElementSibling).hash), 1);
       }); //inactive tabs: show first
 
-      app.e('.' + app.opt.cToggle + '[id]', function (n) {
-        return _this2.hiliteLinks(n);
+      app.ee(n, '.' + app.opt.cToggle + '[id]', function (m) {
+        return _this3.hiliteLinks(m);
       }); //init links state
-
-      app.e(this.opt.qTip, function (n) {
-        n.setAttribute('data-tip', n.title.replace(/\s\s+/g, '\n'));
-        n.title = '';
+    }
+  }, {
+    key: "arrange",
+    value: function arrange(_ref) {
+      var n = _ref.n;
+      this.app.ee(n, this.opt.qTip, function (m) {
+        m.setAttribute('data-tip', m.title.replace(/\s\s+/g, '\n'));
+        m.removeAttribute('title');
       }); //init tooltips
     }
   }, {
@@ -908,9 +922,9 @@ var _default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "onHash",
     value: function onHash(e) {
-      var _ref;
+      var _ref2;
 
-      if ((_ref = e ? e.newURL : location.hash) === null || _ref === void 0 ? void 0 : _ref.match(new RegExp(this.opt.hUnhash + '$'))) return;
+      if ((_ref2 = e ? e.newURL : location.hash) === null || _ref2 === void 0 ? void 0 : _ref2.match(new RegExp(this.opt.hUnhash + '$'))) return;
       this.app.dbg(['hashchange', location.hash, e === null || e === void 0 ? void 0 : e.newURL]);
       this.nEsc = 0;
       if (!location.hash || location.hash === this.app.opt.hClose) this.app.fire('esc', e);else {
@@ -1030,9 +1044,9 @@ var _default = /*#__PURE__*/function (_Plugin) {
           if (!deep) {
             this.toggleDependent(d);
             if (hist && this.opt.keepHash) this.addHistory(hist);
-          }
+          } //this.hiliteLinks(d);
 
-          this.hiliteLinks(d);
+
           this.storeVisibility(d); //if (!deep) this.modalStyle(d);
 
           if (!deep && d.matches(this.opt.qModal)) {
@@ -1060,6 +1074,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
       var _on;
 
       if (n) n.classList[on ? 'remove' : on === undefined ? 'toggle' : 'add'](this.app.opt.cOff);
+      this.hiliteLinks(n);
       on = (_on = on) !== null && _on !== void 0 ? _on : this.app.vis(n);
       this.app.fire('toggle', {
         n: n,
@@ -1069,22 +1084,22 @@ var _default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "toggleDependent",
     value: function toggleDependent(d) {
-      var _this3 = this;
+      var _this4 = this;
 
       if (this.app.vis(d)) {
         if (d.matches(this.opt.qDlg)) ; //this.app.e(this.opt.qDlg, n => n == d ? null : this.toggle(n, false, 1)); //hide other dialogs
         else if (d.matches(this.opt.qTab)) this.app.e(d.parentNode.children, function (n) {
-            return n == d ? null : _this3.toggle(n, false, 1);
+            return n == d ? null : _this4.toggle(n, false, 1);
           }); //hide sibling tabs
           else if (d.matches(this.opt.qAcc)) this.app.ee(d.closest(this.opt.qAccRoot), this.opt.qAcc, function (n) {
-              return n.contains(d) ? null : _this3.toggle(n, false, 1);
+              return n.contains(d) ? null : _this4.toggle(n, false, 1);
             }); //hide other ul
       }
     }
   }, {
     key: "unpop",
     value: function unpop(x, force) {
-      var _this4 = this;
+      var _this5 = this;
 
       var keep = [x];
 
@@ -1104,16 +1119,16 @@ var _default = /*#__PURE__*/function (_Plugin) {
       if (!force) {
         // to close nested subsequently
         nn = nn.filter(function (n) {
-          return !_this4.app.q(_this4.opt.qUnpopOn, n);
+          return !_this5.app.q(_this5.opt.qUnpopOn, n);
         });
       } // to close vRel subsequently
 
 
       nn = nn.filter(function (n) {
-        return !_this4.containsRels(n);
+        return !_this5.containsRels(n);
       });
       this.app.e(nn, function (n) {
-        return _this4.toggle(n, false, !force);
+        return _this5.toggle(n, false, !force);
       });
     }
   }, {
@@ -1146,11 +1161,11 @@ var _default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "hiliteLinks",
     value: function hiliteLinks(d) {
-      var _this5 = this;
+      var _this6 = this;
 
       var v = this.app.vis(d);
-      this.app.e('a[href="#' + d.id + '"]', function (a) {
-        return _this5.hiliteLink(a, v);
+      if (d.id) this.app.e('a[href="#' + d.id + '"]', function (a) {
+        return _this6.hiliteLink(a, v);
       });
     }
   }, {
