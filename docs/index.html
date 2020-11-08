@@ -79,16 +79,16 @@
 </script>
 
 	<!-- CDN --R E M O V E->
-		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.6/dist/d1.min.css" rel="stylesheet">
-		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.4.6/dist/d1.min.js" defer></script>
+		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.7/dist/d1.min.css" rel="stylesheet">
+		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.4.7/dist/d1.min.js" defer></script>
 		<noscript>
-			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.6/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.7/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- CDN -->
-		<link href="https://unpkg.com/d1-web@2.4.6/dist/d1.min.css" rel="stylesheet">
-		<script src="https://unpkg.com/d1-web@2.4.6/dist/d1.min.js" defer></script>
+		<link href="https://unpkg.com/d1-web@2.4.7/dist/d1.min.css" rel="stylesheet">
+		<script src="https://unpkg.com/d1-web@2.4.7/dist/d1.min.js" defer></script>
 		<noscript>
-			<link href="https://unpkg.com/d1-web@2.4.6/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://unpkg.com/d1-web@2.4.7/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- local-npm-src REMOVE -- >
 		<link href="../src/index.css" rel="stylesheet">
@@ -127,7 +127,7 @@ data-d1='{"hOk":"#yes","debug":false,"disable":[
 	<a href="#menu" class="pad -let hide-desktop icon-menu empty" title="Menu"><span>Menu</span></a>
 	<a href="#top" class="pad -let"><b>d1</b></a>
 	<code class="-pad -nobr hide-mobile">npm i d1-web</code>
-	<a class="shift pad text-n">v2.4.6</a>
+	<a class="shift pad text-n">v2.4.7</a>
 	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1-web" title="GitHub" class="pad -let">GitHub</a>
 	<a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="pad -let icon-download empty" ><span>Download</span></a>
 </div>
@@ -189,7 +189,7 @@ data-d1='{"hOk":"#yes","debug":false,"disable":[
 			<li><a href="#lookup">Lookup</a>
 			<li><a href="#pickfile">File picker</a>
 			<li><a href="#validate">Validation</a>
-			<li><a href="#keepform">Form storage</a>
+			<li><a href="#store">Form storage</a>
 			<!--li><a href="#form-validate">Validation</a-->
 			</ul>
 		<li><a href="#n-components">Components</a> &rsaquo;
@@ -319,19 +319,19 @@ Inclusion of <code>d1.js</code> and <code>d1-icons.css</code> is optional.
 </ul>
 <div>
 	<div id="cdn-jsdelivr">
-		<pre><code class="language-html">&lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.6/dist/d1.min.css" rel="stylesheet"&gt;
-&lt;script src="https://cdn.jsdelivr.net/npm/d1-web@2.4.6/dist/d1.min.js"&gt;&lt;/script&gt;
+		<pre><code class="language-html">&lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.7/dist/d1.min.css" rel="stylesheet"&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/d1-web@2.4.7/dist/d1.min.js"&gt;&lt;/script&gt;
 &lt;noscript&gt;
-  &lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.6/dist/d1-icons.min.css" rel="stylesheet"&gt;
+  &lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.7/dist/d1-icons.min.css" rel="stylesheet"&gt;
 &lt;/noscript&gt;
 
 		</code></pre>
 	</div>
 	<div id="cdn-unpkg">
-		<pre><code class="language-html">&lt;link href="https://unpkg.com/d1-web@2.4.6/dist/d1.min.css" rel="stylesheet"&gt;
-&lt;script src="https://unpkg.com/d1-web@2.4.6/dist/d1.min.js"&gt;&lt;/script&gt;
+		<pre><code class="language-html">&lt;link href="https://unpkg.com/d1-web@2.4.7/dist/d1.min.css" rel="stylesheet"&gt;
+&lt;script src="https://unpkg.com/d1-web@2.4.7/dist/d1.min.js"&gt;&lt;/script&gt;
 &lt;noscript&gt;
-  &lt;link href="https://unpkg.com/d1-web@2.4.6/dist/d1-icons.min.css" rel="stylesheet"&gt;
+  &lt;link href="https://unpkg.com/d1-web@2.4.7/dist/d1-icons.min.css" rel="stylesheet"&gt;
 &lt;/noscript&gt		</code></pre>
 	</div>
 	<div id="cdn-unpkg-short">
@@ -795,10 +795,9 @@ By default, <code>table</code> is styled with border, unless it is a direct desc
 		S &mdash; scroll<br>
 	</p-->
 
-<h3 id="table-responsive">Responsive table</h3>
-<p>
-<small class="btn bg-i inact" title="Uses plugin: fliptable">fliptable</small>
-</p>
+<h3 id="table-responsive">Responsive table
+	<small class="btn bg-i inact" title="Uses plugin: fliptable">fliptable</small>
+</h3>
 
 <p>Turn rows into cards on small screen <code>table.flip</code>.
 
@@ -816,10 +815,9 @@ By default, <code>table</code> is styled with border, unless it is a direct desc
 </table>
 </div>
 
-<h3 id="table-interactive">Interactive table</h3>
-<p>
-<small class="btn bg-i" title="Uses plugin: tablex">tablex</small>
-</p>
+<h3 id="table-interactive">Interactive table
+	<small class="btn bg-i" title="Uses plugin: tablex">tablex</small>
+</h3>
 
 <p>
 Filter and sort table rows <code>table.sort</code>.<br>
@@ -1098,11 +1096,9 @@ Table will become stacked on small screen.
 </div>
 
 
-<h3 id="input-boxes">Checkbox group</h3>
-
-<p>
-<small class="btn bg-i" title="Requires plugin: form">form</small>
-</p>
+<h3 id="input-boxes">Checkbox group
+	<small class="btn bg-i" title="Requires plugin: form">form</small>
+</h3>
 
 <div class="code">
 	<label for="b1"><input id="b1" type="checkbox" name="colors" data-group="colors"> <b>All</b></label><br>
@@ -1111,22 +1107,18 @@ Table will become stacked on small screen.
 	<label for="b4"><input id="b4" type="checkbox" class="colors" name="color[]" value="blue"> Blue</label><br>
 </div>
 
-<h3 id="input-color">Color input</h3>
-
-<p>
-<small class="btn bg-i" title="Requires plugin: form">form</small>
-</p>
+<h3 id="input-color">Color input
+	<small class="btn bg-i" title="Requires plugin: form">form</small>
+</h3>
 
 <div class="code">
 	<label for="demo-color">Color</label>
 	<input type="color" name="c" id="demo-color" value="#ff0000">
 </div>
 
-<h3 id="input-set">Set input value</h3>
-	
-<p>
-<small class="btn bg-i" title="Requires plugin: form">form</small>
-</p>
+<h3 id="input-set">Set input value
+	<small class="btn bg-i" title="Requires plugin: form">form</small>
+</h3>
 
 <div class="code">
 	<label for="nm-set">Name</label>
@@ -1137,11 +1129,9 @@ Table will become stacked on small screen.
 	
 	
 	
-<h3 id="calendar">Calendar</h3>
-	
-<p>
-<small class="btn bg-i inact" title="Uses plugin: calendar">calendar</small>
-</p>
+<h3 id="calendar">Calendar
+	<small class="btn bg-i inact" title="Uses plugin: calendar">calendar</small>
+</h3>
 
 <p>Replacement of standard HTML date inputs.
 
@@ -1164,11 +1154,9 @@ Table will become stacked on small screen.
 	</form>
 </div>
 
-<h3 id="edit">Edit</h3>
-
-<p>
-<small class="btn bg-i" title="Requires plugin: edit">edit</small>
-</p>
+<h3 id="edit">Edit
+	<small class="btn bg-i" title="Requires plugin: edit">edit</small>
+</h3>
 
 	<p>
 	Auto-adjust <code>textarea</code> height to content <code>.adjust</code>.
@@ -1243,10 +1231,9 @@ Table will become stacked on small screen.
   rows="5">Write formatted text.</textarea>
 </div>
 
-<h3 id="lookup">Lookup</h3>
-<p>
-<small class="btn bg-i" title="Requires plugin: lookup">lookup</small>
-</p>
+<h3 id="lookup">Lookup
+	<small class="btn bg-i" title="Requires plugin: lookup">lookup</small>
+</h3>
 
 	<p>Autocomplete lookups with data from XHTTP request.
 
@@ -1297,10 +1284,9 @@ Table will become stacked on small screen.
 </div>
 
 
-<h3 id="pickfile">File picker with dropzone</h3>
-<p>
-<small class="btn bg-i inact" title="Uses plugin: pickfile">pickfile</small>
-</p>
+<h3 id="pickfile">File picker with dropzone
+	<small class="btn bg-i inact" title="Uses plugin: pickfile">pickfile</small>
+</h3>
 
 <p>Add <code>.pick</code> class to file input for drag and drop behaviour and image preview.<br>
 Optionally set <code>[data-picked]</code> to URL of initial image.<br>
@@ -1339,10 +1325,9 @@ Add <code>.fit</code> class for compact layout.<br>
 
 <p>Custom form validation.
 
-<h4 id="validate-messages">Custom input validation messages</h4>
-<p>
-<small class="btn bg-i" title="Requires plugin: valid">valid</small>
-</p>
+<h4 id="validate-messages">Custom input validation messages
+	<small class="btn bg-i" title="Requires plugin: valid">valid</small>
+</h4>
 
 <p>To customize input validation messages, provide validation hint in <code>[data-hint]</code> attribute of input element. Placeholders inside percent characters are replaced with value of corresponding attribute of input element.
 
@@ -1498,10 +1483,9 @@ Add <code>.fit</code> class for compact layout.<br>
   &lt;p class="hint small text-e">Value required&lt;/p&gt;</pre>
 -->
   
-<h3 id="keepform">Form inputs storage</h3>
-<p>
-<small class="btn bg-i" title="Requires plugin: keepform">keepform</small>
-</p>
+<h3 id="store">Form inputs storage
+	<small class="btn bg-i" title="Requires plugin: store">store</small>
+</h3>
 
 <p>To store user input in local storage, add <code>.store</code> class to the form.<br>
 Buttons will be shown above the form: to restore input values, to reset inputs to initial values, and to clear stored values.
@@ -1553,10 +1537,9 @@ Buttons will be shown above the form: to restore input values, to reset inputs t
 </div>
 
 
-<h2 id="components">Components</h2>
-<p>
-<small class="btn bg-i" title="Requires plugin: toggle">toggle</small>
-</p>
+<h2 id="components">Components
+	<small class="btn bg-i inact" title="Uses plugin: toggle">toggle</small>
+</h2>
 
 <p>
 Pure CSS togglers based on <code>:target</code> behaviour.
@@ -1751,10 +1734,9 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 </div>
 </div>
 
-<h3 id="dialog">Dialog</h3>
-<p>
-<small class="btn bg-i" title="Requires plugin: dialog">dialog</small>
-</p>
+<h3 id="dialog">Dialog
+	<small class="btn bg-i" title="Requires plugin: dialog">dialog</small>
+</h3>
 	
 	<p>Replacement for standard JavaScript dialogs.
 	<ul class="opts-dlg">
@@ -1814,10 +1796,9 @@ Enter key press navigates to the next image (depends on browser).
 </div>
 </div>
 
-<h4 id="gallery">Generated gallery</h4>
-<p>
-<small class="btn bg-i" title="Requires plugin: gallery">gallery</small>
-</p>
+<h4 id="gallery">Generated gallery
+	<small class="btn bg-i" title="Requires plugin: gallery">gallery</small>
+</h4>
 	
 	<p>
 	Place links with class <code>.pic</code> inside <code>div</code> with class <code>.gallery</code>
@@ -1851,10 +1832,9 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 </div>
 
 
-<h3 id="topbar">Topbar</h3>
-<p>
-<small class="btn bg-i inact" title="Uses plugin: scroll">scroll</small>
-</p>
+<h3 id="topbar">Topbar
+	<small class="btn bg-i inact" title="Uses plugin: scroll">scroll</small>
+</h3>
 
 <p class="opts-topbar">
 <label><input name="demo-top" type="radio" data-nodes="#topline" value="hide off"> Disable top bar</label><br>
@@ -1890,10 +1870,9 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 
 <h2 id="util">Utilities</h2>
 
-<h3 id="fetch">Fetch</h3>
-<p>
-<small class="btn bg-i" title="Requires plugin: fetch">fetch</small>
-</p>
+<h3 id="fetch">Fetch
+	<small class="btn bg-i" title="Requires plugin: fetch">fetch</small>
+</h3>
 <!--opts-fetch-->
 <div class="code">
 <a data-href-alt="data.json" href="https://restcountries.eu/rest/v2/alpha/gb#altSpellings" data-target="#preview">Fetch into preview area</a><br>
@@ -1905,10 +1884,9 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 </div>
 
 
-<h3 id="responsive-class">Responsive class</h3>
-<p>
-<small class="btn bg-i" title="Requires plugin: tools">tools</small>
-</p>
+<h3 id="responsive-class">Responsive class
+	<small class="btn bg-i" title="Requires plugin: tools">tools</small>
+</h3>
 
 <!--opts-resp-class-->
 <p>Class depending on available width <code>[data-class-mobile], [data-class-desktop]</code>.<br>
@@ -1936,10 +1914,9 @@ Toggles on resize.
 </div>
 
 
-<h3 id="toggle-class">Toggle class</h3>
-<p>
-<small class="btn bg-i" title="Requires plugin: tools">tools</small>
-</p>
+<h3 id="toggle-class">Toggle class
+	<small class="btn bg-i" title="Requires plugin: tools">tools</small>
+</h3>
 
 <!--opts-set-class-->
 <p>Toggle class or other attribute 
@@ -2018,10 +1995,9 @@ Toggles on resize.
 </div>
 </div>
 
-<h3 id="filters">Multi-parameter filter</h3>
-<p>
-<small class="btn bg-i" title="Requires plugin: filter">filter</small>
-</p>
+<h3 id="filters">Multi-parameter filter
+	<small class="btn bg-i" title="Requires plugin: filter">filter</small>
+</h3>
 
 <div class="code">
 <div class="filters mem" id="filter-items" data-filter_color="green;yellow">
@@ -2107,10 +2083,9 @@ Toggles on resize.
 </ul>
 	-->
 
-<h3 id="items">Items</h3>
-<p>
-<small class="btn bg-i" title="Requires plugin: items">items</small>
-</p>
+<h3 id="items">Items
+	<small class="btn bg-i" title="Requires plugin: items">items</small>
+</h3>
 <!--opts-items-->
 <p>
 Items are nodes with class <code>.item</code>.
@@ -2165,10 +2140,9 @@ If link needs to be outside of the item, point at item with query selector in li
 	</table>
 </div>
 
-<h3 id="icons">Icons</h3>
-<p>
-<small class="btn bg-i inact" title="Uses plugin: icons">icons</small>
-</p>
+<h3 id="icons">Icons
+	<small class="btn bg-i inact" title="Uses plugin: icons">icons</small>
+</h3>
 
 <!--opts-icon-->
 <p>
@@ -2226,10 +2200,9 @@ To explicitly set width, height and class of inserted icon (original or custom),
 </div>
 
 
-<h3 id="code-highlight">Code highlight</h3>
-<p>
-<small class="btn bg-i" title="Requires plugin: code">code</small>
-</p>
+<h3 id="code-highlight">Code highlight
+	<small class="btn bg-i" title="Requires plugin: code">code</small>
+</h3>
 <!--opts-code-hilite-->
 <p>
 Add <code>.language-xxx</code> class to <code>code</code> element.
@@ -2255,10 +2228,9 @@ let double = function(x){
 }</code></pre>
 </div>
 
-<h3 id="code-sample">Code sample</h3>
-<p>
-<small class="btn bg-i" title="Requires plugin: code">code</small>
-</p>
+<h3 id="code-sample">Code sample
+	<small class="btn bg-i" title="Requires plugin: code">code</small>
+</h3>
 <!--opts-code-->
 <p>Add <code>.code</code> class to <code>div</code> element.
 
@@ -2269,10 +2241,9 @@ let double = function(x){
 </div>
 
 
-<h3 id="swipe">Swipe</h3>
-<p>
-<small class="btn bg-i" title="Requires plugin: swipe">swipe</small>
-</p>
+<h3 id="swipe">Swipe
+	<small class="btn bg-i" title="Requires plugin: swipe">swipe</small>
+</h3>
 
 <p>Add <code>.swipe</code> class to the element.
 Allowed swipe directions are defined by the presence of <code>data-swipe-up</code>, <code>data-swipe-down</code>, <code>data-swipe-left</code>, <code>data-swipe-right</code> attributes. Non-empty values of these attributes are used as URLs.
@@ -2299,10 +2270,9 @@ Allowed swipe directions are defined by the presence of <code>data-swipe-up</cod
 </div>
 
 
-<h3 id="theme">Theme</h3>
-<p>
-<small class="btn bg-i" title="Requires plugin: theme">theme</small>
-</p>
+<h3 id="theme">Theme
+	<small class="btn bg-i" title="Requires plugin: theme">theme</small>
+</h3>
 
 <a class="btn bg-i" href="#theme-config">Customize</a>
 
@@ -2842,32 +2812,32 @@ most important:
 <h3 id="reference-plugins">Plugins</h3>
 
 <div class="roll">
-<table class="let hover c3 c4 c5 sort table-checks">
+<table class="let hover c4 c5 c6 sort table-checks">
 <thead>
-	<tr><th>Name<th>Usage<th>Basic bundle<th>Classic bundle<th>Full bundle
+	<tr><th>Name<th>Category<th>Usage<th title="Basic bundle">Basic<th title="Classic bundle">Classic<th title="Full bundle">Full
 </thead>
 <tbody>
-	<tr><td>calendar<td><a href="#calendar">calendar</a><td>-<td>+<td>+
-	<tr><td>code<td><a href="#code-highlight">highlight</a>,<br> <a href="#code-sample">sample</a><td>-<td>-<td>+
-	<tr><td>dialog<td><a href="#dialog">dialog</a><td>+<td>+<td>+
-	<tr><td>edit<td><a href="#edit">edit</a><td>-<td>+<td>+
-	<tr><td>fetch<td><a href="#fetch">fetch</a><td>-<td>+<td>+
-	<tr><td>filter<td><a href="#filters">filters</a><td>-<td>-<td>+
-	<tr><td>fliptable<td><a href="#table-responsive">responsive table</a><td>-<td>-<td>+
-	<tr><td>form<td><a href="#input-boxes">checkboxes</a>,<br> <a href="#input-color">color input</a>,<br> <a href="#input-set">set value</a><td>-<td>+<td>+
-	<tr><td>gallery<td><a href="#gallery">gallery</a><td>+<td>+<td>+
-	<tr><td>icons<td><a href="#icons">Icons</a><td>-<td>+<td>+
-	<tr><td>items<td><a href="#items">items</a><td>-<td>-<td>+
-	<tr><td>keepform<td><a href="#keepform">store inputs</a><td>-<td>-<td>+
-	<tr><td>lookup<td><a href="#lookup">lookup</a><td>-<td>+<td>+
-	<tr><td>pickfile<td><a href="#pickfile">file picker</a><td>-<td>-<td>+
-	<tr><td>scroll<td><a href="#topbar">topbar</a><td>-<td>-<td>+
-	<tr><td>swipe<td><a href="#swipe">swipe</a><td>-<td>-<td>+
-	<tr><td>tablex<td><a href="#table-interactive">interactive table</a><td>-<td>-<td>+
-	<tr><td>theme<td><a href="#theme">theme</a><td>-<td>-<td>+
-	<tr><td>toggle<td><a href="#components">components</a><td>+<td>+<td>+
-	<tr><td>tools<td><a href="#toggle-class">toggle class</a>,<br> <a href="#responsive-class">responsive class</a><td>-<td>-<td>+
-	<tr><td>valid<td><a href="#validate">validate</a><td>-<td>+<td>+
+	<tr><th>calendar<td>form<td><a href="#calendar">calendar</a><td>-<td>+<td>+
+	<tr><th>code<td>decor<td><a href="#code-highlight">highlight</a>,<br> <a href="#code-sample">sample</a><td>-<td>-<td>+
+	<tr><th>dialog<td>toggle<td><a href="#dialog">dialog</a><td>+<td>+<td>+
+	<tr><th>edit<td>form<td><a href="#edit">edit</a><td>-<td>+<td>+
+	<tr><th>fetch<td>url<td><a href="#fetch">fetch</a><td>-<td>+<td>+
+	<tr><th>filter<td>items<td><a href="#filters">filters</a><td>-<td>-<td>+
+	<tr><th>fliptable<td>table<td><a href="#table-responsive">responsive table</a><td>-<td>-<td>+
+	<tr><th>form<td>form<td><a href="#input-boxes">checkboxes</a>,<br> <a href="#input-color">color input</a>,<br> <a href="#input-set">set value</a><td>-<td>+<td>+
+	<tr><th>gallery<td>toggle<td><a href="#gallery">gallery</a><td>+<td>+<td>+
+	<tr><th>icons<td>decor<td><a href="#icons">icons</a><td>-<td>+<td>+
+	<tr><th>items<td>items<td><a href="#items">items</a><td>-<td>-<td>+
+	<tr><th>store<td>form<td><a href="#store">store inputs</a><td>-<td>-<td>+
+	<tr><th>lookup<td>form<td><a href="#lookup">lookup</a><td>-<td>+<td>+
+	<tr><th>pickfile<td>form<td><a href="#pickfile">file picker</a><td>-<td>-<td>+
+	<tr><th>scroll<td>toggle<td><a href="#topbar">topbar</a><td>-<td>-<td>+
+	<tr><th>swipe<td>url<td><a href="#swipe">swipe</a><td>-<td>-<td>+
+	<tr><th>tablex<td>table<td><a href="#table-interactive">interactive table</a><td>-<td>-<td>+
+	<tr><th>theme<td>decor<td><a href="#theme">theme</a><td>-<td>-<td>+
+	<tr><th>toggle<td>toggle<td><a href="#components">components</a><td>+<td>+<td>+
+	<tr><th>tools<td>decor<td><a href="#toggle-class">toggle class</a>,<br> <a href="#responsive-class">responsive class</a><td>-<td>-<td>+
+	<tr><th>valid<td>form<td><a href="#validate">validate</a><td>-<td>+<td>+
 </tbody>
 </table>
 </div>

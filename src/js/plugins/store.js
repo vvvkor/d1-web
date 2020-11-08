@@ -1,11 +1,11 @@
-/*! keepform - store and restore user input */
+/*! store - store and restore user input */
 
 import Plugin from './plugin.js';
 
 export default class extends Plugin {
 
   constructor() {
-    super('keepform')
+    super('store')
     this.opt = {
       qStore: 'form.store[id]',
       qRestore: 'form.restore[id]'
@@ -29,7 +29,7 @@ export default class extends Plugin {
   
   addControls(f) {
     const app = this.app
-    let d = app.ins('div', '', 'pad r keepform-tools', f, false);
+    let d = app.ins('div', '', 'pad r store-tools', f, false);
     app.ins('a', app.i('energy', '[^]'), {href: '#restore'}, d);
     app.ins('', ' ', {}, d);
     app.ins('a', app.i('refresh', '[-]'), {href: '#reset'}, d);

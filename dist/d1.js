@@ -1,4 +1,4 @@
-/*! d1-web v2.4.6 */
+/*! d1-web v2.4.7 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -3881,254 +3881,6 @@ var lookup = __webpack_require__(10);
 // EXTERNAL MODULE: ./src/js/plugins/edit.js
 var edit = __webpack_require__(11);
 
-// CONCATENATED MODULE: ./src/js/plugins/tools.js
-function tools_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { tools_typeof = function _typeof(obj) { return typeof obj; }; } else { tools_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return tools_typeof(obj); }
-
-function tools_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function tools_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function tools_createClass(Constructor, protoProps, staticProps) { if (protoProps) tools_defineProperties(Constructor.prototype, protoProps); if (staticProps) tools_defineProperties(Constructor, staticProps); return Constructor; }
-
-function tools_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) tools_setPrototypeOf(subClass, superClass); }
-
-function tools_setPrototypeOf(o, p) { tools_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return tools_setPrototypeOf(o, p); }
-
-function tools_createSuper(Derived) { var hasNativeReflectConstruct = tools_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = tools_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = tools_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return tools_possibleConstructorReturn(this, result); }; }
-
-function tools_possibleConstructorReturn(self, call) { if (call && (tools_typeof(call) === "object" || typeof call === "function")) { return call; } return tools_assertThisInitialized(self); }
-
-function tools_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function tools_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
-function tools_getPrototypeOf(o) { tools_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return tools_getPrototypeOf(o); }
-
-/*! tools - miscellaneous utilities (toggle class and attributes) */
-
-
-var tools_default = /*#__PURE__*/function (_Plugin) {
-  tools_inherits(_default, _Plugin);
-
-  var _super = tools_createSuper(_default);
-
-  function _default() {
-    var _this;
-
-    tools_classCallCheck(this, _default);
-
-    _this = _super.call(this, 'tools');
-    _this.opt = {
-      cMem: 'mem',
-      qHeading: 'h2[id], h3[id], h4[id], h5[id], h6[id]',
-      // h1[id],
-      minDesktop: 900
-    };
-    return _this;
-  }
-
-  tools_createClass(_default, [{
-    key: "init",
-    value: function init() {
-      var _this2 = this;
-
-      this.opt.qSetClick = 'a[data-set]';
-      this.opt.qSetChange = 'input[data-nodes], select[data-nodes]';
-      this.app.h('change', this.opt.qSetChange, function (e) {
-        return _this2.toggleClass(e.target);
-      });
-      this.app.h('click', this.opt.qSetClick, function (e) {
-        return _this2.toggleClass(e.recv, e);
-      });
-      this.app.b([window], 'resize', function (e) {
-        return _this2.onResize(e);
-      });
-    }
-  }, {
-    key: "arrange",
-    value: function arrange(_ref) {
-      var _this3 = this;
-
-      var n = _ref.n;
-      this.opt.qSet = '[data-set], [data-nodes]';
-      this.app.ee(n, 'table[class]', function (m) {
-        return _this3.alignCells(m);
-      });
-      this.app.ee(n, this.opt.qSet, function (m) {
-        return _this3.restore(m);
-      });
-      this.app.ee(n, this.opt.qSet, function (m) {
-        return _this3.toggleClass(m);
-      });
-      this.app.ee(n, this.opt.qHeading, function (m) {
-        return _this3.smartHeading(m);
-      });
-      this.onResize();
-    }
-  }, {
-    key: "alignCells",
-    value: function alignCells(n) {
-      var _this4 = this;
-
-      var m = n.className.match(/\b[lcr]\d\d?\b/g);
-
-      if (m) {
-        var _loop = function _loop(i) {
-          _this4.app.ee(n, 'tr>*:nth-child(' + m[i].substr(1) + ')', function (c) {
-            return c.classList.add(m[i].substr(0, 1));
-          });
-        };
-
-        for (var i = 0; i < m.length; i++) {
-          _loop(i);
-        }
-      }
-    }
-  }, {
-    key: "store",
-    value: function store(n, v) {
-      if (n && (n.id || n.name) && n.classList.contains(this.opt.cMem)) {
-        localStorage.setItem('set#' + (n.id || '#' + n.name), v);
-      }
-    }
-  }, {
-    key: "restore",
-    value: function restore(n) {
-      if (n && (n.id || n.name) && n.classList && n.classList.contains(this.opt.cMem)) {
-        var v = localStorage.getItem('set#' + (n.id || '#' + n.name));
-
-        if (v !== null) {
-          var t = n.tagName;
-          if (t == 'A') n.classList[v ? 'add' : 'remove'](this.app.opt.cAct);else if (t == 'SELECT') n.value = v;else if (n.type == 'checkbox') n.checked = !!v;else if (n.type == 'radio') n.checked = n.value == v;
-        }
-      }
-    }
-  }, {
-    key: "setClass",
-    value: function setClass(n, on, m, c) {
-      this.app.dbg(['setclass', m, c]);
-      var sel = n.type == 'radio' || n.tagName == 'SELECT';
-      var u = sel ? null
-      /*''*/
-      : n.dataset.unset;
-      var attr = n.dataset.attr || 'class';
-      var val = on ? c : u || '';
-
-      if (attr !== 'class') {
-        if (val) m.setAttribute(attr, val);else m.removeAttribute(attr);
-      } else if (u !== null && u !== undefined) m.className = val;else {
-        if (sel) {
-          //unset other select/radio values
-          var _u = n.type == 'radio' ? this.app.qq('input[type="radio"][name="' + n.name + '"]').map(function (nn) {
-            return (
-              /*(nn.dataset.set || '')*/
-              nn.value
-            );
-          }).join(' ') : this.app.qq('option', n).map(function (nn) {
-            return nn.value;
-          }).join(' ');
-
-          _u.split(/\s+/).filter(function (cc) {
-            return cc;
-          }).forEach(function (cc) {
-            return m.classList.remove(cc);
-          });
-        }
-
-        c.split(/\s+/).filter(function (cc) {
-          return cc;
-        }).forEach(function (cc) {
-          return m.classList[on ? 'add' : 'remove'](cc);
-        });
-      }
-
-      n.classList[on ? 'add' : 'remove'](this.app.opt.cAct);
-      this.app.fire('active', {
-        n: n,
-        on: on
-      });
-      this.app.fire('switch', {
-        n: m,
-        on: on,
-        attr: attr,
-        val: val
-        /*, unset: (attr === 'class' && !u) ? (on ? '' : c) : null*/
-
-      });
-      this.store(n, sel ? n.value : (n.type == 'checkbox' ? n.checked : n.classList.contains(this.app.opt.cAct)) ? '1' : '');
-    }
-  }, {
-    key: "toggleClass",
-    value: function toggleClass(n, e) {
-      var _this5 = this;
-
-      if (n.type == 'radio' && !n.checked) return;
-      var box = n.type == 'checkbox' || n.type == 'radio';
-      var sel = n.tagName == 'SELECT' || n.type == 'radio';
-      var q = n.dataset.nodes || n.hash;
-      var c = sel ? n.value : n.dataset.set || n.value;
-      var on = sel ? true : box ? n.checked : n.classList.contains(this.app.opt.cAct);
-
-      if (e && !box && !sel) {
-        on = !on;
-        e.preventDefault();
-        e.stopPropagation();
-      } //this.app.dbg(['setclass?', c, on, q, e, box, sel]);
-
-
-      if (c !== null && c !== undefined) {
-        this.app.e(q, function (m) {
-          return _this5.setClass(n, on, m, c);
-        });
-        this.app.fire('update', {
-          q: q
-        });
-      }
-    }
-  }, {
-    key: "smartHeading",
-    value: function smartHeading(n) {
-      if (n.dataset.ready) return;
-      n.dataset.ready = 1;
-      var d = this.app.ins('div', '', {});
-
-      while (n.firstChild) {
-        d.appendChild(n.firstChild);
-      }
-
-      n.appendChild(d);
-      d.style.position = 'relative';
-      d.style.paddingRight = '1em';
-      this.app.ins('', ' ', {}, d);
-      this.app.ins('a', '#', {
-        href: '#' + n.id,
-        className: 'small text-n inact  hide-print'
-      }, d);
-      this.app.ins('a', this.app.i('asc', '&uarr;'), {
-        href: '#',
-        className: 'small close text-n inact hide-print'
-      }, d); //n.style.position = 'relative';
-      //let a = this.app.ins('a', this.app.i('asc', '&uarr;'), {href:'#', className: 'small close text-n hide-print'}, n);
-    }
-  }, {
-    key: "onResize",
-    value: function onResize() {
-      var m = window.innerWidth <= this.opt.minDesktop;
-      m ? this.app.e('[data-class-mobile]', function (n) {
-        return n.className = n.dataset.classMobile || '';
-      }) : this.app.e('[data-class-desktop]', function (n) {
-        return n.className = n.dataset.classDesktop || '';
-      });
-    }
-  }]);
-
-  return _default;
-}(plugins_plugin["a" /* default */]);
-
-
-// EXTERNAL MODULE: ./src/js/plugins/form.js
-var plugins_form = __webpack_require__(12);
-
 // CONCATENATED MODULE: ./src/js/plugins/pickfile.js
 function pickfile_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { pickfile_typeof = function _typeof(obj) { return typeof obj; }; } else { pickfile_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return pickfile_typeof(obj); }
 
@@ -4392,43 +4144,291 @@ var pickfile_default = /*#__PURE__*/function (_Plugin) {
 }(plugins_plugin["a" /* default */]);
 
 
-// CONCATENATED MODULE: ./src/js/plugins/keepform.js
-function keepform_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { keepform_typeof = function _typeof(obj) { return typeof obj; }; } else { keepform_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return keepform_typeof(obj); }
+// CONCATENATED MODULE: ./src/js/plugins/tools.js
+function tools_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { tools_typeof = function _typeof(obj) { return typeof obj; }; } else { tools_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return tools_typeof(obj); }
 
-function keepform_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function tools_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function keepform_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function tools_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function keepform_createClass(Constructor, protoProps, staticProps) { if (protoProps) keepform_defineProperties(Constructor.prototype, protoProps); if (staticProps) keepform_defineProperties(Constructor, staticProps); return Constructor; }
+function tools_createClass(Constructor, protoProps, staticProps) { if (protoProps) tools_defineProperties(Constructor.prototype, protoProps); if (staticProps) tools_defineProperties(Constructor, staticProps); return Constructor; }
 
-function keepform_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) keepform_setPrototypeOf(subClass, superClass); }
+function tools_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) tools_setPrototypeOf(subClass, superClass); }
 
-function keepform_setPrototypeOf(o, p) { keepform_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return keepform_setPrototypeOf(o, p); }
+function tools_setPrototypeOf(o, p) { tools_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return tools_setPrototypeOf(o, p); }
 
-function keepform_createSuper(Derived) { var hasNativeReflectConstruct = keepform_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = keepform_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = keepform_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return keepform_possibleConstructorReturn(this, result); }; }
+function tools_createSuper(Derived) { var hasNativeReflectConstruct = tools_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = tools_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = tools_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return tools_possibleConstructorReturn(this, result); }; }
 
-function keepform_possibleConstructorReturn(self, call) { if (call && (keepform_typeof(call) === "object" || typeof call === "function")) { return call; } return keepform_assertThisInitialized(self); }
+function tools_possibleConstructorReturn(self, call) { if (call && (tools_typeof(call) === "object" || typeof call === "function")) { return call; } return tools_assertThisInitialized(self); }
 
-function keepform_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function tools_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function keepform_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function tools_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
-function keepform_getPrototypeOf(o) { keepform_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return keepform_getPrototypeOf(o); }
+function tools_getPrototypeOf(o) { tools_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return tools_getPrototypeOf(o); }
 
-/*! keepform - store and restore user input */
+/*! tools - miscellaneous utilities (toggle class and attributes) */
 
 
-var keepform_default = /*#__PURE__*/function (_Plugin) {
-  keepform_inherits(_default, _Plugin);
+var tools_default = /*#__PURE__*/function (_Plugin) {
+  tools_inherits(_default, _Plugin);
 
-  var _super = keepform_createSuper(_default);
+  var _super = tools_createSuper(_default);
 
   function _default() {
     var _this;
 
-    keepform_classCallCheck(this, _default);
+    tools_classCallCheck(this, _default);
 
-    _this = _super.call(this, 'keepform');
+    _this = _super.call(this, 'tools');
+    _this.opt = {
+      cMem: 'mem',
+      qHeading: 'h2[id], h3[id], h4[id], h5[id], h6[id]',
+      // h1[id],
+      minDesktop: 900
+    };
+    return _this;
+  }
+
+  tools_createClass(_default, [{
+    key: "init",
+    value: function init() {
+      var _this2 = this;
+
+      this.opt.qSetClick = 'a[data-set]';
+      this.opt.qSetChange = 'input[data-nodes], select[data-nodes]';
+      this.app.h('change', this.opt.qSetChange, function (e) {
+        return _this2.toggleClass(e.target);
+      });
+      this.app.h('click', this.opt.qSetClick, function (e) {
+        return _this2.toggleClass(e.recv, e);
+      });
+      this.app.b([window], 'resize', function (e) {
+        return _this2.onResize(e);
+      });
+    }
+  }, {
+    key: "arrange",
+    value: function arrange(_ref) {
+      var _this3 = this;
+
+      var n = _ref.n;
+      this.opt.qSet = '[data-set], [data-nodes]';
+      this.app.ee(n, 'table[class]', function (m) {
+        return _this3.alignCells(m);
+      });
+      this.app.ee(n, this.opt.qSet, function (m) {
+        return _this3.restore(m);
+      });
+      this.app.ee(n, this.opt.qSet, function (m) {
+        return _this3.toggleClass(m);
+      });
+      this.app.ee(n, this.opt.qHeading, function (m) {
+        return _this3.smartHeading(m);
+      });
+      this.onResize();
+    }
+  }, {
+    key: "alignCells",
+    value: function alignCells(n) {
+      var _this4 = this;
+
+      var m = n.className.match(/\b[lcr]\d\d?\b/g);
+
+      if (m) {
+        var _loop = function _loop(i) {
+          _this4.app.ee(n, 'tr>*:nth-child(' + m[i].substr(1) + ')', function (c) {
+            return c.classList.add(m[i].substr(0, 1));
+          });
+        };
+
+        for (var i = 0; i < m.length; i++) {
+          _loop(i);
+        }
+      }
+    }
+  }, {
+    key: "store",
+    value: function store(n, v) {
+      if (n && (n.id || n.name) && n.classList.contains(this.opt.cMem)) {
+        localStorage.setItem('set#' + (n.id || '#' + n.name), v);
+      }
+    }
+  }, {
+    key: "restore",
+    value: function restore(n) {
+      if (n && (n.id || n.name) && n.classList && n.classList.contains(this.opt.cMem)) {
+        var v = localStorage.getItem('set#' + (n.id || '#' + n.name));
+
+        if (v !== null) {
+          var t = n.tagName;
+          if (t == 'A') n.classList[v ? 'add' : 'remove'](this.app.opt.cAct);else if (t == 'SELECT') n.value = v;else if (n.type == 'checkbox') n.checked = !!v;else if (n.type == 'radio') n.checked = n.value == v;
+        }
+      }
+    }
+  }, {
+    key: "setClass",
+    value: function setClass(n, on, m, c) {
+      this.app.dbg(['setclass', m, c]);
+      var sel = n.type == 'radio' || n.tagName == 'SELECT';
+      var u = sel ? null
+      /*''*/
+      : n.dataset.unset;
+      var attr = n.dataset.attr || 'class';
+      var val = on ? c : u || '';
+
+      if (attr !== 'class') {
+        if (val) m.setAttribute(attr, val);else m.removeAttribute(attr);
+      } else if (u !== null && u !== undefined) m.className = val;else {
+        if (sel) {
+          //unset other select/radio values
+          var _u = n.type == 'radio' ? this.app.qq('input[type="radio"][name="' + n.name + '"]').map(function (nn) {
+            return (
+              /*(nn.dataset.set || '')*/
+              nn.value
+            );
+          }).join(' ') : this.app.qq('option', n).map(function (nn) {
+            return nn.value;
+          }).join(' ');
+
+          _u.split(/\s+/).filter(function (cc) {
+            return cc;
+          }).forEach(function (cc) {
+            return m.classList.remove(cc);
+          });
+        }
+
+        c.split(/\s+/).filter(function (cc) {
+          return cc;
+        }).forEach(function (cc) {
+          return m.classList[on ? 'add' : 'remove'](cc);
+        });
+      }
+
+      n.classList[on ? 'add' : 'remove'](this.app.opt.cAct);
+      this.app.fire('active', {
+        n: n,
+        on: on
+      });
+      this.app.fire('switch', {
+        n: m,
+        on: on,
+        attr: attr,
+        val: val
+        /*, unset: (attr === 'class' && !u) ? (on ? '' : c) : null*/
+
+      });
+      this.store(n, sel ? n.value : (n.type == 'checkbox' ? n.checked : n.classList.contains(this.app.opt.cAct)) ? '1' : '');
+    }
+  }, {
+    key: "toggleClass",
+    value: function toggleClass(n, e) {
+      var _this5 = this;
+
+      if (n.type == 'radio' && !n.checked) return;
+      var box = n.type == 'checkbox' || n.type == 'radio';
+      var sel = n.tagName == 'SELECT' || n.type == 'radio';
+      var q = n.dataset.nodes || n.hash;
+      var c = sel ? n.value : n.dataset.set || n.value;
+      var on = sel ? true : box ? n.checked : n.classList.contains(this.app.opt.cAct);
+
+      if (e && !box && !sel) {
+        on = !on;
+        e.preventDefault();
+        e.stopPropagation();
+      } //this.app.dbg(['setclass?', c, on, q, e, box, sel]);
+
+
+      if (c !== null && c !== undefined) {
+        this.app.e(q, function (m) {
+          return _this5.setClass(n, on, m, c);
+        });
+        this.app.fire('update', {
+          q: q
+        });
+      }
+    }
+  }, {
+    key: "smartHeading",
+    value: function smartHeading(n) {
+      if (n.dataset.ready) return;
+      n.dataset.ready = 1;
+      var d = this.app.ins('div', '', {});
+
+      while (n.firstChild) {
+        d.appendChild(n.firstChild);
+      }
+
+      n.appendChild(d);
+      d.style.position = 'relative';
+      d.style.paddingRight = '1em';
+      this.app.ins('', ' ', {}, d);
+      this.app.ins('a', '#', {
+        href: '#' + n.id,
+        className: 'small text-n inact  hide-print'
+      }, d);
+      this.app.ins('a', this.app.i('asc', '&uarr;'), {
+        href: '#',
+        className: 'small close text-n inact hide-print'
+      }, d); //n.style.position = 'relative';
+      //let a = this.app.ins('a', this.app.i('asc', '&uarr;'), {href:'#', className: 'small close text-n hide-print'}, n);
+    }
+  }, {
+    key: "onResize",
+    value: function onResize() {
+      var m = window.innerWidth <= this.opt.minDesktop;
+      m ? this.app.e('[data-class-mobile]', function (n) {
+        return n.className = n.dataset.classMobile || '';
+      }) : this.app.e('[data-class-desktop]', function (n) {
+        return n.className = n.dataset.classDesktop || '';
+      });
+    }
+  }]);
+
+  return _default;
+}(plugins_plugin["a" /* default */]);
+
+
+// EXTERNAL MODULE: ./src/js/plugins/form.js
+var plugins_form = __webpack_require__(12);
+
+// CONCATENATED MODULE: ./src/js/plugins/store.js
+function store_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { store_typeof = function _typeof(obj) { return typeof obj; }; } else { store_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return store_typeof(obj); }
+
+function store_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function store_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function store_createClass(Constructor, protoProps, staticProps) { if (protoProps) store_defineProperties(Constructor.prototype, protoProps); if (staticProps) store_defineProperties(Constructor, staticProps); return Constructor; }
+
+function store_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) store_setPrototypeOf(subClass, superClass); }
+
+function store_setPrototypeOf(o, p) { store_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return store_setPrototypeOf(o, p); }
+
+function store_createSuper(Derived) { var hasNativeReflectConstruct = store_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = store_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = store_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return store_possibleConstructorReturn(this, result); }; }
+
+function store_possibleConstructorReturn(self, call) { if (call && (store_typeof(call) === "object" || typeof call === "function")) { return call; } return store_assertThisInitialized(self); }
+
+function store_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function store_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function store_getPrototypeOf(o) { store_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return store_getPrototypeOf(o); }
+
+/*! store - store and restore user input */
+
+
+var store_default = /*#__PURE__*/function (_Plugin) {
+  store_inherits(_default, _Plugin);
+
+  var _super = store_createSuper(_default);
+
+  function _default() {
+    var _this;
+
+    store_classCallCheck(this, _default);
+
+    _this = _super.call(this, 'store');
     _this.opt = {
       qStore: 'form.store[id]',
       qRestore: 'form.restore[id]'
@@ -4436,7 +4436,7 @@ var keepform_default = /*#__PURE__*/function (_Plugin) {
     return _this;
   }
 
-  keepform_createClass(_default, [{
+  store_createClass(_default, [{
     key: "init",
     value: function init() {
       var _this2 = this;
@@ -4474,7 +4474,7 @@ var keepform_default = /*#__PURE__*/function (_Plugin) {
     key: "addControls",
     value: function addControls(f) {
       var app = this.app;
-      var d = app.ins('div', '', 'pad r keepform-tools', f, false);
+      var d = app.ins('div', '', 'pad r store-tools', f, false);
       app.ins('a', app.i('energy', '[^]'), {
         href: '#restore'
       }, d);
@@ -6195,7 +6195,7 @@ src_app.plug(edit["a" /* default */]);
 src_app.plug(tools_default);
 src_app.plug(plugins_form["a" /* default */]);
 src_app.plug(pickfile_default);
-src_app.plug(keepform_default);
+src_app.plug(store_default);
 src_app.plug(tablex_default);
 src_app.plug(dialog["a" /* default */]);
 src_app.plug(gallery["a" /* default */]);

@@ -11,10 +11,10 @@ import Toggle from './js/plugins/toggle.js'
 import Calendar from './js/plugins/calendar.js'
 import Lookup from './js/plugins/lookup.js'
 import Edit from './js/plugins/edit.js'
+import Pickfile from './js/plugins/pickfile.js'
 import Tools from './js/plugins/tools.js'
 import Form from './js/plugins/form.js'
-import Pickfile from './js/plugins/pickfile.js'
-import Keepform from './js/plugins/keepform.js'
+import Store from './js/plugins/store.js'
 import Tablex from './js/plugins/tablex.js'
 import Dialog from './js/plugins/dialog.js'
 import Gallery from './js/plugins/gallery.js'
@@ -38,7 +38,7 @@ app.plug(Edit)
 app.plug(Tools)
 app.plug(Form)
 app.plug(Pickfile)
-app.plug(Keepform)
+app.plug(Store)
 app.plug(Tablex)
 app.plug(Dialog)
 app.plug(Gallery)
