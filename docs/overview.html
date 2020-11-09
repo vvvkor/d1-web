@@ -94,16 +94,16 @@
 	<!--link href="https://unpkg.com/normalize.css@8.0.1/normalize.css" rel="stylesheet"-->
 	<!-- "" replaced with ""  -->
 	<!-- CDN --R E M O V E->
-		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.7/dist/d1.min.css" rel="stylesheet">
-		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.4.7/dist/d1.min.js" defer></script>
+		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.8/dist/d1.min.css" rel="stylesheet">
+		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.4.8/dist/d1.min.js" defer></script>
 		<noscript>
-			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.7/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.8/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- CDN -->
-		<link href="https://unpkg.com/d1-web@2.4.7/dist/d1.min.css" rel="stylesheet">
-		<script src="https://unpkg.com/d1-web@2.4.7/dist/d1.min.js" defer></script>
+		<link href="https://unpkg.com/d1-web@2.4.8/dist/d1.min.css" rel="stylesheet">
+		<script src="https://unpkg.com/d1-web@2.4.8/dist/d1.min.js" defer></script>
 		<noscript>
-			<link href="https://unpkg.com/d1-web@2.4.7/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://unpkg.com/d1-web@2.4.8/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- local-npm-src REMOVE -- >
 		<link href="../src/index.css" rel="stylesheet">
@@ -159,11 +159,11 @@ Text
 	<header class="bg -bg-n -topbar -toggle">
 		<div class="hide-desktop">
 			<a href="#nav" class="pad hover icon-menu empty" title="Menu"><span>Menu</span></a>
-			<a href="?" class="pad"><b>d1</b> <span class="text-n">v2.4.7</span></a>
+			<a href="?" class="pad"><b>d1</b> <span class="text-n">v2.4.8</span></a>
 		</div>
 		
 		<ul class="nav flip hover target-mobile" id="nav">
-			<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v2.4.7</span></a></li>
+			<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v2.4.8</span></a></li>
 			<li><a href="index.html" class="icon-text">Docs</a>
 			<li><a href="https://github.com/vvvkor/d1-web" class="icon-folder" >GitHub</a>
 			<li><a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="icon-download empty-desktop" title="Download"><span>Download</span></a>
@@ -597,16 +597,16 @@ let double = function (x) {
 			<label><input type="checkbox" data-nodes="#totals" data-set="bg-i" data-unset="hide"> more totals</label>
 		</p>
 		<div class="roll">
-		<table id="tablex" class="flip let shift hover c2 r3 sort -filter totals" data-filter="#table-filter" data-filter-report="#filter-info" data-filter-cols="0 2" data-case-x data-labels data-limit="2">
+		<table id="tablex" class="flip let shift hover c2 r3 c6 sort -filter totals replace" data-e="delete" data-filter="#table-filter" data-filter-report="#filter-info" data-filter-cols="0 2" data-case-x data-labels data-limit="2">
 			<!--caption>Web languages</caption-->
 			<thead>
-				<tr><th>String<th>Number<th>Bytes<th>Interval<th>Date
+				<tr><th>String<th>Number<th>Bytes<th>Interval<th>Date<th>Icon
 			</thead>
 			<tbody>
 				<!--tr><td><td>1<td>1b<td> <td-->
-				<tr><td>HTML<td>4<td>900 B<td>1min 125s<td>1993-07-09 08:05:01
-				<tr><td>JavaScript<td>10.12345<td>1 MB<td>3m<td>12/4/1995
-				<tr><td>CSS<td>3<td>350 KB<td>1y<td>17.12.1996 1:2:3
+				<tr><td>HTML<td>4<td>900 B<td>1min 125s<td>1993-07-09 08:05:01<td>+
+				<tr><td>JavaScript<td>10.12345<td>1 MB<td>3m<td>12/4/1995<td>x
+				<tr><td>CSS<td>3<td>350 KB<td>1y<td>17.12.1996 1:2:3<td>-
 			</tbody>
 			<tbody id="totals" class="hide">
 				<tr class="nobr"><th colspan="5"><span data-total="count"></span> items

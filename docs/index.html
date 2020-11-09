@@ -50,15 +50,6 @@
 		}
 	}
 	
-	var tableChecks = function(){
-		d1.e('.table-checks td', n => {
-			var t = n.textContent.replace(/^\s+|\s+$/g, '');
-			if (t === '+' || t === '-') n.innerHTML = '';
-			if (t === '+') d1.ins('', d1.i('ok', '+'), 'text-y', n);
-			else if (t === '-') d1.ins('', d1.i('no', '-'), 'text-n', n);
-		})
-	}
-	
 	var testHtml = 
 		'<hr><form>'
 		+ '<p>Date: <input class="calendar" type="datetime-local">'
@@ -71,7 +62,6 @@
 		console.log('d1 = ', d1);
 		if (d1.plugins.icons) {
 			d1.listen('start', injectIcon);
-			d1.listen('ready', tableChecks);
 			d1.listen('ready', demoIcons);
 		}
 		checkApi(); // d1.listen('init', checkApi);
@@ -79,16 +69,16 @@
 </script>
 
 	<!-- CDN --R E M O V E->
-		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.7/dist/d1.min.css" rel="stylesheet">
-		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.4.7/dist/d1.min.js" defer></script>
+		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.8/dist/d1.min.css" rel="stylesheet">
+		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.4.8/dist/d1.min.js" defer></script>
 		<noscript>
-			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.7/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.8/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- CDN -->
-		<link href="https://unpkg.com/d1-web@2.4.7/dist/d1.min.css" rel="stylesheet">
-		<script src="https://unpkg.com/d1-web@2.4.7/dist/d1.min.js" defer></script>
+		<link href="https://unpkg.com/d1-web@2.4.8/dist/d1.min.css" rel="stylesheet">
+		<script src="https://unpkg.com/d1-web@2.4.8/dist/d1.min.js" defer></script>
 		<noscript>
-			<link href="https://unpkg.com/d1-web@2.4.7/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://unpkg.com/d1-web@2.4.8/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- local-npm-src REMOVE -- >
 		<link href="../src/index.css" rel="stylesheet">
@@ -112,6 +102,7 @@
 		@import url('https://fonts.googleapis.com/css?family=PT+Serif&display=swap');
 		@import url('https://fonts.googleapis.com/css?family=PT+Mono&display=swap');
 		*/
+		h1 small, h2 small, h3 small{font-size:1.05rem;}
 	</style>
 </head>
 <body class="js-theme swipe"
@@ -127,7 +118,7 @@ data-d1='{"hOk":"#yes","debug":false,"disable":[
 	<a href="#menu" class="pad -let hide-desktop icon-menu empty" title="Menu"><span>Menu</span></a>
 	<a href="#top" class="pad -let"><b>d1</b></a>
 	<code class="-pad -nobr hide-mobile">npm i d1-web</code>
-	<a class="shift pad text-n">v2.4.7</a>
+	<a class="shift pad text-n">v2.4.8</a>
 	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1-web" title="GitHub" class="pad -let">GitHub</a>
 	<a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="pad -let icon-download empty" ><span>Download</span></a>
 </div>
@@ -319,19 +310,19 @@ Inclusion of <code>d1.js</code> and <code>d1-icons.css</code> is optional.
 </ul>
 <div>
 	<div id="cdn-jsdelivr">
-		<pre><code class="language-html">&lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.7/dist/d1.min.css" rel="stylesheet"&gt;
-&lt;script src="https://cdn.jsdelivr.net/npm/d1-web@2.4.7/dist/d1.min.js"&gt;&lt;/script&gt;
+		<pre><code class="language-html">&lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.8/dist/d1.min.css" rel="stylesheet"&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/d1-web@2.4.8/dist/d1.min.js"&gt;&lt;/script&gt;
 &lt;noscript&gt;
-  &lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.7/dist/d1-icons.min.css" rel="stylesheet"&gt;
+  &lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.8/dist/d1-icons.min.css" rel="stylesheet"&gt;
 &lt;/noscript&gt;
 
 		</code></pre>
 	</div>
 	<div id="cdn-unpkg">
-		<pre><code class="language-html">&lt;link href="https://unpkg.com/d1-web@2.4.7/dist/d1.min.css" rel="stylesheet"&gt;
-&lt;script src="https://unpkg.com/d1-web@2.4.7/dist/d1.min.js"&gt;&lt;/script&gt;
+		<pre><code class="language-html">&lt;link href="https://unpkg.com/d1-web@2.4.8/dist/d1.min.css" rel="stylesheet"&gt;
+&lt;script src="https://unpkg.com/d1-web@2.4.8/dist/d1.min.js"&gt;&lt;/script&gt;
 &lt;noscript&gt;
-  &lt;link href="https://unpkg.com/d1-web@2.4.7/dist/d1-icons.min.css" rel="stylesheet"&gt;
+  &lt;link href="https://unpkg.com/d1-web@2.4.8/dist/d1-icons.min.css" rel="stylesheet"&gt;
 &lt;/noscript&gt		</code></pre>
 	</div>
 	<div id="cdn-unpkg-short">
@@ -727,7 +718,7 @@ Add <code>r#, l#, c#</code> (where # is any number) classes to align cells of co
 
 <div class="code">
 <div class="roll" id="demo-roll">
-	<table class="hover shift r1 c3 c4 c5" id="demo-table"><!-- data-limit="2" -->
+	<table class="hover shift r1 c4 c5 c6 replace" id="demo-table"><!-- data-limit="2" -->
 		<caption>Table caption</caption>
 		<thead>
 		<tr><th>#<th>Component<th>Code<th>Remember state<th>Fix position<th>Close on Esc
@@ -2812,32 +2803,34 @@ most important:
 <h3 id="reference-plugins">Plugins</h3>
 
 <div class="roll">
-<table class="let hover c4 c5 c6 sort table-checks">
+<table class="let hover c4 c5 c6 sort replace flip" x-data-n="delete">
 <thead>
 	<tr><th>Name<th>Category<th>Usage<th title="Basic bundle">Basic<th title="Classic bundle">Classic<th title="Full bundle">Full
 </thead>
 <tbody>
-	<tr><th>calendar<td>form<td><a href="#calendar">calendar</a><td>-<td>+<td>+
-	<tr><th>code<td>decor<td><a href="#code-highlight">highlight</a>,<br> <a href="#code-sample">sample</a><td>-<td>-<td>+
-	<tr><th>dialog<td>toggle<td><a href="#dialog">dialog</a><td>+<td>+<td>+
-	<tr><th>edit<td>form<td><a href="#edit">edit</a><td>-<td>+<td>+
-	<tr><th>fetch<td>url<td><a href="#fetch">fetch</a><td>-<td>+<td>+
-	<tr><th>filter<td>items<td><a href="#filters">filters</a><td>-<td>-<td>+
-	<tr><th>fliptable<td>table<td><a href="#table-responsive">responsive table</a><td>-<td>-<td>+
-	<tr><th>form<td>form<td><a href="#input-boxes">checkboxes</a>,<br> <a href="#input-color">color input</a>,<br> <a href="#input-set">set value</a><td>-<td>+<td>+
-	<tr><th>gallery<td>toggle<td><a href="#gallery">gallery</a><td>+<td>+<td>+
-	<tr><th>icons<td>decor<td><a href="#icons">icons</a><td>-<td>+<td>+
-	<tr><th>items<td>items<td><a href="#items">items</a><td>-<td>-<td>+
-	<tr><th>store<td>form<td><a href="#store">store inputs</a><td>-<td>-<td>+
-	<tr><th>lookup<td>form<td><a href="#lookup">lookup</a><td>-<td>+<td>+
-	<tr><th>pickfile<td>form<td><a href="#pickfile">file picker</a><td>-<td>-<td>+
-	<tr><th>scroll<td>toggle<td><a href="#topbar">topbar</a><td>-<td>-<td>+
-	<tr><th>swipe<td>url<td><a href="#swipe">swipe</a><td>-<td>-<td>+
-	<tr><th>tablex<td>table<td><a href="#table-interactive">interactive table</a><td>-<td>-<td>+
-	<tr><th>theme<td>decor<td><a href="#theme">theme</a><td>-<td>-<td>+
 	<tr><th>toggle<td>toggle<td><a href="#components">components</a><td>+<td>+<td>+
-	<tr><th>tools<td>decor<td><a href="#toggle-class">toggle class</a>,<br> <a href="#responsive-class">responsive class</a><td>-<td>-<td>+
+	<tr><th>dialog<td>toggle<td><a href="#dialog">dialog</a><td>+<td>+<td>+
+	<tr><th>gallery<td>toggle<td><a href="#gallery">gallery</a><td>+<td>+<td>+
+	
+	<tr><th>icons<td>decor<td><a href="#icons">icons</a><td>-<td>+<td>+
+	<tr><th>fetch<td>url<td><a href="#fetch">fetch</a><td>-<td>+<td>+
+	<tr><th>calendar<td>form<td><a href="#calendar">calendar</a><td>-<td>+<td>+
+	<tr><th>lookup<td>form<td><a href="#lookup">lookup</a><td>-<td>+<td>+
+	<tr><th>edit<td>form<td><a href="#edit">edit</a><td>-<td>+<td>+
+	<tr><th>form<td>form<td><a href="#input-boxes">checkboxes</a>,<br> <a href="#input-color">color input</a>,<br> <a href="#input-set">set value</a><td>-<td>+<td>+
 	<tr><th>valid<td>form<td><a href="#validate">validate</a><td>-<td>+<td>+
+	
+	<tr><th>tablex<td>table<td><a href="#table-interactive">interactive table</a><td>-<td>-<td>+
+	<tr><th>tools<td>decor<td><a href="#toggle-class">toggle class</a>,<br> <a href="#responsive-class">responsive class</a><td>-<td>-<td>+
+	<tr><th>swipe<td>url<td><a href="#swipe">swipe</a><td>-<td>-<td>+
+	<tr><th>code<td>decor<td><a href="#code-highlight">highlight</a>,<br> <a href="#code-sample">sample</a><td>-<td>-<td>+
+	<tr><th>filter<td>items<td><a href="#filters">filters</a><td>-<td>-<td>+
+	<tr><th>items<td>items<td><a href="#items">items</a><td>-<td>-<td>+
+	<tr><th>fliptable<td>table<td><a href="#table-responsive">responsive table</a><td>-<td>-<td>+
+	<tr><th>pickfile<td>form<td><a href="#pickfile">file picker</a><td>-<td>-<td>+
+	<tr><th>store<td>form<td><a href="#store">store inputs</a><td>-<td>-<td>+
+	<tr><th>scroll<td>toggle<td><a href="#topbar">topbar</a><td>-<td>-<td>+
+	<tr><th>theme<td>decor<td><a href="#theme">theme</a><td>-<td>-<td>+
 </tbody>
 </table>
 </div>

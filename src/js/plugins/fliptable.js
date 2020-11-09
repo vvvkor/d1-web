@@ -34,6 +34,7 @@ export default class extends Plugin {
         while (td.firstChild) v.appendChild(td.firstChild);
         td.textContent = '';
         td.appendChild(c);
+        td.vVal = v.textContent;
       //}
     }
     this.app.ee(t, 'thead', n => n.classList.add('hide-mobile'));

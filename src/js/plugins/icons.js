@@ -12,6 +12,8 @@ export default class extends Plugin {
       cIcon: 'icon', // class of svg icon
       pIcon: 'icon-', // class prefix of tag to insert icon into
       cEmpty: 'empty',
+      qReplace: '.replace',
+      re: {'+': ['ok', 'y'], '-': ['no', 'n'], 'x': ['ban', 'e'], '!': ['warning', 'w'], '?': ['help', 'i']}, // sort: !+-?x
       iconSize: 24,
       pSvg: 'icon-' // id prefix to search on page; set false to skip search
     };
@@ -27,6 +29,8 @@ export default class extends Plugin {
   
   arrange({n}) {
     this.app.ee(n, '[class*="' + this.opt.pIcon + '"]', n => this.iconize(n));
+    this.app.ee(n, '[class*="' + this.opt.pIcon + '"]', n => this.iconize(n));
+    this.app.ee(n, this.opt.qReplace, n => this.replace(n));
   }
   
   iconize(n, on) {
@@ -93,6 +97,20 @@ export default class extends Plugin {
     if (a[1]) n.setAttribute('height', a[1]);
     if (a.length>0) n.setAttribute('class', a.slice(2).join(' ') || '');
     return n;
+  }
+  
+  replace(n) {
+    this.app.ee(n, '*', m => this.replaceItem(m, n));
+  }
+  
+  replaceItem (n, p) {
+    const t = n.innerText.replace(/^\s+|\s+$/g, '');
+    if (t.length == 1 && t in this.opt.re) {
+      n.innerHTML = '';
+      const i = p.dataset[this.opt.re[t][1]] || this.opt.re[t][0];
+      this.app.ins('', this.i(i, t), 'text-' + this.opt.re[t][1], n);
+      n.vVal = t;
+    }
   }
 
 }

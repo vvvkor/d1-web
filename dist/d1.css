@@ -1,11 +1,10 @@
-/*! d1-web v2.4.7 */
+/*! d1-web v2.4.8 */
 
 :root, .invert .invert {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
     --font-cap: var(--font);
     --font-mono: "PT Mono", monospace;
     --font-print: serif;
-    --font-size: 1.2;
     --text: #000;
     --bg: #fff;
     --bg-pane: rgba(0, 0, 0, .05);
@@ -140,7 +139,7 @@ input, button, select, textarea, table {
 }
 
 body {
-    font: calc(var(--font-size)*100%)/1.5 sans-serif;
+    font: 120%/1.5 sans-serif;
     font-family: var(--font);
 }
 
@@ -150,12 +149,8 @@ body, .invert {
 }
 
 small, .small {
-    font-size: calc(var(--font-size)*0.85rem);
-    font-weight: normal;
-}
-
-small.fit, .small.fit {
     font-size: 85%;
+    font-weight: normal;
 }
 
 main {

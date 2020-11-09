@@ -1,4 +1,4 @@
-/*! d1-web v2.4.7 */
+/*! d1-web v2.4.8 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -3561,6 +3561,15 @@ var icons_default = /*#__PURE__*/function (_Plugin) {
       pIcon: 'icon-',
       // class prefix of tag to insert icon into
       cEmpty: 'empty',
+      qReplace: '.replace',
+      re: {
+        '+': ['ok', 'y'],
+        '-': ['no', 'n'],
+        'x': ['ban', 'e'],
+        '!': ['warning', 'w'],
+        '?': ['help', 'i']
+      },
+      // sort: !+-?x
       iconSize: 24,
       pSvg: 'icon-' // id prefix to search on page; set false to skip search
 
@@ -3588,6 +3597,12 @@ var icons_default = /*#__PURE__*/function (_Plugin) {
       var n = _ref.n;
       this.app.ee(n, '[class*="' + this.opt.pIcon + '"]', function (n) {
         return _this3.iconize(n);
+      });
+      this.app.ee(n, '[class*="' + this.opt.pIcon + '"]', function (n) {
+        return _this3.iconize(n);
+      });
+      this.app.ee(n, this.opt.qReplace, function (n) {
+        return _this3.replace(n);
       });
     }
   }, {
@@ -3665,6 +3680,27 @@ var icons_default = /*#__PURE__*/function (_Plugin) {
       if (a[1]) n.setAttribute('height', a[1]);
       if (a.length > 0) n.setAttribute('class', a.slice(2).join(' ') || '');
       return n;
+    }
+  }, {
+    key: "replace",
+    value: function replace(n) {
+      var _this4 = this;
+
+      this.app.ee(n, '*', function (m) {
+        return _this4.replaceItem(m, n);
+      });
+    }
+  }, {
+    key: "replaceItem",
+    value: function replaceItem(n, p) {
+      var t = n.innerText.replace(/^\s+|\s+$/g, '');
+
+      if (t.length == 1 && t in this.opt.re) {
+        n.innerHTML = '';
+        var i = p.dataset[this.opt.re[t][1]] || this.opt.re[t][0];
+        this.app.ins('', this.i(i, t), 'text-' + this.opt.re[t][1], n);
+        n.vVal = t;
+      }
     }
   }]);
 
