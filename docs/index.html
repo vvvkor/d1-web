@@ -69,16 +69,16 @@
 </script>
 
 	<!-- CDN --R E M O V E->
-		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.8/dist/d1.min.css" rel="stylesheet">
-		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.4.8/dist/d1.min.js" defer></script>
+		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.9/dist/d1.min.css" rel="stylesheet">
+		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.4.9/dist/d1.min.js" defer></script>
 		<noscript>
-			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.8/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.9/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- CDN -->
-		<link href="https://unpkg.com/d1-web@2.4.8/dist/d1.min.css" rel="stylesheet">
-		<script src="https://unpkg.com/d1-web@2.4.8/dist/d1.min.js" defer></script>
+		<link href="https://unpkg.com/d1-web@2.4.9/dist/d1.min.css" rel="stylesheet">
+		<script src="https://unpkg.com/d1-web@2.4.9/dist/d1.min.js" defer></script>
 		<noscript>
-			<link href="https://unpkg.com/d1-web@2.4.8/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://unpkg.com/d1-web@2.4.9/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- local-npm-src REMOVE -- >
 		<link href="../src/index.css" rel="stylesheet">
@@ -118,7 +118,7 @@ data-d1='{"hOk":"#yes","debug":false,"disable":[
 	<a href="#menu" class="pad -let hide-desktop icon-menu empty" title="Menu"><span>Menu</span></a>
 	<a href="#top" class="pad -let"><b>d1</b></a>
 	<code class="-pad -nobr hide-mobile">npm i d1-web</code>
-	<a class="shift pad text-n">v2.4.8</a>
+	<a class="shift pad text-n">v2.4.9</a>
 	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1-web" title="GitHub" class="pad -let">GitHub</a>
 	<a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="pad -let icon-download empty" ><span>Download</span></a>
 </div>
@@ -310,19 +310,19 @@ Inclusion of <code>d1.js</code> and <code>d1-icons.css</code> is optional.
 </ul>
 <div>
 	<div id="cdn-jsdelivr">
-		<pre><code class="language-html">&lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.8/dist/d1.min.css" rel="stylesheet"&gt;
-&lt;script src="https://cdn.jsdelivr.net/npm/d1-web@2.4.8/dist/d1.min.js"&gt;&lt;/script&gt;
+		<pre><code class="language-html">&lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.9/dist/d1.min.css" rel="stylesheet"&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/d1-web@2.4.9/dist/d1.min.js"&gt;&lt;/script&gt;
 &lt;noscript&gt;
-  &lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.8/dist/d1-icons.min.css" rel="stylesheet"&gt;
+  &lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.4.9/dist/d1-icons.min.css" rel="stylesheet"&gt;
 &lt;/noscript&gt;
 
 		</code></pre>
 	</div>
 	<div id="cdn-unpkg">
-		<pre><code class="language-html">&lt;link href="https://unpkg.com/d1-web@2.4.8/dist/d1.min.css" rel="stylesheet"&gt;
-&lt;script src="https://unpkg.com/d1-web@2.4.8/dist/d1.min.js"&gt;&lt;/script&gt;
+		<pre><code class="language-html">&lt;link href="https://unpkg.com/d1-web@2.4.9/dist/d1.min.css" rel="stylesheet"&gt;
+&lt;script src="https://unpkg.com/d1-web@2.4.9/dist/d1.min.js"&gt;&lt;/script&gt;
 &lt;noscript&gt;
-  &lt;link href="https://unpkg.com/d1-web@2.4.8/dist/d1-icons.min.css" rel="stylesheet"&gt;
+  &lt;link href="https://unpkg.com/d1-web@2.4.9/dist/d1-icons.min.css" rel="stylesheet"&gt;
 &lt;/noscript&gt		</code></pre>
 	</div>
 	<div id="cdn-unpkg-short">
@@ -1612,7 +1612,7 @@ Popups can be nested.
 <h3 id="nav">Navigation</h3>
 
 <p>
-To create a navigarion bar add <code>.nav</code> class to the <code>ul</code> element.
+To create a navigation bar add <code>.nav</code> class to the <code>ul</code> element.
 <p>
 With pure CSS, nested lists are shown on hover.
 With JavaScript, nested lists are toggled on click.
@@ -1911,20 +1911,24 @@ Toggles on resize.
 
 <!--opts-set-class-->
 <p>Toggle class or other attribute 
-<code>a[href^="#"][data-set][data-unset][data-attr][id].mem</code>, 
-<code>:is(a, select, [type="checkbox"], [type="radio"])[data-nodes][data-set][data-unset][data-attr][name/id].mem</code>.
+<code>a[href^="#"][data-parent][data-nodes][data-set][data-unset][data-attr][id].mem</code>, 
+<code>:is(a, select, [type="checkbox"], [type="radio"])[data-parent][data-nodes][data-set][data-unset][data-attr][name/id].mem</code>.
 
 <p>To remember state, add <code>mem</code> class to the control element and give it unique <code>id</code> or <code>name</code>.
 
 <p>To forget stored state, press <kbd>Escape</kbd> key three times in a row. This will clear the local storage.
 
-<div class="code" id="demo-toggle-class">
+<div class="code">
 	<label>
-		<input type="checkbox" name="chb-hilite" class="mem" data-set="bg-w" data-nodes="#demo-toggle-class a" title="bg"> Highlight links in this block
+		<input type="checkbox" name="chb-hilite" class="mem" data-set="bg-w" data-parent="div" data-nodes="a" title="bg"> Highlight links in this block
+	</label>
+	<br>
+	<label>
+		<input type="checkbox" name="chb-hilite-parent" class="mem" data-set="bg-y" data-parent="label" data-nodes="" title="bg"> Highlight parent label
 	</label>
 	<br>
 	
-	<a href="#x" id="red-links" class="mem" data-set="text-e" data-nodes="#demo-toggle-class a">Red text links in this block</a><br>
+	<a href="#x" id="red-links" class="mem" data-set="text-e" data-parent="div" data-nodes="a">Red text links in this block</a><br>
 	
 	<a href="#x" data-set="invert" data-nodes="body">Invert page</a><br>
 	
@@ -1933,7 +1937,7 @@ Toggles on resize.
 	<br>
 	
 	<label>Highlight labels in this block as
-	<select name="sel-lbl-bg" class="mem" data-nodes="#demo-toggle-class label">
+	<select name="sel-lbl-bg" class="mem" data-parent="div" data-nodes="label">
 		<option value="">-</option>
 		<option value="bg-y">Success</option>
 		<option value="bg-w">Warning</option>
@@ -2608,7 +2612,7 @@ Allowed swipe directions are defined by the presence of <code>data-swipe-up</cod
 	<tr><th>request<td>Before asynchronous request<td><a href="#fetch">fetch</a><td><var title="XMLHttpRequest" class="-tip">request</var><!-- use request.responseText -->
 	<tr><th>response<td>Asynchronous request completed<td><a href="#fetch">fetch</a><td><var title="XMLHttpRequest" class="-tip">request</var><!-- use request.responseText -->
 	<tr><th>item<td>Item added or deleted<td><a href="#items">items</a><td><var title="Target element" class="-tip">n</var>, <var title="Parent or prototype element" class="-tip">p</var>, <var title="Operation" class="-tip">a</var>
-	<tr><th>filter<td>Items fiter applied<td><a href="#filters">filter</a><td><var title="Items container" class="-tip">n</var>, <var title="Filter data" class="-tip">f</var>
+	<tr><th>filter<td>Items filter applied<td><a href="#filters">filter</a><td><var title="Items container" class="-tip">n</var>, <var title="Filter data" class="-tip">f</var>
 	<tr><th>swipe<td>Swipe executed<td><a href="#swipe">swipe</a><td><var title="Target element" class="-tip">n</var>, <var title="Swipe direction (Up, Down, Left, Right)" class="-tip">dir</var>
 	<!--
 	<tr><td>click<td><td>

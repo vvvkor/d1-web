@@ -250,7 +250,7 @@ export default class extends Plugin {
   }
 
   val(s, cs) {
-    let r = s.tagName ? (s.vVal ?? s.innerHTML) : '' + s;
+    let r = s.tagName ? (s.dataset.val ?? s.innerHTML) : '' + s;
     r = r.
     replace(/<!--.*?-->/g, '').
     replace(/<.*?>/g, '').

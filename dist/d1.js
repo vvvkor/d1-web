@@ -1,4 +1,4 @@
-/*! d1-web v2.4.8 */
+/*! d1-web v2.4.9 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -3695,11 +3695,11 @@ var icons_default = /*#__PURE__*/function (_Plugin) {
     value: function replaceItem(n, p) {
       var t = n.innerText.replace(/^\s+|\s+$/g, '');
 
-      if (t.length == 1 && t in this.opt.re) {
+      if (t.length == 1 && t in this.opt.re && !('val' in n.dataset)) {
         n.innerHTML = '';
         var i = p.dataset[this.opt.re[t][1]] || this.opt.re[t][0];
         this.app.ins('', this.i(i, t), 'text-' + this.opt.re[t][1], n);
-        n.vVal = t;
+        n.dataset.val = t;
       }
     }
   }]);
@@ -3831,10 +3831,8 @@ var code_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "updateCode",
     value: function updateCode(e) {
-      var n = e.n ? e.n : this.app.q(e.q);
-
-      if (n) {
-        var p = n.closest(this.opt.qCode);
+      if (e.n) {
+        var p = e.n.closest(this.opt.qCode);
         if (p) this.showCode(p);
       }
     }
@@ -4231,8 +4229,8 @@ var tools_default = /*#__PURE__*/function (_Plugin) {
     value: function init() {
       var _this2 = this;
 
-      this.opt.qSetClick = 'a[data-set]';
       this.opt.qSetChange = 'input[data-nodes], select[data-nodes]';
+      this.opt.qSetClick = 'a[data-set]';
       this.app.h('change', this.opt.qSetChange, function (e) {
         return _this2.toggleClass(e.target);
       });
@@ -4359,12 +4357,14 @@ var tools_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "toggleClass",
     value: function toggleClass(n, e) {
-      var _this5 = this;
+      var _n$dataset$nodes,
+          _this5 = this;
 
       if (n.type == 'radio' && !n.checked) return;
       var box = n.type == 'checkbox' || n.type == 'radio';
       var sel = n.tagName == 'SELECT' || n.type == 'radio';
-      var q = n.dataset.nodes || n.hash;
+      var p = n.dataset.parent ? n.closest(n.dataset.parent) : null;
+      var q = (_n$dataset$nodes = n.dataset.nodes) !== null && _n$dataset$nodes !== void 0 ? _n$dataset$nodes : n.hash;
       var c = sel ? n.value : n.dataset.set || n.value;
       var on = sel ? true : box ? n.checked : n.classList.contains(this.app.opt.cAct);
 
@@ -4376,11 +4376,12 @@ var tools_default = /*#__PURE__*/function (_Plugin) {
 
 
       if (c !== null && c !== undefined) {
-        this.app.e(q, function (m) {
+        var nn = q ? this.app.qq(q, p) : [p];
+        this.app.e(nn, function (m) {
           return _this5.setClass(n, on, m, c);
         });
         this.app.fire('update', {
-          q: q
+          n: nn[0]
         });
       }
     }
@@ -4967,9 +4968,9 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "val",
     value: function val(s, cs) {
-      var _s$vVal;
+      var _s$dataset$val;
 
-      var r = s.tagName ? (_s$vVal = s.vVal) !== null && _s$vVal !== void 0 ? _s$vVal : s.innerHTML : '' + s;
+      var r = s.tagName ? (_s$dataset$val = s.dataset.val) !== null && _s$dataset$val !== void 0 ? _s$dataset$val : s.innerHTML : '' + s;
       r = r.replace(/<!--.*?-->/g, '').replace(/<.*?>/g, '').replace(/&nbsp;/gi, ' ').replace(/^\s+/, '').replace(/\s+$/, '');
       if (!cs) r = r.toLowerCase();
       return r;
@@ -5617,7 +5618,7 @@ var fliptable_default = /*#__PURE__*/function (_Plugin) {
 
         td.textContent = '';
         td.appendChild(c);
-        td.vVal = v.textContent; //}
+        if (!('val' in td.dataset)) td.dataset.val = v.textContent.replace(/^\s+|\s+$/g, ''); //}
       }
 
       this.app.ee(t, 'thead', function (n) {

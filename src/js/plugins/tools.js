@@ -15,8 +15,8 @@ export default class extends Plugin {
   }
   
   init() {
-    this.opt.qSetClick = 'a[data-set]';
     this.opt.qSetChange = 'input[data-nodes], select[data-nodes]';
+    this.opt.qSetClick = 'a[data-set]';
     this.app.h('change', this.opt.qSetChange, e => this.toggleClass(e.target));
     this.app.h('click', this.opt.qSetClick, e => this.toggleClass(e.recv, e));
     this.app.b([window], 'resize', e => this.onResize(e));
@@ -90,7 +90,8 @@ export default class extends Plugin {
     if (n.type == 'radio' && !n.checked) return;
     let box = (n.type == 'checkbox' || n.type == 'radio');
     let sel = (n.tagName == 'SELECT' || n.type == 'radio');
-    let q = n.dataset.nodes || n.hash;
+    let p = n.dataset.parent ? n.closest(n.dataset.parent) : null;
+    let q = n.dataset.nodes ?? n.hash;
     let c = sel ? n.value : (n.dataset.set || n.value);
     let on = sel ? true : (box ? n.checked : n.classList.contains(this.app.opt.cAct));
     if (e && !box && !sel) {
@@ -100,8 +101,9 @@ export default class extends Plugin {
     }
     //this.app.dbg(['setclass?', c, on, q, e, box, sel]);
     if (c !== null && c !== undefined) {
-      this.app.e(q, m => this.setClass(n, on, m, c));
-      this.app.fire('update', {q});
+      const nn = q ? this.app.qq(q, p) : [p];
+      this.app.e(nn, m => this.setClass(n, on, m, c));
+      this.app.fire('update', {n: nn[0]});
     }
   }
 

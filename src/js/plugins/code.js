@@ -53,9 +53,8 @@ export default class extends Plugin {
   }
 
   updateCode(e) {
-    let n = e.n ? e.n : this.app.q(e.q);
-    if (n) {
-      let p = n.closest(this.opt.qCode);
+    if (e.n) {
+      let p = e.n.closest(this.opt.qCode);
       if (p) this.showCode(p);
     }
   }

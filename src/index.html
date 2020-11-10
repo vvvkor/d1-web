@@ -1911,20 +1911,24 @@ Toggles on resize.
 
 <!--opts-set-class-->
 <p>Toggle class or other attribute 
-<code>a[href^="#"][data-set][data-unset][data-attr][id].mem</code>, 
-<code>:is(a, select, [type="checkbox"], [type="radio"])[data-nodes][data-set][data-unset][data-attr][name/id].mem</code>.
+<code>a[href^="#"][data-parent][data-nodes][data-set][data-unset][data-attr][id].mem</code>, 
+<code>:is(a, select, [type="checkbox"], [type="radio"])[data-parent][data-nodes][data-set][data-unset][data-attr][name/id].mem</code>.
 
 <p>To remember state, add <code>mem</code> class to the control element and give it unique <code>id</code> or <code>name</code>.
 
 <p>To forget stored state, press <kbd>Escape</kbd> key three times in a row. This will clear the local storage.
 
-<div class="code" id="demo-toggle-class">
+<div class="code">
 	<label>
-		<input type="checkbox" name="chb-hilite" class="mem" data-set="bg-w" data-nodes="#demo-toggle-class a" title="bg"> Highlight links in this block
+		<input type="checkbox" name="chb-hilite" class="mem" data-set="bg-w" data-parent="div" data-nodes="a" title="bg"> Highlight links in this block
+	</label>
+	<br>
+	<label>
+		<input type="checkbox" name="chb-hilite-parent" class="mem" data-set="bg-y" data-parent="label" data-nodes="" title="bg"> Highlight parent label
 	</label>
 	<br>
 	
-	<a href="#x" id="red-links" class="mem" data-set="text-e" data-nodes="#demo-toggle-class a">Red text links in this block</a><br>
+	<a href="#x" id="red-links" class="mem" data-set="text-e" data-parent="div" data-nodes="a">Red text links in this block</a><br>
 	
 	<a href="#x" data-set="invert" data-nodes="body">Invert page</a><br>
 	
@@ -1933,7 +1937,7 @@ Toggles on resize.
 	<br>
 	
 	<label>Highlight labels in this block as
-	<select name="sel-lbl-bg" class="mem" data-nodes="#demo-toggle-class label">
+	<select name="sel-lbl-bg" class="mem" data-parent="div" data-nodes="label">
 		<option value="">-</option>
 		<option value="bg-y">Success</option>
 		<option value="bg-w">Warning</option>

@@ -1,4 +1,4 @@
-/*! d1-web v2.4.8 */
+/*! d1-web v2.4.9 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -3695,11 +3695,11 @@ var icons_default = /*#__PURE__*/function (_Plugin) {
     value: function replaceItem(n, p) {
       var t = n.innerText.replace(/^\s+|\s+$/g, '');
 
-      if (t.length == 1 && t in this.opt.re) {
+      if (t.length == 1 && t in this.opt.re && !('val' in n.dataset)) {
         n.innerHTML = '';
         var i = p.dataset[this.opt.re[t][1]] || this.opt.re[t][0];
         this.app.ins('', this.i(i, t), 'text-' + this.opt.re[t][1], n);
-        n.vVal = t;
+        n.dataset.val = t;
       }
     }
   }]);
