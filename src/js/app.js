@@ -291,7 +291,7 @@ export default class {
   fixIds(m) {
     this.ee(m, '[id]', n => {
       const x = n.id;
-      const id = 'fix-' + this.seq();
+      const id = 'id-' + this.seq();
       n.id = id;
       this.ee(m, 'a[href="#'+ x +'"]', a => a.href = '#' + id);
       this.ee(m, 'label[for="'+ x +'"]', a => a.htmlFor = id);

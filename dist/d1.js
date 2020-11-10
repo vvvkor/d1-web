@@ -1,4 +1,4 @@
-/*! d1-web v2.4.9 */
+/*! d1-web v2.4.10 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -748,7 +748,7 @@ var _default = /*#__PURE__*/function () {
       this.ee(m, '[id]', function (n) {
         var x = n.id;
 
-        var id = 'fix-' + _this7.seq();
+        var id = 'id-' + _this7.seq();
 
         n.id = id;
 
@@ -5312,6 +5312,7 @@ var items_default = /*#__PURE__*/function (_Plugin) {
         m.classList.remove(this.app.opt.cHide);
         m.removeAttribute('id');
         this.app.fixIds(m);
+        this.app.arrange(m);
         e.p = e.n; // prototype
 
         e.n = m; // new node
@@ -5590,8 +5591,9 @@ var fliptable_default = /*#__PURE__*/function (_Plugin) {
     value: function init() {
       var _this2 = this;
 
+      //this.app.e(this.opt.qFlipTable, n => n.closest('form') ? null : this.prepareFlipTable(n)); 
       this.app.e(this.opt.qFlipTable, function (n) {
-        return n.closest('form') ? null : _this2.prepareFlipTable(n);
+        return _this2.app.q('th', n) ? _this2.prepareFlipTable(n) : null;
       });
     }
   }, {

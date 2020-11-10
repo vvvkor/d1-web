@@ -49,6 +49,7 @@ export default class extends Plugin {
       m.classList.remove(this.app.opt.cHide);
       m.removeAttribute('id');
       this.app.fixIds(m);
+      this.app.arrange(m);
       e.p = e.n; // prototype
       e.n = m; // new node
     }

@@ -13,7 +13,8 @@ export default class extends Plugin {
   }
 
   init() {
-    this.app.e(this.opt.qFlipTable, n => n.closest('form') ? null : this.prepareFlipTable(n)); 
+    //this.app.e(this.opt.qFlipTable, n => n.closest('form') ? null : this.prepareFlipTable(n)); 
+    this.app.e(this.opt.qFlipTable, n => this.app.q('th', n) ? this.prepareFlipTable(n) : null); 
   }
 
   prepareFlipTable(t) {

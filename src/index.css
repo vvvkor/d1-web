@@ -290,7 +290,7 @@ form>p, form>.row{margin:var(--gap-s) 0;}
 
 /* tip */
 [data-tip]{position:relative;display:inline-block;}
-[data-tip]:after{content:attr(data-tip);position:absolute;bottom:100%;left:0;background-color:var(--text-lite);color:var(--bg);padding:0 var(--gap-s);border-radius:var(--radius);white-space:pre;z-index:4;text-align:left;font-weight:normal;font-style:normal;}
+[data-tip]:after{content:attr(data-tip);position:absolute;bottom:102%;left:0;background-color:var(--text-lite);color:var(--bg);padding:0 var(--gap-s);border-radius:var(--radius);white-space:pre;z-index:4;text-align:left;font-weight:normal;font-style:normal;}
 	[data-tip]:not(:hover):after{display:none;}
 /* tip as popup */
 .pop>.btn:not(.toggle){top:auto;bottom:100%;white-space:nowrap;min-width:0;}

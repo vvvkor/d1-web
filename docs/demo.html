@@ -1,19 +1,165 @@
 <!doctype html>
+<!-- todo: ?topbar, fill drawer&topbar&nav, form, tabs, filter -->
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <title>d1-web / demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+		<!--
     <link rel="stylesheet" href="https://unpkg.com/d1-web">
     <script src="https://unpkg.com/d1-web/dist/d1.min.js"></script>
     <noscript>
       <link href="https://unpkg.com/d1-web/dist/d1-icons.min.css" rel="stylesheet">
     </noscript>
+		-->
+		
+	<!-- CDN -->
+		<link href="https://unpkg.com/d1-web@2.4.10/dist/d1.min.css" rel="stylesheet">
+		<script src="https://unpkg.com/d1-web@2.4.10/dist/d1.min.js" defer></script>
+		<noscript>
+			<link href="https://unpkg.com/d1-web@2.4.10/dist/d1-icons.min.css" rel="stylesheet">
+		</noscript>
+	<!-- local-module (test with no need to compile) ->
+		<link href="../src/index.css" rel="stylesheet">
+		<script src="../src/index.js" type="module"></script>
+		<noscript>
+			<link href="../dist/d1-icons.css" rel="stylesheet">
+		</noscript>
+	<!-- -->
+
   </head>
-  <body>
-	
-	<div>
+  <body class="swipe" data-swipe-right="#menu" data-swipe-left="#cancel">
+
+<!-- topbar, responsive class, tag -->
+
+<!--div class="topbar toggle back row">
+	<div class="pad">
+		<b data-class-desktop="text-n" data-class-mobile="text-i">d1-web</b>
+		<i class="btn bg-n hide-mobile">desktop layout</i>
+		<i class="btn bg-i hide-desktop">mobile layout</i>
 	</div>
-	
+</div-->
+
+<!-- nav, stick, shift, sub/sub -->
+
+<nav class="bg">
+<div class="hide-desktop pad">
+	<a href="#nav" class="icon-menu act-icon-delete empty">Navigation</a>
+	<a href="#" class="pad"><b>d1-web</b></a>
+</div>
+<ul id="nav" class="nav flip hover target-mobile">
+<li><a href="#"><b>d1-web</b></a>
+<li><a href="#1">One</a>
+	<ul>
+	<li><a href="#11">Uno</a>
+		<ul>
+		<li><a href="#111">1</a>
+		<li><a href="#112">2</a>
+		</ul>
+	<li><a href="#12">Dos</a>
+	<li><a href="#13">Tres</a>
+	</ul>
+<li><a href="#2">Two</a>
+<li class="shift"><a href="#last">Last</a>
+	<ul>
+	<li><a href="#x1">Sub</a>
+	</ul>
+</ul>
+</nav>
+
+<div class="wrap center pad">
+
+<!-- drawer, swipe -->
+
+<div id="menu" class="drawer swipe drag pad" data-swipe-left="#cancel">
+	<div class="r">
+		<a href="#cancel" class="icon-close empty">Close</a>
+	</div>
+</div>
+
+<!-- ? tabs, tip, code, filter -->
+<!-- form, pop/tree/set-val/hint, invert, lookup/fetch/gen-modal, edit/typo, fieldset/toggle, color/prompt, pickfile, submit/confirm -->
+
+
+<!-- gallery -->
+
+<h2>Gallery</h2>
+<div class="grid-4 grid-2-mobile grid-1-phone gallery shift bg">
+	<a class="pic tip c" href="https://picsum.photos/id/715/800/500.jpg" title="Red"><img src="https://picsum.photos/id/715/400/200.jpg" alt=""></a>
+	<a class="pic tip c" href="https://picsum.photos/id/1018/800/500.jpg" title="Green"><img src="https://picsum.photos/id/1018/400/200.jpg" alt=""></a>
+	<a class="pic tip c" href="https://picsum.photos/id/575/800/500.jpg" title="Blue"><img src="https://picsum.photos/id/575/400/200.jpg" alt=""></a>
+	<a class="pic tip c" href="https://picsum.photos/id/1021/800/500.jpg" title="Grey"><img src="https://picsum.photos/id/1021/400/200.jpg" alt=""></a>
+</div>
+
+<!-- table, check all, replace icons, bars, tablex -->
+
+<h2>Table</h2>
+<form>
+<div class="roll">
+<table class="hover let shift sort filter totals flip replace">
+	<thead>
+		<tr><th><input type="checkbox" data-group="bulk"><th>#<th>Icon<th>Text<th>Bar
+	</thead>
+	<tbody>
+		<tr><td><input type="checkbox" class="bulk"><td>1<td>+<td class="text-y">Success<td>100<div class="bar text-y"><i style="width:100%"></i></div>
+		<tr><td><input type="checkbox" class="bulk"><td>2<td>-<td class="text-n">Note   <td>0<div class="bar text-n"><i style="width:0%"></i></div>
+		<tr><td><input type="checkbox" class="bulk"><td>3<td>x<td class="text-e">Error  <td>20<div class="bar text-e"><i style="width:20%"></i></div>
+		<tr><td><input type="checkbox" class="bulk"><td>4<td>!<td class="text-w">Warning<td>50<div class="bar text-w"><i style="width:50%"></i></div>
+		<tr><td><input type="checkbox" class="bulk"><td>5<td>?<td class="text-i">Info   <td>80<div class="bar text-i"><i style="width:80%"></i></div>
+	</tbody>
+</table>
+</div>
+</form>
+
+<!-- grid, items, set class -->
+
+<h2>Grid</h2>
+	<div class="row flip mar item">
+		<div class="col-0 pad bord">
+			<a href="#copy" class="icon-add empty text-y">+</a>
+			<a href="#del" class="icon-delete empty text-e">&mult;</a>
+		</div>
+		<div class="bg-n pad item">
+			<div class="small">
+				<a href="#copy" class="icon-add empty text-y">+</a>
+				<div class="pop">
+					<a href="#more" class="icon-more empty text-n">&equiv;</a>
+					<div id="more" class="pad">
+						<p>
+						<select data-parent=".item" data-nodes="" title="Width">
+							<option value="col-0">Auto width</option>
+							<option value="col-1" selected>Default width</option>
+							<option value="col-2">Double width</option>
+							<option value="col-3">Triple width</option>
+						</select>
+						<p>
+						<select data-parent=".item" data-nodes="" title="Color">
+							<option value="bg-n" selected>grey</option>
+							<option value="bg-i">blue</option>
+							<option value="bg-y">green</option>
+							<option value="bg-w">yellow</option>
+							<option value="bg-e">red</option>
+						</select>
+					</div>
+				</div>
+				<a href="#del" class="icon-delete empty text-e">&mult;</a>
+			</div>
+		</div>
+	</div>
+
+<!-- code -->
+
+<h2>Code</h2>
+<pre><code class="language-html">&lt;!-- d1-web --&gt;
+&lt;link href="https://unpkg.com/d1-web" rel="stylesheet"&gt;
+&lt;script src="https://unpkg.com/d1-web/dist/d1.min.js"&gt;&lt;/script&gt;
+&lt;noscript&gt;
+  &lt;link href="https://unpkg.com/d1-web/dist/d1-icons.min.css" rel="stylesheet"&gt;
+&lt;/noscript&gt;</code></pre>
+
+
+<!-- end -->
+
+</div>
   </body>
 </html>
