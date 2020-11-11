@@ -1,0 +1,1147 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>d1-web / test page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<script>
+	d1 = null;
+
+	var checkApi = function() {
+		// check availability of JSON placeholder
+		var re = [
+			['data-href-alt', 'href'],
+			['data-list-alt', 'data-list'],
+			['data-lookup-alt', 'data-lookup'],
+			['data-cap-alt', 'data-cap']
+			];
+		var u ='https://restcountries.eu/rest/v2/alpha/nz';
+		var data = null;
+		fetch(u)
+			.then(d => d.json())
+			.then(d => data = d)
+			.finally(() => {
+				console.log('API', data?.name ? 'OK' : 'FAILED');
+				if(!data?.name) {
+					re.forEach(r => d1.e('[' + r[0] + ']', n => n.setAttribute(r[1], n.getAttribute(r[0]))))
+				}
+				re.forEach(r => {
+					d1.e('[' + r[0] + ']', n => n.removeAttribute(r[0]))
+				});
+			});
+	}
+	
+	var injectIcon = function() {
+		d1.plugins.icons.icons['js-injected'] = [5, 'M1 1v3h3z'];
+	}
+	
+	var demoIcons = function(){
+		if (d1.plugins.icons){
+			var d = d1.q('#demo-all-icons');
+			if(d && d1.plugins.icons){
+				var icons = Object.keys(d1.plugins.icons.icons);
+				for (i=0; i<icons.length; i++) {
+					var dd = d1.ins('a', icons[i], {title: i+1, className: 'pad hover'}, d);
+					dd.style.width = '6.4em';
+					d1.plugins.icons.addIcon(icons[i], dd, 0);
+				}
+			}
+		}
+	}
+	
+	var reportScreen = function() {
+		// document.documentElement.clientWidth - without scrollbar
+		// window.innerWidth - with scrollbar
+		var r = ruler.clientWidth / 10;
+		var w = document.documentElement.clientWidth;
+		var h = document.documentElement.clientHeight;
+		var sep = ' &bull; ';
+		screener.innerHTML = sep + ' ' + 
+			+ w + 'x' + h + 'px' + sep +
+			+ Math.ceil(w/r) + 'x' + Math.ceil(h/r) + 'em' + sep +
+			+ r + 'px/em';
+	}
+	
+	var testHtml = 
+		'<hr>'
+		+ '<a class="icon-pin">Icon</a> '
+		+ '<div class="pop"><a href="#dyn-pop">Pop</a><div id="dyn-pop" class="pad toggle off">Hello</div></div> '
+		+ '<a href="#dyn-modal">Modal</a><div id="dyn-modal" class="dlg pad c toggle off"><p>Modal</p></div> '
+		+ '<a href="#dyn-confirm" class="dialog" title="Confirm?">Confirm</a> '
+		+ '<table class="let filter sort totals" data-limit="2"><tr><th>Name<th>Number<tr><td>Alpha<td>100<tr><td>Beta<td>1<tr><td>Gamma<td>2</table>'
+		+ '<form>'
+		+ '<p>Color: <input type="color">'
+		+ '<p>Date: <input class="calendar" type="datetime-local">'
+		+ '<p>Lookup: <input value="NZ" data-lookup="https://restcountries.eu/rest/v2/name/{q}##alpha2Code#name#languages.0.name" data-cap="https://restcountries.eu/rest/v2/alpha/{q}#name">'
+		+ '<p>File: <input type="file" class="pick">'
+		+ '<p><textarea class="edit -adjust"></textarea>'
+		+ '</form>';
+
+	document.addEventListener('DOMContentLoaded', e => {
+		console.log('d1 = ', d1);
+		window.addEventListener('resize', e => reportScreen(e), false);
+		if (d1.plugins.icons) {
+			d1.listen('start', injectIcon);
+			d1.listen('ready', demoIcons);
+		}
+		checkApi(); // d1.listen('init', checkApi);
+		reportScreen();
+		d1.listen(['start', 'options', 'plugin', 'arrange', 'plugins', 'toggle', 'modal', 'active', 'switch', 'request', 'response', 'swipe', 'item', 'filter',  'click', 'keydown', 'hashchange', 'input', 'submit'], e => console.log('EVENT', e.type, e));
+	});
+</script>
+
+	<!--link href="https://unpkg.com/normalize.css@8.0.1/normalize.css" rel="stylesheet"-->
+	<!-- "REMOVE-" replaced with ""  -->
+	<!-- CDN --R E M O V E->
+		<link href="https://cdn.jsdelivr.net/npm/d1-web@0.0.0/dist/d1.min.css" rel="stylesheet">
+		<script src="https://cdn.jsdelivr.net/npm/d1-web@0.0.0/dist/d1.min.js" defer></script>
+		<noscript>
+			<link href="https://cdn.jsdelivr.net/npm/d1-web@0.0.0/dist/d1-icons.min.css" rel="stylesheet">
+		</noscript>
+	<!-- CDN --REMOVE->
+		<link href="https://unpkg.com/d1-web@0.0.0/dist/d1.min.css" rel="stylesheet">
+		<script src="https://unpkg.com/d1-web@0.0.0/dist/d1.min.js" defer></script>
+		<noscript>
+			<link href="https://unpkg.com/d1-web@0.0.0/dist/d1-icons.min.css" rel="stylesheet">
+		</noscript>
+	<!-- local-npm-src REMOVE -- >
+		<link href="../src/index.css" rel="stylesheet">
+		<script src="../dist/d1.min.js" defer></script>
+		<noscript>
+			<link href="../dist/d1-icons.css" rel="stylesheet">
+		</noscript>
+	<!-- local-module (test with no need to compile) REMOVE-->
+		<link href="../src/index.css" rel="stylesheet">
+		<script src="../src/index.js" type="module"></script>
+		<noscript>
+			<link href="../dist/d1-icons.css" rel="stylesheet">
+		</noscript>
+	<!-- -->
+
+	<style>
+		@media (min-width: 900px){
+			.row-left{order:-1;}
+		}
+		/* Roboto, Open Sans, Georgia, PT Sans, PT Serif, PT Mono */
+		@import url('https://fonts.googleapis.com/css?family=PT+Sans&display=swap');
+		@import url('https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap');
+		/*
+		@import url('https://fonts.googleapis.com/css?family=PT+Serif&display=swap');
+		@import url('https://fonts.googleapis.com/css?family=PT+Mono&display=swap');
+		*/
+	</style>
+  </head>
+  <body id="body"
+		class="js-theme trans swipe"
+		data-swipe-right="#menu"
+		data-swipe-left="#theme-config"
+		data-swipe-down="#down"
+		data-swipe-up
+		data-d1='{"debug":false,"disable":["x"],"plug":{"toggle":{"keepHash":true},"theme":{"fonts":["sans-serif","serif","monospace","PT Sans","Roboto Slab"]}}}'>
+
+<!--div class="bg-w">
+Text
+<a class="icon-close empty">Hidden</a>
+<a class="icon-close">Label</a>
+<a class="btn icon-close empty">Hidden</a>
+<a class="btn icon-close">Label</a>
+</div-->
+	
+<div class="topbar toggle shade  row let hide off" id="topbar">
+	<a href="#x" class="pad hover">Topbar</a>
+	<a href="#x" class="pad hover shift">Right</a>
+</div>
+
+<!-- container -->
+<div class="-wrap">
+	<!-- menu -->
+	<header class="bg -bg-n -topbar -toggle">
+		<div class="hide-desktop">
+			<a href="#nav" class="pad hover icon-menu empty" title="Menu"><span>Menu</span></a>
+			<a href="?" class="pad"><b>d1</b> <span class="text-n">v0.0.0</span></a>
+		</div>
+		
+		<ul class="nav flip hover target-mobile" id="nav">
+			<li class="hide-mobile"><a href="?"><b>d1</b> <span class="text-n">v0.0.0</span></a></li>
+			<!--li><a class="icon-pin"><span class="hide-desktop">Hide</span></a-->
+			<li>
+				<a class="icon-link">Links</a>
+				<ul>
+					<li><a href="index.html" class="icon-text">Docs</a>
+					<li><a href="demo.html" class="icon-star">Demo</a>
+					<li><a class="icon-tree">Subitem<small class="text-n"><br>info</small></a>
+						<ul>
+							<li><a href="#n2" class="bg-y text-y">Deep</a></li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+			<li><a href="https://github.com/vvvkor/d1-web" class="icon-folder">GitHub</a>
+			<li><a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="icon-download empty-desktop" title="Download"><span>Download</span></a>
+			<li id="navi-search" class="shift">
+				<form>
+					<input name="q" type="search" size="5" title="search string" class="rad">&nbsp;<input type="submit" value="Find">
+				</form>
+			</li>
+			<li>
+				<a class="icon-add act-icon-no">Last</a>
+				<ul>
+					<li><a href="#n3">Subitem</a></li>
+				</ul>
+			</li>
+		</ul>
+	</header>
+
+  <!-- row -->
+  <div class="row flip pad">
+	
+	<!-- central -->
+	
+	<div class="pad mar col-2 row-center" data-class-desktop="pad mar col-2" data-class-mobile="">
+	
+		<!--a href="#cancel">x</a-->
+		<!-- breadcrumbs -->
+		<div class="small">
+			<a class="" href="https://github.com/vvvkor/d1-web">d1</a> &rsaquo;
+			<a class="" href="index.html">Docs</a> &rsaquo;
+			<a href="demo.html">Demo</a> &rsaquo;
+			<a class="let" href="test.html">Test page</a>
+		</div>
+		
+		<h1 class="mar">d1 <span class="text-n">frontend framework</span></h1>
+		
+		<p class="swipe drag pad bg-e text-e icon-ban fit bord"
+			data-swipe-up="#swipe-up"
+			data-swipe-right="#swipe-right"
+			data-swipe-down="#swipe-down"
+			data-swipe-left="#swipe-left"
+			>Alert <span class="hide-nojs">(swipe me)</span></p>
+		<p class="drag pad bg-w text-w icon-warning">Warning</p>
+		<p class="drag pad bg-y text-y stick item shade bord icon-ok">
+			<a href="#delete" class="pad close icon-close empty hide-nojs"><span>Dismiss</span></a>
+			Sticky success message
+		</p>
+		<p class="drag pad bg-i text-i icon-info">Info<span id="screener" class="small"></span></p>
+		<p class="drag pad bg-n text-n icon-text swipe"
+			data-swipe-up="#swipe-ups"
+			data-swipe-right="#swipe-rights"
+			data-swipe-down="#swipe-downs"
+			data-swipe-left="#swipe-lefts"
+			>Note</p>
+		
+		<div class="c bg-w" id="ruler" style="width:10em;">10em</div>
+		
+		<h2 class="mem" id="typo">Typography</h2>
+		
+		<div class="row -flip">
+			<div>
+				<b>Bold</b><br>
+				<i>Italic</i><br>
+				<s>Strike</s><br>
+				<ins>Insert</ins><br>
+				<del>Delete</del><br>
+				x<sup>super</sup><br>
+				x<sub>sub</sub>
+			</div>
+			<div>
+				<time datetime="1970-01-01">Time</time><br>
+				<abbr title="Abbreviation">Abbr</abbr><br>
+				<q>Quote <q>inside</q> quote</q><br>
+				<cite>Cite</cite><br>
+				<dfn>Dfn</dfn><br>
+				<mark>Mark</mark><br>
+				<small>Small</small>
+			</div>
+			<div>
+				<code>Code</code><br>
+				<var>Var</var><br>
+				<kbd>Kbd</kbd><br>
+				<samp>Samp</samp><br>
+				<a href="#x">Link</a><br>
+				<a href="#x" class="let">Link reset</a><br>
+				<a>Link no href</a><br>
+				<a href="#no-js" data-href="#with-js">JS or not</a>
+			</div>
+			<div>
+				<span class="">Span</span><br>
+				<span class="text-e">Error</span><br>
+				<span class="text-w">Warning</span><br>
+				<span class="text-y">Success</span><br>
+				<span class="text-i">Info</span><br>
+				<span class="text-n">Note</span><br>
+			</div>
+		</div>
+
+			<hr>
+			<p>Paragraph.<br>New line inside paragraph.</p>
+			<blockquote>
+				Blockqoute
+				<!--
+				<p>Blockqoute</p>
+				<footer>from <cite><a href="#x">Source</a></cite></footer>
+				-->
+			</blockquote>
+			<pre><code class="language-js">// JavaScript preformatted code
+let double = function (x) {
+  console.log('double', x);
+  return 2 * x;
+}</code></pre>
+		
+		
+		<h2 class="mem" id="forms">Forms</h2>
+		
+		<ul class="nav shade hover nobr roll scroller -flip">
+			<li><a href="#form-inline">Inline</a>
+			<li><a href="#form-stack">Stacked</a>
+			<li><a href="#form-flex">Responsive flex</a>
+			<li><a href="#form-table">Responsive table</a>
+			<li><a href="#buttons">Buttons</a>
+		</ul>
+		
+		<div class="dlg rad" id="buttons">
+			<a href="#cancel" class="close pad icon-close empty"><i>Close</i></a>
+			<h3 class="fit pad bg">Buttons</h3>
+			<!--
+			1<a href="#cancel" class="pad icon-close empty">Close</a>
+			2<a href="#cancel" class="pad icon-close">Close</a>3
+			-->
+			<div class="mar pad nobr">
+				<button>Button</button>
+				<input type="submit" value="Submit">
+				<button disabled="">Disabled</button>
+				<button class="hover">Hover</button>
+				<button class="fit">Fit</button>
+				<br>
+				<button class="bg-e icon-ban">Error</button>
+				<button class="bg-w icon-warning">Warning</button>
+				<button class="bg-i icon-info">Info</button>
+				<button class="bg-y icon-ok">OK</button>
+				<button class="bg-n icon-left">Back</button>
+				<br>
+				<button>B</button>
+				<button class="icon-close">B</button>
+				<button class="icon-close empty" title="No label"><i>B</i></button>
+				<a href="#x" class="btn bg-n">A</a>
+				<a href="#x" class="btn bg-n icon-close">A</a>
+				<a href="#x" class="btn bg-n icon-close empty" title="No label"><i>A</i></a>
+				<a href="#x" class="hover">A</a>
+				<a href="#x" class="hover icon-close">A</a>
+				<a href="#x" class="hover icon-close empty" title="No label"><i>A</i></a>
+				<br>
+				<a href="#x" class="btn">Link</a>
+				<a href="#x" class="btn bg-y icon-ok">Link</a>
+				<a href="#x" class="pad bord rad hover let">Link</a>
+				<a href="#x" class="pad bord rad hover">Link</a>
+				<a href="#x" class="pad rad hover">Link</a>
+				<a href="#x" class="">Link</a>
+				<br>
+				<a href="#x" class="btn fit bg-w">Link</a>
+				<span class="btn bg-i">Span</span>
+				<b class="btn bg-e">B</b>
+			</div>
+		</div>
+		
+		
+		<div class="dlg rad" id="form-inline">
+			<a href="#cancel" class="close pad icon-close empty"><span>Close</span></a>
+			<h3 class="fit pad bg">Inline form</h3>
+			<div class="mar pad nobr">
+			<form action="?">
+				<input type="search" name="nm">
+				<input type="submit" value="Search">
+			</form>
+			</div>
+		</div>
+		
+		<div class="dlg rad" id="form-stack">
+			<a href="#cancel" class="close pad icon-close empty"><span>Close</span></a>
+			<h3 class="fit pad bg">Stacked form</h3>
+			<div class="mar pad">
+			<form>
+			  <p>
+				<label for="name">Name</label><br>
+				<input type="text" name="name" id="name" required="">
+			  </p>
+			  <p>
+				<label for="age">Age</label><br>
+				<input type="number" name="age" id="age">
+			  </p>
+			  <p>
+				<input type="submit" value="OK">
+				<a href="#x" class="pad hover">Link</a>
+			  </p>
+			</form>
+			</div>
+		</div>
+		
+		<div class="dlg let rad" id="form-flex">
+			<a href="#cancel" class="close pad icon-close empty"><span>Close</span></a>
+			<h3 class="fit pad bg">Responsive flex form with custom validation tooltips</h3>
+			<div class="pad read center">
+			<form class="mar pad shade" action="?">
+			  <div class="row flip">
+				<label for="i1">Name</label>
+				<div><input type="text" name="i1" id="i1" required pattern="[A-Za-z]{2,}" title="Two up to four letters" autocomplete="off" minlength="2" maxlength="4" data-hint="Enter %minlength% up to %maxlength% letters"> <small class="hint text-e">Needs 2..4 letters</small> <small class="hint text-y">Fine</small></div>
+			  </div>
+			  <fieldset>
+				<legend><a href="#fs0">Fieldset</a></legend>
+				<div id="fs0" class="toggle off"><!-- no-js: visible, js: hide by default -->
+				  <div class="row flip">
+					<label for="i3">Age</label>
+					<div><input type="number" name="i3" id="i3"></div>
+				  </div>
+				</div>
+			  </fieldset>
+			  <div class="row flip">
+				<div aria-hidden="true"></div>
+				<div>
+				  <input type="checkbox" name="i2" id="i2">
+				  <label for="i2">Agreed</label>
+				</div>
+			  </div>
+			  <div class="row flip">
+				<div aria-hidden="true"></div>
+				<div><input type="submit" value="Submit"></div>
+			  </div>
+			</form>
+			</div>
+		</div>
+		
+		<div class="dlg let rad" id="form-table">
+			<div class="bg -stick">
+				<a href="#cancel" class="close pad icon-close empty"><span>Close</span></a>
+				<h3 class="fit pad">Responsive table form with custom validation messages</h3>
+			</div>
+			<form class="js-unhint -js-live-val store restore" id="form-big">
+			<section class="pad">
+			  <div class="read center">
+				<table class="flip mar">
+				<tr>
+					<td><label for="nm">Name</label>
+					<td><input type="text" name="nm" id="nm" required pattern="[A-Za-z]{2,}" title="Two up to four letters" autocomplete="off" minlength="2" maxlength="4" data-hint="Enter %minlength% up to %maxlength% letters">
+					<div class="pop">
+						<a href="#pop-set">Set value</a>
+						<div class="pad" id="pop-set">
+							<a href="#nm" data-value="One">One</a><br>
+							<a href="#nm" data-value="Two">Two</a><br>
+						</div>
+					</div>
+					<a href="#nm" data-value="" class="text-n">Reset</a>
+					<div class="hint mar small text-e">Type 2 up to 4 letters</div>
+					<div class="hint mar small text-y">Looks good</div>
+					
+					
+				<tr><td colspan="2">
+				<fieldset>
+					<legend><a href="#fs1">Input types</a></legend>
+					<table id="fs1" class="toggle off mem">
+					
+					<tr>
+						<td><label for="usr_id">Lookup</label>
+						<td>
+							<input required
+							  type="text"
+							  name="usr_id"
+							  id="usr_id"
+							  value="ru"
+							  placeholder="search"
+							  data-lookup-alt="data.json?q={q}"
+							  data-cap-alt="data-cap.json?q={q}"
+							  data-lookup="https://restcountries.eu/rest/v2/name/{q}##alpha2Code#name#languages.0.name"
+							  data-cap="https://restcountries.eu/rest/v2/alpha/{q}#name"
+							  data-label-x="Country One"
+							  data-cache="10"
+							  data-url="#country-{id}">
+							<div class="hint mar small text-e">Type and select from lookup</div>
+					<tr>
+						<td><label for="country">Chained</label>
+						<td>
+						  <select name="country" id="country" data-chain="#town">
+							<option value="" selected>-</option>
+							<option value="Europe">Europe</option>
+							<option value="Asia">Asia</option>
+							<option value="Americas">America</option>
+							<option value="None">None</option>
+						  </select>
+						  <select name="town" id="town" data-list-alt="{q}.json" data-list="https://restcountries.eu/rest/v2/region/{q}##alpha2Code#name" data-placeholder="..." data-cache="10" class="narrow"></select>
+					<tr>
+						<td><label for="land">Chained datalist</label>
+						<td>
+						  <select name="land" id="land" data-chain="#city">
+							<option value="" selected>-</option>
+							<option value="Europe">Europe</option>
+							<option value="Asia">Asia</option>
+							<option value="Americas">Americas</option>
+							<option value="None">None</option>
+						  </select>
+						  <input type="text" list="cities" name="city" id="city" data-list-alt="{q}.json" data-list="https://restcountries.eu/rest/v2/region/{q}##alpha2Code#name" data-cache="10">
+						  <datalist id="cities"><option value="a"></datalist>
+					<tr>
+						<td><label for="lng">Select</label>
+						<td>
+						<select name="lng" id="lng" required>
+							<option value="" selected>-</option>
+							<option value="en">English</option>
+							<option value="ru">Russian</option>
+						</select>
+						<span class="hint mar small text-e">Select language</span>
+					<tr>
+						<td><label for="rdo">Readonly</label>
+						<td><input type="text" name="rdo" id="rdo" readonly value="read only">
+					<tr>
+						<td><label for="dis">Disabled</label>
+						<td><input type="text" name="dis" id="dis" disabled value="not sent">
+					<tr>
+						<td><label for="tm">Time</label>
+						<td><input type="time" name="tm" id="tm">
+					<tr>
+						<td><label for="dt">Date</label>
+						<td><input type="date" name="dt" id="dt" class="calendar" required>
+						<div class="hint mar small text-e">Input the date</div>
+					<tr>
+						<td><label for="dtl">Datetime</label>
+						<td><input type="datetime-local" name="dtl" id="dtl" class="calendar datetime" required min="2020-02-05T23:59:59" max="2020-02-20T00:00:00" data-def="2/16 2020">
+						<div class="hint mar small text-e">Input the date and time</div>
+					<tr>
+						<td><label for="num">Number</label>
+						<td><input type="number" name="num" id="num" required min="1" max="10" step="0.1" data-info="some info" data-hint="Enter number between %min% and %max%, step %step% (%data-info%).">
+						<div class="hint mar small text-e">Enter number between 1 and 10, step 0.1</div>
+					<tr>
+						<td><label for="rng">Range</label>
+						<td><input type="range" name="rng" id="rng">
+					<tr>
+						<td><label for="clrn">Color</label>
+						<td><input type="color" name="clrn" id="clrn" value="#ff0000">
+					<tr>
+						<td><label for="eml">E-mail</label>
+						<td><input type="email" name="eml" id="eml" value="">
+					<tr>
+						<td><label for="ur">URL</label>
+						<td><input type="url" name="ur" id="ur" value="">
+					<tr>
+						<td><label for="msg">Textarea</label>
+						<td><textarea class="edit adjust" data-tools="/*@xbi_.pqf" name="msg" id="msg" cols="20" rows="5" required></textarea>
+						<div class="hint mar small text-e">Type something</div>
+					<tr>
+						<td>Upload
+						<td><label class="drop" title="Drop image" for="up"><input id="up" type="file" name="up[]" multiple></label>
+					<tr>
+						<td>Box
+						<td><input id="bx0" type="checkbox" required class="" name="bx0" value="1" title="You need to check the box to continue"> <span><label for="bx0">Required box</label></span>
+						<div class="hint mar small text-e">Check to continue</div>
+					</table>
+				</fieldset>
+				<fieldset>
+					<legend><a href="#fs2">Switches</a></legend>
+					<table id="fs2" class="toggle off mem">
+						<tr>
+							<td>Box
+							<td>
+								<label for="bx1"><input id="bx1" type="checkbox" class="" name="colors" value="1" data-group="colors"> <b>All</b></label><br>
+								<label for="bx2"><input id="bx2" type="checkbox" class="colors" name="color[]" value="red"> Red</label><br>
+								<label for="bx3"><input id="bx3" type="checkbox" class="colors" name="color[]" value="green"> Green</label><br>
+								<label for="bx4"><input id="bx4" type="checkbox" class="colors" name="color[]" value="blue"> Blue</label><br>
+						<tr>
+							<td>Radio
+							<td>
+								<input id="rd1" type="radio" name="ra1" required value="sun"> <span><label for="rd1">Sun</label></span><br>
+								<input id="rd2" type="radio" name="ra1" value="moon"> <span><label for="rd2">Moon</label></span><br>
+								<div class="hint mar small text-e">Select to continue</div>
+					</table>
+				</fieldset>
+				
+				</table>
+			  </div>
+			</section>
+			 <div class="pad bg">
+			  <div class="read center">
+				<table class="flip">
+					<tr>
+						<td>
+						<td>
+							<input type="submit" value="Submit">
+							<input type="submit" value="Disabled" disabled>
+							<input type="submit" value="Confirm" class="bg-w dialog" name="btn2" title="Confirm?">
+				</table>
+			  </div>
+			 </div>
+			</form>
+		</div>
+		
+		<!--h2 id="utils">Utilities</h2-->
+		
+		<h2 class="icon-image" id="icons">Icons</h2>
+		
+		<div class="mar pad shade hide-nojs">
+			<a href="#demo-all-icons"><span class="is-off text-i icon-down"><i></i></span><span class="is-on icon-up"><i></i></span> Show icons &nbsp; <i class="icon-sun text-w"></i></a>
+			<div id="demo-all-icons" class="target"><hr>
+			</div>
+			<svg style="display:none;" width="0" height="0">
+				<symbol id="icon-sun" viewBox="0 0 16 16"><path d="M1 8l7-7 7 7-7 7zm2-5v10h10v-10z"></path></symbol>
+				<!--symbol id="icon-columns" viewBox="0 0 9 9"><path d="M1 1h7v1h-7zm0 2h3v5h-3zm4 0h3v5h-3z"></path></symbol-->
+			</svg>
+		</div>
+		<div>
+			<a href="#icon" class="bord icon-close">Icon</a>
+			<a href="#icon" class="bord icon-close" title="No label"></a> No label
+			<a href="#icon" class="bord icon-close empty" title="Hidden label"><span>Hidden label</span></a>
+			<a href="#icon" class="bord icon-close empty-mobile" title="Desktop label"><span>Desktop label</span></a>
+			<a href="#icon" class="bord icon-close empty-desktop" title="Mobile label"><span>Mobile label</span></a>
+		</div>
+		
+		<h2 class="" id="table">Responsive table <span class="hide-nojs">sort and filter</span></h2>
+		
+		<!-- tablex -->
+		<p class="hide-nojs">
+			<input name="q" value="" type="search" id="table-filter" placeholder="Filter table" autocomplete="off">
+			<span id="filter-info"></span> &nbsp;
+			<label><input type="checkbox" data-nodes="#totals" data-set="bg-i" data-unset="hide"> more totals</label>
+		</p>
+		<div class="roll">
+		<table id="tablex" class="flip let shift hover c2 r3 c6 sort -filter totals replace" data-e="delete" data-filter="#table-filter" data-filter-report="#filter-info" data-filter-cols="0 2" data-case-x data-labels data-limit="2">
+			<!--caption>Web languages</caption-->
+			<thead>
+				<tr><th>String<th>Number<th>Bytes<th>Interval<th>Date<th>Icon
+			</thead>
+			<tbody>
+				<!--tr><td><td>1<td>1b<td> <td-->
+				<tr><td>HTML<td>4<td>900 B<td>1min 125s<td>1993-07-09 08:05:01<td>+
+				<tr><td>JavaScript<td>10.12345<td>1 MB<td>3m<td>12/4/1995<td>x
+				<tr><td>CSS<td>3<td>350 KB<td>1y<td>17.12.1996 1:2:3<td>-
+			</tbody>
+			<tbody id="totals" class="hide">
+				<tr class="nobr"><th colspan="5"><span data-total="count"></span> items
+				<tr class="nobr">
+					<th>Sum
+					<th><span data-total="sum" data-dec="3"></span>
+					<th><span data-total="sum" data-dec="3" data-mode="b"></span>
+					<th><span data-total="sum" data-dec="3" data-mode="i"></span>
+					<th>
+				<tr>
+					<td>Avg
+					<td><span data-total="avg"></span>
+					<td><span data-total="avg" data-mode="b"></span>
+					<td><span data-total="avg" data-mode="i"></span>
+					<td><span data-total="avg" data-mode="d"></span>
+				<tr>
+					<td>Min
+					<td><span data-total="min"></span>
+					<td><span data-total="min" data-mode="b"></span>
+					<td><span data-total="min" data-mode="i"></span>
+					<td><span data-total="min" data-mode="d"></span>
+				<tr>
+					<td>Max
+					<td><span data-total="max"></span>
+					<td><span data-total="max" data-mode="b"></span>
+					<td><span data-total="max" data-mode="i"></span>
+					<td><span data-total="max" data-mode="d" data-dec="0"></span>
+			</tbody>
+		</table>
+		</div>
+
+<div class="hide-nojs">
+		
+		<h2 class="" id="code-sample">Code sample and toggle class <b class="small btn bg-e hide-js" title="Requires JavaScript">JS</b></h2>
+
+		<div class="mar pad shade">
+			<p>
+			<a href="#x" data-nodes="#code abbr" data-set="bg-w" class="hover">abbreviation</a>
+			<label><input type="checkbox" data-nodes="#code code" data-set="btn bg-i"> code</label>
+			<select data-nodes="#code b">
+				<option value="" selected>- sample -</option>
+				<option value="text-e">danger</option>
+				<option value="text-w">warning</option>
+				<option value="text-y">success</option>
+				<option value="text-i">info</option>
+				<option value="text-n">note</option>
+			</select>
+			<label><input type="checkbox" data-nodes="#code input" data-set="radio" data-unset="checkbox" data-attr="type"> input</label>
+			<!--
+				<label><input type="radio" name="r" data-nodes="#code b" value="bg-e"> e</label>
+				<label><input type="radio" name="r" data-nodes="#code b" value="bg-w"> w</label>
+				<label><input type="radio" name="r" data-nodes="#code b" value="bg-y"> y</label>
+				<label><input type="radio" name="r" data-nodes="#code b" value="bg-i"> i</label>
+				<label><input type="radio" name="r" data-nodes="#code b" value="bg-n"> n	</label>
+				<input type="checkbox" data-nodes="#code b" data-set="bord"> bord</label>
+			-->
+			</p>
+			<!-- by default data-lang="html" -->
+			<div class="code" id="code" -data-lang="html">
+<!-- HTML -->
+<abbr title="Hypertext Markup Language">HTML</abbr>
+<code>code</code>
+<b>sample</b>
+<input type="checkbox">.
+			</div>
+		</div>
+		
+		<h2 class="" id="items">Manage items <b class="small btn bg-e hide-js" title="Requires JavaScript">JS</b></h2>
+		
+		<div class="mar pad shade">
+		<div class="roll">
+		<table class="mar shift let hover" id="tab-items">
+			<tbody>
+				<tr>
+					<th>
+						<a class="text-y icon-add" title="Add item" href="#copy" data-item="#tab-item-tpl">Add</a>
+						<a class="text-w icon-delete empty" title="Remove all visible items" href="#delall" data-item="#tab-items>tbody"><span>Delete all</span></a>
+						<a class="text-e icon-ban empty" title="Clear container" href="#clear" data-item="#tab-items"><span>Clear</span></a>
+					</th>
+					<th class="icon-text">Name</th>
+					<th class="icon-ok text-i">Value</th>
+				</tr>
+				<tr class="hide item" id="tab-item-tpl"><td><a href="#copy">+</a> <a href="#hide">&mdash;</a> <a href="#del">&#x2715;</a></td><td>Table row item</td><td>
+					<div class="item"><a href="#copy">+</a> <a href="#del">&times;</a> <input name="items[]"> </div>
+				</td></tr>
+			</tbody>
+		</table>
+		</div>
+		</div>
+		
+		<h2 class="" id="filter">Filter items <b class="small btn bg-e hide-js" title="Requires JavaScript">JS</b></h2>
+		
+		<!-- filter -->
+		<div class="filters mem item mar pad shade" id="filter-items" data-filter_color="green;yellow">
+			<a href="#x" data-filter class="close pad text-y hover icon-refresh empty"><i>Reset</i></a>
+			<i>Colors:</i>
+			<a href="#x" class="hover" data-filter="color">any</a>
+			<a href="#x" class="hover" data-filter="color=+red">red</a>
+			<a href="#x" class="hover" data-filter="color=+yellow">yellow</a>
+			<a href="#x" class="hover" data-filter="color=+green">green</a>
+			<label><input type="checkbox" data-filter="color"> any</label>
+			<label><input type="checkbox" data-filter="color=+red"> red</label>
+			<label><input type="checkbox" data-filter="color=+yellow"> yellow</label>
+			<label><input type="checkbox" data-filter="color=+green"> green</label>
+			<br>
+			<i>Style:</i>
+			<a href="#x" class="hover" data-filter="style">any</a>
+			<a href="#x" class="hover" data-filter="style=plain">plain</a>
+			<a href="#x" class="hover" data-filter="style=shade">shadow</a>
+			<a href="#x" class="hover" data-filter="style=btn">inverted</a>
+			<label><input type="radio" name="fltr" data-filter="style"> any</label>
+			<label><input type="radio" name="fltr" data-filter="style=plain"> plain</label>
+			<label><input type="radio" name="fltr" data-filter="style=shade"> shadow</label>
+			<label><input type="radio" name="fltr" data-filter="style=btn"> inverted</label>
+			<select data-filter="style">
+				<option value="">any</option>
+				<option value="plain">plain</option>
+				<option value="shade">shadow</option>
+				<option value="btn">inverted</option>
+			</select>
+			
+			<div class="row mar let">
+				<div data-color="red"    data-style="plain" class="item pad bg-e plain">A</div>
+				<div data-color="yellow" data-style="plain" class="item pad bg-w plain">B</div>
+				<div data-color="green"  data-style="plain" class="item pad bg-y plain">C</div>
+				<div data-color="red"    data-style="shade" class="item pad bg-e shade">D</div>
+				<div data-color="yellow" data-style="shade" class="item pad bg-w shade">E</div>
+				<div data-color="green"  data-style="shade" class="item pad bg-y shade">F</div>
+				<div data-color="red"    data-style="btn"   class="item pad bg-e btn">G</div>
+				<div data-color="yellow" data-style="btn"   class="item pad bg-w btn">H</div>
+				<div data-color="green"  data-style="btn"   class="item pad bg-y btn">I</div>
+			</div>
+		</div>
+		
+		<h2 class="" id="fetch">Fetch URL <b class="small btn bg-e hide-js" title="Requires JavaScript">JS</b></h2>
+		
+		<!-- fetch -->
+		<div class="shade">
+			<ul class="nav hover">
+				<li><a data-href-alt="data.json" href="https://restcountries.eu/rest/v2/alpha/gb#altSpellings" data-target="#preview">To preview area</a>
+				<li><a href="#clear" data-item="#preview" class="icon-delete">Clear preview</a>
+				<li><a data-href-alt="data.json" href="https://restcountries.eu/rest/v2/alpha/nz#altSpellings" data-target="#dlg-inner">To dialog</a>
+				<li><a data-href-alt="data.json" href="https://restcountries.eu/rest/v2/alpha/ru#altSpellings" data-target="#xxx" data-head="Fetched data">To generated dialog</a>
+			</ul>
+			<div class="bg-i fit pad" id="preview">[preview area]</div>
+		</div>
+		<div id="preview-dlg" class="dlg pad"><a class="close pad icon-close empty" href="#cancel"><b>&times;</b></a><p class="pad" id="dlg-inner">(preview)</p></div>
+		
+		<!-- cols -->
+		<!--
+		<h3 id="cols">Columns</h3>
+		<p>
+		With gap:
+		<label><input type="radio" name="colz" data-nodes="#colz" value="row flip by-1"> 1</label>
+		<label><input type="radio" name="colz" data-nodes="#colz" value="row flip by-2"> 2</label>
+		<label><input type="radio" name="colz" data-nodes="#colz" value="row flip by-3" checked> 3</label>
+		<label><input type="radio" name="colz" data-nodes="#colz" value="row flip by-4"> 4</label>
+		<br>
+		Without gap:
+		<label><input type="radio" name="colz" data-nodes="#colz" value="row flip fit by-1"> 1</label>
+		<label><input type="radio" name="colz" data-nodes="#colz" value="row flip fit by-2"> 2</label>
+		<label><input type="radio" name="colz" data-nodes="#colz" value="row flip fit by-3"> 3</label>
+		<label><input type="radio" name="colz" data-nodes="#colz" value="row flip fit by-4"> 4</label>
+		</p>
+		
+		<div class="bord">
+		<div class="row flip by-3" id="colz">
+			<div class="bg-e item">#1 <a href="#copy">+</a> <a href="#del">-</a></div>
+			<div class="bg-w item">#2 <a href="#copy">+</a> <a href="#del">-</a></div>
+			<div class="bg-y item">#3 <a href="#copy">+</a> <a href="#del">-</a></div>
+			<div class="bg-i item">#4 <a href="#copy">+</a> <a href="#del">-</a></div>
+			<div class="bg-n item">#5 <a href="#copy">+</a> <a href="#del">-</a></div>
+		</div>
+		</div>
+		-->
+		
+		<h2 class="" id="dynamic">Dynamic content <b class="small btn bg-e hide-js" title="Requires JavaScript">JS</b></h2>
+		
+		<div class="pad mar shade">
+			<a href="#insert" onclick="plus.innerHTML = testHtml;return false;">Insert</a>
+			<a href="#arrange" onclick="d1.arrange(plus);return false;">Arrange</a>
+			<a href="#clone" onclick="clones.appendChild(plus.cloneNode(true));return false;">Clone</a>
+			<a href="#clone" onclick="d1.fixIds(clones);return false;">IDs</a>
+			<a href="#clear" onclick="plus.innerHTML = clones.innerHTML = '';return false;">Clear</a>
+			<div id="plus"></div>
+			<div id="clones"></div>
+		</div>
+</div><!-- .hide-nojs -->
+
+	</div>
+
+	<!-- /central -->
+	
+	<!-- left -->
+	
+	<div class="row-left">
+		<div class="pad mar shade rad" data-class-mobile="pad mar bord rad" data-class-desktop="pad mar shade rad">
+			<h3 class="mar">Status</h3>
+			<p>
+				<b class="btn bg-w hide-js">JavaScript off</b>
+				<b class="btn bg-y hide-nojs">JavaScript on</b>
+				<br>
+				<b class="btn bg-i hide-desktop">Mobile layout</b>
+				<b class="btn bg-n hide-mobile">Desktop layout</b>
+			</p>
+		</div>
+		<div class="pad mar shade hide-nojs">
+			<h3 class="mar">Page setup <b class="small btn bg-e hide-js" title="Requires JavaScript">JS</b></h3>
+			<p>
+			<label><input type="checkbox" data-nodes="#topbar" data-set="topbar toggle shade  row let center fit" data-unset="topbar hide off" id="setup-topbar" class="mem"> Topbar</label><br>
+			<label><input type="checkbox" data-nodes="body" data-set="invert" id="setup-invert" class="mem"> Invert</label>
+				<span class="text-i tip icon-info empty" title="Not supported in  IE and Edge 15-"><i>[!]</i></span>
+				<br>
+			<label><input type="checkbox" data-nodes="html" data-set="scroller" id="custom-scroll" class="mem"> Custom scroll</label>
+				<span class="text-i tip icon-info empty" title="Supported in  WebKit and Firefox"><i>[!]</i></span>
+				<span class="text-w tip icon-bookmark empty" title="Remember selection  in local storage"><i>[#]</i></span>
+			</p>
+		</div>
+		<div class="pad mar shade">
+			<h3 class="mar">Components</h3>
+			<!-- togglers -->
+			<ul>
+				<li><a href="#tog">Toggle</a>
+				<div id="tog" class="pad bord yel bg-w target mem">Togglable</div>
+				<li><div class="pop">
+					<a href="#pop">Popup</a>
+					<div id="pop" class="pad shift">
+						Pop
+						<div class="pop">
+							<a href="#pop2">Internal popup</a>
+							<div id="pop2" class="pad">Nested</div>
+						</div>
+					</div>
+				</div>
+				<li><div class="pop">
+					<a href="#x">Hover</a>
+					<div class="pad">
+						Internal popup on
+						<div class="pop">
+							<a href="#x">hover</a>
+							<div class="pad shift">Nested, to the left on desktop</div>
+						</div>
+					</div>
+				</div>
+				<li><a href="#modal">Modal</a>
+				<li><a href="#full">Full</a>
+				<li><span class="gallery">Gallery
+					<a href="https://picsum.photos/id/360/1000/700.jpg" class="pic" title="Red">#1</a>
+					<a href="https://picsum.photos/id/844/1000/700.jpg" class="pic" title="Green">#2</a>
+					<a href="https://picsum.photos/id/830/1000/700.jpg" class="pic" title="Blue">#3</a>
+					</span>
+					<b class="small btn bg-e hide-js" title="Requires JavaScript">JS</b>
+				<li><a href="#gal1">Pure CSS Gallery</a>
+					<span class="text-i tip c icon-info empty" title="Not supported in  IE and Edge 15-"><i>[!]</i></span>
+				<li><a href="#menu">Drawer & tree</a>
+				<!--li><a href="#x" data-nodes="#topbar" data-set="topbar toggle shade  row let center fit" data-unset="hide">Topbar</a>
+					<b class="small btn bg-e hide-js" title="Requires JavaScript">JS</b-->
+				<!--details>
+					<summary>Summary</summary>
+					<div class="bg pad">Details</div>
+				</details-->
+			</ul>
+
+			<!-- togglable -->
+			<div id="modal" class="dlg rad c pad">
+				<!--a class="close pad icon-close empty" href="#cancel">Close</a-->
+				<a class="close pad icon-close empty" href="#cancel" title="Close"><b>&times;</b></a>
+				<p id="modal-p">Modal</p>
+				<ul class="l">
+					<li><a href="#confirm-nested" class="dialog" title="Confirm nested?">Nested dialog</a>
+					<li><a href="#modal-p">Local anchor</a>
+					<li><a href="#modal-modal"><s title="Limited support, considered bad practice">Nested modal</s></a>
+					<li>
+						<div class="pop">
+							<a href="#modal-pop">Nested popup</a>
+							<div id="modal-pop" class="pad">Nested popup</div>
+						</div>
+					<li><a href="#typo">Outside anchor</a>
+					<li><a href="#menu">Outside drawer</a>
+					<li><a href="#x">Absent anchor</a>
+				</ul>
+				<div id="modal-modal" class="dlg pad">Nested modal</div>
+			</div>
+			<div id="full" class="dlg full center pad bg-w">
+				<a class="close pad icon-close empty" href="#cancel"><i>Close</i></a>
+				Fullscreen modal
+			</div>
+			<div class="gal">
+				<a id="gal1" href="#gal2" style="--img:url(https://picsum.photos/id/360/1000/700.jpg)" data-caption="1/3 - Red"  ></a>
+				<a id="gal2" href="#gal3" style="--img:url(https://picsum.photos/id/844/1000/700.jpg)" data-caption-x="2/3 - Green" ></a>
+				<a id="gal3" href="#gal1" style="--img:url(https://picsum.photos/id/830/1000/700.jpg)" data-caption="3/3 - Blue"></a>
+				<!--a class="close icon-close empty" href="#cancel"><span>Close</span></a-->
+			</div>
+			
+			<div class="drawer pad swipe drag" id="menu" data-swipe-left="#cancel">
+				<a class="close pad icon-close empty" href="#cancel"><span>Close</span></a>
+				<h3 class="icon-flag">Languages</h3>
+				<ul class="tree accordion mem fit">
+					<li><a href="#ul1">Computer</a>
+						<ul id="ul1">
+							<li>Programming
+								<ul class="small">
+									<li>JavaScript</li>
+									<li>PHP</li>
+								</ul>
+							</li>
+							<li>Markup
+								<ul class="small">
+									<li>HTML</li>
+									<li>CSS</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<li><a>Human</a>
+						<ul id="ul2">
+							<li>English</li>
+							<li>Spanish</li>
+							<li>Russian</li>
+						</ul>
+					</li>
+				</ul>
+				
+				<h3 id="#anchors">Anchors</h3>
+				
+				<ul>
+					<li><a href="#confirm-nested-drawer" class="dialog" title="Confirm nested?">Nested dialog</a>
+					<li><a href="#anchors">Local anchor</a>
+					<li><a href="#ul2">Local tree anchor</a>
+					<li><a href="#drawer-modal"><s title="Not supported, considered bad practice">Nested modal</s></a>
+					<li>
+						<div class="pop">
+							<a href="#drawer-pop">Nested popup</a>
+							<div id="drawer-pop" class="pad">Nested popup</div>
+						</div>
+					<li><a href="#typo">Outside anchor</a>
+					<li><a href="#modal">Outside modal</a>
+					<li><a href="#x">Absent anchor</a>
+				</ul>
+				
+				<!--div id="drawer-modal" class="dlg pad">Drawer modal</div-->
+			</div>
+		</div>
+		
+		<div class="-pad mar -shade">
+			<!--h3 class="mar">Tabs</h3-->
+			<ul class="nav tabs rad mem hover">
+				<li><a href="#tab1">#1</a></li>
+				<li><a href="#tab2">#2</a></li>
+				<li><a href="#tab3">#3</a></li>
+			</ul>
+			<div class="bord">
+				<div id="tab2" class="pad bg-w">2<br>2</div>
+				<div id="tab3" class="pad">3</div>
+				<div id="tab1">
+					<div class="item">
+						<img class="fit" src="https://picsum.photos/id/844/900/200.jpg" height="200" alt="Green">
+						<div class="over invert back -bg-w hover"></div>
+						<div class="over pad row center c invert">
+							<div>
+								<h3 class="mar">Overlay</h3>
+								<p>Text <a href="#x">link</a></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="pad mar shade">
+			<!-- dialogs -->
+			<h3 class="mar">Dialogs <b class="small btn bg-e hide-js" title="Requires JavaScript">JS</b></h3>
+			<ul>
+				<li><a href="#done" class="alert" title="This is a simple alert." data-head="Hello" data-pic="info text-i">Alert</a>
+				<li><a href="?a=1&b=2" class="dialog" title="Continue?">Confirm</a>
+				<li><a href="?a=1&b=2" class="dialog" title="Continue to new tab?" target="_blank">Confirm to new tab</a>
+				<li><a href="#top" class="dialog" title="Continue to %href%?">Confirm hash</a>
+				<li><a href="?a=1&b=Hello!&c=3" class="dialog text-w" data-prompt="b" data-caption="Greeting:" data-ok="Fine" data-cancel="No way" data-reverse="">Prompt</a>
+				<li><a href="?nm=" class="dialog" data-prompt="nm" data-caption="Name:" data-src="#nms" data-go-x data-reverse-x>Prompt from input</a>
+			</ul>
+			<form class="mar">
+				<input type="text" name="nm" id="nms" value="qq" size="5" required pattern="[A-Za-z]{2,}" title="Two or more letters">
+				<input type="submit" name="s1" value="OK">
+				<input type="submit" name="s2" value="Confirm" class="dialog bg-w" title="Submit with" data-prompt="nm" data-head="Attention!">
+			</form>
+		</div>
+		
+		<div class="shade pad c hide-nojs">
+			<!-- file upload -->
+			<h3 class="mar">File picker with dropzone <b class="small btn bg-e hide-js" title="Requires JavaScript">JS</b></h3>
+			<form method="post" enctype="multipart/form-data" action="#upload">
+				<label>Files: <input type="file" multiple name="fm[]" class="pick" data-picked="https://picsum.photos/id/360/300/200.jpg" data-submit></label>
+				<hr>
+				<input type="file" name="f1" class="pick drop fit" id="f1" data-mini>
+				<!--hr>
+				<input type="file" name="f2" class="drop" id="f2"-->
+			</form>
+		</div>
+	</div>
+
+	<!-- right -->
+	
+	<div class="row-right">
+		<div class="pad mar shade">
+			<div class="row center">
+				<a href="#x" class="col-0 pad bg-n let icon-user_50_50_text-n_bg-i icon-user empty">User</a>
+				<div>
+					Media object
+					<br>
+					<time class="text-n" datetime="1970-01-01">January 1970</time>
+					<br>
+					<a href="#x" class="">Link</a>
+				</div>
+			</div>
+		</div>
+		
+		<figure class="c pad mar shade">
+			<div class="text-i icon-pin_80_80_bg-y icon-pin"></div>
+			<figcaption>
+				Figure caption
+			</figcaption>
+		</figure>
+
+		<div class="pad mar shade">
+			<div class="narrow">
+				<div class="row">
+					<div>Progress</div>
+					<div class="col-0 shift">85%</div>
+				</div>
+				<div class="bar">
+					<i class="text-e" style="width:20%"></i>
+					<i class="text-w" style="width:35%"></i>
+					<i class="text-y" style="width:30%"></i>
+				</div>
+				<p class="bar text-e"><i style="width:20%"></i></p>
+				<p class="bar text-w"><i style="width:40%"></i></p>
+				<p class="bar text-y"><i style="width:100%"></i></p>
+				<p class="bar text-i"><i style="width:70%"></i></p>
+				<p class="bar text-n"><i style="width:55%"></i></p>
+				<!--p class="bar"><i style="width:25%"></i></p-->
+			</div>
+		</div>
+		<div class="pad mar shade">
+			Tooltips
+			&bull;
+			<a href="#x" class="shift" data-tip="This is a tooltip">simple</a>
+			&bull;
+			<div class="pop">
+				<a href="#x">popup</a>
+				<div class="btn bg-e shift">This is  a popup tooltip</div>
+			</div>
+			<span class="hide-nojs">
+			&bull; <a href="#x" class="tip shift" title="This tooltip is JavaScript driven">js</a>
+			</span>
+		</div>
+		<div class="-pad mar -shade">
+			<b class="btn">Tag</b>
+			<b class="btn bg-e">Danger</b>
+			<b class="btn bg-w">Warning</b>
+			<b class="btn bg-y">OK</b>
+			<b class="btn bg-i">Info</b>
+			<b class="btn bg-n">Note</b>
+		</div>
+		<div class="pad mar shade rad invert">
+			Inverted text
+			<a href="#x">link</a>
+			<span class="bg-e text-e">colors</span>
+			<span class="text-i tip shift icon-info empty" title="Not supported in  IE and Edge 15-"><i>[!]</i></span>
+		</div>
+		<div class="full center c bg-w mar pad shade">
+			<div class="l">
+			Full height
+			<hr>
+			<h1 class="mar">Heading 1</h1>
+			<h2 class="mar">Heading 2</h2>
+			<h3 class="mar">Heading 3</h3>
+			<h4 class="mar">Heading 4</h4>
+			<h5 class="mar">Heading 5</h5>
+			<h6 class="mar">Heading 6</h6>
+			</div>
+		</div>
+		
+		<!--div class="">
+			<div class="row shift -flip -fit mar c">
+				<div class="bg-n col-1-2">&frac12;</div>
+				<div class="bg-n col-1-2">&frac12;</div>
+					<div class="col-1-3 bg-i">&frac13;</code></div>
+					<div class="col-1-3 bg-i">&frac13;</code></div>
+					<div class="col-1-3 bg-i">&frac13;</code></div>
+				<div class="col-1-3 bg-y">&frac13;</code></div>
+				<div class="col-2-3 bg-y">&frac23;</code></div>
+					<div class="col-1-4 bg-w">&frac14;</code></div>
+					<div class="col-1-4 bg-w">&frac14;</code></div>
+					<div class="col-1-4 bg-w">&frac14;</code></div>
+					<div class="col-1-4 bg-w">&frac14;</code></div>
+				<div class="col-1-4 bg-e">&frac14;</code></div>
+				<div class="col-3-4 bg-e">&frac34;</code></div>
+				<div class="col-1 bg-n">full</code></div>
+				<div class="col-0 bg-i">auto</code></div>
+			</div>
+		</div-->
+		
+		<div class="">
+			<div class="grid-3 grid-2-mobile grid-1-phone let c small">
+				<div class="bg-n">#1</div>
+				<div class="bg-i">#2</div>
+				<div class="bg-y">#3</div>
+				<div class="bg-w">#4</div>
+				<div class="bg-e">#5</div>
+				<div class="bg-n">#6</div>
+				<div class="bg-i">#7</div>
+				<div class="bg-y">#8</div>
+				<div class="bg-w">#9</div>
+				<div class="bg-e">#10</div>
+				<div class="bg">#11</div>
+				<!--
+				<div class="bg-n col-1">full</div>
+				<div class="bg-i col-1-2">&frac12;</div>
+				<div class="bg-y col-1-2">&frac12;</div>
+				<div class="bg-e col-1-3">&frac13;</div>
+				<div class="bg-w col-2-3">&frac23;</div>
+				<div class="bg-i col-1-4">&frac14;</div>
+				<div class="bg-y col-3-4">&frac34;</div>
+				<div class="bg col-0">auto</div>
+				<div class="bg col-0">auto</div>
+				-->
+			</div>
+		</div-->
+	
+	</div><!-- /right -->
+  </div><!-- /row -->
+</div><!-- container -->
+<a class="hide" href="#cancel" accesskey="x"></a>
+
+</body>
+</html>

@@ -14,10 +14,10 @@
 		-->
 		
 	<!-- CDN -->
-		<link href="https://unpkg.com/d1-web@2.4.11/dist/d1.min.css" rel="stylesheet">
-		<script src="https://unpkg.com/d1-web@2.4.11/dist/d1.min.js" defer></script>
+		<link href="https://unpkg.com/d1-web@2.4.12/dist/d1.min.css" rel="stylesheet">
+		<script src="https://unpkg.com/d1-web@2.4.12/dist/d1.min.js" defer></script>
 		<noscript>
-			<link href="https://unpkg.com/d1-web@2.4.11/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://unpkg.com/d1-web@2.4.12/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- local-module (test with no need to compile) ->
 		<link href="../src/index.css" rel="stylesheet">
@@ -45,10 +45,10 @@
 <nav class="bg">
 <div class="hide-desktop pad">
 	<a href="#nav" class="icon-menu act-icon-delete empty">Navigation</a>
-	<a href="#" class="pad"><b>d1</b></a> <span class="text-n">v2.4.11</span>
+	<a href="demo.html" class="pad"><b>d1</b></a> <span class="text-n">v2.4.12</span>
 </div>
 <ul id="nav" class="nav flip hover target-mobile">
-<li><a href="#"><b>d1</b> <span class="text-n">v2.4.11</span></a>
+<li><a href="demo.html"><b>d1</b> <span class="text-n">v2.4.12</span></a>
 <li><a href="#1">Sections</a>
 	<ul>
 	<li><a href="#menu" class="icon-open">Drawer</a>
@@ -63,7 +63,7 @@
 	<li><a href="#code" class="icon-text">Code</a>
 	</ul>
 <li><a href="index.html">Docs</a>
-<li><a href="overview.html">Test</a>
+<li><a href="test.html">Test</a>
 <li class="shift"><a href="#last">GitHub</a>
 	<ul>
 	<li><a href="https://github.com/vvvkor/d1-web" class="icon-info">Project page</a>
@@ -83,7 +83,7 @@
 		<ul class="l tree accordion mem fit mar">
 		<li><a class="icon-folder act-icon-open">Background</a>
 			<ul>
-			<li><label><input class="mem" type="radio" name="bg" data-nodes="main" value="" id="in-bg"> Default</label>
+			<li><label><input class="mem" type="radio" name="bg" data-nodes="main" value="" checked> Default</label>
 			<li><label><input class="mem" type="radio" name="bg" data-nodes="main" value="bg"> Grey</label>
 			<li><label><input class="mem" type="radio" name="bg" data-nodes="main" value="bg-i"> Blue</label>
 			<li><label><input class="mem" type="radio" name="bg" data-nodes="main" value="bg-y"> Green</label>
@@ -92,7 +92,7 @@
 			</ul>
 		<li><a class="icon-folder act-icon-open">Text</a>
 			<ul>
-			<li><label><input class="mem" type="radio" name="text" data-nodes="main" value=""> Default</label>
+			<li><label><input class="mem" type="radio" name="text" data-nodes="main" value="" checked> Default</label>
 			<li><label><input class="mem" type="radio" name="text" data-nodes="main" value="text-n"> Grey</label>
 			<li><label><input class="mem" type="radio" name="text" data-nodes="main" value="text-i"> Blue</label>
 			<li><label><input class="mem" type="radio" name="text" data-nodes="main" value="text-y"> Green</label>
@@ -143,7 +143,7 @@
 <table class="flip">
 <tr>
 	<td><label for="in-text">Name</label>
-	<td><input type="text" id="in-text" name="name" required pattern="[A-Za-z]+">
+	<td><input type="text" id="in-text" name="name" required pattern="[A-Za-z]+" size="15">
 		<small>
 		<a href="#in-text" data-value="John"><span class="btn bg-n">John</span></a>
 		<a href="#in-text" data-value="Paul"><span class="btn bg-n">Paul</span></a>
@@ -159,7 +159,7 @@
 <tr>
 	<td><label for="in-lookup">Country</label>
 	<td><input type="text" id="in-lookup" name="country" data-lookup="https://restcountries.eu/rest/v2/name/{q}##alpha2Code#name#languages.0.name" data-url="#country-{id}">
-	<a href="https://restcountries.eu/rest/v2/alpha/ru#altSpellings" data-target="#x" class="icon-pin empty" data-head="ru">Fetch</a>
+	<a href="https://restcountries.eu/rest/v2/alpha/ru#altSpellings" data-target="#x" class="icon-pin text-e empty" data-head="ru">Fetch</a>
 <tr>
 	<td><label for="in-edit">Message</label>
 	<td><textarea id="in-edit" name="message" class="edit adjust"><b>bold</b> <i>italic</i> <code>code</code> <a href="#">link</a></textarea>
@@ -243,6 +243,11 @@
 
 
 <!-- end -->
+
+<hr>
+<a href="#" class="icon-up">Top</a>
+<a href="demo.html" class="hide" accesskey="1"></a>
+<a href="#cancel" class="hide" accesskey="x"></a>
 
 </div>
 </main>

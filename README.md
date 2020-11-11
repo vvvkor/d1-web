@@ -63,7 +63,8 @@ Add the [distributed](https://github.com/vvvkor/d1-web/archive/master.zip) CSS a
 ## Docs
 
 - [Documentation](https://vvvkor.github.io/d1-web/)
-- [Overview](https://vvvkor.github.io/d1-web/overview.html)
+- [Demo](https://vvvkor.github.io/d1-web/demo.html)
+- [Test page](https://vvvkor.github.io/d1-web/test.html)
 
 ## Browser Support
 
