@@ -16,7 +16,7 @@ export default class extends Plugin {
 
   /*
   onClick(e) {
-    let n = e.target; // e.recv
+    const n = e.target; // e.recv
   }
   */
 

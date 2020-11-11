@@ -1,4 +1,4 @@
-/*! d1-web v2.4.10 */
+/*! d1-web v2.4.11 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -1412,7 +1412,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
       aConfirm: '_confirm',
       cBtn: 'btn pad',
       qAlert: 'a.alert',
-      qDialog: 'a.dialog, input.dialog'
+      qDialog: 'a.dialog, input.dialog, [type="submit"].dialog'
     };
     return _this;
   }
@@ -1729,7 +1729,8 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
           var num = opt.num;
           if ('num' in n.dataset) num = !!n.dataset.num;
-          p.dataset.caption = (num ? i + 1 + '/' + z + (a[i].title ? ' - ' : '') : '') + (a[i].title || '');
+          var t = a[i].title || a[i].dataset.tip || '';
+          p.dataset.caption = num ? i + 1 + '/' + z + (t ? ' - ' + t : '') : '';
           a[i].href = '#' + p.id;
         }
       }
@@ -3094,8 +3095,9 @@ var _default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "checkBoxes",
     value: function checkBoxes(n) {
-      this.app.ee(n.form, 'input[type="checkbox"][class~="' + (n.dataset.group || '') + '"]', function (m) {
-        return m.checked = n.checked;
+      //this.app.ee(n.form, 'input[type="checkbox"][class~="' + (n.dataset.group || '') + '"]', m => m.checked = n.checked);
+      this.app.ee(n.form, 'input[type="checkbox"]', function (m) {
+        return m.classList.contains(n.dataset.group) ? m.checked = n.checked : null;
       });
     }
   }, {
@@ -3311,8 +3313,8 @@ var _default = /*#__PURE__*/function (_Plugin) {
     value: function init() {
       var _this2 = this;
 
-      //let q = this.opt.qValidate;
-      //let dh = '[' + this.opt.aHint + ']';
+      //const q = this.opt.qValidate;
+      //const dh = '[' + this.opt.aHint + ']';
       //this.app.e(q + ' input' + dh + ', ' + q + ' textarea' + dh + ', '+ q +' select' + dh, n => this.initInput(n));
       var inputs = ['input', 'textarea', 'select'].map(function (s) {
         return _this2.opt.qValidate + ' ' + s + '[' + _this2.opt.aHint + ']';
@@ -3626,7 +3628,7 @@ var icons_default = /*#__PURE__*/function (_Plugin) {
       if (icon) {
         if (n.classList.contains(this.opt.cEmpty)) {
           this.app.clr(n);
-          if (!n.title) n.title = t;
+          if (!n.hasAttribute('title')) n.title = t;
           n.classList.remove(this.opt.cEmpty);
         }
 

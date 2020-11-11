@@ -65,7 +65,8 @@ export default class extends Plugin {
       p.vImg = p.vLink;//keep image url but do not load yet
       let num = opt.num;
       if('num' in n.dataset) num = !!n.dataset.num;
-      p.dataset.caption = (num ? (i+1)+'/'+z+(a[i].title ? ' - ' : '') : '') + (a[i].title || '');
+      const t = (a[i].title || a[i].dataset.tip || '');
+      p.dataset.caption = (num ? (i + 1) + '/' + z + (t ? ' - ' + t : '') : '');
       a[i].href = '#' + p.id;
     }
     app.x(g);

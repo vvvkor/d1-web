@@ -1,4 +1,4 @@
-/*! d1-web v2.4.10 */
+/*! d1-web v2.4.11 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -1412,7 +1412,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
       aConfirm: '_confirm',
       cBtn: 'btn pad',
       qAlert: 'a.alert',
-      qDialog: 'a.dialog, input.dialog'
+      qDialog: 'a.dialog, input.dialog, [type="submit"].dialog'
     };
     return _this;
   }
@@ -1729,7 +1729,8 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
           var num = opt.num;
           if ('num' in n.dataset) num = !!n.dataset.num;
-          p.dataset.caption = (num ? i + 1 + '/' + z + (a[i].title ? ' - ' : '') : '') + (a[i].title || '');
+          var t = a[i].title || a[i].dataset.tip || '';
+          p.dataset.caption = num ? i + 1 + '/' + z + (t ? ' - ' + t : '') : '';
           a[i].href = '#' + p.id;
         }
       }
@@ -3094,8 +3095,9 @@ var _default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "checkBoxes",
     value: function checkBoxes(n) {
-      this.app.ee(n.form, 'input[type="checkbox"][class~="' + (n.dataset.group || '') + '"]', function (m) {
-        return m.checked = n.checked;
+      //this.app.ee(n.form, 'input[type="checkbox"][class~="' + (n.dataset.group || '') + '"]', m => m.checked = n.checked);
+      this.app.ee(n.form, 'input[type="checkbox"]', function (m) {
+        return m.classList.contains(n.dataset.group) ? m.checked = n.checked : null;
       });
     }
   }, {
@@ -3311,8 +3313,8 @@ var _default = /*#__PURE__*/function (_Plugin) {
     value: function init() {
       var _this2 = this;
 
-      //let q = this.opt.qValidate;
-      //let dh = '[' + this.opt.aHint + ']';
+      //const q = this.opt.qValidate;
+      //const dh = '[' + this.opt.aHint + ']';
       //this.app.e(q + ' input' + dh + ', ' + q + ' textarea' + dh + ', '+ q +' select' + dh, n => this.initInput(n));
       var inputs = ['input', 'textarea', 'select'].map(function (s) {
         return _this2.opt.qValidate + ' ' + s + '[' + _this2.opt.aHint + ']';
@@ -3626,7 +3628,7 @@ var icons_default = /*#__PURE__*/function (_Plugin) {
       if (icon) {
         if (n.classList.contains(this.opt.cEmpty)) {
           this.app.clr(n);
-          if (!n.title) n.title = t;
+          if (!n.hasAttribute('title')) n.title = t;
           n.classList.remove(this.opt.cEmpty);
         }
 
@@ -4358,6 +4360,7 @@ var tools_default = /*#__PURE__*/function (_Plugin) {
     key: "toggleClass",
     value: function toggleClass(n, e) {
       var _n$dataset$nodes,
+          _n$dataset$set,
           _this5 = this;
 
       if (n.type == 'radio' && !n.checked) return;
@@ -4365,7 +4368,7 @@ var tools_default = /*#__PURE__*/function (_Plugin) {
       var sel = n.tagName == 'SELECT' || n.type == 'radio';
       var p = n.dataset.parent ? n.closest(n.dataset.parent) : null;
       var q = (_n$dataset$nodes = n.dataset.nodes) !== null && _n$dataset$nodes !== void 0 ? _n$dataset$nodes : n.hash;
-      var c = sel ? n.value : n.dataset.set || n.value;
+      var c = sel ? n.value : (_n$dataset$set = n.dataset.set) !== null && _n$dataset$set !== void 0 ? _n$dataset$set : n.value;
       var on = sel ? true : box ? n.checked : n.classList.contains(this.app.opt.cAct);
 
       if (e && !box && !sel) {
@@ -5943,8 +5946,7 @@ var scroll_default = /*#__PURE__*/function (_Plugin) {
     value: function init() {
       var _this2 = this;
 
-      var t;
-
+      //let t;
       if (this.app.q(this.opt.qEnable)) {
         this.app.listen('hashchange', function (e) {
           return _this2.onHash(e);
@@ -5991,7 +5993,7 @@ var scroll_default = /*#__PURE__*/function (_Plugin) {
     {
       var _this3 = this;
 
-      //let mode = this.hashed ? 'hash' : (h ? 'fix' : 'scroll');
+      //const mode = this.hashed ? 'hash' : (h ? 'fix' : 'scroll');
       var dy = window.scrollY === null ? null : window.scrollY - this.y;
       this.app.dbg(['scroll', window.scrollY, dy]); // ,mode,h,this.hashed
 
@@ -6020,8 +6022,8 @@ var scroll_default = /*#__PURE__*/function (_Plugin) {
     fixScroll() {
       this.app.dbg(['scroll-fix', location.hash]);
       if (this.app.q(location.hash)) {
-        //let t = this.app.q(this.opt.qTopbar + ':not(.'+ this.app.opt.cOff +')');
-        let t = this.app.q(this.opt.qTopbarFixed);
+        //const t = this.app.q(this.opt.qTopbar + ':not(.'+ this.app.opt.cOff +')');
+        const t = this.app.q(this.opt.qTopbarFixed);
         window.scrollBy(0, (t ? -t.offsetHeight : 0) - this.opt.gap);
       }
       //this.hashed = false;

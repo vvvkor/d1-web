@@ -1,4 +1,4 @@
-/*! d1-web v2.4.10 */
+/*! d1-web v2.4.11 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -1278,7 +1278,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
       aConfirm: '_confirm',
       cBtn: 'btn pad',
       qAlert: 'a.alert',
-      qDialog: 'a.dialog, input.dialog'
+      qDialog: 'a.dialog, input.dialog, [type="submit"].dialog'
     };
     return _this;
   }
@@ -1595,7 +1595,8 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
           var num = opt.num;
           if ('num' in n.dataset) num = !!n.dataset.num;
-          p.dataset.caption = (num ? i + 1 + '/' + z + (a[i].title ? ' - ' : '') : '') + (a[i].title || '');
+          var t = a[i].title || a[i].dataset.tip || '';
+          p.dataset.caption = num ? i + 1 + '/' + z + (t ? ' - ' + t : '') : '';
           a[i].href = '#' + p.id;
         }
       }

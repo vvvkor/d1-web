@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- todo: ?topbar, fill drawer&topbar&nav, form, tabs, filter -->
+<!-- todo: ?topbar, fill drawer&topbar&nav, tabs, filter -->
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -28,8 +28,8 @@
 	<!-- -->
 
   </head>
-  <body class="swipe" data-swipe-right="#menu" data-swipe-left="#cancel">
-
+  <body class="swipe trans" data-swipe-right="#menu" data-swipe-left="#cancel">
+<main>
 <!-- topbar, responsive class, tag -->
 
 <!--div class="topbar toggle back row">
@@ -45,46 +45,72 @@
 <nav class="bg">
 <div class="hide-desktop pad">
 	<a href="#nav" class="icon-menu act-icon-delete empty">Navigation</a>
-	<a href="#" class="pad"><b>d1-web</b></a>
+	<a href="#" class="pad"><b>d1</b></a> <span class="text-n">v0.0.0</span>
 </div>
 <ul id="nav" class="nav flip hover target-mobile">
-<li><a href="#"><b>d1-web</b></a>
-<li><a href="#1">One</a>
+<li><a href="#"><b>d1</b> <span class="text-n">v0.0.0</span></a>
+<li><a href="#1">Sections</a>
 	<ul>
-	<li><a href="#11">Uno</a>
+	<li><a href="#menu" class="icon-open">Drawer</a>
+	<li><a href="#gallery" class="icon-image">Gallery</a>
+	<li><a href="#table" class="icon-columns">Table</a>
+	<li><a href="#form" class="icon-send">Form</a>
 		<ul>
 		<li><a href="#111">1</a>
 		<li><a href="#112">2</a>
 		</ul>
-	<li><a href="#12">Dos</a>
-	<li><a href="#13">Tres</a>
+	<li><a href="#grid" class="icon-grid">Grid</a>
+	<li><a href="#code" class="icon-text">Code</a>
 	</ul>
-<li><a href="#2">Two</a>
-<li class="shift"><a href="#last">Last</a>
+<li><a href="index.html">Docs</a>
+<li><a href="overview.html">Test</a>
+<li class="shift"><a href="#last">GitHub</a>
 	<ul>
-	<li><a href="#x1">Sub</a>
+	<li><a href="https://github.com/vvvkor/d1-web" class="icon-info">Project page</a>
+	<li><a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="icon-download">Download</a>
 	</ul>
 </ul>
 </nav>
 
-<div class="wrap center pad">
+<div class="read center pad">
 
 <!-- drawer, swipe -->
 
 <div id="menu" class="drawer swipe drag pad" data-swipe-left="#cancel">
 	<div class="r">
 		<a href="#cancel" class="icon-close empty">Close</a>
+		<form>
+		<ul class="l tree accordion mem fit mar">
+		<li><a class="icon-folder act-icon-open">Background</a>
+			<ul>
+			<li><label><input class="mem" type="radio" name="bg" data-nodes="main" value="" id="in-bg"> Default</label>
+			<li><label><input class="mem" type="radio" name="bg" data-nodes="main" value="bg"> Grey</label>
+			<li><label><input class="mem" type="radio" name="bg" data-nodes="main" value="bg-i"> Blue</label>
+			<li><label><input class="mem" type="radio" name="bg" data-nodes="main" value="bg-y"> Green</label>
+			<li><label><input class="mem" type="radio" name="bg" data-nodes="main" value="bg-w"> Yellow</label>
+			<li><label><input class="mem" type="radio" name="bg" data-nodes="main" value="bg-e"> Red</label>
+			</ul>
+		<li><a class="icon-folder act-icon-open">Text</a>
+			<ul>
+			<li><label><input class="mem" type="radio" name="text" data-nodes="main" value=""> Default</label>
+			<li><label><input class="mem" type="radio" name="text" data-nodes="main" value="text-n"> Grey</label>
+			<li><label><input class="mem" type="radio" name="text" data-nodes="main" value="text-i"> Blue</label>
+			<li><label><input class="mem" type="radio" name="text" data-nodes="main" value="text-y"> Green</label>
+			<li><label><input class="mem" type="radio" name="text" data-nodes="main" value="text-w"> Yellow</label>
+			<li><label><input class="mem" type="radio" name="text" data-nodes="main" value="text-e"> Red</label>
+			</ul>
+		<li><a href="#" class="icon-text mem" data-nodes="main" data-set="small">Small</a>
+		</ul>
+		</form>
 	</div>
 </div>
 
 <!-- ? tabs, tip, code, filter -->
-<!-- form, pop/tree/set-val/hint, invert, lookup/fetch/gen-modal, edit/typo, fieldset/toggle, color/prompt, pickfile, submit/confirm -->
-
 
 <!-- gallery -->
 
-<h2>Gallery</h2>
-<div class="grid-4 grid-2-mobile grid-1-phone gallery shift bg">
+<h2 id="gallery">Gallery</h2>
+<div class="grid-4 grid-2-mobile grid-1-phone gallery let">
 	<a class="pic tip c" href="https://picsum.photos/id/715/800/500.jpg" title="Red"><img src="https://picsum.photos/id/715/400/200.jpg" alt=""></a>
 	<a class="pic tip c" href="https://picsum.photos/id/1018/800/500.jpg" title="Green"><img src="https://picsum.photos/id/1018/400/200.jpg" alt=""></a>
 	<a class="pic tip c" href="https://picsum.photos/id/575/800/500.jpg" title="Blue"><img src="https://picsum.photos/id/575/400/200.jpg" alt=""></a>
@@ -93,7 +119,7 @@
 
 <!-- table, check all, replace icons, bars, tablex -->
 
-<h2>Table</h2>
+<h2 id="table">Table</h2>
 <form>
 <div class="roll">
 <table class="hover let shift sort filter totals flip replace">
@@ -111,45 +137,103 @@
 </div>
 </form>
 
+<!-- form, set-val/hint, invert, lookup/fetch/gen-modal, edit/typo, fieldset/toggle, color/prompt, pickfile, submit/confirm -->
+<h2 id="form">Form</h2>
+<form method="post" action="?#form" enctype="multipart/form-data" class="js-unhint">
+<table class="flip">
+<tr>
+	<td><label for="in-text">Name</label>
+	<td><input type="text" id="in-text" name="name" required pattern="[A-Za-z]+">
+		<small>
+		<a href="#in-text" data-value="John"><span class="btn bg-n">John</span></a>
+		<a href="#in-text" data-value="Paul"><span class="btn bg-n">Paul</span></a>
+		<a href="#in-text" data-value="" class="icon-delete empty">&times;</a>
+		</small>
+		<div class="small hint text-e">Name is required. Only latin letters are allowed.</div>
+		<div class="small hint text-y">Name is OK</div>
+<tr>
+	<td>
+	<td>
+		<input type="checkbox" id="in-box" name="invert" data-set="invert" data-nodes="body">
+		<label for="in-box">Invert</label>
+<tr>
+	<td><label for="in-lookup">Country</label>
+	<td><input type="text" id="in-lookup" name="country" data-lookup="https://restcountries.eu/rest/v2/name/{q}##alpha2Code#name#languages.0.name" data-url="#country-{id}">
+	<a href="https://restcountries.eu/rest/v2/alpha/ru#altSpellings" data-target="#x" class="icon-pin empty" data-head="ru">Fetch</a>
+<tr>
+	<td><label for="in-edit">Message</label>
+	<td><textarea id="in-edit" name="message" class="edit adjust"><b>bold</b> <i>italic</i> <code>code</code> <a href="#">link</a></textarea>
+	
+<tr><td colspan="2">
+
+<a href="#adv" class="icon-down act-icon-no pad hover">Advanced</a>
+<hr class="fit">
+<div id="adv" class="mem target mar">
+		<table class="flip shift">
+		<tr>
+			<td><label for="in-color">Color</label>
+			<td><input type="color" id="in-color" name="color" value="#0066cc">
+				<a href="?color=none&send=1" class="icon-link empty dialog" data-src="#in-color" data-prompt="color" title="Confirm color">Prompt</a>
+		<tr>
+			<td><label for="in-file">File</label>
+			<td><input type="file" id="in-file" name="up[]" class="pick drop" multiple>
+		</table>
+</div>
+
+<tr>
+	<td>
+	<td>
+		<button type="submit" class="icon-send">Submit</button>
+		<button type="submit" class="icon-chat bg-y dialog" title="Submit form?" data-pic="help text-i" data-head="Confirm">Confirm</button>
+</table>
+</form>
+
 <!-- grid, items, set class -->
 
-<h2>Grid</h2>
+<h2 id="grid">Grid</h2>
 	<div class="row flip mar item">
 		<div class="col-0 pad bord">
-			<a href="#copy" class="icon-add empty text-y">+</a>
-			<a href="#del" class="icon-delete empty text-e">&mult;</a>
+			<div class="row">
+				<a href="#copy" class="icon-add empty text-y">Add row</a>
+				<a href="#del" class="col-0 icon-delete empty text-e">Remove row</a>
+			</div>
 		</div>
 		<div class="bg-n pad item">
-			<div class="small">
-				<a href="#copy" class="icon-add empty text-y">+</a>
-				<div class="pop">
-					<a href="#more" class="icon-more empty text-n">&equiv;</a>
-					<div id="more" class="pad">
-						<p>
-						<select data-parent=".item" data-nodes="" title="Width">
-							<option value="col-0">Auto width</option>
-							<option value="col-1" selected>Default width</option>
-							<option value="col-2">Double width</option>
-							<option value="col-3">Triple width</option>
-						</select>
-						<p>
-						<select data-parent=".item" data-nodes="" title="Color">
-							<option value="bg-n" selected>grey</option>
-							<option value="bg-i">blue</option>
-							<option value="bg-y">green</option>
-							<option value="bg-w">yellow</option>
-							<option value="bg-e">red</option>
-						</select>
+			<div class="small row">
+				<div>
+					<a href="#copy" class="icon-add empty text-y">Add cell</a>
+					&nbsp;
+					<div class="pop">
+						<a href="#more" class="icon-more empty text-n">Cell options</a>
+						<div id="more" class="pad">
+							<p>
+							<select data-parent=".item" data-nodes="" title="Width">
+								<option value="col-0">Auto width</option>
+								<option value="col-1" selected>Default width</option>
+								<option value="col-2">Double width</option>
+								<option value="col-3">Triple width</option>
+							</select>
+							<p>
+							<select data-parent=".item" data-nodes="" title="Color">
+								<option value="bg-n" selected>grey</option>
+								<option value="bg-i">blue</option>
+								<option value="bg-y">green</option>
+								<option value="bg-w">yellow</option>
+								<option value="bg-e">red</option>
+							</select>
+						</div>
 					</div>
 				</div>
-				<a href="#del" class="icon-delete empty text-e">&mult;</a>
+				<div class="col-0">
+					<a href="#del" class="icon-delete empty text-e">Remove cell</a>
+				</div>
 			</div>
 		</div>
 	</div>
 
 <!-- code -->
 
-<h2>Code</h2>
+<h2 id="code">Code</h2>
 <pre><code class="language-html">&lt;!-- d1-web --&gt;
 &lt;link href="https://unpkg.com/d1-web" rel="stylesheet"&gt;
 &lt;script src="https://unpkg.com/d1-web/dist/d1.min.js"&gt;&lt;/script&gt;
@@ -161,5 +245,6 @@
 <!-- end -->
 
 </div>
+</main>
   </body>
 </html>

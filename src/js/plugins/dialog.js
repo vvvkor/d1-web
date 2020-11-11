@@ -20,7 +20,7 @@ export default class extends Plugin {
       aConfirm: '_confirm',
       cBtn: 'btn pad',
       qAlert: 'a.alert',
-      qDialog: 'a.dialog, input.dialog'
+      qDialog: 'a.dialog, input.dialog, [type="submit"].dialog'
     };
   }
   
@@ -50,7 +50,7 @@ export default class extends Plugin {
     let inp = {value: true};
     if (setup.def || setup.def === '') inp = app.ins('input', '', {value: setup.def}, b);
     let bb = app.ins('p', '', 'r', b);
-    let b1 = this.opt.cBtn + ' ' + (setup.btn || (t.substr(0,1) == ' ' ? 'bg-e' : ''));
+    let b1 = this.opt.cBtn + ' ' + (setup.btn || (t.substr(0, 1) == ' ' ? 'bg-e' : ''));
     let b2 = this.opt.cBtn + ' bg-n';
     let yes = app.ins('a', setup.ok || app.opt.sOk, {href: app.opt.hClose, className: (setup.rev ? b2 : b1)}, bb);
     if (f) {

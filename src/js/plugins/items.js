@@ -17,12 +17,12 @@ export default class extends Plugin {
   }
 
   onClick(e) {
-    let n = e.recv;
+    const n = e.recv;
     if (n && n.hash) {
-      let q = n.dataset.item;
-      let d = q ? this.app.q(q) : e.target.closest(this.opt.qItem);
+      const q = n.dataset.item;
+      const d = q ? this.app.q(q) : e.target.closest(this.opt.qItem);
       if (d) {
-        let cont = d.parentNode;
+        const cont = d.parentNode;
         if (this.process(d, n.hash.substr(1), !!q)) {
           this.app.fire('update', {n: cont});
           e.preventDefault();
@@ -41,11 +41,11 @@ export default class extends Plugin {
   
   process(n, x, before) {
     if (['copy', 'del', 'delete', 'delall', 'clear', 'hide'].indexOf(x) == -1) return false;
-    let e = {n, a: x};
+    const e = {n, a: x};
     this.app.fire('beforeitem', {n, a: x});
     if (x == 'copy') {
       if (before === undefined) before = n.classList.contains(this.app.opt.cHide);
-      let m = n.parentNode.insertBefore(n.cloneNode(true), before ? n : n.nextSibling);
+      const m = n.parentNode.insertBefore(n.cloneNode(true), before ? n : n.nextSibling);
       m.classList.remove(this.app.opt.cHide);
       m.removeAttribute('id');
       this.app.fixIds(m);

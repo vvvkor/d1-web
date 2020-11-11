@@ -29,7 +29,7 @@ export default class extends Plugin {
 
   fetch(url, f) {
     if(url && this.app.typeOf(url) === 'array') url = Url.build(url[0], url[1]);
-    let request = new XMLHttpRequest();
+    const request = new XMLHttpRequest();
     request.addEventListener('load', e => {
       this.app.fire('response', {request});
       if (f) f(request);
@@ -41,7 +41,7 @@ export default class extends Plugin {
 
   receive(u, n, req, e) {
     // this.app.parse(req.responseText)
-    let d = this.app.q(n.dataset.target);
+    const d = this.app.q(n.dataset.target);
     if (req.status == '200') {
       const h = u.split('#');
       let t = req.responseText;
@@ -49,7 +49,7 @@ export default class extends Plugin {
       // console.log(h,t)
       if (d) {
         d.innerHTML = t;
-        let dlg = d.closest('.dlg[id]');
+        const dlg = d.closest('.dlg[id]');
         if (dlg) this.app.toggle(dlg, true)
       }
       else {

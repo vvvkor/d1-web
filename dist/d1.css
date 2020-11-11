@@ -1,4 +1,4 @@
-/*! d1-web v2.4.10 */
+/*! d1-web v2.4.11 */
 
 :root, .invert .invert {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -412,7 +412,7 @@ form>p, form>.row {
 [data-tip]:after {
     content: attr(data-tip);
     position: absolute;
-    bottom: 102%;
+    bottom: 101%;
     left: 0;
     background-color: var(--text-lite);
     color: var(--bg);

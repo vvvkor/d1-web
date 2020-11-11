@@ -47,7 +47,7 @@ export default class extends Plugin {
     if (icon) {
       if (n.classList.contains(this.opt.cEmpty)) {
         this.app.clr(n);
-        if (!n.title) n.title = t;
+        if (!n.hasAttribute('title')) n.title = t;
         n.classList.remove(this.opt.cEmpty);
       }
       if (n.firstChild && !n.firstChild.tagName) this.app.ins('span', n.firstChild, {}, n, false);

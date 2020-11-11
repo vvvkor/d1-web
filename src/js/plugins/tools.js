@@ -92,7 +92,7 @@ export default class extends Plugin {
     let sel = (n.tagName == 'SELECT' || n.type == 'radio');
     let p = n.dataset.parent ? n.closest(n.dataset.parent) : null;
     let q = n.dataset.nodes ?? n.hash;
-    let c = sel ? n.value : (n.dataset.set || n.value);
+    let c = sel ? n.value : (n.dataset.set ?? n.value);
     let on = sel ? true : (box ? n.checked : n.classList.contains(this.app.opt.cAct));
     if (e && !box && !sel) {
       on = !on;

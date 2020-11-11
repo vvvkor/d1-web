@@ -16,8 +16,8 @@ export default class extends Plugin {
   }
   
   init() {
-    //let q = this.opt.qValidate;
-    //let dh = '[' + this.opt.aHint + ']';
+    //const q = this.opt.qValidate;
+    //const dh = '[' + this.opt.aHint + ']';
     //this.app.e(q + ' input' + dh + ', ' + q + ' textarea' + dh + ', '+ q +' select' + dh, n => this.initInput(n));
     
     let inputs = ['input', 'textarea', 'select'].map(s => this.opt.qValidate + ' ' + s + '[' + this.opt.aHint + ']').join(', ');
@@ -63,11 +63,11 @@ export default class extends Plugin {
   
   validateForm(n, e) {
     if (e) n.classList.remove(this.opt.cUnhint);
-    let ok = n.checkValidity();// !== false
+    const ok = n.checkValidity();// !== false
     if (!ok && e) {
       e.preventDefault();
       e.stopPropagation();
-      let f = this.app.q('[name]:invalid:not(.hide):not(.off), [name]:invalid~.subinput', n);
+      const f = this.app.q('[name]:invalid:not(.hide):not(.off), [name]:invalid~.subinput', n);
       if (f) {
         this.app.dbg(['focus validate', f]);
         f.focus();

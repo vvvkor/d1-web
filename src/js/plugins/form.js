@@ -22,11 +22,12 @@ export default class extends Plugin {
   }
   
   checkBoxes(n) {
-    this.app.ee(n.form, 'input[type="checkbox"][class~="' + (n.dataset.group || '') + '"]', m => m.checked = n.checked);
+    //this.app.ee(n.form, 'input[type="checkbox"][class~="' + (n.dataset.group || '') + '"]', m => m.checked = n.checked);
+    this.app.ee(n.form, 'input[type="checkbox"]', m => m.classList.contains(n.dataset.group) ? m.checked = n.checked : null);
   }
   
   setValue(n) {
-    let d = this.app.q(n.hash);
+    const d = this.app.q(n.hash);
     if (d) {
       d.value = n.dataset.value || '';
       this.app.pf('toggle', 'unpop', d, true);
@@ -37,7 +38,7 @@ export default class extends Plugin {
   prepareColor(n) {
     if (n.dataset.ready) return;
     n.dataset.ready = 1;
-    let m = this.app.ins('input', '', {type: 'text', value: n.value, size: 7, className: 'color'}, n, -1);
+    const m = this.app.ins('input', '', {type: 'text', value: n.value, size: 7, className: 'color'}, n, -1);
     this.app.ins('', ' ', {}, m, 1);
     this.app.b([n, m], 'input', e => (e.target == n ? m : n).value = e.target.value );
   }

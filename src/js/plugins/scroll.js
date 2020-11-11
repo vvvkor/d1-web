@@ -24,7 +24,7 @@ export default class extends Plugin {
   }
   
   init() {
-    let t;
+    //let t;
     if (this.app.q(this.opt.qEnable)) {
       this.app.listen('hashchange', e => this.onHash(e));
       const ons = Func.throttle(() => this.onScroll(), 500);
@@ -54,8 +54,8 @@ export default class extends Plugin {
   }
   
   onScroll(/*h*/) {
-    //let mode = this.hashed ? 'hash' : (h ? 'fix' : 'scroll');
-    let dy = window.scrollY ===null ? null : window.scrollY - this.y;
+    //const mode = this.hashed ? 'hash' : (h ? 'fix' : 'scroll');
+    const dy = window.scrollY ===null ? null : window.scrollY - this.y;
     this.app.dbg(['scroll', window.scrollY, dy]); // ,mode,h,this.hashed
     if (this.y !== null /* && !h*/) {
       if (this.opt.qTopbar) this.app.e(this.opt.qTopbar, n => this.decorate(n, window.scrollY, dy));
@@ -75,8 +75,8 @@ export default class extends Plugin {
   fixScroll() {
     this.app.dbg(['scroll-fix', location.hash]);
     if (this.app.q(location.hash)) {
-      //let t = this.app.q(this.opt.qTopbar + ':not(.'+ this.app.opt.cOff +')');
-      let t = this.app.q(this.opt.qTopbarFixed);
+      //const t = this.app.q(this.opt.qTopbar + ':not(.'+ this.app.opt.cOff +')');
+      const t = this.app.q(this.opt.qTopbarFixed);
       window.scrollBy(0, (t ? -t.offsetHeight : 0) - this.opt.gap);
     }
     //this.hashed = false;
