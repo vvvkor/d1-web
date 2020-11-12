@@ -69,16 +69,16 @@
 </script>
 
 	<!-- CDN --R E M O V E->
-		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.5.0/dist/d1.min.css" rel="stylesheet">
-		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.5.0/dist/d1.min.js" defer></script>
+		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.5.1/dist/d1.min.css" rel="stylesheet">
+		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.5.1/dist/d1.min.js" defer></script>
 		<noscript>
-			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.5.0/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.5.1/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- CDN -->
-		<link href="https://unpkg.com/d1-web@2.5.0/dist/d1.min.css" rel="stylesheet">
-		<script src="https://unpkg.com/d1-web@2.5.0/dist/d1.min.js" defer></script>
+		<link href="https://unpkg.com/d1-web@2.5.1/dist/d1.min.css" rel="stylesheet">
+		<script src="https://unpkg.com/d1-web@2.5.1/dist/d1.min.js" defer></script>
 		<noscript>
-			<link href="https://unpkg.com/d1-web@2.5.0/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://unpkg.com/d1-web@2.5.1/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- local-npm-src REMOVE -- >
 		<link href="../src/index.css" rel="stylesheet">
@@ -111,14 +111,15 @@
 data-d1='{"hOk":"#yes","debug":false,"disable":[
 "-scroll","-theme","-valid","-icons"],"plug":{"toggle":{"keepHash":true},"gallery":{"idPrefix":"image-"},"theme":{"fonts":["sans-serif","serif","monospace","PT Sans","Roboto Slab"]},"-scroll":{"qHideOnScroll":".drawer[id]"},"-icons":{"pSvg":"icon-"}}}'>
 <!--a href="#no-js" data-href="#js">if-js</a-->
+<div class="stick toggle hide"></div><!-- to enable scroll.js -->
 <div
-  class="topbar toggle shade  row let center fit hide-print"
+  class="-topbar stick toggle shade  row let center fit hide-print"
   id="topline"
 >
 	<a href="#menu" class="pad -let hide-desktop icon-menu empty" title="Menu"><span>Menu</span></a>
 	<a href="#top" class="pad -let"><b>d1</b></a>
 	<code class="-pad -nobr hide-mobile">npm i d1-web</code>
-	<a class="shift pad text-n">v2.5.0</a>
+	<a class="shift pad text-n">v2.5.1</a>
 	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1-web" title="GitHub" class="pad -let">GitHub</a>
 	<a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="pad -let icon-download empty" ><span>Download</span></a>
 </div>
@@ -135,7 +136,8 @@ data-d1='{"hOk":"#yes","debug":false,"disable":[
 		<a href="#cancel" class="close pad text-n">&#x2715;</a>
 		<b>d1 front-end framework</b>
 	</div>
-	<ul class="fit pad --toggle tree mem -accordion">
+	<div class="pad hide-mobile"></div>
+	<ul class="fit mar pad --toggle tree mem -accordion">
 		<li><a href="#get-started">Get started</a>
 			<!--ul id="n-get-started" class="toggle">
 			<li><a href="#install-npm">With NPM</a>
@@ -312,19 +314,19 @@ Inclusion of <code>d1.js</code> and <code>d1-icons.css</code> is optional.
 </ul>
 <div>
 	<div id="cdn-jsdelivr">
-		<pre><code class="language-html">&lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.5.0/dist/d1.min.css" rel="stylesheet"&gt;
-&lt;script src="https://cdn.jsdelivr.net/npm/d1-web@2.5.0/dist/d1.min.js"&gt;&lt;/script&gt;
+		<pre><code class="language-html">&lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.5.1/dist/d1.min.css" rel="stylesheet"&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/d1-web@2.5.1/dist/d1.min.js"&gt;&lt;/script&gt;
 &lt;noscript&gt;
-  &lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.5.0/dist/d1-icons.min.css" rel="stylesheet"&gt;
+  &lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.5.1/dist/d1-icons.min.css" rel="stylesheet"&gt;
 &lt;/noscript&gt;
 
 		</code></pre>
 	</div>
 	<div id="cdn-unpkg">
-		<pre><code class="language-html">&lt;link href="https://unpkg.com/d1-web@2.5.0/dist/d1.min.css" rel="stylesheet"&gt;
-&lt;script src="https://unpkg.com/d1-web@2.5.0/dist/d1.min.js"&gt;&lt;/script&gt;
+		<pre><code class="language-html">&lt;link href="https://unpkg.com/d1-web@2.5.1/dist/d1.min.css" rel="stylesheet"&gt;
+&lt;script src="https://unpkg.com/d1-web@2.5.1/dist/d1.min.js"&gt;&lt;/script&gt;
 &lt;noscript&gt;
-  &lt;link href="https://unpkg.com/d1-web@2.5.0/dist/d1-icons.min.css" rel="stylesheet"&gt;
+  &lt;link href="https://unpkg.com/d1-web@2.5.1/dist/d1-icons.min.css" rel="stylesheet"&gt;
 &lt;/noscript&gt		</code></pre>
 	</div>
 	<div id="cdn-unpkg-short">
@@ -734,7 +736,7 @@ Add <code>r#, l#, c#</code> (where # is any number) classes to align cells of co
 		<tr><td>6	<th>Modal		<td><code>.dlg</code>	<td>-					<td>-	<td>+
 		<tr><td>7	<th>Drawer		<td><code>.drawer</code><td>-					<td>-	<td>+
 		<tr><td>8	<th>Gallery		<td><code>.gal</code>	<td>-					<td>-	<td>+
-		<tr><td>9	<th>Topbar		<td><code>.topbar</code><td>-					<td>-	<td>-
+		<tr><td>9	<th>Topbar		<td><code>.stick.toggle</code><td>-					<td>-	<td>-
     <!--
 		<tr><td>10	<th>10		<td><code>- </code><td>-					<td>-	<td>-
 		<tr><td>11	<th>11		<td><code>- </code><td>-					<td>-	<td>-
@@ -995,7 +997,7 @@ Table will become stacked on small screen.
 
 <div class="code">
 	<form class="store restore">
-		<table class="flip">
+		<table class="flip shift">
 		<tr>
 			<td><label for="nm">Name</label>
 			<td><input type="text" name="nm" id="nm" required pattern="[A-Za-z]{2,}" title="Two up to four letters" data-hint="%minlength% up to %maxlength% letters" autocomplete="off" minlength="2" maxlength="4">
@@ -1007,8 +1009,8 @@ Table will become stacked on small screen.
 			
 		<tr><td colspan="2">
 		<fieldset>
-			<legend><a href="#fs1">Input types</a></legend>
-			<table id="fs1" class="target mem">
+			<legend class="mar"><a href="#fs1">Input types</a></legend>
+			<table id="fs1" class="target mem flip shift">
 			
 			<tr>
 				<td><label for="lng">Select</label>
@@ -1061,8 +1063,8 @@ Table will become stacked on small screen.
 			</table>
 		</fieldset>
 		<fieldset>
-			<legend><a href="#fs2">Switches</a></legend>
-			<table id="fs2" class="target mem">
+			<legend class="mar"><a href="#fs2">Switches</a></legend>
+			<table id="fs2" class="target mem flip shift">
 				<tr>
 					<td>Box
 					<td>
@@ -1832,14 +1834,14 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 </h3>
 
 <p class="opts-topbar">
-<label><input name="demo-top" type="radio" data-nodes="#topline" value="hide off"> Disable top bar</label><br>
-<label><input name="demo-top" type="radio" data-nodes="#topline" value="topbar shade  row let center fit hide-print" checked> Fixed top bar <code>.topbar</code></label><br>
-<label><input name="demo-top" type="radio" data-nodes="#topline" value="topbar toggle shade  row let center fit hide-print"> Scrollable top bar <code>.topbar.toggle</code></label>
+<label><input name="demo-top" type="radio" data-nodes="#topline" value="stick toggle hide off"> Disable top bar</label><br>
+<label><input name="demo-top" type="radio" data-nodes="#topline" value="stick shade  row let center fit hide-print" checked> Fixed top bar <code>.stick</code></label><br>
+<label><input name="demo-top" type="radio" data-nodes="#topline" value="stick toggle shade  row let center fit hide-print"> Scrollable top bar <code>.stick.toggle</code></label>
 </p>
 
 <div class="bord">
 	<div class="bg small"><a href="#code-topbar" class="pad">HTML</a></div>
-<pre id="code-topbar" class="target fit pad"><code class="language-html">&lt;div class="topbar"&gt;
+<pre id="code-topbar" class="target fit pad"><code class="language-html">&lt;div class="stick shift"&gt;
   Topbar
 &lt;/div&gt;</code></pre>
 </div>
@@ -2577,7 +2579,7 @@ Allowed swipe directions are defined by the presence of <code>data-swipe-up</cod
 <li><code>--gap</code> - base gap for margins and paddings in <code>em</code>s; default: <code>1</code>
 <li><code>--gap-rate</code> - rate of vertical and horizontal gap; default: <code>.5</code>
 <li><code>--shade</code> - shadow of overlay components; default: <code>0 .2em .8em rgba(0,0,0,.3)</code>
-<li><code>--topbar</code> - height of topbar; default: <code>3.2rem</code>
+<!--li><code>--topbar</code> - height of topbar; default: <code>3.2rem</code-->
 </ul>
 
 <a class="btn bg-i" href="#theme-config">Customize</a>
@@ -2664,7 +2666,7 @@ most important:
 <tr><th>.dlg<td><a href="#dlg">Modal</a><td>.close<td>.dlg.c.let .dlg.full.center
 <tr><th>.gal<td><a href="#gallery">Gallery</a><td>a .close<td><i>[data-info]</i>
 <tr><th>.drawer<td><a href="#drawer">Drawer</a><td>div a.close<td>.shift
-<tr><th>.topbar<td><a href="#topbar">Top bar</a><td><td>.toggle
+<tr><th>.stick<td><a href="#topbar">Topbar</a><td><td>.toggle .let
 <tr><th>.pick<td><a href="#pickfile">File picker</a><td>input[type="file"]<td>.drop [data-submit]
 <tr><th>.swipe<td><a href="#swipe">Swipe</a><td>body, *<td>.drag
 <tr><th>.let<td>Specific modifications to components<td>
@@ -2672,6 +2674,7 @@ most important:
 	<span class="tip shift" title="Row separators">.table</span><br>
 	<span class="tip shift" title="Vertical">.nav</span><br>
 	<span class="tip shift" title="Wider">.dlg</span><br>
+	<span class="tip shift" title="Allow overflow">.stick</span><br>
 	<span class="tip shift" title="Semi-transparent">.over</span>
 	<td>
 <tr><th>.shift<td>Something about right side positioning<td>
@@ -2802,7 +2805,7 @@ most important:
 <li><code>.text-w</code> &mdash; nominal "yellow" text color
 <li><code>.text-y</code> &mdash; nominal "green" text color
 <li><code>.toggle</code> &mdash; visibility is controlled by JavaScript, shown by default
-<li><code>.topbar</code> &mdash; sticky top app bar>
+<!--li><code>.topbar</code> &mdash; sticky top app bar-->
 <li><code>.wrap</code> &mdash; reasonable page width limit
 <li><code>.yel</code> &mdash; temporary highlight targeted block
 </ol>

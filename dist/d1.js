@@ -1,4 +1,4 @@
-/*! d1-web v2.5.0 */
+/*! d1-web v2.5.1 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -5925,18 +5925,15 @@ var scroll_default = /*#__PURE__*/function (_Plugin) {
     scroll_classCallCheck(this, _default);
 
     _this = _super.call(this, 'scroll');
-    _this.y = null; //this.hashed = false;
-
+    _this.h = null;
+    _this.y = null;
     _this.opt = {
       //gap: 20,
       qHideOnScroll: '',
       // '.drawer[id]'
       cStart: 'shade',
-      qTopbar: '.topbar.toggle',
-      //.topbar.let
-      qEnable: '.topbar' // '.topbar, .drawer'
-      //qTopbarFixed: '.topbar:not(.let)'
-
+      qTopbar: '.stick.toggle',
+      qEnable: '.stick.toggle'
     };
     return _this;
   }
@@ -5946,71 +5943,55 @@ var scroll_default = /*#__PURE__*/function (_Plugin) {
     value: function init() {
       var _this2 = this;
 
-      //let t;
       if (this.app.q(this.opt.qEnable)) {
-        this.app.listen('hashchange', function (e) {
-          return _this2.onHash(e);
-        });
+        //this.app.listen('hashchange', e => this.onHash(e));
         var ons = func["a" /* default */].throttle(function () {
           return _this2.onScroll();
-        }, 500); //const ons = Func.throttle((h) => this.onScroll(h), 500);
+        }, 300); //const ons = Func.throttle((h) => this.onScroll(h), 500);
         //ons(); // forces reflow
 
         setTimeout(function () {
-          return _this2.onScroll();
+          return _this2.onScroll(true);
         }, 20);
         this.app.b([window], 'scroll', function (e) {
           return ons();
         });
       }
-      /*
-      else if (t = this.app.q(this.opt.qTopbarFixed)) {
-        this.app.listen('hashchange', e => this.fixScroll());
-      }
-      */
-
     }
-  }, {
-    key: "onHash",
-    value: function onHash(e) {
-      //to hide topbar on hash change
+    /*
+    onHash(e) {
+      // to hide topbar on hash change
       // fires before onscroll, but page is already scrolled
       this.app.dbg(['scroll hash', location.hash, e, document.body.scrollHeight]);
-
       if (e && location.hash && this.app.q(location.hash)) {
         this.y = document.body.scrollHeight + 10; // show topbar on hash
         //this.y = window.scrollY - 10; // show/hide topbar on hash up/down
         //this.y = 1; // hide topbar on hash
         //this.hashed = true;
-
         this.onScroll();
       }
     }
+    */
+
   }, {
     key: "onScroll",
-    value: function onScroll()
-    /*h*/
-    {
+    value: function onScroll(force) {
       var _this3 = this;
 
-      //const mode = this.hashed ? 'hash' : (h ? 'fix' : 'scroll');
-      var dy = window.scrollY === null ? null : window.scrollY - this.y;
-      this.app.dbg(['scroll', window.scrollY, dy]); // ,mode,h,this.hashed
+      if (!force && this.h !== document.body.clientHeight) {
+        this.h = document.body.clientHeight;
+        return;
+      }
 
-      if (this.y !== null
-      /* && !h*/
-      ) {
-          if (this.opt.qTopbar) this.app.e(this.opt.qTopbar, function (n) {
-            return _this3.decorate(n, window.scrollY, dy);
-          });
-          if (this.opt.qHideOnScroll) this.app.e(this.opt.qHideOnScroll, function (n) {
-            return _this3.app.toggle(n, false);
-          });
-        }
-
+      var dy = window.scrollY === null ? null : this.y === null ? -1 : window.scrollY - this.y;
+      this.app.dbg(['scroll', window.scrollY, dy]);
+      if (this.opt.qTopbar) this.app.e(this.opt.qTopbar, function (n) {
+        return _this3.decorate(n, window.scrollY, dy);
+      });
+      if (this.opt.qHideOnScroll) this.app.e(this.opt.qHideOnScroll, function (n) {
+        return _this3.app.toggle(n, false);
+      });
       this.y = window.scrollY; // forces reflow
-      //if (this.hashed) this.fixScroll();
-      //this.hashed = false;
     }
   }, {
     key: "decorate",
@@ -6018,19 +5999,6 @@ var scroll_default = /*#__PURE__*/function (_Plugin) {
       n.classList[dy > 0 && y > n.offsetHeight ? 'add' : 'remove'](this.app.opt.cOff);
       n.classList[y && dy <= 0 ? 'add' : 'remove'](this.opt.cStart);
     }
-    /*
-    fixScroll() {
-      this.app.dbg(['scroll-fix', location.hash]);
-      if (this.app.q(location.hash)) {
-        //const t = this.app.q(this.opt.qTopbar + ':not(.'+ this.app.opt.cOff +')');
-        const t = this.app.q(this.opt.qTopbarFixed);
-        window.scrollBy(0, (t ? -t.offsetHeight : 0) - this.opt.gap);
-      }
-      //this.hashed = false;
-      //setTimeout(() => this.hashed = false, 500);
-    }
-    */
-
   }]);
 
   return _default;

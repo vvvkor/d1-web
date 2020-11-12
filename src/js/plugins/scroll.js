@@ -10,38 +10,32 @@ export default class extends Plugin {
   constructor() {
     super('scroll')
     
+    this.h = null;
     this.y = null;
-    //this.hashed = false;
     
     this.opt = {
       //gap: 20,
       qHideOnScroll: '', // '.drawer[id]'
       cStart: 'shade',
-      qTopbar: '.topbar.toggle', //.topbar.let
-      qEnable: '.topbar' // '.topbar, .drawer'
-      //qTopbarFixed: '.topbar:not(.let)'
+      qTopbar: '.stick.toggle',
+      qEnable: '.stick.toggle'
     };
   }
   
   init() {
-    //let t;
     if (this.app.q(this.opt.qEnable)) {
-      this.app.listen('hashchange', e => this.onHash(e));
-      const ons = Func.throttle(() => this.onScroll(), 500);
+      //this.app.listen('hashchange', e => this.onHash(e));
+      const ons = Func.throttle(() => this.onScroll(), 300);
       //const ons = Func.throttle((h) => this.onScroll(h), 500);
       //ons(); // forces reflow
-      setTimeout(() => this.onScroll(), 20);
-      this.app.b([window], 'scroll', e => ons(/*this.hashed*/));
+      setTimeout(() => this.onScroll(true), 20);
+      this.app.b([window], 'scroll', e => ons());
     }
-    /*
-    else if (t = this.app.q(this.opt.qTopbarFixed)) {
-      this.app.listen('hashchange', e => this.fixScroll());
-    }
-    */
   }
   
+  /*
   onHash(e) {
-    //to hide topbar on hash change
+    // to hide topbar on hash change
     // fires before onscroll, but page is already scrolled
     this.app.dbg(['scroll hash', location.hash, e, document.body.scrollHeight]);
     if (e && location.hash && this.app.q(location.hash)) {
@@ -52,18 +46,18 @@ export default class extends Plugin {
       this.onScroll();
     }
   }
+  */
   
-  onScroll(/*h*/) {
-    //const mode = this.hashed ? 'hash' : (h ? 'fix' : 'scroll');
-    const dy = window.scrollY ===null ? null : window.scrollY - this.y;
-    this.app.dbg(['scroll', window.scrollY, dy]); // ,mode,h,this.hashed
-    if (this.y !== null /* && !h*/) {
-      if (this.opt.qTopbar) this.app.e(this.opt.qTopbar, n => this.decorate(n, window.scrollY, dy));
-      if (this.opt.qHideOnScroll) this.app.e(this.opt.qHideOnScroll, n => this.app.toggle(n, false));
+  onScroll(force) {
+    if (!force && this.h !== document.body.clientHeight) {
+      this.h = document.body.clientHeight;
+      return;
     }
+    const dy = window.scrollY === null ? null : (this.y === null ? -1 : window.scrollY - this.y);
+    this.app.dbg(['scroll', window.scrollY, dy]);
+    if (this.opt.qTopbar) this.app.e(this.opt.qTopbar, n => this.decorate(n, window.scrollY, dy));
+    if (this.opt.qHideOnScroll) this.app.e(this.opt.qHideOnScroll, n => this.app.toggle(n, false));
     this.y = window.scrollY; // forces reflow
-    //if (this.hashed) this.fixScroll();
-    //this.hashed = false;
   }
   
   decorate(n, y, dy) {
@@ -71,16 +65,4 @@ export default class extends Plugin {
     n.classList[y && dy <= 0 ? 'add' : 'remove'](this.opt.cStart)
   }
 
-  /*
-  fixScroll() {
-    this.app.dbg(['scroll-fix', location.hash]);
-    if (this.app.q(location.hash)) {
-      //const t = this.app.q(this.opt.qTopbar + ':not(.'+ this.app.opt.cOff +')');
-      const t = this.app.q(this.opt.qTopbarFixed);
-      window.scrollBy(0, (t ? -t.offsetHeight : 0) - this.opt.gap);
-    }
-    //this.hashed = false;
-    //setTimeout(() => this.hashed = false, 500);
-  }
-  */
 }

@@ -1,4 +1,4 @@
-/*! d1-web v2.5.0 */
+/*! d1-web v2.5.1 */
 
 :root, .invert .invert {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -18,7 +18,6 @@
     --rad: .2;
     --gap: 1;
     --gap-rate: .5;
-    --topbar: 2.5rem;
     --text-danger: #c00;
     --text-warning: #d70;
     --text-success: #181;
@@ -103,15 +102,15 @@ img, embed, iframe, object, audio, video {
     box-sizing: border-box;
 }
 
-img, iframe {
-    border: 0;
+img, iframe, fieldset, hr {
+    border: none;
 }
 
 img {
     object-fit: cover;
 }
 
-html, body, li, dl, dt, dd, legend, iframe {
+html, body, li, dl, dt, dd, legend, iframe, fieldset {
     margin: 0;
     padding: 0;
 }
@@ -203,7 +202,7 @@ h6 {
     font-size: 67%;
 }
 
-blockquote, pre, fieldset {
+blockquote, pre {
     padding: var(--gaps-n);
 }
 
@@ -335,16 +334,24 @@ th, td {
     background-clip: padding-box;
 }
 
-table.bord>*>tr>*, fieldset, hr {
+fieldset, hr {
+    border-top: var(--border);
+}
+
+legend {
+    padding: 0 var(--gap-s);
+}
+
+legend.mar {
+    margin-left: var(--gap-n);
+}
+
+table.bord>*>tr>*, fieldset.bord {
     border: var(--border);
 }
 
 table.bord {
     border: none;
-}
-
-hr {
-    border-width: thin 0 0 0;
 }
 
 table.let>*>tr>* {
@@ -668,23 +675,12 @@ ul.nav, .nav ul {
     content: "";
 }
 
-.topbar {
-    z-index: 70;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    min-height: var(--topbar);
-    transition: top .2s;
-}
-
 .hide[class], [class*="not-"], .or:not([class*="or-"]), .gal>*, a.act>.is-off,
 a:not(.act)>.is-on, .target:not(:target),
 .tabs+div>div:not(:target):not(:last-child):not(.toggle),
 .tabs+div>div:target:not(.toggle)~*, .dlg:not(:target):not(.toggle),
 .nav li:not(:hover)>ul:not(.toggle), .pop:not(:hover)>div:not(.toggle),
-.js .toggle.off:not(.topbar):not(.drawer), .js .hide-js,
-body:not(.js) .hide-nojs {
+.js .toggle.off:not(.stick):not(.drawer), .js .hide-js, body:not(.js) .hide-nojs {
     display: none;
 }
 
@@ -925,10 +921,6 @@ mark {
         width: 30%;
     }
 
-    fieldset table:not(.bord):not(.let) td:first-child:nth-last-child(2):not([colspan]) {
-        width: calc(12em - var(--gap-n) - var(--gap-s));
-    }
-
     .dlg {
         min-width: 20em;
     }
@@ -970,26 +962,6 @@ mark {
         box-sizing: border-box;
     }
 
-    .topbar.off {
-        top: calc(-0.3rem - var(--topbar));
-    }
-
-    .topbar:not(.hide)+* {
-        margin-top: var(--topbar);
-    }
-
-    .topbar:not(.hide)~* [id] {
-        scroll-margin-top: calc(1rem + var(--topbar));
-    }
-
-    div[id] {
-        scroll-margin-top: 3rem;
-    }
-
-    .topbar:not(.hide)~* div[id] {
-        scroll-margin-top: calc(4rem + var(--topbar));
-    }
-
     .stick {
         z-index: 3;
         position: sticky;
@@ -1000,9 +972,23 @@ mark {
         box-sizing: border-box;
     }
 
-    .topbar:not(.hide)~* .stick {
-        top: var(--topbar);
-        max-height: calc(100vh - var(--topbar));
+    .stick.let {
+        overflow: visible;
+        z-index: 70;
+    }
+
+    .stick.toggle {
+        transition: top .3s ease-in-out;
+    }
+
+    .stick.toggle.off {
+        top: -3em;
+        max-height: 3em;
+        overflow: hidden;
+    }
+
+    [id] {
+        scroll-margin-top: 4rem;
     }
 
     input, select {
@@ -1315,7 +1301,7 @@ mark {
     text-align: left;
 }
 
-.stick, .topbar, .back {
+.stick, .back {
     background-color: var(--bg);
 }
 

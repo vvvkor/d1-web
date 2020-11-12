@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- todo (maybe): filter, store, fieldset -->
+<!-- todo (maybe): filter, store -->
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -14,10 +14,10 @@
 		-->
 		
 	<!-- CDN -->
-		<link href="https://unpkg.com/d1-web@2.5.0/dist/d1.min.css" rel="stylesheet">
-		<script src="https://unpkg.com/d1-web@2.5.0/dist/d1.min.js" defer></script>
+		<link href="https://unpkg.com/d1-web@2.5.1/dist/d1.min.css" rel="stylesheet">
+		<script src="https://unpkg.com/d1-web@2.5.1/dist/d1.min.js" defer></script>
 		<noscript>
-			<link href="https://unpkg.com/d1-web@2.5.0/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://unpkg.com/d1-web@2.5.1/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- local-module (test with no need to compile) ->
 		<link href="../src/index.css" rel="stylesheet">
@@ -30,25 +30,26 @@
   </head>
   <body class="swipe trans" data-swipe-right="#menu" data-swipe-left="#cancel">
 <main>
+
 <!-- topbar, responsive class, tag -->
 
-<div class="topbar off" id="topbar">
+<!--div class="topbar off" id="topbar">
 	<div class="pad">
 		<b data-class-desktop="text-n" data-class-mobile="text-i">d1-web</b>
 		<i class="btn bg-n hide-mobile">desktop layout</i>
 		<i class="btn bg-i hide-desktop">mobile layout</i>
 	</div>
-</div>
+</div-->
 
-<!-- nav, (stick), shift, sub/sub -->
+<!-- nav, stick, shift, sub/sub -->
 
-<nav class="bg" data-class-desktop="bg" data-class-mobile="shade">
+<nav class="stick let toggle">
 <div class="hide-desktop pad">
 	<a href="#nav" class="icon-menu act-icon-delete empty" title="Navigation"><span>Navigation</span></a>
-	<a href="demo.html" class="pad"><b>d1</b></a> <span class="text-n">v2.5.0</span>
+	<a href="demo.html" class="pad"><b>d1</b></a> <span class="text-n">v2.5.1</span>
 </div>
 <ul id="nav" class="nav flip hover target-mobile">
-<li><a href="demo.html"><b>d1</b> <span class="text-n">v2.5.0</span></a>
+<li><a href="demo.html"><b>d1</b> <span class="text-n">v2.5.1</span></a>
 <li><a href="#1">Sections</a>
 	<ul>
 	<li><a href="#menu" class="icon-open">Drawer</a>
@@ -74,8 +75,16 @@
 	<li><a href="https://github.com/vvvkor/d1-web" class="icon-info">Project page</a>
 	<li><a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="icon-download">Download</a>
 	</ul>
+<li><a href="#about" class="icon-info empty text-i"><span>About</span></a>
 </ul>
 </nav>
+
+<div id="about" class="dlg pad c rad">
+	<div class="r"><a href="#cancel" class="icon-close empty"><span>&times;</span></a></div>
+	<h2 class="mar"><a href="https://github.com/vvvkor/d1-web"><b>d1-web</b></a></h2>
+	<p>Front-end framework</p>
+	<p>by Vadim Korolev<br><a href="mailto:vadimkor@yandex.ru">vadimkor@yandex.ru</a></p>
+</div>
 
 <div class="read center pad">
 
@@ -106,7 +115,7 @@
 			</ul>
 		<li><a href="#" id="set-small" class="icon-text mem" data-nodes="main" data-set="small">Small</a>
 		<li><a href="#alert" class="icon-tag">Sticky alert</a>
-		<li><a href="#" id="set-topbar" class="icon-desc mem" data-nodes="#topbar" data-set="topbar small toggle row" data-unset="topbar hide">Topbar</a>
+		<!--li><a href="#" id="set-topbar" class="icon-desc mem" data-nodes="#topbar" data-set="topbar small toggle row" data-unset="topbar hide">Topbar</a-->
 		</ul>
 		</form>
 	</div>
@@ -114,9 +123,11 @@
 
 <!-- ? tabs, tip, code, filter, sticky -->
 
-<div id="alert" class="target stick bord icon-ok bg-y pad rad text-y">
+<div id="alert" class="target">
+<div class="stick bord icon-ok bg-y pad rad text-y">
 	Alert
 	<a href="#cancel" class="close icon-close empty pad"><span>Close</span></a>
+</div>
 </div>
 
 <!-- gallery -->
@@ -152,7 +163,7 @@
 <!-- form, set-val/hint, invert, lookup/fetch/gen-modal, edit/typo, fieldset/toggle, color/prompt, pickfile, submit/confirm -->
 <h2 id="form">Form</h2>
 <form method="post" action="?#form" enctype="multipart/form-data" class="js-unhint">
-<table class="flip">
+<table class="flip shift">
 <tr>
 	<td><label for="in-text">Name</label>
 	<td><input type="text" id="in-text" name="name" required pattern="[A-Za-z]+" size="15">
@@ -178,9 +189,13 @@
 	
 <tr><td colspan="2">
 
+<!--
 <a id="advanced" href="#adv" class="icon-down act-icon-no pad hover">Advanced</a>
 <hr class="fit">
-<div id="adv" class="mem target mar">
+-->
+<fieldset class="-bord -pad -fit">
+<legend class="-pad -mar -bg"><a id="advanced" href="#adv" class="icon-down act-icon-no">Advanced</a></legend>
+<div id="adv" class="mem target">
 		<table class="flip shift">
 		<tr>
 			<td><label for="in-color">Color</label>
@@ -191,6 +206,7 @@
 			<td><input type="file" id="in-file" name="up[]" class="pick drop" multiple>
 		</table>
 </div>
+</fieldset>
 
 <tr>
 	<td>
