@@ -26,11 +26,8 @@ export default class extends Plugin {
     if (this.app.q(this.opt.qEnable)) {
       //this.app.listen('hashchange', e => this.onHash(e));
       const ons = Func.throttle(() => this.onScroll(), 500);
-      //const ons = Func.throttle((h) => this.onScroll(h), 500);
-      //ons(); // forces reflow
-      setTimeout(() => this.onScroll(true), 20);
-      //setTimeout(() => ons(true), 20);
       this.app.b([window], 'scroll', e => ons());
+      this.app.listen('ready', e => this.decorateAll(-1)); // show; forces reflow
     }
   }
   
@@ -52,16 +49,20 @@ export default class extends Plugin {
   onScroll(force) {
     if (force || this.h === document.body.clientHeight) {
       const dy = window.scrollY === null ? null : (this.y === null ? -1 : window.scrollY - this.y); // "-" = up, show
-      // console.log(this.h, this.y, dy);
       this.app.dbg(['scroll', window.scrollY, dy]);
-      if (this.opt.qTopbar && dy) this.app.e(this.opt.qTopbar, n => this.decorate(n, window.scrollY, dy));
-      //if (this.opt.qHideOnScroll) this.app.e(this.opt.qHideOnScroll, n => this.app.toggle(n, false));
+      this.decorateAll(dy);
     }
     this.h = document.body.clientHeight;
     this.y = window.scrollY; // forces reflow
   }
   
+  decorateAll(dy) {
+    if (this.opt.qTopbar && dy) this.app.e(this.opt.qTopbar, n => this.decorate(n, window.scrollY, dy));
+    //if (this.opt.qHideOnScroll) this.app.e(this.opt.qHideOnScroll, n => this.app.toggle(n, false));
+  }
+  
   decorate(n, y, dy) {
+    // console.log(this.h, y, dy);
     n.classList[dy > 0 && y > n.offsetHeight ? 'add' : 'remove'](this.app.opt.cOff)
     n.classList[y /*&& dy <= 0*/ ? 'add' : 'remove'](this.opt.cMiddle)
   }

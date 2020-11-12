@@ -1,4 +1,4 @@
-/*! d1-web v2.5.3 */
+/*! d1-web v2.5.4 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -5946,16 +5946,13 @@ var scroll_default = /*#__PURE__*/function (_Plugin) {
         //this.app.listen('hashchange', e => this.onHash(e));
         var ons = func["a" /* default */].throttle(function () {
           return _this2.onScroll();
-        }, 500); //const ons = Func.throttle((h) => this.onScroll(h), 500);
-        //ons(); // forces reflow
-
-        setTimeout(function () {
-          return _this2.onScroll(true);
-        }, 20); //setTimeout(() => ons(true), 20);
-
+        }, 500);
         this.app.b([window], 'scroll', function (e) {
           return ons();
         });
+        this.app.listen('ready', function (e) {
+          return _this2.decorateAll(-1);
+        }); // show; forces reflow
       }
     }
     /*
@@ -5976,24 +5973,29 @@ var scroll_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "onScroll",
     value: function onScroll(force) {
-      var _this3 = this;
-
       if (force || this.h === document.body.clientHeight) {
         var dy = window.scrollY === null ? null : this.y === null ? -1 : window.scrollY - this.y; // "-" = up, show
-        // console.log(this.h, this.y, dy);
 
         this.app.dbg(['scroll', window.scrollY, dy]);
-        if (this.opt.qTopbar && dy) this.app.e(this.opt.qTopbar, function (n) {
-          return _this3.decorate(n, window.scrollY, dy);
-        }); //if (this.opt.qHideOnScroll) this.app.e(this.opt.qHideOnScroll, n => this.app.toggle(n, false));
+        this.decorateAll(dy);
       }
 
       this.h = document.body.clientHeight;
       this.y = window.scrollY; // forces reflow
     }
   }, {
+    key: "decorateAll",
+    value: function decorateAll(dy) {
+      var _this3 = this;
+
+      if (this.opt.qTopbar && dy) this.app.e(this.opt.qTopbar, function (n) {
+        return _this3.decorate(n, window.scrollY, dy);
+      }); //if (this.opt.qHideOnScroll) this.app.e(this.opt.qHideOnScroll, n => this.app.toggle(n, false));
+    }
+  }, {
     key: "decorate",
     value: function decorate(n, y, dy) {
+      // console.log(this.h, y, dy);
       n.classList[dy > 0 && y > n.offsetHeight ? 'add' : 'remove'](this.app.opt.cOff);
       n.classList[y
       /*&& dy <= 0*/
