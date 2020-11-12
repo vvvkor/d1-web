@@ -1,4 +1,4 @@
-/*! d1-web v2.5.1 */
+/*! d1-web v2.5.2 */
 
 /* @import url("css/columns.css"); */
 /* @import url("css/grid.css"); */
@@ -505,7 +505,7 @@ mark{background-color:var(--bg-warning);}
 	.stick{z-index:3;position:sticky;top:0;max-height:100vh;align-self:flex-start;/*stretch*/overflow:auto;box-sizing:border-box;}
 	.stick.let{overflow:visible;z-index:70;}
 	.stick.toggle{transition:top .3s ease-in-out;}
-	.stick.toggle.off{top:-3em;max-height:3em;overflow:hidden;}
+	.stick.toggle.off{top:-4em;max-height:3em;overflow:hidden;}
 		/*div*/[id]{scroll-margin-top:/*3*/4rem;} /* .pop, .target, .tabs (-.tree) */
 
 	/* form */

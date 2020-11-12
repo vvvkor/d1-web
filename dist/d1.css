@@ -1,4 +1,4 @@
-/*! d1-web v2.5.1 */
+/*! d1-web v2.5.2 */
 
 :root, .invert .invert {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -982,7 +982,7 @@ mark {
     }
 
     .stick.toggle.off {
-        top: -3em;
+        top: -4em;
         max-height: 3em;
         overflow: hidden;
     }

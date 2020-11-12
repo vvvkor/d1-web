@@ -1,4 +1,4 @@
-/*! d1-web v2.5.1 */
+/*! d1-web v2.5.2 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -5929,9 +5929,8 @@ var scroll_default = /*#__PURE__*/function (_Plugin) {
     _this.y = null;
     _this.opt = {
       //gap: 20,
-      qHideOnScroll: '',
-      // '.drawer[id]'
-      cStart: 'shade',
+      //qHideOnScroll: '', // '.drawer[id]'
+      cMiddle: 'shade',
       qTopbar: '.stick.toggle',
       qEnable: '.stick.toggle'
     };
@@ -5947,7 +5946,7 @@ var scroll_default = /*#__PURE__*/function (_Plugin) {
         //this.app.listen('hashchange', e => this.onHash(e));
         var ons = func["a" /* default */].throttle(function () {
           return _this2.onScroll();
-        }, 300); //const ons = Func.throttle((h) => this.onScroll(h), 500);
+        }, 500); //const ons = Func.throttle((h) => this.onScroll(h), 500);
         //ons(); // forces reflow
 
         setTimeout(function () {
@@ -5980,24 +5979,26 @@ var scroll_default = /*#__PURE__*/function (_Plugin) {
 
       if (!force && this.h !== document.body.clientHeight) {
         this.h = document.body.clientHeight;
+        this.y = window.scrollY;
         return;
       }
 
-      var dy = window.scrollY === null ? null : this.y === null ? -1 : window.scrollY - this.y;
+      var dy = window.scrollY === null ? null : this.y === null ? -1 : window.scrollY - this.y; // "-" = up, show
+
       this.app.dbg(['scroll', window.scrollY, dy]);
-      if (this.opt.qTopbar) this.app.e(this.opt.qTopbar, function (n) {
+      if (this.opt.qTopbar && dy) this.app.e(this.opt.qTopbar, function (n) {
         return _this3.decorate(n, window.scrollY, dy);
-      });
-      if (this.opt.qHideOnScroll) this.app.e(this.opt.qHideOnScroll, function (n) {
-        return _this3.app.toggle(n, false);
-      });
+      }); //if (this.opt.qHideOnScroll) this.app.e(this.opt.qHideOnScroll, n => this.app.toggle(n, false));
+
       this.y = window.scrollY; // forces reflow
     }
   }, {
     key: "decorate",
     value: function decorate(n, y, dy) {
       n.classList[dy > 0 && y > n.offsetHeight ? 'add' : 'remove'](this.app.opt.cOff);
-      n.classList[y && dy <= 0 ? 'add' : 'remove'](this.opt.cStart);
+      n.classList[y
+      /*&& dy <= 0*/
+      ? 'add' : 'remove'](this.opt.cMiddle);
     }
   }]);
 

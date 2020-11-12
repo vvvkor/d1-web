@@ -15,8 +15,8 @@ export default class extends Plugin {
     
     this.opt = {
       //gap: 20,
-      qHideOnScroll: '', // '.drawer[id]'
-      cStart: 'shade',
+      //qHideOnScroll: '', // '.drawer[id]'
+      cMiddle: 'shade',
       qTopbar: '.stick.toggle',
       qEnable: '.stick.toggle'
     };
@@ -25,7 +25,7 @@ export default class extends Plugin {
   init() {
     if (this.app.q(this.opt.qEnable)) {
       //this.app.listen('hashchange', e => this.onHash(e));
-      const ons = Func.throttle(() => this.onScroll(), 300);
+      const ons = Func.throttle(() => this.onScroll(), 500);
       //const ons = Func.throttle((h) => this.onScroll(h), 500);
       //ons(); // forces reflow
       setTimeout(() => this.onScroll(true), 20);
@@ -51,18 +51,19 @@ export default class extends Plugin {
   onScroll(force) {
     if (!force && this.h !== document.body.clientHeight) {
       this.h = document.body.clientHeight;
+      this.y = window.scrollY; 
       return;
     }
-    const dy = window.scrollY === null ? null : (this.y === null ? -1 : window.scrollY - this.y);
+    const dy = window.scrollY === null ? null : (this.y === null ? -1 : window.scrollY - this.y); // "-" = up, show
     this.app.dbg(['scroll', window.scrollY, dy]);
-    if (this.opt.qTopbar) this.app.e(this.opt.qTopbar, n => this.decorate(n, window.scrollY, dy));
-    if (this.opt.qHideOnScroll) this.app.e(this.opt.qHideOnScroll, n => this.app.toggle(n, false));
+    if (this.opt.qTopbar && dy) this.app.e(this.opt.qTopbar, n => this.decorate(n, window.scrollY, dy));
+    //if (this.opt.qHideOnScroll) this.app.e(this.opt.qHideOnScroll, n => this.app.toggle(n, false));
     this.y = window.scrollY; // forces reflow
   }
   
   decorate(n, y, dy) {
     n.classList[dy > 0 && y > n.offsetHeight ? 'add' : 'remove'](this.app.opt.cOff)
-    n.classList[y && dy <= 0 ? 'add' : 'remove'](this.opt.cStart)
+    n.classList[y /*&& dy <= 0*/ ? 'add' : 'remove'](this.opt.cMiddle)
   }
 
 }
