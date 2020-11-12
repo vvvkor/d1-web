@@ -29,6 +29,7 @@ export default class extends Plugin {
       //const ons = Func.throttle((h) => this.onScroll(h), 500);
       //ons(); // forces reflow
       setTimeout(() => this.onScroll(true), 20);
+      //setTimeout(() => ons(true), 20);
       this.app.b([window], 'scroll', e => ons());
     }
   }
@@ -49,15 +50,14 @@ export default class extends Plugin {
   */
   
   onScroll(force) {
-    if (!force && this.h !== document.body.clientHeight) {
-      this.h = document.body.clientHeight;
-      this.y = window.scrollY; 
-      return;
+    if (force || this.h === document.body.clientHeight) {
+      const dy = window.scrollY === null ? null : (this.y === null ? -1 : window.scrollY - this.y); // "-" = up, show
+      // console.log(this.h, this.y, dy);
+      this.app.dbg(['scroll', window.scrollY, dy]);
+      if (this.opt.qTopbar && dy) this.app.e(this.opt.qTopbar, n => this.decorate(n, window.scrollY, dy));
+      //if (this.opt.qHideOnScroll) this.app.e(this.opt.qHideOnScroll, n => this.app.toggle(n, false));
     }
-    const dy = window.scrollY === null ? null : (this.y === null ? -1 : window.scrollY - this.y); // "-" = up, show
-    this.app.dbg(['scroll', window.scrollY, dy]);
-    if (this.opt.qTopbar && dy) this.app.e(this.opt.qTopbar, n => this.decorate(n, window.scrollY, dy));
-    //if (this.opt.qHideOnScroll) this.app.e(this.opt.qHideOnScroll, n => this.app.toggle(n, false));
+    this.h = document.body.clientHeight;
     this.y = window.scrollY; // forces reflow
   }
   
