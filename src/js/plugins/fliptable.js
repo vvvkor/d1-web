@@ -16,13 +16,13 @@ export default class extends Plugin {
     this.app.listen('update', e => e.n.matches(this.opt.qFlipTable) ? this.prepareFlipTable(e.n) : null);
   }
   
-  arrange({n}){
+  arrange({n}) {
     //this.app.ee(n, this.opt.qFlipTable, n => n.closest('form') ? null : this.prepareFlipTable(n)); 
-    this.app.ee(n, this.opt.qFlipTable, m => this.app.q('th', m) ? this.prepareFlipTable(m) : null); 
+    this.app.ee(n, this.opt.qFlipTable, m => this.prepareFlipTable(m)); 
   }
 
   prepareFlipTable(t) {
-    if (t.dataset.readyFlip) return;
+    if (t.dataset.readyFlip || !this.app.q('th', t)) return;
     t.dataset.readyFlip = 1;
     
     let ths = this.app.qq('thead th', t);

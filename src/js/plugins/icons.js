@@ -29,7 +29,6 @@ export default class extends Plugin {
   arrange({n}) {
     if (!n) this.app.listen('active', e => this.iconize(e.n, e.on)); // as soon as possible
     this.app.ee(n, '[class*="' + this.opt.pIcon + '"]', n => this.iconize(n));
-    this.app.ee(n, '[class*="' + this.opt.pIcon + '"]', n => this.iconize(n));
     this.app.ee(n, this.opt.qReplace, n => this.replace(n));
   }
   

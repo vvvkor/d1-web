@@ -1,4 +1,4 @@
-/*! d1-web v2.5.9 */
+/*! d1-web v2.5.10 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -3608,9 +3608,6 @@ var icons_default = /*#__PURE__*/function (_Plugin) {
       this.app.ee(n, '[class*="' + this.opt.pIcon + '"]', function (n) {
         return _this2.iconize(n);
       });
-      this.app.ee(n, '[class*="' + this.opt.pIcon + '"]', function (n) {
-        return _this2.iconize(n);
-      });
       this.app.ee(n, this.opt.qReplace, function (n) {
         return _this2.replace(n);
       });
@@ -4306,11 +4303,7 @@ var tools_default = /*#__PURE__*/function (_Plugin) {
           var t = n.tagName;
 
           if (t == 'A') {
-            n.classList[v ? 'add' : 'remove'](this.app.opt.cAct);
-            this.app.fire('active', {
-              n: n,
-              on: v
-            });
+            n.classList[v ? 'add' : 'remove'](this.app.opt.cAct); //this.app.fire('active', {n, on: v}); // dup in setClass()
           } else if (t == 'SELECT') n.value = v;else if (n.type == 'checkbox') n.checked = !!v;else if (n.type == 'radio') n.checked = n.value == v;
         }
       }
@@ -5621,13 +5614,13 @@ var fliptable_default = /*#__PURE__*/function (_Plugin) {
       var n = _ref.n;
       //this.app.ee(n, this.opt.qFlipTable, n => n.closest('form') ? null : this.prepareFlipTable(n)); 
       this.app.ee(n, this.opt.qFlipTable, function (m) {
-        return _this3.app.q('th', m) ? _this3.prepareFlipTable(m) : null;
+        return _this3.prepareFlipTable(m);
       });
     }
   }, {
     key: "prepareFlipTable",
     value: function prepareFlipTable(t) {
-      if (t.dataset.readyFlip) return;
+      if (t.dataset.readyFlip || !this.app.q('th', t)) return;
       t.dataset.readyFlip = 1;
       var ths = this.app.qq('thead th', t);
       var tds = this.app.qq('tbody tr>*, tfoot tr>*', t); // let order = (t.dataset.order || '0 1 2 3').split(/\D+/);

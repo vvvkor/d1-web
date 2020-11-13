@@ -1,4 +1,4 @@
-/*! d1-web v2.5.9 */
+/*! d1-web v2.5.10 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -3605,9 +3605,6 @@ var icons_default = /*#__PURE__*/function (_Plugin) {
         return _this2.iconize(e.n, e.on);
       }); // as soon as possible
 
-      this.app.ee(n, '[class*="' + this.opt.pIcon + '"]', function (n) {
-        return _this2.iconize(n);
-      });
       this.app.ee(n, '[class*="' + this.opt.pIcon + '"]', function (n) {
         return _this2.iconize(n);
       });

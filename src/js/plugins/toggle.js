@@ -76,7 +76,7 @@ export default class extends Plugin{
     app.ee(n, this.opt.qSubMem, m => m.classList.add(this.opt.cMem)); //initialize sub mem
     app.ee(n, '[id]', m => this.restoreVisibility(m));//restore visibility
     app.ee(n, this.opt.qTab + ':not(.'+app.opt.cOff+') ~ [id]:not(.'+app.opt.cOff+')', m => this.tgl(m, 0)); //undup tabs
-    app.ee(n, this.opt.qTab + ':first-child', m => app.a(m.parentNode.children).filter(m => app.vis(m)).length ? null : this.tgl(app.q(app.q('a[href^="#"]', m.parentNode.previousElementSibling).hash), 1));//inactive tabs: show first
+    app.ee(n, this.opt.qTab + ':first-of-type', m => app.qq(this.opt.qTab, m.parentNode).filter(m => app.vis(m)).length ? null : this.tgl(app.q(app.q('a[href^="#"]', m.parentNode.previousElementSibling).hash), 1));//inactive tabs: show first
     app.ee(n, '.' + app.opt.cToggle + '[id]', m => this.hiliteLinks(m));//init links state
   }
 

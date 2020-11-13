@@ -51,7 +51,7 @@ export default class extends Plugin {
         let t = n.tagName;
         if (t == 'A'){
           n.classList[v ? 'add' : 'remove'](this.app.opt.cAct);
-          this.app.fire('active', {n, on: v});
+          //this.app.fire('active', {n, on: v}); // dup in setClass()
         }
         else if (t == 'SELECT') n.value = v;
         else if (n.type == 'checkbox') n.checked = !!v;
