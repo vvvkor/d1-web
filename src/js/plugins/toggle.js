@@ -237,7 +237,7 @@ export default class extends Plugin{
   }
 
   //deep: -1=prepare, 0=click|hash, 1=deps|clo
-  toggle(h, on, deep, hist) {
+  toggle(h, on, deep, id) {
     let d = h ? (h.tagName ? h : this.app.q(h)) : null;
     if (d) {
       if (d.matches(this.opt.qTab) && on === undefined) on = true; //tabs: show instead of toggle
@@ -248,7 +248,10 @@ export default class extends Plugin{
       if (deep != -1) {
         if (!deep) {
           this.toggleDependent(d);
-          if (hist && this.opt.keepHash) this.addHistory(hist);
+          if (id && this.opt.keepHash){
+            d.id = id;
+            this.addHistory('#' + id);
+          }
         }
         //this.hiliteLinks(d);
         this.storeVisibility(d);

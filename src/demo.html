@@ -180,6 +180,9 @@
 		<input type="checkbox" id="in-box" name="invert" data-set="invert" data-nodes="body">
 		<label for="in-box">Invert</label>
 <tr>
+	<td><label for="in-date">Datetime</label>
+	<td><input type="datetime-local" id="in-date" name="date" class="calendar" min="2020-01-10" max="2035-02-03">
+<tr>
 	<td><label for="in-lookup">Country</label>
 	<td><input type="text" id="in-lookup" name="country" data-lookup="https://restcountries.eu/rest/v2/name/{q}##alpha2Code#name#languages.0.name" data-url="#country-{id}">
 	<a href="https://restcountries.eu/rest/v2/alpha/ru#altSpellings" data-target="#x" class="icon-pin text-e empty hide-nojs" data-head="Info" title="Fetch to modal"><span>Fetch</span></a>

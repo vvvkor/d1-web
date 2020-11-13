@@ -1,4 +1,4 @@
-/*! d1-web v2.5.5 */
+/*! d1-web v2.5.6 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -1164,7 +1164,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
   }, {
     key: "toggle",
-    value: function toggle(h, on, deep, hist) {
+    value: function toggle(h, on, deep, id) {
       var d = h ? h.tagName ? h : this.app.q(h) : null;
 
       if (d) {
@@ -1182,7 +1182,11 @@ var _default = /*#__PURE__*/function (_Plugin) {
         if (deep != -1) {
           if (!deep) {
             this.toggleDependent(d);
-            if (hist && this.opt.keepHash) this.addHistory(hist);
+
+            if (id && this.opt.keepHash) {
+              d.id = id;
+              this.addHistory('#' + id);
+            }
           } //this.hiliteLinks(d);
 
 
@@ -1491,7 +1495,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
         });
       }
 
-      this.app.toggle(this.dlg, true, false, '#dlg-' + this.app.seq());
+      this.app.toggle(this.dlg, true, false, 'dlg-' + this.app.seq());
     }
   }, {
     key: "closeDialog",

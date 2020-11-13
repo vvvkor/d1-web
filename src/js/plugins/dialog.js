@@ -60,7 +60,7 @@ export default class extends Plugin {
       app.b([yes], 'click', e => { e.preventDefault(); this.callback(f, inp.value, e); });
       if (inp.tagName) app.b([inp], 'keyup', e => e.keyCode == 13 ? this.callback(f, inp.value, e) : null);
     }
-    this.app.toggle(this.dlg, true, false, '#dlg-' + this.app.seq());
+    this.app.toggle(this.dlg, true, false, 'dlg-' + this.app.seq());
   }
   
   closeDialog() {
