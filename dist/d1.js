@@ -1,4 +1,4 @@
-/*! d1-web v2.5.8 */
+/*! d1-web v2.5.9 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -5609,14 +5609,26 @@ var fliptable_default = /*#__PURE__*/function (_Plugin) {
     value: function init() {
       var _this2 = this;
 
-      //this.app.e(this.opt.qFlipTable, n => n.closest('form') ? null : this.prepareFlipTable(n)); 
-      this.app.e(this.opt.qFlipTable, function (n) {
-        return _this2.app.q('th', n) ? _this2.prepareFlipTable(n) : null;
+      this.app.listen('update', function (e) {
+        return e.n.matches(_this2.opt.qFlipTable) ? _this2.prepareFlipTable(e.n) : null;
+      });
+    }
+  }, {
+    key: "arrange",
+    value: function arrange(_ref) {
+      var _this3 = this;
+
+      var n = _ref.n;
+      //this.app.ee(n, this.opt.qFlipTable, n => n.closest('form') ? null : this.prepareFlipTable(n)); 
+      this.app.ee(n, this.opt.qFlipTable, function (m) {
+        return _this3.app.q('th', m) ? _this3.prepareFlipTable(m) : null;
       });
     }
   }, {
     key: "prepareFlipTable",
     value: function prepareFlipTable(t) {
+      if (t.dataset.readyFlip) return;
+      t.dataset.readyFlip = 1;
       var ths = this.app.qq('thead th', t);
       var tds = this.app.qq('tbody tr>*, tfoot tr>*', t); // let order = (t.dataset.order || '0 1 2 3').split(/\D+/);
       // t.parentNode.classList.remove('roll');
@@ -5629,7 +5641,7 @@ var fliptable_default = /*#__PURE__*/function (_Plugin) {
         //if (td.textContent.replace(/\s+$/, '').length>0) {
 
         var c = this.app.ins('div', '', 'row');
-        if (th) this.app.ins('div', th.textContent, 'hide-desktop', c);
+        if (th) this.app.ins('div', th.textContent, 'hide-desktop row-th', c);
         var v = this.app.ins('div', '', {}, c);
 
         while (td.firstChild) {

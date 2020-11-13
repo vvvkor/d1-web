@@ -1,4 +1,4 @@
-/*! d1-web v2.5.8 */
+/*! d1-web v2.5.9 */
 
 /* @import url("css/columns.css"); */
 /* @import url("css/grid.css"); */
@@ -470,6 +470,7 @@ mark{background-color:var(--bg-warning);}
 		table.let:not(.flip)>*:last-child>tr:last-child>*{border-bottom:none;}
 		form table.flip tr{margin-bottom:var(--gap-s);border:none;}
 		form table.flip tr>*{padding:0;}
+		table.let:not(.flip) .row-th{display:none;}
 	.nav.flip ul{left:3em;top:90%;}
 	.nav:not(.let):not(.flip)>li.shift>ul, .nav:not(.let):not(.flip)>li.shift~li>ul{left:auto;right:0;}
 }

@@ -13,11 +13,18 @@ export default class extends Plugin {
   }
 
   init() {
-    //this.app.e(this.opt.qFlipTable, n => n.closest('form') ? null : this.prepareFlipTable(n)); 
-    this.app.e(this.opt.qFlipTable, n => this.app.q('th', n) ? this.prepareFlipTable(n) : null); 
+    this.app.listen('update', e => e.n.matches(this.opt.qFlipTable) ? this.prepareFlipTable(e.n) : null);
+  }
+  
+  arrange({n}){
+    //this.app.ee(n, this.opt.qFlipTable, n => n.closest('form') ? null : this.prepareFlipTable(n)); 
+    this.app.ee(n, this.opt.qFlipTable, m => this.app.q('th', m) ? this.prepareFlipTable(m) : null); 
   }
 
   prepareFlipTable(t) {
+    if (t.dataset.readyFlip) return;
+    t.dataset.readyFlip = 1;
+    
     let ths = this.app.qq('thead th', t);
     let tds = this.app.qq('tbody tr>*, tfoot tr>*', t);
     // let order = (t.dataset.order || '0 1 2 3').split(/\D+/);
@@ -30,7 +37,7 @@ export default class extends Plugin {
       //td.style.order = ord;
       //if (td.textContent.replace(/\s+$/, '').length>0) {
         let c = this.app.ins('div', '', 'row');
-        if (th) this.app.ins('div', th.textContent, 'hide-desktop', c)
+        if (th) this.app.ins('div', th.textContent, 'hide-desktop row-th', c)
         let v = this.app.ins('div', '', {}, c);
         while (td.firstChild) v.appendChild(td.firstChild);
         td.textContent = '';
