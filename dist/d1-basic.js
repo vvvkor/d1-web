@@ -1,4 +1,4 @@
-/*! d1-web v2.5.10 */
+/*! d1-web v2.5.11 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -823,8 +823,8 @@ var _default = /*#__PURE__*/function (_Plugin) {
         return _this3.tgl(m, 0);
       }); //undup tabs
 
-      app.ee(n, this.opt.qTab + ':first-child', function (m) {
-        return app.a(m.parentNode.children).filter(function (m) {
+      app.ee(n, this.opt.qTab + ':first-of-type', function (m) {
+        return app.qq(_this3.opt.qTab, m.parentNode).filter(function (m) {
           return app.vis(m);
         }).length ? null : _this3.tgl(app.q(app.q('a[href^="#"]', m.parentNode.previousElementSibling).hash), 1);
       }); //inactive tabs: show first
