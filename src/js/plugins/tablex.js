@@ -1,6 +1,6 @@
 /*! tablex - filter and sort HTML table */
 
-// table.sort.totals.filter[data-filter][data-filter-report][data-case][data-filter-cols]
+// table.sort.totals.filter[data-q][data-filter][data-filter-report][data-case][data-filter-cols]
 
 import Plugin from './plugin.js';
 import Dt from '../util/dt.js';
@@ -105,6 +105,7 @@ export default class extends Plugin {
     if (n.vLimit && tb.rows.length>n.vLimit) this.addPageNav(n);
     
     if (n.vInp) {
+      if ('q' in n.dataset) n.vInp.value = n.dataset.q;
       //n.vInp.onsearch = n.vInp.onkeyup = this.doFilter.bind(this,n);
       //1.
       //if (!n.vInp.vListen) n.vInp.addEventListener('input', this.doFilter.bind(this, n), false);

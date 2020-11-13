@@ -1,4 +1,4 @@
-/*! d1-web v2.5.4 */
+/*! d1-web v2.5.5 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -1092,7 +1092,12 @@ var _default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "beforeClick",
     value: function beforeClick(e) {
-      this.unpop(e.target, true); //this.addHistory();
+      if (location.hash) {
+        var d = this.app.q(location.hash);
+        if (!d || d.matches(this.opt.qUnpopOn) && !d.contains(e.target)) this.addHistory();
+      }
+
+      this.unpop(e.target, true);
     }
   }, {
     key: "onClickHash",
@@ -4636,7 +4641,7 @@ function tablex_isNativeReflectConstruct() { if (typeof Reflect === "undefined" 
 function tablex_getPrototypeOf(o) { tablex_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return tablex_getPrototypeOf(o); }
 
 /*! tablex - filter and sort HTML table */
-// table.sort.totals.filter[data-filter][data-filter-report][data-case][data-filter-cols]
+// table.sort.totals.filter[data-q][data-filter][data-filter-report][data-case][data-filter-cols]
 
 
 
@@ -4778,10 +4783,11 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
       if (n.vLimit && tb.rows.length > n.vLimit) this.addPageNav(n);
 
       if (n.vInp) {
-        //n.vInp.onsearch = n.vInp.onkeyup = this.doFilter.bind(this,n);
+        if ('q' in n.dataset) n.vInp.value = n.dataset.q; //n.vInp.onsearch = n.vInp.onkeyup = this.doFilter.bind(this,n);
         //1.
         //if (!n.vInp.vListen) n.vInp.addEventListener('input', this.doFilter.bind(this, n), false);
         //2.
+
         var f = func["a" /* default */].debounce(this.doFilter.bind(this), this.opt.wait);
         if (!n.vInp.vListen) this.app.b([n.vInp], 'input', function (e) {
           return f(n);
@@ -5951,7 +5957,7 @@ var scroll_default = /*#__PURE__*/function (_Plugin) {
           return ons();
         });
         this.app.listen('ready', function (e) {
-          return _this2.decorateAll(-1);
+          return _this2.decorateAll(window.scrollY || (location.hash ? 1 : 0), -1);
         }); // show; forces reflow
       }
     }
@@ -5972,12 +5978,12 @@ var scroll_default = /*#__PURE__*/function (_Plugin) {
 
   }, {
     key: "onScroll",
-    value: function onScroll(force) {
-      if (force || this.h === document.body.clientHeight) {
+    value: function onScroll() {
+      if (this.h === document.body.clientHeight) {
         var dy = window.scrollY === null ? null : this.y === null ? -1 : window.scrollY - this.y; // "-" = up, show
 
         this.app.dbg(['scroll', window.scrollY, dy]);
-        this.decorateAll(dy);
+        this.decorateAll(window.scrollY, dy);
       }
 
       this.h = document.body.clientHeight;
@@ -5985,17 +5991,16 @@ var scroll_default = /*#__PURE__*/function (_Plugin) {
     }
   }, {
     key: "decorateAll",
-    value: function decorateAll(dy) {
+    value: function decorateAll(y, dy) {
       var _this3 = this;
 
       if (this.opt.qTopbar && dy) this.app.e(this.opt.qTopbar, function (n) {
-        return _this3.decorate(n, window.scrollY, dy);
+        return _this3.decorate(n, y, dy);
       }); //if (this.opt.qHideOnScroll) this.app.e(this.opt.qHideOnScroll, n => this.app.toggle(n, false));
     }
   }, {
     key: "decorate",
     value: function decorate(n, y, dy) {
-      // console.log(this.h, y, dy);
       n.classList[dy > 0 && y > n.offsetHeight ? 'add' : 'remove'](this.app.opt.cOff);
       n.classList[y
       /*&& dy <= 0*/

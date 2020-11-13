@@ -1,4 +1,4 @@
-/*! d1-web v2.5.4 */
+/*! d1-web v2.5.5 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -958,7 +958,12 @@ var _default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "beforeClick",
     value: function beforeClick(e) {
-      this.unpop(e.target, true); //this.addHistory();
+      if (location.hash) {
+        var d = this.app.q(location.hash);
+        if (!d || d.matches(this.opt.qUnpopOn) && !d.contains(e.target)) this.addHistory();
+      }
+
+      this.unpop(e.target, true);
     }
   }, {
     key: "onClickHash",

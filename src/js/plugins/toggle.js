@@ -179,8 +179,11 @@ export default class extends Plugin{
   }
   
   beforeClick(e) {
+    if (location.hash) {
+      const d = this.app.q(location.hash);
+      if (!d || (d.matches(this.opt.qUnpopOn) && !d.contains(e.target))) this.addHistory();
+    }
     this.unpop(e.target, true);
-    //this.addHistory();
   }
 
   onClickHash(e) {
