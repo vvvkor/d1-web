@@ -1,4 +1,4 @@
-/*! d1-web v2.5.6 */
+/*! d1-web v2.5.7 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -3593,27 +3593,26 @@ var icons_default = /*#__PURE__*/function (_Plugin) {
   _createClass(_default, [{
     key: "init",
     value: function init() {
-      var _this2 = this;
-
       document.body.classList.add('js-icons');
-      this.app.listen('active', function (e) {
-        return _this2.iconize(e.n, e.on);
-      });
     }
   }, {
     key: "arrange",
     value: function arrange(_ref) {
-      var _this3 = this;
+      var _this2 = this;
 
       var n = _ref.n;
+      if (!n) this.app.listen('active', function (e) {
+        return _this2.iconize(e.n, e.on);
+      }); // as soon as possible
+
       this.app.ee(n, '[class*="' + this.opt.pIcon + '"]', function (n) {
-        return _this3.iconize(n);
+        return _this2.iconize(n);
       });
       this.app.ee(n, '[class*="' + this.opt.pIcon + '"]', function (n) {
-        return _this3.iconize(n);
+        return _this2.iconize(n);
       });
       this.app.ee(n, this.opt.qReplace, function (n) {
-        return _this3.replace(n);
+        return _this2.replace(n);
       });
     }
   }, {
@@ -3695,10 +3694,10 @@ var icons_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "replace",
     value: function replace(n) {
-      var _this4 = this;
+      var _this3 = this;
 
       this.app.ee(n, '*', function (m) {
-        return _this4.replaceItem(m, n);
+        return _this3.replaceItem(m, n);
       });
     }
   }, {

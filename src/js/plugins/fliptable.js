@@ -8,7 +8,7 @@ export default class extends Plugin {
     super('fliptable')
 
     this.opt = {
-      qFlipTable: 'table.flip',
+      qFlipTable: 'table.flip, table.can-flip',
     };
   }
 

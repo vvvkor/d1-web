@@ -1,4 +1,4 @@
-/*! d1-web v2.5.6 */
+/*! d1-web v2.5.7 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -3593,27 +3593,26 @@ var icons_default = /*#__PURE__*/function (_Plugin) {
   _createClass(_default, [{
     key: "init",
     value: function init() {
-      var _this2 = this;
-
       document.body.classList.add('js-icons');
-      this.app.listen('active', function (e) {
-        return _this2.iconize(e.n, e.on);
-      });
     }
   }, {
     key: "arrange",
     value: function arrange(_ref) {
-      var _this3 = this;
+      var _this2 = this;
 
       var n = _ref.n;
+      if (!n) this.app.listen('active', function (e) {
+        return _this2.iconize(e.n, e.on);
+      }); // as soon as possible
+
       this.app.ee(n, '[class*="' + this.opt.pIcon + '"]', function (n) {
-        return _this3.iconize(n);
+        return _this2.iconize(n);
       });
       this.app.ee(n, '[class*="' + this.opt.pIcon + '"]', function (n) {
-        return _this3.iconize(n);
+        return _this2.iconize(n);
       });
       this.app.ee(n, this.opt.qReplace, function (n) {
-        return _this3.replace(n);
+        return _this2.replace(n);
       });
     }
   }, {
@@ -3695,10 +3694,10 @@ var icons_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "replace",
     value: function replace(n) {
-      var _this4 = this;
+      var _this3 = this;
 
       this.app.ee(n, '*', function (m) {
-        return _this4.replaceItem(m, n);
+        return _this3.replaceItem(m, n);
       });
     }
   }, {
@@ -4230,6 +4229,7 @@ var tools_default = /*#__PURE__*/function (_Plugin) {
       cMem: 'mem',
       qHeading: 'h2[id], h3[id], h4[id], h5[id], h6[id]',
       // h1[id],
+      qSet: '[data-set], [data-nodes]',
       minDesktop: 900
     };
     return _this;
@@ -4240,12 +4240,10 @@ var tools_default = /*#__PURE__*/function (_Plugin) {
     value: function init() {
       var _this2 = this;
 
-      this.opt.qSetChange = 'input[data-nodes], select[data-nodes]';
-      this.opt.qSetClick = 'a[data-set]';
-      this.app.h('change', this.opt.qSetChange, function (e) {
+      this.app.h('change', 'input[data-nodes], select[data-nodes]', function (e) {
         return _this2.toggleClass(e.target);
       });
-      this.app.h('click', this.opt.qSetClick, function (e) {
+      this.app.h('click', 'a[data-set]', function (e) {
         return _this2.toggleClass(e.recv, e);
       });
       this.app.b([window], 'resize', function (e) {
@@ -4258,12 +4256,11 @@ var tools_default = /*#__PURE__*/function (_Plugin) {
       var _this3 = this;
 
       var n = _ref.n;
-      this.opt.qSet = '[data-set], [data-nodes]';
-      this.app.ee(n, 'table[class]', function (m) {
-        return _this3.alignCells(m);
-      });
       this.app.ee(n, this.opt.qSet, function (m) {
         return _this3.restore(m);
+      });
+      this.app.ee(n, 'table[class]', function (m) {
+        return _this3.alignCells(m);
       });
       this.app.ee(n, this.opt.qSet, function (m) {
         return _this3.toggleClass(m);
@@ -4307,7 +4304,14 @@ var tools_default = /*#__PURE__*/function (_Plugin) {
 
         if (v !== null) {
           var t = n.tagName;
-          if (t == 'A') n.classList[v ? 'add' : 'remove'](this.app.opt.cAct);else if (t == 'SELECT') n.value = v;else if (n.type == 'checkbox') n.checked = !!v;else if (n.type == 'radio') n.checked = n.value == v;
+
+          if (t == 'A') {
+            n.classList[v ? 'add' : 'remove'](this.app.opt.cAct);
+            this.app.fire('active', {
+              n: n,
+              on: v
+            });
+          } else if (t == 'SELECT') n.value = v;else if (n.type == 'checkbox') n.checked = !!v;else if (n.type == 'radio') n.checked = n.value == v;
         }
       }
     }
@@ -5594,7 +5598,7 @@ var fliptable_default = /*#__PURE__*/function (_Plugin) {
 
     _this = _super.call(this, 'fliptable');
     _this.opt = {
-      qFlipTable: 'table.flip'
+      qFlipTable: 'table.flip, table.can-flip'
     };
     return _this;
   }

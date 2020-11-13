@@ -14,10 +14,10 @@
 		-->
 		
 	<!-- CDN -->
-		<link href="https://unpkg.com/d1-web@2.5.6/dist/d1.min.css" rel="stylesheet">
-		<script src="https://unpkg.com/d1-web@2.5.6/dist/d1.min.js" defer></script>
+		<link href="https://unpkg.com/d1-web@2.5.7/dist/d1.min.css" rel="stylesheet">
+		<script src="https://unpkg.com/d1-web@2.5.7/dist/d1.min.js" defer></script>
 		<noscript>
-			<link href="https://unpkg.com/d1-web@2.5.6/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://unpkg.com/d1-web@2.5.7/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- local-module (test with no need to compile) ->
 		<link href="../src/index.css" rel="stylesheet">
@@ -46,10 +46,10 @@
 <nav class="stick let toggle">
 <div class="hide-desktop pad">
 	<a href="#nav" class="icon-menu act-icon-delete empty" title="Navigation"><span>Navigation</span></a>
-	<a href="demo.html" class="pad"><b>d1</b></a> <span class="text-n">v2.5.6</span>
+	<a href="demo.html" class="pad"><b>d1</b></a> <span class="text-n">v2.5.7</span>
 </div>
 <ul id="nav" class="nav flip hover target-mobile">
-<li><a href="demo.html"><b>d1</b> <span class="text-n">v2.5.6</span></a>
+<li><a href="demo.html"><b>d1</b> <span class="text-n">v2.5.7</span></a>
 <li><a href="#1">Sections</a>
 	<ul>
 	<li><a href="#menu" class="icon-open">Drawer</a>
@@ -86,7 +86,6 @@
 	<p>by Vadim Korolev<br><a href="mailto:vadimkor@yandex.ru">vadimkor@yandex.ru</a></p>
 </div>
 
-<div class="read center pad">
 
 <!-- drawer, swipe -->
 
@@ -114,26 +113,35 @@
 			<li><label><input class="mem" type="radio" name="text" data-nodes="main" value="text-e"> Red</label>
 			</ul>
 		<li><a href="#" id="set-small" class="icon-text mem" data-nodes="main" data-set="small">Small</a>
-		<li><a href="#alert" class="icon-tag">Sticky alert</a>
+		<!--li><a href="#alert" class="icon-tag">Sticky alert</a-->
 		<!--li><a href="#" id="set-topbar" class="icon-desc mem" data-nodes="#topbar" data-set="topbar small toggle row" data-unset="topbar hide">Topbar</a-->
 		</ul>
 		</form>
 	</div>
 </div>
 
-<!-- ? tabs, tip, code, filter, sticky -->
+<!-- content -->
 
-<div id="alert" class="target">
-<div class="stick bord icon-ok bg-y pad rad text-y">
+<div class="read center pad">
+
+<!-- sticky -->
+
+<!--div class="stick">
+<div id="alert" class="target bord icon-ok bg-y pad rad text-y">
 	Alert
 	<a href="#cancel" class="close icon-close empty pad"><span>Close</span></a>
 </div>
-</div>
+</div-->
 
 <!-- gallery -->
 
-<h2 id="gallery">Gallery</h2>
-<div class="grid-4 grid-2-mobile grid-1-phone gallery let">
+<h2 id="gallery">Gallery
+	<a href="#gal" id="a-gal"
+		class="mem hide-desktop small text-n icon-grid act-icon-menu empty"
+		data-set="grid-4 grid-2-mobile grid-1-phone gallery let"
+		data-unset="grid-4 grid-4-mobile grid-2-phone gallery let"></a>
+</h2>
+<div id="gal" class="grid-4 grid-4-mobile grid-2-phone gallery let">
 	<a class="pic tip c" href="https://picsum.photos/id/715/800/500.jpg" title="Red"><img src="https://picsum.photos/id/715/400/200.jpg" alt=""></a>
 	<a class="pic tip c" href="https://picsum.photos/id/1018/800/500.jpg" title="Green"><img src="https://picsum.photos/id/1018/400/200.jpg" alt=""></a>
 	<a class="pic tip c" href="https://picsum.photos/id/575/800/500.jpg" title="Blue"><img src="https://picsum.photos/id/575/400/200.jpg" alt=""></a>
@@ -142,10 +150,14 @@
 
 <!-- table, check all, replace icons, bars, tablex -->
 
-<h2 id="table">Table</h2>
+<h2 id="table">Table
+	<a href="#tbl" id="a-tbl"
+		class="mem hide-desktop small text-n icon-grid act-icon-menu empty"
+		data-set="flip"></a>
+</h2>
 <form>
 <div class="roll">
-<table class="hover let shift sort filter totals flip replace" data-q-x="w">
+<table id="tbl" class="hover let shift sort filter totals replace can-flip" data-q-x="w">
 	<thead>
 		<tr><th><input type="checkbox" data-group="bulk"><th>#<th>Icon<th>Text<th>Bar
 	</thead>
@@ -161,9 +173,13 @@
 </form>
 
 <!-- form, set-val/hint, invert, lookup/fetch/gen-modal, edit/typo, fieldset/toggle, color/prompt, pickfile, submit/confirm -->
-<h2 id="form">Form</h2>
+<h2 id="form">Form
+	<a href="#frm" id="a-frm"
+		class="mem act hide-desktop small text-n icon-grid act-icon-menu empty"
+		data-set="flip"></a>
+</h2>
 <form method="post" action="?#form" enctype="multipart/form-data" class="js-unhint">
-<table class="flip shift">
+<table id="frm" class="flip shift">
 <tr>
 	<td><label for="in-text">Name</label>
 	<td><input type="text" id="in-text" name="name" required pattern="[A-Za-z]+" size="15">
@@ -199,7 +215,7 @@
 <fieldset class="-bord -pad -fit">
 <legend class="-pad -mar -bg"><a id="advanced" href="#adv" class="icon-down act-icon-no">Advanced</a></legend>
 <div id="adv" class="mem target">
-		<table class="flip shift">
+		<table class="-flip shift">
 		<tr>
 			<td><label for="in-color">Color</label>
 			<td><input type="color" id="in-color" name="color" value="#0066cc">
@@ -221,7 +237,13 @@
 
 <!-- grid, items, set class -->
 
-<h2 id="grid">Grid</h2>
+<h2 id="grid">Grid
+	<a href="#grd" id="a-grd"
+		class="mem act hide-desktop small text-n icon-grid act-icon-menu empty"
+		data-nodes="#grd .row"
+		data-set="flip"></a>
+</h2>
+	<div id="grd">
 	<div class="row flip mar item hide-nojs">
 		<div class="col-0 pad bord">
 			<div class="row">
@@ -260,6 +282,7 @@
 				</div>
 			</div>
 		</div>
+	</div>
 	</div>
 	
 	<div class="hide-js">

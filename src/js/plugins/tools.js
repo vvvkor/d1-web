@@ -10,22 +10,20 @@ export default class extends Plugin {
     this.opt = {
       cMem: 'mem',
       qHeading: 'h2[id], h3[id], h4[id], h5[id], h6[id]', // h1[id],
+      qSet: '[data-set], [data-nodes]',
       minDesktop: 900
     };
   }
   
   init() {
-    this.opt.qSetChange = 'input[data-nodes], select[data-nodes]';
-    this.opt.qSetClick = 'a[data-set]';
-    this.app.h('change', this.opt.qSetChange, e => this.toggleClass(e.target));
-    this.app.h('click', this.opt.qSetClick, e => this.toggleClass(e.recv, e));
+    this.app.h('change', 'input[data-nodes], select[data-nodes]', e => this.toggleClass(e.target));
+    this.app.h('click', 'a[data-set]', e => this.toggleClass(e.recv, e));
     this.app.b([window], 'resize', e => this.onResize(e));
   }
   
   arrange({n}) {
-    this.opt.qSet = '[data-set], [data-nodes]';
-    this.app.ee(n, 'table[class]', m => this.alignCells(m));
     this.app.ee(n, this.opt.qSet, m => this.restore(m));
+    this.app.ee(n, 'table[class]', m => this.alignCells(m));
     this.app.ee(n, this.opt.qSet, m => this.toggleClass(m));
     this.app.ee(n, this.opt.qHeading, m => this.smartHeading(m));
     this.onResize();
@@ -51,7 +49,10 @@ export default class extends Plugin {
       let v = localStorage.getItem('set#' + (n.id || '#' + n.name));
       if (v !== null) {
         let t = n.tagName;
-        if (t == 'A') n.classList[v ? 'add' : 'remove'](this.app.opt.cAct);
+        if (t == 'A'){
+          n.classList[v ? 'add' : 'remove'](this.app.opt.cAct);
+          this.app.fire('active', {n, on: v});
+        }
         else if (t == 'SELECT') n.value = v;
         else if (n.type == 'checkbox') n.checked = !!v;
         else if (n.type == 'radio') n.checked = (n.value == v);
