@@ -1,4 +1,4 @@
-/*! d1-web v2.5.11 */
+/*! d1-web v2.5.12 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -5634,7 +5634,7 @@ var fliptable_default = /*#__PURE__*/function (_Plugin) {
         //if (td.textContent.replace(/\s+$/, '').length>0) {
 
         var c = this.app.ins('div', '', 'row');
-        if (th) this.app.ins('div', th.textContent, 'hide-desktop row-th', c);
+        if (th) this.app.ins('div', th.textContent, 'hide-desktop cell-head', c);
         var v = this.app.ins('div', '', {}, c);
 
         while (td.firstChild) {

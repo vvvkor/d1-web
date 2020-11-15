@@ -1,4 +1,4 @@
-/*! d1-web v2.5.11 */
+/*! d1-web v2.5.12 */
 
 :root, .invert .invert {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -678,9 +678,10 @@ ul.nav, .nav ul {
 .hide[class], [class*="not-"], .or:not([class*="or-"]), .gal>*, a.act>.is-off,
 a:not(.act)>.is-on, .target:not(:target),
 .tabs+div>div:not(:target):not(:last-child):not(.toggle),
-.tabs+div>div:target:not(.toggle)~*, .dlg:not(:target):not(.toggle),
-.nav li:not(:hover)>ul:not(.toggle), .pop:not(:hover)>div:not(.toggle),
-.js .toggle.off:not(.stick):not(.drawer), .js .hide-js, body:not(.js) .hide-nojs {
+.tabs+div>div:target:not(.toggle)~*, .tabs+div.bord>hr,
+.dlg:not(:target):not(.toggle), .nav li:not(:hover)>ul:not(.toggle),
+.pop:not(:hover)>div:not(.toggle), .js .toggle.off:not(.stick):not(.drawer),
+.js .hide-js, body:not(.js) .hide-nojs {
     display: none;
 }
 
@@ -879,7 +880,7 @@ mark {
         padding: 0;
     }
 
-    table.let:not(.flip) .row-th {
+    table:not(.flip) .cell-head {
         display: none;
     }
 

@@ -14,10 +14,10 @@
 		-->
 		
 	<!-- CDN -->
-		<link href="https://unpkg.com/d1-web@2.5.11/dist/d1.min.css" rel="stylesheet">
-		<script src="https://unpkg.com/d1-web@2.5.11/dist/d1.min.js" defer></script>
+		<link href="https://unpkg.com/d1-web@2.5.12/dist/d1.min.css" rel="stylesheet">
+		<script src="https://unpkg.com/d1-web@2.5.12/dist/d1.min.js" defer></script>
 		<noscript>
-			<link href="https://unpkg.com/d1-web@2.5.11/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://unpkg.com/d1-web@2.5.12/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- local-module (test with no need to compile) ->
 		<link href="../src/index.css" rel="stylesheet">
@@ -46,10 +46,10 @@
 <nav class="stick let toggle">
 <div class="hide-desktop pad">
 	<a href="#nav" class="icon-menu act-icon-delete empty" title="Navigation"><span>Navigation</span></a>
-	<a href="demo.html" class="pad"><b>d1</b></a> <span class="text-n">v2.5.11</span>
+	<a href="demo.html" class="pad"><b>d1</b></a> <span class="text-n">v2.5.12</span>
 </div>
 <ul id="nav" class="nav flip hover target-mobile">
-<li><a href="demo.html"><b>d1</b> <span class="text-n">v2.5.11</span></a>
+<li><a href="demo.html"><b>d1</b> <span class="text-n">v2.5.12</span></a>
 <li><a href="#1">Sections</a>
 	<ul>
 	<li><a href="#menu" class="icon-open">Drawer</a>
@@ -137,23 +137,33 @@
 
 <h2 id="gallery">Gallery
 	<a href="#gal" id="a-gal"
+		title="Columns"
 		class="mem hide-desktop small text-n icon-grid act-icon-menu empty"
 		data-set="grid-4 grid-2-mobile grid-1-phone gallery let"
 		data-unset="grid-4 grid-4-mobile grid-2-phone gallery let"></a>
+	<a href="#gal" id="a-gal-let"
+		title="Gap"
+		class="act mem small text-n icon-expand act-icon-no empty"
+		data-set="let"></a>
 </h2>
 <div id="gal" class="grid-4 grid-4-mobile grid-2-phone gallery let">
-	<a class="pic tip c" href="https://picsum.photos/id/715/800/500.jpg" title="Red"><img src="https://picsum.photos/id/715/400/200.jpg" alt=""></a>
-	<a class="pic tip c" href="https://picsum.photos/id/1018/800/500.jpg" title="Green"><img src="https://picsum.photos/id/1018/400/200.jpg" alt=""></a>
-	<a class="pic tip c" href="https://picsum.photos/id/575/800/500.jpg" title="Blue"><img src="https://picsum.photos/id/575/400/200.jpg" alt=""></a>
-	<a class="pic tip c" href="https://picsum.photos/id/1021/800/500.jpg" title="Grey"><img src="https://picsum.photos/id/1021/400/200.jpg" alt=""></a>
+	<a class="pic tip c" href="https://picsum.photos/id/715/800/500.jpg"  title="Red"  ><img class="fit" src="https://picsum.photos/id/715/400/200.jpg" alt=""></a>
+	<a class="pic tip c" href="https://picsum.photos/id/1018/800/500.jpg" title="Green"><img class="fit" src="https://picsum.photos/id/1018/400/200.jpg" alt=""></a>
+	<a class="pic tip c" href="https://picsum.photos/id/575/800/500.jpg"  title="Blue" ><img class="fit" src="https://picsum.photos/id/575/400/200.jpg" alt=""></a>
+	<a class="pic tip c" href="https://picsum.photos/id/1021/800/500.jpg" title="Grey" ><img class="fit" src="https://picsum.photos/id/1021/400/200.jpg" alt=""></a>
 </div>
 
 <!-- table, check all, replace icons, bars, tablex -->
 
 <h2 id="table">Table
 	<a href="#tbl" id="a-tbl"
+		title="Responsive"
 		class="mem hide-desktop small text-n icon-grid act-icon-menu empty"
 		data-set="flip"></a>
+	<a href="#tbl" id="a-tbl-bord"
+		title="Borders and width"
+		class="mem small text-n icon-no act-icon-expand empty"
+		data-set="bord shift"></a>
 </h2>
 <form>
 <div class="roll">
@@ -174,12 +184,17 @@
 
 <!-- form, set-val/hint, invert, lookup/fetch/gen-modal, edit/typo, fieldset/toggle, color/prompt, pickfile, submit/confirm -->
 <h2 id="form">Form
-	<a href="#frm" id="a-frm"
+	<a href="#ftab" id="a-ftab"
+		title="Responsive"
 		class="mem act hide-desktop small text-n icon-grid act-icon-menu empty"
 		data-set="flip"></a>
+	<a href="#frm" id="a-frm"
+		title="Background"
+		class="mem small text-n icon-no act-icon-expand empty"
+		data-set="bg pad rad"></a>
 </h2>
-<form method="post" action="?#form" enctype="multipart/form-data" class="js-unhint">
-<table id="frm" class="flip shift">
+<form id="frm" method="post" action="?#form" enctype="multipart/form-data" class="js-unhint">
+<table id="ftab" class="flip shift">
 <tr>
 	<td><label for="in-text">Name</label>
 	<td><input type="text" id="in-text" name="name" required pattern="[A-Za-z]+" size="15">
@@ -239,9 +254,15 @@
 
 <h2 id="grid">Grid
 	<a href="#grd" id="a-grd"
+		title="Responsive"
 		class="mem act hide-desktop small text-n icon-grid act-icon-menu empty"
-		data-nodes="#grd .row"
+		data-nodes="#grd>.row"
 		data-set="flip"></a>
+	<a href="#grd" id="a-grd-fit"
+		title="Gap"
+		class="mem small text-n icon-no act-icon-expand empty"
+		data-nodes="#grd>.row"
+		data-set="fit"></a>
 </h2>
 	<div id="grd">
 	<div class="row flip mar item hide-nojs">
@@ -305,8 +326,14 @@
 
 <!-- code -->
 
-<h2 id="tabs">Tabs</h2>
-<ul class="nav tabs mem hover rad roll -scroller">
+<h2 id="tabs">Tabs
+	<a href="#tbs" id="a-tbs-bord"
+		title="Border"
+		class="mem small text-n icon-no act-icon-expand empty"
+		data-nodes="#tbs+div"
+		data-set="bord pad"></a>
+</h2>
+<ul id="tbs" class="nav tabs mem hover rad roll -scroller">
 <li><a href="#tab1" class="icon-folder act-icon-open">List</a>
 <li><a href="#tab2" class="icon-image act-icon-heart">Figure</a>
 <li><a href="#tab3" class="icon-warning act-icon-energy">Quote</a>
@@ -320,8 +347,14 @@
 
 <!-- code -->
 
-<h2 id="code">Code</h2>
-<pre><code class="language-html">&lt;!-- d1-web --&gt;
+<h2 id="code">Code
+	<a href="#cod" id="a-cod-bord"
+		title="Border"
+		class="mem small text-n icon-no act-icon-expand empty"
+		data-nodes="#cod"
+		data-set="bord"></a>
+</h2>
+<pre id="cod"><code class="language-html">&lt;!-- d1-web --&gt;
 &lt;link href="https://unpkg.com/d1-web" rel="stylesheet"&gt;
 &lt;script src="https://unpkg.com/d1-web/dist/d1.min.js"&gt;&lt;/script&gt;
 &lt;noscript&gt;

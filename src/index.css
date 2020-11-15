@@ -366,6 +366,7 @@ a.act>.is-off, a:not(.act)>.is-on,
 .target:not(:target),/*:not(.toggle)*/ /* .target[id] */
 .tabs+div>div:not(:target):not(:last-child):not(.toggle), /* .tabs+div>[id] */
       .tabs+div>div:target:not(.toggle)~*, /* tabs undup*/
+			.tabs+div.bord>hr,
 	  .dlg:not(:target):not(.toggle), /* .dlg[id] */
    /*.drawer:not(:target):not(.toggle), /* .drawer[id] */
   /*.tree ul:not(.toggle):not(:target), /* .tree ul (auto id) */
@@ -470,7 +471,7 @@ mark{background-color:var(--bg-warning);}
 		table.let:not(.flip)>*:last-child>tr:last-child>*{border-bottom:none;}
 		form table.flip tr{margin-bottom:var(--gap-s);border:none;}
 		form table.flip tr>*{padding:0;}
-		table.let:not(.flip) .row-th{display:none;}
+		table:not(.flip) .cell-head{display:none;}
 	.nav.flip ul{left:3em;top:90%;}
 	.nav:not(.let):not(.flip)>li.shift>ul, .nav:not(.let):not(.flip)>li.shift~li>ul{left:auto;right:0;}
 }
