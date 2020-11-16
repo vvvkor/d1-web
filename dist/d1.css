@@ -1,4 +1,4 @@
-/*! d1-web v2.5.12 */
+/*! d1-web v2.5.14 */
 
 :root, .invert .invert {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -137,8 +137,12 @@ input, button, select, textarea, table {
     font: inherit;
 }
 
+html {
+    font-size: 120%;
+}
+
 body {
-    font: 120%/1.5 sans-serif;
+    font: 100%/1.5 sans-serif;
     font-family: var(--font);
 }
 
@@ -148,7 +152,7 @@ body, .invert {
 }
 
 small, .small {
-    font-size: 85%;
+    font-size: 83%;
     font-weight: normal;
 }
 
@@ -200,6 +204,10 @@ h5 {
 
 h6 {
     font-size: 67%;
+}
+
+h1 small, h2 small, h3 small {
+    font-size: .83rem;
 }
 
 blockquote, pre {
@@ -851,6 +859,10 @@ mark {
         margin-bottom: var(--gap-n);
     }
 
+    table.flip[class] {
+        border-width: 0;
+    }
+
     table.flip caption, table.flip thead, table.flip tbody, table.flip tfoot,
     table.flip tr, table.flip tr>* {
         display: block;
@@ -864,6 +876,7 @@ mark {
     }
 
     table.flip.let tr>* {
+        border: none;
         border-bottom: var(--border);
     }
 
@@ -871,16 +884,16 @@ mark {
         border-bottom: none;
     }
 
-    form table.flip tr {
+    form table.flip:not(.bord) tr {
         margin-bottom: var(--gap-s);
         border: none;
     }
 
-    form table.flip tr>* {
+    form table.flip:not(.bord) tr>* {
         padding: 0;
     }
 
-    table:not(.flip) .cell-head {
+    table:not(.flip) .cell-head, .js table.flip thead {
         display: none;
     }
 

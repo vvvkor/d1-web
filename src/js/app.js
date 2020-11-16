@@ -27,6 +27,7 @@ export default class {
   }
 
   init(opt) {
+    //console.time('start');
     document.body.classList.add(this.opt.cJs) // prepare body: anti-hover, anti-target
     this.fire('start')
     //options
@@ -82,8 +83,8 @@ export default class {
       this.plugins[k].install(this)
       this.fire('plugin', {name: k, plugin: this.plugins[k]})
     })
-    this.fire('arrange') // , {n: document.body}
     this.fire('init')
+    this.fire('arrange') // , {n: document.body}
     this.fire('plugins')
   }
   
@@ -225,6 +226,12 @@ export default class {
     this.e(this.qq(q, n), f)
   }
   
+  // add/remove classes
+  cls(n, c, del) {
+    if (this.typeOf(c) !== 'array') c = (c || '').split(/\s+/).filter(x => x);
+    n.classList[del ? 'remove' : 'add'](...c);
+  }
+
   typeOf(v) {
     return Object.prototype.toString.call(v).slice(8, -1).toLowerCase()
   }

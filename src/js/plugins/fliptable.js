@@ -13,7 +13,7 @@ export default class extends Plugin {
   }
 
   init() {
-    this.app.listen('update', e => e.n.matches(this.opt.qFlipTable) ? this.prepareFlipTable(e.n) : null);
+    this.app.listen('update', e => e.n?.matches(this.opt.qFlipTable) ? this.prepareFlipTable(e.n) : null);
   }
   
   arrange({n}) {
@@ -45,7 +45,7 @@ export default class extends Plugin {
         if (!('val' in td.dataset)) td.dataset.val = v.textContent.replace(/^\s+|\s+$/g, '');
       //}
     }
-    this.app.ee(t, 'thead', n => n.classList.add('hide-mobile'));
+    //this.app.ee(t, 'thead', n => n.classList.add('hide-mobile'));
   }
 
 }

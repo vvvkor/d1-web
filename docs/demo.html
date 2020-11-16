@@ -14,10 +14,10 @@
 		-->
 		
 	<!-- CDN -->
-		<link href="https://unpkg.com/d1-web@2.5.12/dist/d1.min.css" rel="stylesheet">
-		<script src="https://unpkg.com/d1-web@2.5.12/dist/d1.min.js" defer></script>
+		<link href="https://unpkg.com/d1-web@2.5.14/dist/d1.min.css" rel="stylesheet">
+		<script src="https://unpkg.com/d1-web@2.5.14/dist/d1.min.js" defer></script>
 		<noscript>
-			<link href="https://unpkg.com/d1-web@2.5.12/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://unpkg.com/d1-web@2.5.14/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- local-module (test with no need to compile) ->
 		<link href="../src/index.css" rel="stylesheet">
@@ -46,10 +46,10 @@
 <nav class="stick let toggle">
 <div class="hide-desktop pad">
 	<a href="#nav" class="icon-menu act-icon-delete empty" title="Navigation"><span>Navigation</span></a>
-	<a href="demo.html" class="pad"><b>d1</b></a> <span class="text-n">v2.5.12</span>
+	<a href="demo.html" class="pad"><b>d1</b></a> <span class="text-n">v2.5.14</span>
 </div>
 <ul id="nav" class="nav flip hover target-mobile">
-<li><a href="demo.html"><b>d1</b> <span class="text-n">v2.5.12</span></a>
+<li><a href="demo.html"><b>d1</b> <span class="text-n">v2.5.14</span></a>
 <li><a href="#1">Sections</a>
 	<ul>
 	<li><a href="#menu" class="icon-open">Drawer</a>
@@ -114,7 +114,7 @@
 			</ul>
 		<li><a href="#" id="set-small" class="icon-text mem" data-nodes="main" data-set="small">Small</a>
 		<!--li><a href="#alert" class="icon-tag">Sticky alert</a-->
-		<!--li><a href="#" id="set-topbar" class="icon-desc mem" data-nodes="#topbar" data-set="topbar small toggle row" data-unset="topbar hide">Topbar</a-->
+		<!--li><a href="#" id="set-topbar" class="icon-desc mem" data-nodes="#topbar" data-set="small toggle row" data-unset="hide">Topbar</a-->
 		</ul>
 		</form>
 	</div>
@@ -133,17 +133,23 @@
 </div>
 </div-->
 
+<h1 class="mar">d1-web demo</h1>
+
 <!-- gallery -->
 
 <h2 id="gallery">Gallery
 	<a href="#gal" id="a-gal"
 		title="Columns"
 		class="mem hide-desktop small text-n icon-grid act-icon-menu empty"
-		data-set="grid-4 grid-2-mobile grid-1-phone gallery let"
-		data-unset="grid-4 grid-4-mobile grid-2-phone gallery let"></a>
+		data-act="text-i"
+		data-inact="inact"
+		data-set="grid-2-mobile grid-1-phone"
+		data-unset="grid-4-mobile grid-2-phone"></a>
 	<a href="#gal" id="a-gal-let"
 		title="Gap"
 		class="act mem small text-n icon-expand act-icon-no empty"
+		data-act="inact"
+		data-inact="text-y"
 		data-set="let"></a>
 </h2>
 <div id="gal" class="grid-4 grid-4-mobile grid-2-phone gallery let">
@@ -228,7 +234,7 @@
 <hr class="fit">
 -->
 <fieldset class="-bord -pad -fit">
-<legend class="-pad -mar -bg"><a id="advanced" href="#adv" class="icon-down act-icon-no">Advanced</a></legend>
+<legend class="-pad -mar -bg"><a id="advanced" href="#adv" class="icon-down act-icon-no pad" data-act="bg-w shade" data-inact="bg bord">Advanced</a></legend>
 <div id="adv" class="mem target">
 		<table class="-flip shift">
 		<tr>
@@ -262,6 +268,7 @@
 		title="Gap"
 		class="mem small text-n icon-no act-icon-expand empty"
 		data-nodes="#grd>.row"
+		data-unset="mar"
 		data-set="fit"></a>
 </h2>
 	<div id="grd">

@@ -69,16 +69,16 @@
 </script>
 
 	<!-- CDN --R E M O V E->
-		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.5.12/dist/d1.min.css" rel="stylesheet">
-		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.5.12/dist/d1.min.js" defer></script>
+		<link href="https://cdn.jsdelivr.net/npm/d1-web@2.5.14/dist/d1.min.css" rel="stylesheet">
+		<script src="https://cdn.jsdelivr.net/npm/d1-web@2.5.14/dist/d1.min.js" defer></script>
 		<noscript>
-			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.5.12/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://cdn.jsdelivr.net/npm/d1-web@2.5.14/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- CDN -->
-		<link href="https://unpkg.com/d1-web@2.5.12/dist/d1.min.css" rel="stylesheet">
-		<script src="https://unpkg.com/d1-web@2.5.12/dist/d1.min.js" defer></script>
+		<link href="https://unpkg.com/d1-web@2.5.14/dist/d1.min.css" rel="stylesheet">
+		<script src="https://unpkg.com/d1-web@2.5.14/dist/d1.min.js" defer></script>
 		<noscript>
-			<link href="https://unpkg.com/d1-web@2.5.12/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://unpkg.com/d1-web@2.5.14/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- local-npm-src REMOVE -- >
 		<link href="../src/index.css" rel="stylesheet">
@@ -102,7 +102,6 @@
 		@import url('https://fonts.googleapis.com/css?family=PT+Serif&display=swap');
 		@import url('https://fonts.googleapis.com/css?family=PT+Mono&display=swap');
 		*/
-		h1 small, h2 small, h3 small{font-size:1.05rem;}
 	</style>
 </head>
 <body class="js-theme swipe"
@@ -118,7 +117,7 @@ data-d1='{"hOk":"#yes","debug":false,"disable":[
 	<a href="#menu" class="pad -let hide-desktop icon-menu empty" title="Menu"><span>Menu</span></a>
 	<a href="#" class="pad -let"><b>d1</b></a>
 	<code class="-pad -nobr hide-mobile">npm i d1-web</code>
-	<a class="shift pad text-n">v2.5.12</a>
+	<a class="shift pad text-n">v2.5.14</a>
 </div>
 <div class="col-0">
 	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1-web" title="GitHub" class="pad -let">GitHub</a>
@@ -320,19 +319,19 @@ Inclusion of <code>d1.js</code> and <code>d1-icons.css</code> is optional.
 </ul>
 <div>
 	<div id="cdn-jsdelivr">
-		<pre><code class="language-html">&lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.5.12/dist/d1.min.css" rel="stylesheet"&gt;
-&lt;script src="https://cdn.jsdelivr.net/npm/d1-web@2.5.12/dist/d1.min.js"&gt;&lt;/script&gt;
+		<pre><code class="language-html">&lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.5.14/dist/d1.min.css" rel="stylesheet"&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/d1-web@2.5.14/dist/d1.min.js"&gt;&lt;/script&gt;
 &lt;noscript&gt;
-  &lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.5.12/dist/d1-icons.min.css" rel="stylesheet"&gt;
+  &lt;link href="https://cdn.jsdelivr.net/npm/d1-web@2.5.14/dist/d1-icons.min.css" rel="stylesheet"&gt;
 &lt;/noscript&gt;
 
 		</code></pre>
 	</div>
 	<div id="cdn-unpkg">
-		<pre><code class="language-html">&lt;link href="https://unpkg.com/d1-web@2.5.12/dist/d1.min.css" rel="stylesheet"&gt;
-&lt;script src="https://unpkg.com/d1-web@2.5.12/dist/d1.min.js"&gt;&lt;/script&gt;
+		<pre><code class="language-html">&lt;link href="https://unpkg.com/d1-web@2.5.14/dist/d1.min.css" rel="stylesheet"&gt;
+&lt;script src="https://unpkg.com/d1-web@2.5.14/dist/d1.min.js"&gt;&lt;/script&gt;
 &lt;noscript&gt;
-  &lt;link href="https://unpkg.com/d1-web@2.5.12/dist/d1-icons.min.css" rel="stylesheet"&gt;
+  &lt;link href="https://unpkg.com/d1-web@2.5.14/dist/d1-icons.min.css" rel="stylesheet"&gt;
 &lt;/noscript&gt		</code></pre>
 	</div>
 	<div id="cdn-unpkg-short">
@@ -439,7 +438,7 @@ By default, they all have equal width.
 <label><input name="grid-center" type="checkbox" data-nodes="#cols" data-set="center"> Center columns vertically <code>.center</code></label><br>
 <label><input name="grid-mar" type="checkbox" data-nodes="#cols" data-set="fit"> Remove horizontal margins <code>.fit</code></label><br>
 <label><input name="grid-mar" type="checkbox" data-nodes="#cols" data-set="mar"> Add vertical margins <code>.mar</code></label><br>
-<label><input name="grid-main-over" type="checkbox" data-nodes="#col-main-over" data-set="bg text-e pad mar nobr" data-unset="hide"> Overflow content</label><br>
+<label><input name="grid-main-over" type="checkbox" data-nodes="#col-main-over" data-set="" data-unset="hide"> Overflow content</label><br>
 <label><input name="grid-let" type="checkbox" data-nodes="#cols" data-set="let"> Allow columns wrapping <code>.let</code></label> (disables column width modifiers, auto width)<br>
 <label><input name="grid-roll" type="checkbox" data-nodes="#cols" data-set="roll scroller"> Allow horizontal scrollbar <code>.roll</code></label>
 </fieldset>
@@ -475,7 +474,7 @@ By default, they all have equal width.
 		<div class="pad bg-y col-2" id="col-main">
 			Central<br>
 			column
-			<div id="col-main-over">
+			<div id="col-main-over" class="bg text-e pad mar nobr">
 				Very wide content &mdash; required to
 				overflow available column width
 			</div>
@@ -1939,8 +1938,13 @@ Toggles on resize.
 		<input type="checkbox" name="chb-hilite-parent" class="mem" data-set="bg-y" data-parent="label" data-nodes="" title="bg"> Highlight parent label
 	</label>
 	<br>
-	
-	<a href="#x" id="red-links" class="mem" data-set="text-e" data-parent="div" data-nodes="a">Red text links in this block</a><br>
+<fieldset class="bord pad mar rad"><legend>Parent background</legend>
+	<label><input type="radio" name="rrr" class="mem" value="" data-parent="fieldset" data-nodes=""> default</label><br>
+	<label><input type="radio" name="rrr" class="mem" value="bg-y" data-parent="fieldset" data-nodes=""> green</label><br>
+	<label><input type="radio" name="rrr" class="mem" value="bg-w" data-parent="fieldset" data-nodes=""> yellow</label><br>
+</fieldset>
+
+	<a href="#x" id="red-links" class="mem" data-set="text-e" data-unset="text-n" data-parent="div" data-nodes="a">Red text links in this block</a><br>
 	
 	<a href="#x" data-set="invert" data-nodes="body">Invert page</a><br>
 	

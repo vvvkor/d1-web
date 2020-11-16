@@ -1,4 +1,4 @@
-/*! d1-web v2.5.12 */
+/*! d1-web v2.5.14 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -341,6 +341,18 @@ var Dt = /*#__PURE__*/function () {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _default; });
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -378,6 +390,7 @@ var _default = /*#__PURE__*/function () {
     value: function init(opt) {
       var _this = this;
 
+      //console.time('start');
       document.body.classList.add(this.opt.cJs); // prepare body: anti-hover, anti-target
 
       this.fire('start'); //options
@@ -461,9 +474,9 @@ var _default = /*#__PURE__*/function () {
           plugin: _this3.plugins[k]
         });
       });
+      this.fire('init');
       this.fire('arrange'); // , {n: document.body}
 
-      this.fire('init');
       this.fire('plugins');
     } // call method of plugin
 
@@ -666,6 +679,18 @@ var _default = /*#__PURE__*/function () {
     key: "ee",
     value: function ee(n, q, f) {
       this.e(this.qq(q, n), f);
+    } // add/remove classes
+
+  }, {
+    key: "cls",
+    value: function cls(n, c, del) {
+      var _n$classList;
+
+      if (this.typeOf(c) !== 'array') c = (c || '').split(/\s+/).filter(function (x) {
+        return x;
+      });
+
+      (_n$classList = n.classList)[del ? 'remove' : 'add'].apply(_n$classList, _toConsumableArray(c));
     }
   }, {
     key: "typeOf",
@@ -893,6 +918,9 @@ var _default = /*#__PURE__*/function (_Plugin) {
         return _this2.esc(e);
       }); //click #cancel, hash #cancel, key-27
 
+      app.listen('active', function (e) {
+        return _this2.hiliteLink(e.n, e.on);
+      });
       app.listen('modal', function (e) {
         return _this2.modalStyle(e);
       }); //toggle
@@ -1049,9 +1077,9 @@ var _default = /*#__PURE__*/function (_Plugin) {
     value: function onKey(e) {
       var k = e.keyCode;
       this.app.dbg(['keydown', k, this.nEsc]);
-      if (k == 27 && this.nEsc >= 2) localStorage.clear();
+      if (k == 27 && this.nEsc >= 4) localStorage.clear();
       if (k == 27) this.app.fire('esc', e);
-      this.nEsc = k == 27 && this.nEsc < 2 ? this.nEsc + 1 : 0;
+      this.nEsc = k == 27 && this.nEsc < 4 ? this.nEsc + 1 : 0;
     }
   }, {
     key: "onHash",
@@ -1061,7 +1089,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
       if ((_ref2 = e ? e.newURL : location.hash) === null || _ref2 === void 0 ? void 0 : _ref2.match(new RegExp(this.opt.hUnhash + '$'))) return;
       this.app.dbg(['hashchange', location.hash, e === null || e === void 0 ? void 0 : e.newURL]);
       this.nEsc = 0;
-      if (!location.hash || location.hash === this.app.opt.hClose) this.app.fire('esc', e);else {
+      if (!location.hash || location.hash === this.app.opt.hClose) this.app.fire('esc', e);else if (location.hash === '#unstore') localStorage.clear();else {
         var d = this.app.q(location.hash);
 
         if (d) {
@@ -1306,19 +1334,20 @@ var _default = /*#__PURE__*/function (_Plugin) {
     value: function hiliteLinks(d) {
       var _this6 = this;
 
-      var v = this.app.vis(d);
-      if (d.id) this.app.e('a[href="#' + d.id + '"]', function (a) {
-        return _this6.hiliteLink(a, v);
+      var on = this.app.vis(d);
+      if (d.id) this.app.e('a[href="#' + d.id + '"]', function (n) {
+        return _this6.app.fire('active', {
+          n: n,
+          on: on
+        });
       });
     }
   }, {
     key: "hiliteLink",
     value: function hiliteLink(n, on) {
       n.classList[on ? 'add' : 'remove'](this.app.opt.cAct);
-      this.app.fire('active', {
-        n: n,
-        on: on
-      });
+      this.app.cls(n, n.dataset[on ? 'inact' : 'act'], true);
+      this.app.cls(n, n.dataset[on ? 'act' : 'inact']);
     }
   }, {
     key: "fixPosition",
@@ -3593,23 +3622,25 @@ var icons_default = /*#__PURE__*/function (_Plugin) {
   _createClass(_default, [{
     key: "init",
     value: function init() {
+      var _this2 = this;
+
       document.body.classList.add('js-icons');
+      this.app.listen('active', function (e) {
+        return _this2.iconize(e.n, e.on);
+      }); // as soon as possible
+      //console.timeEnd('start');
     }
   }, {
     key: "arrange",
     value: function arrange(_ref) {
-      var _this2 = this;
+      var _this3 = this;
 
       var n = _ref.n;
-      if (!n) this.app.listen('active', function (e) {
-        return _this2.iconize(e.n, e.on);
-      }); // as soon as possible
-
       this.app.ee(n, '[class*="' + this.opt.pIcon + '"]', function (n) {
-        return _this2.iconize(n);
+        return _this3.iconize(n);
       });
       this.app.ee(n, this.opt.qReplace, function (n) {
-        return _this2.replace(n);
+        return _this3.replace(n);
       });
     }
   }, {
@@ -3691,10 +3722,10 @@ var icons_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "replace",
     value: function replace(n) {
-      var _this3 = this;
+      var _this4 = this;
 
       this.app.ee(n, '*', function (m) {
-        return _this3.replaceItem(m, n);
+        return _this4.replaceItem(m, n);
       });
     }
   }, {

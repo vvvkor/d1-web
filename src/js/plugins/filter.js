@@ -73,7 +73,7 @@ export default class extends Plugin {
   
   setUsed(n, f) {
     let u = this.used(n, f);
-    if (n.tagName == 'A') n.classList[u ? 'add' : 'remove'](this.app.opt.cAct);
+    if (n.tagName == 'A') this.app.fire('active', {n, on: u});
     else if (n.type == 'checkbox') n.checked = u;
     else if (n.type == 'radio') n.checked = u;
     else if (n.tagName == 'SELECT') n.value = (f[(n.dataset[this.opt.dFilter] || '')] || [''])[0];

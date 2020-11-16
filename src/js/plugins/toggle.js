@@ -52,6 +52,7 @@ export default class extends Plugin{
     app.h('click', 'a[href^="#"]', e => this.onClickHash(e));
     app.listen('hashchange', e => this.onHash(e));//initial state, #
     app.listen('esc', e => this.esc(e));//click #cancel, hash #cancel, key-27
+    app.listen('active', e => this.hiliteLink(e.n, e.on));
 
     app.listen('modal', e => this.modalStyle(e));
     //toggle
@@ -146,9 +147,9 @@ export default class extends Plugin{
   onKey(e) {
     let k = e.keyCode;
     this.app.dbg(['keydown', k, this.nEsc]);
-    if (k == 27 && this.nEsc>=2) localStorage.clear();
+    if (k == 27 && this.nEsc>=4) localStorage.clear();
     if (k == 27) this.app.fire('esc', e);
-    this.nEsc = (k == 27 && this.nEsc<2) ? this.nEsc+1 : 0;
+    this.nEsc = (k == 27 && this.nEsc<4) ? this.nEsc+1 : 0;
   }
 
   onHash(e) {
@@ -157,6 +158,7 @@ export default class extends Plugin{
     this.app.dbg(['hashchange', location.hash, e?.newURL]);
     this.nEsc = 0;
     if (!location.hash || location.hash === this.app.opt.hClose) this.app.fire('esc', e);
+    else if (location.hash === '#unstore') localStorage.clear();
     else {
       let d = this.app.q(location.hash);
       if (d) {
@@ -319,15 +321,16 @@ export default class extends Plugin{
   }
 
   hiliteLinks(d) {
-    let v = this.app.vis(d);
-    if(d.id) this.app.e('a[href="#' + d.id + '"]', a => this.hiliteLink(a, v));
+    let on = this.app.vis(d);
+    if(d.id) this.app.e('a[href="#' + d.id + '"]', n => this.app.fire('active', {n, on}));
   }
   
   hiliteLink(n, on) {
     n.classList[on ? 'add' : 'remove'](this.app.opt.cAct);
-    this.app.fire('active', {n, on});
+    this.app.cls(n, n.dataset[on ? 'inact' : 'act'], true);
+    this.app.cls(n, n.dataset[on ? 'act' : 'inact']);
   }
-
+  
   fixPosition(n) {
     let nav = n.matches(this.opt.qNav);
     let ss = nav ? window.getComputedStyle(n.parentNode.parentNode) : null;

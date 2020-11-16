@@ -60,31 +60,30 @@ export default class extends Plugin {
     }
   }
   
-  setClass(n, on, m, c) {
-    this.app.dbg(['setclass', m, c]);
-    let sel = (n.type == 'radio' || n.tagName == 'SELECT');
-    let u = sel ? null /*''*/ : n.dataset.unset;
-    let attr = n.dataset.attr || 'class';
-    let val = on ? c : (u || '');
+  setClass(n, on, m) {
+    let add = n.dataset.set ?? n.value;
+    this.app.dbg(['setclass', m, add]);
+    const sel = (n.type == 'radio' || n.tagName == 'SELECT');
+    let del = sel
+      ? (n.type == 'radio' //unset other select/radio values
+          ? this.app.qq('input[type="radio"][name="' + n.name + '"]').map(nn => nn.value).join(' ')
+          : this.app.qq('option', n).map(nn => nn.value).join(' ')
+          )
+      : (n.dataset.unset || '');
+    const attr = n.dataset.attr || 'class';
+    
     if (attr !== 'class') {
+      const val = on ? add : (del || '');
       if (val) m.setAttribute(attr, val);
       else m.removeAttribute(attr);
     }
-    else if (u !== null && u !== undefined) m.className = val;
     else {
-      if (sel) {
-        //unset other select/radio values
-        let u = (n.type == 'radio')
-          ? this.app.qq('input[type="radio"][name="' + n.name + '"]').map(nn => /*(nn.dataset.set || '')*/nn.value).join(' ')
-          : this.app.qq('option', n).map(nn => nn.value).join(' ');
-        u.split(/\s+/).filter(cc => cc).forEach(cc => m.classList.remove(cc));
-      }
-      c.split(/\s+/).filter(cc => cc).forEach(cc => m.classList[on ? 'add' : 'remove'](cc));
+      this.app.cls(m, on ? del : add, true);
+      this.app.cls(m, on ? add : del);
     }
-    n.classList[on ? 'add' : 'remove'](this.app.opt.cAct);
     this.app.fire('active', {n, on});
-    this.app.fire('switch', {n: m, on, attr, val/*, unset: (attr === 'class' && !u) ? (on ? '' : c) : null*/});
-    this.store(n, sel ? n.value : ((n.type == 'checkbox' ? n.checked : n.classList.contains(this.app.opt.cAct)) ? '1' : ''));
+    this.app.fire('switch', {n: m, on, attr, set: add, unset: del});
+    this.store(n, sel ? n.value : (on ? 1 : ''));
   }
 
   toggleClass(n, e) {
@@ -93,19 +92,19 @@ export default class extends Plugin {
     let sel = (n.tagName == 'SELECT' || n.type == 'radio');
     let p = n.dataset.parent ? n.closest(n.dataset.parent) : null;
     let q = n.dataset.nodes ?? n.hash;
-    let c = sel ? n.value : (n.dataset.set ?? n.value);
     let on = sel ? true : (box ? n.checked : n.classList.contains(this.app.opt.cAct));
     if (e && !box && !sel) {
       on = !on;
       e.preventDefault();
       e.stopPropagation();
     }
-    //this.app.dbg(['setclass?', c, on, q, e, box, sel]);
-    if (c !== null && c !== undefined) {
-      const nn = q ? this.app.qq(q, p) : [p];
-      this.app.e(nn, m => this.setClass(n, on, m, c));
-      this.app.fire('update', {n: nn[0]});
-    }
+    const nn = q ? this.app.qq(q, p) : [p];
+    this.app.e(nn, m => this.setClass(n, on, m));
+    this.app.fire('update', {n: nn[0]});
+  }
+  
+  setAttr(n) {
+    
   }
 
   smartHeading(n) {

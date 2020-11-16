@@ -1,4 +1,4 @@
-/*! d1-web v2.5.12 */
+/*! d1-web v2.5.14 */
 
 /* @import url("css/columns.css"); */
 /* @import url("css/grid.css"); */
@@ -189,11 +189,11 @@ input,button,select,textarea,table{font:inherit;}
 
 
 /* typo */
-
-body{font:/*calc(var(--font-size) * 100%)*/ 120%/1.5 sans-serif;font-family:var(--font);}
+html{font-size:120%;}
+body{font:100%/1.5 sans-serif;font-family:var(--font);}
 body,.invert{color:var(--text);background-color:var(--bg);}
-/*small, .small{font-size:calc(var(--font-size) * .85rem);font-weight:normal;}*/
-small, .small{font-size:85%;font-weight:normal;}
+/*small, .small{font-size:calc(var(--font-size) * .83rem);font-weight:normal;}*/
+small, .small{font-size:83%;font-weight:normal;}
 main{display:block;}/*ie*/
 ul,ol,dl,blockquote,pre,hr,p,figure{margin:var(--gap-n) 0;}
 h1,h2,h3,h4,h5,h6{margin:3rem 0 1.5rem 0;line-height:1.3;font-family:var(--font-cap);/*letter-spacing:.03em;*/}
@@ -207,6 +207,7 @@ h1,h2,h3,h4,h5,h6{margin:3rem 0 1.5rem 0;line-height:1.3;font-family:var(--font-
 	h4{font-size:100%;}
 	h5{font-size:83%;}
 	h6{font-size:67%;}
+	h1 small, h2 small, h3 small{font-size:.83rem;}
 blockquote,pre/*,fieldset*/{padding:var(--gaps-n);}
 pre,code{white-space:pre-wrap;}
 	[class*="language-"]{white-space:pre;}
@@ -465,13 +466,14 @@ mark{background-color:var(--bg-warning);}
 	.grid-4-mobile>*{width:25%;}
 		/*.row.flip.mar[class]>*+*:not(.mar){margin-top:var(--gap-xs);}*/
 	.row.flip.mar>:not(:last-child){margin-bottom:var(--gap-n);} /* keep cell margin */
+	table.flip[class]{border-width:0;}
 	table.flip caption, table.flip thead, table.flip tbody, table.flip tfoot, table.flip tr, table.flip tr>*{display:block;text-align:left;}
 	table.flip tr{margin-bottom:var(--gap-n);border:var(--border);border-width:medium;}
-	table.flip.let tr>*{border-bottom:var(--border);}
+	table.flip.let tr>*{border:none;border-bottom:var(--border);}
 		table.let:not(.flip)>*:last-child>tr:last-child>*{border-bottom:none;}
-		form table.flip tr{margin-bottom:var(--gap-s);border:none;}
-		form table.flip tr>*{padding:0;}
-		table:not(.flip) .cell-head{display:none;}
+		form table.flip:not(.bord) tr{margin-bottom:var(--gap-s);border:none;}
+		form table.flip:not(.bord) tr>*{padding:0;}
+		table:not(.flip) .cell-head, .js table.flip thead{display:none;}
 	.nav.flip ul{left:3em;top:90%;}
 	.nav:not(.let):not(.flip)>li.shift>ul, .nav:not(.let):not(.flip)>li.shift~li>ul{left:auto;right:0;}
 }
