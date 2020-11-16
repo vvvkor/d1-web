@@ -78,7 +78,10 @@ export default class extends Plugin {
       let num = '';
       let fn = '';
 
-      if (url === '' || url === false) f.value = '';
+      if (url === '' || url === false){
+        f.value = '';
+        this.app.dispatch(f, ['input', 'change']);
+      }
       
       if (url === true && f.files[0]) { // files selected
         //1.

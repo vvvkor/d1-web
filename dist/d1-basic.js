@@ -1,4 +1,4 @@
-/*! d1-web v2.5.15 */
+/*! d1-web v2.5.16 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -554,10 +554,9 @@ var _default = /*#__PURE__*/function () {
           _n$classList,
           _n$classList2;
 
-      var a = rev ? [del, add] : [add, del]; //a.map(c => (this.typeOf(c) === 'array') ? c : (c || '').split(/\s+/).filter(x => x));
-
-      a.forEach(function (c, i) {
-        return !c || _this7.typeOf(c) === 'array' ? null : a[i] = c.split(/\s+/).filter(function (x) {
+      var a = rev ? [del, add] : [add, del];
+      a = a.map(function (c) {
+        return !c || _this7.typeOf(c) === 'array' ? c : c.split(/\s+/).filter(function (x) {
           return x;
         });
       });

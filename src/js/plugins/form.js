@@ -23,13 +23,19 @@ export default class extends Plugin {
   
   checkBoxes(n) {
     //this.app.ee(n.form, 'input[type="checkbox"][class~="' + (n.dataset.group || '') + '"]', m => m.checked = n.checked);
-    this.app.ee(n.form, 'input[type="checkbox"]', m => m.classList.contains(n.dataset.group) ? m.checked = n.checked : null);
+    this.app.ee(n.form, 'input[type="checkbox"]', m => {
+      if (m.classList.contains(n.dataset.group)) {
+        m.checked = n.checked;
+        this.app.dispatch(m, ['input', 'change']);
+      }
+    });
   }
   
   setValue(n) {
     const d = this.app.q(n.hash);
     if (d) {
       d.value = n.dataset.value || '';
+      this.app.dispatch(d, ['input', 'change']);
       this.app.pf('toggle', 'unpop', d, true);
       // this.app.pf('toggle', 'modalStyle'); //generally not needed
     }

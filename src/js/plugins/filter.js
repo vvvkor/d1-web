@@ -77,6 +77,7 @@ export default class extends Plugin {
     else if (n.type == 'checkbox') n.checked = u;
     else if (n.type == 'radio') n.checked = u;
     else if (n.tagName == 'SELECT') n.value = (f[(n.dataset[this.opt.dFilter] || '')] || [''])[0];
+    //if (n.tagName != 'A') this.app.dispatch(n, ['input', 'change']);//loop
   }
 
   used(n, f) {

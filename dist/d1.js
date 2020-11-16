@@ -1,4 +1,4 @@
-/*! d1-web v2.5.15 */
+/*! d1-web v2.5.16 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -688,10 +688,9 @@ var _default = /*#__PURE__*/function () {
           _n$classList,
           _n$classList2;
 
-      var a = rev ? [del, add] : [add, del]; //a.map(c => (this.typeOf(c) === 'array') ? c : (c || '').split(/\s+/).filter(x => x));
-
-      a.forEach(function (c, i) {
-        return !c || _this7.typeOf(c) === 'array' ? null : a[i] = c.split(/\s+/).filter(function (x) {
+      var a = rev ? [del, add] : [add, del];
+      a = a.map(function (c) {
+        return !c || _this7.typeOf(c) === 'array' ? c : c.split(/\s+/).filter(function (x) {
           return x;
         });
       });
@@ -3138,9 +3137,15 @@ var _default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "checkBoxes",
     value: function checkBoxes(n) {
+      var _this4 = this;
+
       //this.app.ee(n.form, 'input[type="checkbox"][class~="' + (n.dataset.group || '') + '"]', m => m.checked = n.checked);
       this.app.ee(n.form, 'input[type="checkbox"]', function (m) {
-        return m.classList.contains(n.dataset.group) ? m.checked = n.checked : null;
+        if (m.classList.contains(n.dataset.group)) {
+          m.checked = n.checked;
+
+          _this4.app.dispatch(m, ['input', 'change']);
+        }
       });
     }
   }, {
@@ -3150,6 +3155,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
       if (d) {
         d.value = n.dataset.value || '';
+        this.app.dispatch(d, ['input', 'change']);
         this.app.pf('toggle', 'unpop', d, true); // this.app.pf('toggle', 'modalStyle'); //generally not needed
       }
     }
@@ -4112,7 +4118,11 @@ var pickfile_default = /*#__PURE__*/function (_Plugin) {
         var img = '';
         var num = '';
         var fn = '';
-        if (url === '' || url === false) f.value = '';
+
+        if (url === '' || url === false) {
+          f.value = '';
+          this.app.dispatch(f, ['input', 'change']);
+        }
 
         if (url === true && f.files[0]) {
           // files selected
@@ -5507,7 +5517,7 @@ var filter_default = /*#__PURE__*/function (_Plugin) {
       if (n.tagName == 'A') this.app.fire('active', {
         n: n,
         on: u
-      });else if (n.type == 'checkbox') n.checked = u;else if (n.type == 'radio') n.checked = u;else if (n.tagName == 'SELECT') n.value = (f[n.dataset[this.opt.dFilter] || ''] || [''])[0];
+      });else if (n.type == 'checkbox') n.checked = u;else if (n.type == 'radio') n.checked = u;else if (n.tagName == 'SELECT') n.value = (f[n.dataset[this.opt.dFilter] || ''] || [''])[0]; //if (n.tagName != 'A') this.app.dispatch(n, ['input', 'change']);//loop
     }
   }, {
     key: "used",
