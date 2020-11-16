@@ -227,9 +227,12 @@ export default class {
   }
   
   // add/remove classes
-  cls(n, c, del) {
-    if (this.typeOf(c) !== 'array') c = (c || '').split(/\s+/).filter(x => x);
-    n.classList[del ? 'remove' : 'add'](...c);
+  cls(n, add, del, rev) {
+    const a = rev ? [del, add] : [add, del];
+    //a.map(c => (this.typeOf(c) === 'array') ? c : (c || '').split(/\s+/).filter(x => x));
+    a.forEach((c, i) => (!c || this.typeOf(c) === 'array') ? null : a[i] = c.split(/\s+/).filter(x => x));
+    if (a[1]) n.classList.remove(...a[1]);
+    if (a[0]) n.classList.add(...a[0]);
   }
 
   typeOf(v) {

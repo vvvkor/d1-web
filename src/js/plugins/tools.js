@@ -77,10 +77,8 @@ export default class extends Plugin {
       if (val) m.setAttribute(attr, val);
       else m.removeAttribute(attr);
     }
-    else {
-      this.app.cls(m, on ? del : add, true);
-      this.app.cls(m, on ? add : del);
-    }
+    else this.app.cls(m, add, del, !on);
+    
     this.app.fire('active', {n, on});
     this.app.fire('switch', {n: m, on, attr, set: add, unset: del});
     this.store(n, sel ? n.value : (on ? 1 : ''));

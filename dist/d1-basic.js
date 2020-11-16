@@ -1,4 +1,4 @@
-/*! d1-web v2.5.14 */
+/*! d1-web v2.5.15 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -549,14 +549,20 @@ var _default = /*#__PURE__*/function () {
 
   }, {
     key: "cls",
-    value: function cls(n, c, del) {
-      var _n$classList;
+    value: function cls(n, add, del, rev) {
+      var _this7 = this,
+          _n$classList,
+          _n$classList2;
 
-      if (this.typeOf(c) !== 'array') c = (c || '').split(/\s+/).filter(function (x) {
-        return x;
+      var a = rev ? [del, add] : [add, del]; //a.map(c => (this.typeOf(c) === 'array') ? c : (c || '').split(/\s+/).filter(x => x));
+
+      a.forEach(function (c, i) {
+        return !c || _this7.typeOf(c) === 'array' ? null : a[i] = c.split(/\s+/).filter(function (x) {
+          return x;
+        });
       });
-
-      (_n$classList = n.classList)[del ? 'remove' : 'add'].apply(_n$classList, _toConsumableArray(c));
+      if (a[1]) (_n$classList = n.classList).remove.apply(_n$classList, _toConsumableArray(a[1]));
+      if (a[0]) (_n$classList2 = n.classList).add.apply(_n$classList2, _toConsumableArray(a[0]));
     }
   }, {
     key: "typeOf",
@@ -634,20 +640,20 @@ var _default = /*#__PURE__*/function () {
   }, {
     key: "fixIds",
     value: function fixIds(m) {
-      var _this7 = this;
+      var _this8 = this;
 
       this.ee(m, '[id]', function (n) {
         var x = n.id;
 
-        var id = 'id-' + _this7.seq();
+        var id = 'id-' + _this8.seq();
 
         n.id = id;
 
-        _this7.ee(m, 'a[href="#' + x + '"]', function (a) {
+        _this8.ee(m, 'a[href="#' + x + '"]', function (a) {
           return a.href = '#' + id;
         });
 
-        _this7.ee(m, 'label[for="' + x + '"]', function (a) {
+        _this8.ee(m, 'label[for="' + x + '"]', function (a) {
           return a.htmlFor = id;
         });
       });
@@ -1212,8 +1218,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
     key: "hiliteLink",
     value: function hiliteLink(n, on) {
       n.classList[on ? 'add' : 'remove'](this.app.opt.cAct);
-      this.app.cls(n, n.dataset[on ? 'inact' : 'act'], true);
-      this.app.cls(n, n.dataset[on ? 'act' : 'inact']);
+      this.app.cls(n, n.dataset.act, n.dataset.inact, !on);
     }
   }, {
     key: "fixPosition",

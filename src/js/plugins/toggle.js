@@ -327,8 +327,7 @@ export default class extends Plugin{
   
   hiliteLink(n, on) {
     n.classList[on ? 'add' : 'remove'](this.app.opt.cAct);
-    this.app.cls(n, n.dataset[on ? 'inact' : 'act'], true);
-    this.app.cls(n, n.dataset[on ? 'act' : 'inact']);
+    this.app.cls(n, n.dataset.act, n.dataset.inact, !on);
   }
   
   fixPosition(n) {
