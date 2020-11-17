@@ -1,4 +1,4 @@
-/*! d1-web v2.5.16 */
+/*! d1-web v2.5.17 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -256,7 +256,7 @@ var _default = /*#__PURE__*/function () {
     value: function init(opt) {
       var _this = this;
 
-      //console.time('start');
+      // console.time('start');
       document.body.classList.add(this.opt.cJs); // prepare body: anti-hover, anti-target
 
       this.fire('start'); //options

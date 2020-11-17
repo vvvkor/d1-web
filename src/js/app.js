@@ -27,7 +27,7 @@ export default class {
   }
 
   init(opt) {
-    //console.time('start');
+    // console.time('start');
     document.body.classList.add(this.opt.cJs) // prepare body: anti-hover, anti-target
     this.fire('start')
     //options

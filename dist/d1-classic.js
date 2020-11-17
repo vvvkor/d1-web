@@ -1,4 +1,4 @@
-/*! d1-web v2.5.16 */
+/*! d1-web v2.5.17 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -390,7 +390,7 @@ var _default = /*#__PURE__*/function () {
     value: function init(opt) {
       var _this = this;
 
-      //console.time('start');
+      // console.time('start');
       document.body.classList.add(this.opt.cJs); // prepare body: anti-hover, anti-target
 
       this.fire('start'); //options
@@ -3639,7 +3639,10 @@ var icons_default = /*#__PURE__*/function (_Plugin) {
       this.app.listen('active', function (e) {
         return _this2.iconize(e.n, e.on);
       }); // as soon as possible
-      //console.timeEnd('start');
+
+      this.arrange({
+        n: document.body
+      }); // console.timeEnd('start');
     }
   }, {
     key: "arrange",
@@ -3647,12 +3650,15 @@ var icons_default = /*#__PURE__*/function (_Plugin) {
       var _this3 = this;
 
       var n = _ref.n;
-      this.app.ee(n, '[class*="' + this.opt.pIcon + '"]', function (n) {
-        return _this3.iconize(n);
-      });
-      this.app.ee(n, this.opt.qReplace, function (n) {
-        return _this3.replace(n);
-      });
+
+      if (n) {
+        this.app.ee(n, '[class*="' + this.opt.pIcon + '"]', function (n) {
+          return _this3.iconize(n);
+        });
+        this.app.ee(n, this.opt.qReplace, function (n) {
+          return _this3.replace(n);
+        });
+      }
     }
   }, {
     key: "iconize",

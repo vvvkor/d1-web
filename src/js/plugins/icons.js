@@ -25,12 +25,15 @@ export default class extends Plugin {
   init() {
     document.body.classList.add('js-icons');
     this.app.listen('active', e => this.iconize(e.n, e.on)); // as soon as possible
-    //console.timeEnd('start');
+    this.arrange({n: document.body});
+    // console.timeEnd('start');
   }
   
   arrange({n}) {
-    this.app.ee(n, '[class*="' + this.opt.pIcon + '"]', n => this.iconize(n));
-    this.app.ee(n, this.opt.qReplace, n => this.replace(n));
+    if (n) {
+      this.app.ee(n, '[class*="' + this.opt.pIcon + '"]', n => this.iconize(n));
+      this.app.ee(n, this.opt.qReplace, n => this.replace(n));
+    }
   }
   
   iconize(n, on) {

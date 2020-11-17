@@ -1,4 +1,4 @@
-/*! d1-web v2.5.16 */
+/*! d1-web v2.5.17 */
 
 :root, .invert .invert {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -889,7 +889,7 @@ mark {
         border: none;
     }
 
-    form table.flip:not(.bord) tr>* {
+    form table.flip:not(.bord):not(.let) tr>* {
         padding: 0;
     }
 
