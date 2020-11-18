@@ -105,13 +105,13 @@ export default class extends Plugin {
     if (n.vLimit && tb.rows.length>n.vLimit) this.addPageNav(n);
     
     if (n.vInp) {
-      if ('q' in n.dataset) n.vInp.value = n.dataset.q;
+      if ('q' in n.dataset) n.vInp.value = n.dataset.q; // initial filter
       //n.vInp.onsearch = n.vInp.onkeyup = this.doFilter.bind(this,n);
       //1.
       //if (!n.vInp.vListen) n.vInp.addEventListener('input', this.doFilter.bind(this, n), false);
       //2.
       const f = Func.debounce(this.doFilter.bind(this), this.opt.wait);
-      if (!n.vInp.vListen) this.app.b([n.vInp], 'input', e => f(n));
+      if (!n.vInp.vListen) this.app.b([n.vInp], 'input', e => f(n, 1));
       n.vInp.vListen = 1;
       //this.doFilter(n);
     }
@@ -144,15 +144,18 @@ export default class extends Plugin {
       if (!n.vInp) this.updateTotals(n, a.length);
     }
     if (n.vInp) this.doFilter(n);
-    else if (n.vLimit) this.paginate(n, 1);
     if (n.classList.contains(this.opt.cSort)) {
-      for (j = 0; j < h.length; j++)
+      for (j = 0; j < h.length; j++) {
         if (this.isSortable(h[j])) {
           if (this.opt.cSortable) h[j].classList.add(this.opt.cSortable);
-          if (!h[j].vListen) h[j].addEventListener('click', this.doSort.bind(this, n, h[j]), false);
+          if (!h[j].vListen) h[j].addEventListener('click', this.doSort.bind(this, n, h[j], undefined, 1), false);
           h[j].vListen = 1;
         }
+      }
+      const s = parseInt(n.dataset.s, 10); // initial sort
+      if (s) this.doSort(n, h[Math.abs(s)-1], s<0);
     }
+    if (n.vLimit) this.paginate(n, parseInt(n.dataset.p, 10) || 1); // initial page
   }
   
   paginate(n, page) {
@@ -223,25 +226,24 @@ export default class extends Plugin {
     );
   }
   
-  doFilter(t, e) {
-    if (t.vPrev !== t.vInp.value || !e) {
-      t.vPrev = t.vInp.value;
-      if (this.opt.cFiltered) t.vInp.classList[t.vPrev.length > 0 ? 'add' : 'remove'](this.opt.cFiltered);
+  doFilter(n, p) {
+    if (n.vPrev !== n.vInp.value) {
+      n.vPrev = n.vInp.value;
+      if (this.opt.cFiltered) n.vInp.classList[n.vPrev.length > 0 ? 'add' : 'remove'](this.opt.cFiltered);
       //1.
-      //clearTimeout(t.vTimeout);
-      //t.vTimeout = setTimeout(this.filter.bind(this, t, t.vInp.value), this.opt.wait);
+      //clearTimeout(n.vTimeout);
+      //n.vTimeout = setTimeout(this.filter.bind(this, n, n.vInp.value), this.opt.wait);
       //2.
-      this.filter(t, t.vInp.value);
+      this.filter(n, n.vInp.value, p);
+      if (n.vLimit && p) this.paginate(n, p);
     }
   }
 
-  doSort(t, th, e) {
-    if (e.target.closest
-      ? (!e.target.closest('a,input,select,label'))
-      : (' A INPUT SELECT LABEL ').indexOf(' ' + e.target.tagName + ' ') == -1)
-    {
+  doSort(n, th, desc, p, e) {
+    if (th && (!e || !e.target.closest('a,input,select,label'))) {
       //e.preventDefault();
-      this.sort(t, th.cellIndex);
+      this.sort(n, th.cellIndex, desc);
+      if (n.vLimit && p) this.paginate(n, p);
     }
   }
 
@@ -295,7 +297,6 @@ export default class extends Plugin {
     let x = cnt + '/' + n.vData.length;
     if (n.vInp) n.vInp.title = x;
     if (n.vRep) n.vRep.textContent = x;
-    if (n.vLimit) this.paginate(n, 1);
   }
   
   updateTotals(n, cnt) {
@@ -343,7 +344,6 @@ export default class extends Plugin {
     if (desc) n.vData.reverse();
     for (let j = 0; j < n.vHead.length; j++) this.mark(n.vHead[j], j == col ? (desc ? -1 : 1) : 0);
     this.build(n);
-    if (n.vLimit) this.paginate(n, 1);
   }
 
   build(n) {

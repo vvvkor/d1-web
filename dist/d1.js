@@ -1,4 +1,4 @@
-/*! d1-web v2.5.17 */
+/*! d1-web v2.5.18 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -3748,7 +3748,7 @@ var icons_default = /*#__PURE__*/function (_Plugin) {
   }, {
     key: "replaceItem",
     value: function replaceItem(n, p) {
-      var t = n.innerText.replace(/^\s+|\s+$/g, '');
+      var t = 'innerText' in n ? n.innerText.replace(/^\s+|\s+$/g, '') : '';
 
       if (t.length == 1 && t in this.opt.re && !('val' in n.dataset)) {
         n.innerHTML = '';
@@ -4814,14 +4814,15 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
       if (n.vLimit && tb.rows.length > n.vLimit) this.addPageNav(n);
 
       if (n.vInp) {
-        if ('q' in n.dataset) n.vInp.value = n.dataset.q; //n.vInp.onsearch = n.vInp.onkeyup = this.doFilter.bind(this,n);
+        if ('q' in n.dataset) n.vInp.value = n.dataset.q; // initial filter
+        //n.vInp.onsearch = n.vInp.onkeyup = this.doFilter.bind(this,n);
         //1.
         //if (!n.vInp.vListen) n.vInp.addEventListener('input', this.doFilter.bind(this, n), false);
         //2.
 
         var f = func["a" /* default */].debounce(this.doFilter.bind(this), this.opt.wait);
         if (!n.vInp.vListen) this.app.b([n.vInp], 'input', function (e) {
-          return f(n);
+          return f(n, 1);
         });
         n.vInp.vListen = 1; //this.doFilter(n);
       }
@@ -4865,17 +4866,23 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
         if (!n.vInp) this.updateTotals(n, a.length);
       }
 
-      if (n.vInp) this.doFilter(n);else if (n.vLimit) this.paginate(n, 1);
+      if (n.vInp) this.doFilter(n);
 
       if (n.classList.contains(this.opt.cSort)) {
         for (j = 0; j < h.length; j++) {
           if (this.isSortable(h[j])) {
             if (this.opt.cSortable) h[j].classList.add(this.opt.cSortable);
-            if (!h[j].vListen) h[j].addEventListener('click', this.doSort.bind(this, n, h[j]), false);
+            if (!h[j].vListen) h[j].addEventListener('click', this.doSort.bind(this, n, h[j], undefined, 1), false);
             h[j].vListen = 1;
           }
         }
+
+        var s = parseInt(n.dataset.s, 10); // initial sort
+
+        if (s) this.doSort(n, h[Math.abs(s) - 1], s < 0);
       }
+
+      if (n.vLimit) this.paginate(n, parseInt(n.dataset.p, 10) || 1); // initial page
     }
   }, {
     key: "paginate",
@@ -4980,23 +4987,25 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
     }
   }, {
     key: "doFilter",
-    value: function doFilter(t, e) {
-      if (t.vPrev !== t.vInp.value || !e) {
-        t.vPrev = t.vInp.value;
-        if (this.opt.cFiltered) t.vInp.classList[t.vPrev.length > 0 ? 'add' : 'remove'](this.opt.cFiltered); //1.
-        //clearTimeout(t.vTimeout);
-        //t.vTimeout = setTimeout(this.filter.bind(this, t, t.vInp.value), this.opt.wait);
+    value: function doFilter(n, p) {
+      if (n.vPrev !== n.vInp.value) {
+        n.vPrev = n.vInp.value;
+        if (this.opt.cFiltered) n.vInp.classList[n.vPrev.length > 0 ? 'add' : 'remove'](this.opt.cFiltered); //1.
+        //clearTimeout(n.vTimeout);
+        //n.vTimeout = setTimeout(this.filter.bind(this, n, n.vInp.value), this.opt.wait);
         //2.
 
-        this.filter(t, t.vInp.value);
+        this.filter(n, n.vInp.value, p);
+        if (n.vLimit && p) this.paginate(n, p);
       }
     }
   }, {
     key: "doSort",
-    value: function doSort(t, th, e) {
-      if (e.target.closest ? !e.target.closest('a,input,select,label') : ' A INPUT SELECT LABEL '.indexOf(' ' + e.target.tagName + ' ') == -1) {
+    value: function doSort(n, th, desc, p, e) {
+      if (th && (!e || !e.target.closest('a,input,select,label'))) {
         //e.preventDefault();
-        this.sort(t, th.cellIndex);
+        this.sort(n, th.cellIndex, desc);
+        if (n.vLimit && p) this.paginate(n, p);
       }
     }
   }, {
@@ -5057,7 +5066,6 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
       var x = cnt + '/' + n.vData.length;
       if (n.vInp) n.vInp.title = x;
       if (n.vRep) n.vRep.textContent = x;
-      if (n.vLimit) this.paginate(n, 1);
     }
   }, {
     key: "updateTotals",
@@ -5121,7 +5129,6 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
       }
 
       this.build(n);
-      if (n.vLimit) this.paginate(n, 1);
     }
   }, {
     key: "build",

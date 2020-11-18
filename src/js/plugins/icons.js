@@ -107,7 +107,7 @@ export default class extends Plugin {
   }
   
   replaceItem (n, p) {
-    const t = n.innerText.replace(/^\s+|\s+$/g, '');
+    const t = ('innerText' in n) ? n.innerText.replace(/^\s+|\s+$/g, '') : '';
     if (t.length == 1 && t in this.opt.re && !('val' in n.dataset)) {
       n.innerHTML = '';
       const i = p.dataset[this.opt.re[t][1]] || this.opt.re[t][0];
