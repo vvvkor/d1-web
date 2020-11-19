@@ -4,10 +4,10 @@ import App from './js/app.js'
 // import Code from './js/plugins/code.js'
 import Icons from './js/plugins/icons.js'
 import Toggle from './js/plugins/toggle.js'
+import Form from './js/plugins/form.js'
 import Calendar from './js/plugins/calendar.js'
 import Lookup from './js/plugins/lookup.js'
 import Edit from './js/plugins/edit.js'
-import Form from './js/plugins/form.js'
 import Dialog from './js/plugins/dialog.js'
 import Gallery from './js/plugins/gallery.js'
 import Fetch from './js/plugins/fetch.js'
@@ -18,10 +18,10 @@ const app = new App()
 // app.plug(Code)
 app.plug(Icons)
 app.plug(Toggle)
+app.plug(Form)
 app.plug(Calendar)
 app.plug(Lookup)
 app.plug(Edit)
-app.plug(Form)
 app.plug(Dialog)
 app.plug(Gallery)
 app.plug(Fetch)

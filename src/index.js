@@ -8,12 +8,12 @@ import Url from './js/util/url.js'
 import Icons from './js/plugins/icons.js'
 import Code from './js/plugins/code.js'
 import Toggle from './js/plugins/toggle.js'
+import Form from './js/plugins/form.js'
 import Calendar from './js/plugins/calendar.js'
 import Lookup from './js/plugins/lookup.js'
 import Edit from './js/plugins/edit.js'
 import Pickfile from './js/plugins/pickfile.js'
 import Tools from './js/plugins/tools.js'
-import Form from './js/plugins/form.js'
 import Store from './js/plugins/store.js'
 import Tablex from './js/plugins/tablex.js'
 import Dialog from './js/plugins/dialog.js'
@@ -32,11 +32,11 @@ const app = new App()
 app.plug(Icons)
 app.plug(Code)
 app.plug(Toggle)
+app.plug(Form)
 app.plug(Calendar)
 app.plug(Lookup)
 app.plug(Edit)
 app.plug(Tools)
-app.plug(Form)
 app.plug(Pickfile)
 app.plug(Store)
 app.plug(Tablex)

@@ -14,10 +14,10 @@
 		-->
 		
 	<!-- CDN -->
-		<link href="https://unpkg.com/d1-web@2.5.18/dist/d1.min.css" rel="stylesheet">
-		<script src="https://unpkg.com/d1-web@2.5.18/dist/d1.min.js" defer></script>
+		<link href="https://unpkg.com/d1-web@2.5.19/dist/d1.min.css" rel="stylesheet">
+		<script src="https://unpkg.com/d1-web@2.5.19/dist/d1.min.js" defer></script>
 		<noscript>
-			<link href="https://unpkg.com/d1-web@2.5.18/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://unpkg.com/d1-web@2.5.19/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- local-module (test with no need to compile) ->
 		<link href="../src/index.css" rel="stylesheet">
@@ -46,10 +46,10 @@
 <nav class="stick let toggle">
 <div class="hide-desktop pad">
 	<a href="#nav" class="icon-menu act-icon-delete empty" title="Navigation"><span>Navigation</span></a>
-	<a href="demo.html" class="pad"><b>d1</b></a> <span class="text-n">v2.5.18</span>
+	<a href="demo.html" class="pad"><b>d1</b></a> <span class="text-n">v2.5.19</span>
 </div>
 <ul id="nav" class="nav flip hover target-mobile">
-<li><a href="demo.html"><b>d1</b> <span class="text-n">v2.5.18</span></a>
+<li><a href="demo.html"><b>d1</b> <span class="text-n">v2.5.19</span></a>
 <li><a href="#1">Sections</a>
 	<ul>
 	<li><a href="#menu" class="icon-open">Drawer</a>
@@ -173,7 +173,11 @@
 </h2>
 <form>
 <div class="roll">
-<table id="tbl" class="hover let shift sort filter totals replace" data-limit=5 data-q="" data-s="2" data-p="1">
+<table id="tbl"
+	class="hover let shift sort filter totals replace"
+	data-limit=5 data-f="" data-s="2" data-p="1"
+	data-get-f="q" data-get-s="sort" data-get-p="page"
+>
 	<thead>
 		<tr><th><input type="checkbox" data-group="bulk"><th>#<th>Icon<th>Text<th>Bar
 	</thead>
@@ -200,12 +204,19 @@
 		title="Background"
 		class="mem small text-n icon-no act-icon-expand empty"
 		data-set="bg pad rad"></a>
+	<a href="#frm" id="a-frm"
+		title="Method: POST/GET"
+		class="mem small text-n icon-send act-icon-link empty"
+		data-attr="method"
+		data-set="get"
+		data-unset="post"
+		></a>
 </h2>
-<form id="frm" method="post" action="?#form" enctype="multipart/form-data" class="js-unhint">
+<form id="frm" method="post" action="?#form" enctype="multipart/form-data" class="js-unhint" data-get=""> <!-- data-get="form": form[name]-->
 <table id="ftab" class="flip shift">
 <tr>
 	<td><label for="in-text">Name</label>
-	<td><input type="text" id="in-text" name="name" required pattern="[A-Za-z]+" size="15">
+	<td><input type="text" id="in-text" name="name" required pattern="[A-Za-z]+" size="15" data-get="nm">
 		<small class="hide-nojs">
 		<a href="#in-text" data-value="John"><span class="btn bg-n">John</span></a>
 		<a href="#in-text" data-value="Paul"><span class="btn bg-n">Paul</span></a>
@@ -223,7 +234,10 @@
 	<td><input type="datetime-local" id="in-date" name="date" class="calendar" min="2020-01-10" max="2035-02-03">
 <tr>
 	<td><label for="in-lookup">Country</label>
-	<td><input type="text" id="in-lookup" name="country" data-lookup="https://restcountries.eu/rest/v2/name/{q}##alpha2Code#name#languages.0.name" data-url="#country-{id}">
+	<td><input type="text" id="in-lookup" name="country"
+	data-lookup="https://restcountries.eu/rest/v2/name/{q}##alpha2Code#name#languages.0.name"
+	data-cap="https://restcountries.eu/rest/v2/alpha/{q}#name"
+	data-url="#country-{id}">
 	<a href="https://restcountries.eu/rest/v2/alpha/ru#altSpellings" data-target="#x" class="icon-pin text-e empty hide-nojs" data-head="Info" title="Fetch to modal"><span>Fetch</span></a>
 <tr>
 	<td><label for="in-edit">Message</label>
@@ -246,6 +260,11 @@
 		<tr>
 			<td><label for="in-file">File</label>
 			<td><input type="file" id="in-file" name="up[]" class="pick drop" multiple>
+		<tr>
+			<td><label for="in-radio">Body</label>
+			<td>
+				<input type="radio" id="in-radio" name="radio" value="sun"> Sun<br>
+				<input type="radio" name="radio" value="moon"> Moon
 		</table>
 </div>
 </fieldset>

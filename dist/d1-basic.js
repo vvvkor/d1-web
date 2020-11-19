@@ -1,4 +1,4 @@
-/*! d1-web v2.5.18 */
+/*! d1-web v2.5.19 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -160,13 +160,7 @@ var Url = /*#__PURE__*/function () {
     key: "build",
     // build url from link node or string, with additional parameters
     value: function build(a, args) {
-      if (!a.tagName) {
-        //a = this.ins('a', '', {href: a})
-        var h = a;
-        a = document.createElement('a');
-        a.href = h;
-      }
-
+      a = Url.url2a(a);
       var g = Url.get(a);
       Object.keys(args).forEach(function (k) {
         return g[encodeURIComponent(k)] = encodeURIComponent(args[k]);
@@ -180,7 +174,9 @@ var Url = /*#__PURE__*/function () {
   }, {
     key: "get",
     value: function get(a, g) {
-      if (!a || a.tagName != 'A') return null;
+      if (a === true) a = location.href;
+      if (!a) return null;
+      a = Url.url2a(a);
       var i,
           gets = {};
       var args = a.search ? a.search.replace(/^\?/, '').split('&') : [];
@@ -191,6 +187,17 @@ var Url = /*#__PURE__*/function () {
       }
 
       return g ? gets[g] : gets; //protocol, host (hostname, port), pathname, search, hash
+    }
+  }, {
+    key: "url2a",
+    value: function url2a(a) {
+      if (a && !a.tagName) {
+        var h = a;
+        a = document.createElement('a');
+        a.href = h;
+      }
+
+      return a;
     }
   }]);
 

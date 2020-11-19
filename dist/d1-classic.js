@@ -1,4 +1,4 @@
-/*! d1-web v2.5.18 */
+/*! d1-web v2.5.19 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -160,13 +160,7 @@ var Url = /*#__PURE__*/function () {
     key: "build",
     // build url from link node or string, with additional parameters
     value: function build(a, args) {
-      if (!a.tagName) {
-        //a = this.ins('a', '', {href: a})
-        var h = a;
-        a = document.createElement('a');
-        a.href = h;
-      }
-
+      a = Url.url2a(a);
       var g = Url.get(a);
       Object.keys(args).forEach(function (k) {
         return g[encodeURIComponent(k)] = encodeURIComponent(args[k]);
@@ -180,7 +174,9 @@ var Url = /*#__PURE__*/function () {
   }, {
     key: "get",
     value: function get(a, g) {
-      if (!a || a.tagName != 'A') return null;
+      if (a === true) a = location.href;
+      if (!a) return null;
+      a = Url.url2a(a);
       var i,
           gets = {};
       var args = a.search ? a.search.replace(/^\?/, '').split('&') : [];
@@ -192,6 +188,17 @@ var Url = /*#__PURE__*/function () {
 
       return g ? gets[g] : gets; //protocol, host (hostname, port), pathname, search, hash
     }
+  }, {
+    key: "url2a",
+    value: function url2a(a) {
+      if (a && !a.tagName) {
+        var h = a;
+        a = document.createElement('a');
+        a.href = h;
+      }
+
+      return a;
+    }
   }]);
 
   return Url;
@@ -201,6 +208,70 @@ var Url = /*#__PURE__*/function () {
 
 /***/ }),
 /* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Dt; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/*! date - parse and format date */
+var Dt = /*#__PURE__*/function () {
+  function Dt() {
+    _classCallCheck(this, Dt);
+  }
+
+  _createClass(Dt, null, [{
+    key: "parse",
+    value: function parse(s) {
+      var d = '';
+      var m = (s || '').match(/^(\d+)([\-\.\/\s])(\d+)[\-\.\/\s](\d+)(\D(\d+))?(\D(\d+))?(\D(\d+))?(\D(\d+))?$/);
+
+      if (m) {
+        var x;
+        if (m[2] == '.') x = [4, 3, 1]; //d.m.Y
+        else if (m[2] == '/') x = [4, 1, 3]; //m/d Y
+          else x = [1, 3, 4]; //Y-m-d
+
+        d = new Date(m[x[0]], m[x[1]] - 1, m[x[2]], m[6] || 0, m[8] || 0, m[10] || 0, m[12] || 0); //return d ? d.getTime() : NaN;
+      }
+
+      return d; // || NaN;
+    }
+    /*
+      x: date object
+      t: include time
+      f: y=Y-m-d (default), d=d.m.Y, m=m/d Y
+    */
+
+  }, {
+    key: "fmt",
+    value: function fmt(x, t, f) {
+      var y = x.getFullYear();
+      var m = Dt.n(x.getMonth() + 1);
+      var d = Dt.n(x.getDate());
+      var h = Dt.n(x.getHours());
+      var i = Dt.n(x.getMinutes());
+      var s = Dt.n(x.getSeconds());
+      return (f == 'm' ? m + '/' + d + ' ' + y : f == 'd' ? d + '.' + m + '.' + y : y + '-' + m + '-' + d) + (t && h + i + s > 0 ? ' ' + Dt.n(x.getHours()) + ':' + Dt.n(x.getMinutes()) + ':' + Dt.n(x.getSeconds()) : '');
+    }
+  }, {
+    key: "n",
+    value: function n(v, l) {
+      return ('000' + v).substr(-(l || 2));
+    }
+  }]);
+
+  return Dt;
+}();
+
+
+
+/***/ }),
+/* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -267,70 +338,6 @@ var Func = /*#__PURE__*/function () {
   }]);
 
   return Func;
-}();
-
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Dt; });
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-/*! date - parse and format date */
-var Dt = /*#__PURE__*/function () {
-  function Dt() {
-    _classCallCheck(this, Dt);
-  }
-
-  _createClass(Dt, null, [{
-    key: "parse",
-    value: function parse(s) {
-      var d = '';
-      var m = (s || '').match(/^(\d+)([\-\.\/\s])(\d+)[\-\.\/\s](\d+)(\D(\d+))?(\D(\d+))?(\D(\d+))?(\D(\d+))?$/);
-
-      if (m) {
-        var x;
-        if (m[2] == '.') x = [4, 3, 1]; //d.m.Y
-        else if (m[2] == '/') x = [4, 1, 3]; //m/d Y
-          else x = [1, 3, 4]; //Y-m-d
-
-        d = new Date(m[x[0]], m[x[1]] - 1, m[x[2]], m[6] || 0, m[8] || 0, m[10] || 0, m[12] || 0); //return d ? d.getTime() : NaN;
-      }
-
-      return d; // || NaN;
-    }
-    /*
-      x: date object
-      t: include time
-      f: y=Y-m-d (default), d=d.m.Y, m=m/d Y
-    */
-
-  }, {
-    key: "fmt",
-    value: function fmt(x, t, f) {
-      var y = x.getFullYear();
-      var m = Dt.n(x.getMonth() + 1);
-      var d = Dt.n(x.getDate());
-      var h = Dt.n(x.getHours());
-      var i = Dt.n(x.getMinutes());
-      var s = Dt.n(x.getSeconds());
-      return (f == 'm' ? m + '/' + d + ' ' + y : f == 'd' ? d + '.' + m + '.' + y : y + '-' + m + '-' + d) + (t && h + i + s > 0 ? ' ' + Dt.n(x.getHours()) + ':' + Dt.n(x.getMinutes()) + ':' + Dt.n(x.getSeconds()) : '');
-    }
-  }, {
-    key: "n",
-    value: function n(v, l) {
-      return ('000' + v).substr(-(l || 2));
-    }
-  }]);
-
-  return Dt;
 }();
 
 
@@ -1884,7 +1891,165 @@ if (!Element.prototype.closest) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _default; });
-/* harmony import */ var _util_dt_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
+/* harmony import */ var _plugin_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var _util_url_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
+/* harmony import */ var _util_dt_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+/*! form - utilities for form inputs */
+
+
+
+
+var _default = /*#__PURE__*/function (_Plugin) {
+  _inherits(_default, _Plugin);
+
+  var _super = _createSuper(_default);
+
+  function _default() {
+    var _this;
+
+    _classCallCheck(this, _default);
+
+    _this = _super.call(this, 'form');
+    _this.opt = {};
+    return _this;
+  }
+
+  _createClass(_default, [{
+    key: "init",
+    value: function init() {
+      var _this2 = this;
+
+      this.app.h('click', 'a[href^="#"][data-value]', function (e) {
+        e.preventDefault();
+
+        _this2.setValue(e.recv);
+      });
+      this.app.h('click', 'input[data-group]', function (e) {
+        return _this2.checkBoxes(e.target);
+      });
+    }
+  }, {
+    key: "arrange",
+    value: function arrange(_ref) {
+      var _this3 = this;
+
+      var n = _ref.n;
+
+      if (!n) {
+        this.app.ee(n, 'form[data-get]', function (m) {
+          return _this3.initValues(m, m.dataset.get);
+        });
+        this.app.ee(n, '[data-get][name]', function (m) {
+          return _this3.initValue(m, m.dataset.get);
+        });
+      }
+
+      this.app.ee(n, 'input[type="color"]', function (m) {
+        return _this3.prepareColor(m);
+      });
+    }
+  }, {
+    key: "initValues",
+    value: function initValues(n, g) {
+      var _this4 = this;
+
+      this.app.ee(n, '[name]', function (m) {
+        return _this4.initValue(m, g ? g + '[' + m.name + ']' : m.name);
+      });
+    }
+  }, {
+    key: "initValue",
+    value: function initValue(n, g) {
+      if (g) {
+        var v = _util_url_js__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].get(true, g);
+
+        if (v !== undefined) {
+          if (n.matches('.calendar')) {
+            var t = _util_dt_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"].parse(v);
+            if (t) v = new Date(t - t.getTimezoneOffset() * 60000).toISOString().replace(/Z$/, '');
+          }
+
+          if (n.type == 'checkbox') n.checked = v && v !== '0';else if (n.type == 'radio') n.checked = v && n.value === v;else n.value = v;
+        }
+      }
+    }
+  }, {
+    key: "checkBoxes",
+    value: function checkBoxes(n) {
+      var _this5 = this;
+
+      //this.app.ee(n.form, 'input[type="checkbox"][class~="' + (n.dataset.group || '') + '"]', m => m.checked = n.checked);
+      this.app.ee(n.form, 'input[type="checkbox"]', function (m) {
+        if (m.classList.contains(n.dataset.group)) {
+          m.checked = n.checked;
+
+          _this5.app.dispatch(m, ['input', 'change']);
+        }
+      });
+    }
+  }, {
+    key: "setValue",
+    value: function setValue(n) {
+      var d = this.app.q(n.hash);
+
+      if (d) {
+        d.value = n.dataset.value || '';
+        this.app.dispatch(d, ['input', 'change']);
+        this.app.pf('toggle', 'unpop', d, true); // this.app.pf('toggle', 'modalStyle'); //generally not needed
+      }
+    }
+  }, {
+    key: "prepareColor",
+    value: function prepareColor(n) {
+      if (n.dataset.ready) return;
+      n.dataset.ready = 1;
+      var m = this.app.ins('input', '', {
+        type: 'text',
+        value: n.value,
+        size: 7,
+        className: 'color'
+      }, n, -1);
+      this.app.ins('', ' ', {}, m, 1);
+      this.app.b([n, m], 'input', function (e) {
+        return (e.target == n ? m : n).value = e.target.value;
+      });
+    }
+  }]);
+
+  return _default;
+}(_plugin_js__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"]);
+
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _default; });
+/* harmony import */ var _util_dt_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
 /* harmony import */ var _plugin_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -2267,14 +2432,14 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _default; });
 /* harmony import */ var _plugin_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
 /* harmony import */ var _util_url_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
-/* harmony import */ var _util_func_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
+/* harmony import */ var _util_func_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2672,7 +2837,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3055,125 +3220,6 @@ var _default = /*#__PURE__*/function (_Plugin) {
         reader.readAsDataURL(img.getAsFile()); //get blob as data url
         // to upload, use readAsBinaryString, or put it into an XHR using FormData
       }
-    }
-  }]);
-
-  return _default;
-}(_plugin_js__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"]);
-
-
-
-/***/ }),
-/* 12 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _default; });
-/* harmony import */ var _plugin_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-/*! form - utilities for form inputs */
-
-
-var _default = /*#__PURE__*/function (_Plugin) {
-  _inherits(_default, _Plugin);
-
-  var _super = _createSuper(_default);
-
-  function _default() {
-    var _this;
-
-    _classCallCheck(this, _default);
-
-    _this = _super.call(this, 'form');
-    _this.opt = {};
-    return _this;
-  }
-
-  _createClass(_default, [{
-    key: "init",
-    value: function init() {
-      var _this2 = this;
-
-      this.app.h('click', 'a[href^="#"][data-value]', function (e) {
-        e.preventDefault();
-
-        _this2.setValue(e.recv);
-      });
-      this.app.h('click', 'input[data-group]', function (e) {
-        return _this2.checkBoxes(e.target);
-      });
-    }
-  }, {
-    key: "arrange",
-    value: function arrange(_ref) {
-      var _this3 = this;
-
-      var n = _ref.n;
-      this.app.ee(n, 'input[type="color"]', function (n) {
-        return _this3.prepareColor(n);
-      });
-    }
-  }, {
-    key: "checkBoxes",
-    value: function checkBoxes(n) {
-      var _this4 = this;
-
-      //this.app.ee(n.form, 'input[type="checkbox"][class~="' + (n.dataset.group || '') + '"]', m => m.checked = n.checked);
-      this.app.ee(n.form, 'input[type="checkbox"]', function (m) {
-        if (m.classList.contains(n.dataset.group)) {
-          m.checked = n.checked;
-
-          _this4.app.dispatch(m, ['input', 'change']);
-        }
-      });
-    }
-  }, {
-    key: "setValue",
-    value: function setValue(n) {
-      var d = this.app.q(n.hash);
-
-      if (d) {
-        d.value = n.dataset.value || '';
-        this.app.dispatch(d, ['input', 'change']);
-        this.app.pf('toggle', 'unpop', d, true); // this.app.pf('toggle', 'modalStyle'); //generally not needed
-      }
-    }
-  }, {
-    key: "prepareColor",
-    value: function prepareColor(n) {
-      if (n.dataset.ready) return;
-      n.dataset.ready = 1;
-      var m = this.app.ins('input', '', {
-        type: 'text',
-        value: n.value,
-        size: 7,
-        className: 'color'
-      }, n, -1);
-      this.app.ins('', ' ', {}, m, 1);
-      this.app.b([n, m], 'input', function (e) {
-        return (e.target == n ? m : n).value = e.target.value;
-      });
     }
   }]);
 
@@ -3775,10 +3821,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _js_app_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
 /* harmony import */ var _js_plugins_icons_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(15);
 /* harmony import */ var _js_plugins_toggle_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(5);
-/* harmony import */ var _js_plugins_calendar_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(9);
-/* harmony import */ var _js_plugins_lookup_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(10);
-/* harmony import */ var _js_plugins_edit_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(11);
-/* harmony import */ var _js_plugins_form_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(12);
+/* harmony import */ var _js_plugins_form_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(9);
+/* harmony import */ var _js_plugins_calendar_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(10);
+/* harmony import */ var _js_plugins_lookup_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(11);
+/* harmony import */ var _js_plugins_edit_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(12);
 /* harmony import */ var _js_plugins_dialog_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(6);
 /* harmony import */ var _js_plugins_gallery_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(7);
 /* harmony import */ var _js_plugins_fetch_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(13);
@@ -3800,10 +3846,10 @@ var app = new _js_app_js__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"](); // a
 
 app.plug(_js_plugins_icons_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"]);
 app.plug(_js_plugins_toggle_js__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"]);
-app.plug(_js_plugins_calendar_js__WEBPACK_IMPORTED_MODULE_4__[/* default */ "a"]);
-app.plug(_js_plugins_lookup_js__WEBPACK_IMPORTED_MODULE_5__[/* default */ "a"]);
-app.plug(_js_plugins_edit_js__WEBPACK_IMPORTED_MODULE_6__[/* default */ "a"]);
-app.plug(_js_plugins_form_js__WEBPACK_IMPORTED_MODULE_7__[/* default */ "a"]);
+app.plug(_js_plugins_form_js__WEBPACK_IMPORTED_MODULE_4__[/* default */ "a"]);
+app.plug(_js_plugins_calendar_js__WEBPACK_IMPORTED_MODULE_5__[/* default */ "a"]);
+app.plug(_js_plugins_lookup_js__WEBPACK_IMPORTED_MODULE_6__[/* default */ "a"]);
+app.plug(_js_plugins_edit_js__WEBPACK_IMPORTED_MODULE_7__[/* default */ "a"]);
 app.plug(_js_plugins_dialog_js__WEBPACK_IMPORTED_MODULE_8__[/* default */ "a"]);
 app.plug(_js_plugins_gallery_js__WEBPACK_IMPORTED_MODULE_9__[/* default */ "a"]);
 app.plug(_js_plugins_fetch_js__WEBPACK_IMPORTED_MODULE_10__[/* default */ "a"]);
