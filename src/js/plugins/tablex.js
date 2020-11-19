@@ -4,6 +4,7 @@
 
 import Plugin from './plugin.js';
 import Dt from '../util/dt.js';
+import Url from '../util/url.js';
 import Func from '../util/func.js';
 
 export default class extends Plugin {
@@ -65,36 +66,43 @@ export default class extends Plugin {
   }
   
   arrange({n}) {
-    let q = 'table.' + this.opt.cSort + ', table.' + this.opt.cFilter + ', table.' + this.opt.cTotals + ', table[' + this.opt.aFilter + ']' + ', table[data-limit]';
+    const q = 'table.' + this.opt.cSort + ', table.' + this.opt.cFilter + ', table.' + this.opt.cTotals + ', table[' + this.opt.aFilter + ']' + ', table[data-limit]';
     this.app.ee(n, q, this.prepare.bind(this));
   }
   
   page(e) {
     e.preventDefault();
-    let nav = e.recv.closest('.tablex-pagenav');
+    const nav = e.recv.closest('.tablex-pagenav');
     this.paginate(nav.vTable, 1 * e.recv.hash.substr(1))
+  }
+  
+  inp(n, getVar, attr) {
+    let v;
+    if (n.dataset[getVar]) v = Url.get(true, n.dataset[getVar]);
+    if (v === undefined && attr in n.dataset) v = n.dataset[attr];
+    return v;
   }
 
   prepare(n) {
     if (n.dataset.ready) return;
     n.dataset.ready = 1;
     let i, j, start = 0;
-    let tb = n.querySelector('tbody');
+    const tb = n.querySelector('tbody');
     let rh = n.querySelector('thead tr');
     if (!rh) {
       rh = tb.rows[0];
       start = 1;
     }
     if (!rh || !tb || !tb.rows || tb.rows.length < 2) return;
-    let a = [], h = [], types = [];
+    const a = [], h = [], types = [];
     for (j = 0; j < rh.cells.length; j++) {
       h[j] = rh.cells[j];
       types[j] = {x: 0, s: 0, n: 0, b: 0, i: 0, d: 0};
       //if (this.opt.cSortable && this.isSortable(rh.cells[j])) h[j].classList.add(this.opt.cSortable);
     }
-    //let inp = this.app.ins('input','',{type:'search',size:4},rh.cells[0]);
+    //const inp = this.app.ins('input','',{type:'search',size:4},rh.cells[0]);
     n.vCase = (n.getAttribute('data-case') !== null);
-    let fq = n.dataset.filter;
+    const fq = n.dataset.filter;
     n.vInp = fq
       ? document.querySelector(fq)
       : n.querySelector('[name="_q"]');
@@ -105,7 +113,7 @@ export default class extends Plugin {
     if (n.vLimit && tb.rows.length>n.vLimit) this.addPageNav(n);
     
     if (n.vInp) {
-      if ('q' in n.dataset) n.vInp.value = n.dataset.q; // initial filter
+      n.vInp.value = this.inp(n, 'getF', 'f') ?? ''; // initial filter
       //n.vInp.onsearch = n.vInp.onkeyup = this.doFilter.bind(this,n);
       //1.
       //if (!n.vInp.vListen) n.vInp.addEventListener('input', this.doFilter.bind(this, n), false);
@@ -117,14 +125,13 @@ export default class extends Plugin {
     }
 
     for (i = start; i < tb.rows.length; i++) {
-      let c = tb.rows[i].cells;
-      let row = [], vals = [];
+      const c = tb.rows[i].cells, row = [], vals = [];
       for (j = 0; j < c.length; j++) {
         row[j] = this.val(c[j], n.vCase);
         vals[j] = this.convert(row[j]);
-        let type = (vals[j][0] === '') ? 'x' : vals[j][1];
+        const type = (vals[j][0] === '') ? 'x' : vals[j][1];
         types[j][type]++;
-        if (this.app.isDebug()) c[j].title = type+': '+vals[j][0];
+        if (this.app.isDebug()) c[j].title = type + ': ' + vals[j][0];
         //c[j].setAttribute('data-cell', row[j]);
       }
       a.push({
@@ -152,24 +159,27 @@ export default class extends Plugin {
           h[j].vListen = 1;
         }
       }
-      const s = parseInt(n.dataset.s, 10); // initial sort
+      const s = parseInt(this.inp(n, 'getS', 's') ?? 0, 10); // initial sort
       if (s) this.doSort(n, h[Math.abs(s)-1], s<0);
     }
-    if (n.vLimit) this.paginate(n, parseInt(n.dataset.p, 10) || 1); // initial page
+    if (n.vLimit){
+      const p = parseInt(this.inp(n, 'getP', 'p') ?? 1, 10); // initial page
+      this.paginate(n, p || 1); // initial page
+    }
   }
   
   paginate(n, page) {
     n.vPage = page;
     if (n.vLimit && n.vPage) {
       this.setPageNav(n);
-      let skip = n.vLimit * (page - 1);
-      let last = skip + n.vLimit - 1;
+      const skip = n.vLimit * (page - 1);
+      const last = skip + n.vLimit - 1;
       //console.log('paginate', page, n.vCount, skip, last, n.vPageNav.children.length);
       let j = 0;
       for (let i = 0; i < n.vData.length; i++) {
-        let hide = n.vData[i].n.classList.contains(this.opt.cUnmatch);
+        const hide = n.vData[i].n.classList.contains(this.opt.cUnmatch);
         if (!hide) {
-          let on = (j >= skip && j <= last);
+          const on = (j >= skip && j <= last);
           n.vData[i].n.classList[on ? 'remove' : 'add'](this.app.opt.cHide, this.opt.cUnpage);
           j++;
         }
@@ -178,14 +188,14 @@ export default class extends Plugin {
   }
   
   addFilter(n) {
-    let t = n.parentNode.classList.contains('roll') ? n.parentNode : n;
-    let p = this.app.ins('p', ' ', {}, t, -1);
+    const t = n.parentNode.classList.contains('roll') ? n.parentNode : n;
+    const p = this.app.ins('p', ' ', {}, t, -1);
     n.vInp = this.app.ins('input', '', {type: 'search'}, p, false);
     n.vRep = this.app.ins('span', '', {}, p);
   }
   
   addPageNav(n) {
-    let t = n.parentNode.classList.contains('roll') ? n.parentNode : n;
+    const t = n.parentNode.classList.contains('roll') ? n.parentNode : n;
     n.vPageNav = this.app.ins('ul', '', 'nav hover tablex-pagenav');
     n.vPageNav.vTable = n;
     this.app.ins('div', n.vPageNav, 'mar small', t, 'pagesAfter' in n.dataset ? 1 : -1); // dataset.pagesAfter
@@ -193,14 +203,14 @@ export default class extends Plugin {
   
   setPageNav(n) {
     const app = this.app
-    let m = 1 * (n.dataset.pages || 10);
-    let h = Math.floor((m + 1) / 2); // shift to first
-    //let h = Math.ceil((m + 1) / 2); // shift to last
-    let ul = n.vPageNav;
-    let last = Math.ceil(n.vCount / n.vLimit);
-    let min = Math.max(1, Math.min(n.vPage - h + 1, last - m + 1));
-    let max = Math.min(last, min + m - 1);
-    let cur = Math.max(Math.min(n.vPage, last), 1);
+    const m = 1 * (n.dataset.pages || 10);
+    const h = Math.floor((m + 1) / 2); // shift to first
+    //const h = Math.ceil((m + 1) / 2); // shift to last
+    const ul = n.vPageNav;
+    const last = Math.ceil(n.vCount / n.vLimit);
+    const min = Math.max(1, Math.min(n.vPage - h + 1, last - m + 1));
+    const max = Math.min(last, min + m - 1);
+    const cur = Math.max(Math.min(n.vPage, last), 1);
     app.clr(ul);
     //console.log('pagenav', m, min, max, last, min + m - 1);
     if (max>1) {
@@ -254,12 +264,12 @@ export default class extends Plugin {
 
   val(s, cs) {
     let r = s.tagName ? (s.dataset.val ?? s.innerHTML) : '' + s;
-    r = r.
-    replace(/<!--.*?-->/g, '').
-    replace(/<.*?>/g, '').
-    replace(/&nbsp;/gi, ' ').
-    replace(/^\s+/, '').
-    replace(/\s+$/, '');
+    r = r
+      .replace(/<!--.*?-->/g, '')
+      .replace(/<.*?>/g, '')
+      .replace(/&nbsp;/gi, ' ')
+      .replace(/^\s+/, '')
+      .replace(/\s+$/, '');
     if (!cs) r = r.toLowerCase();
     return r;
   }
@@ -281,7 +291,8 @@ export default class extends Plugin {
         if (n.vCols.length > 0) {
           data = [];
           for (j = 0; j < n.vCols.length; j++) data.push(n.vData[i].d[n.vCols[j]]);
-        } else data = n.vData[i].d;
+        }
+        else data = n.vData[i].d;
         s = '|' + data.join('|') + '|';
         hide = !this.matches(s, q, n.vCase);
       }
@@ -294,7 +305,7 @@ export default class extends Plugin {
     //update state
     n.vCount = cnt;
     this.updateTotals(n, cnt);
-    let x = cnt + '/' + n.vData.length;
+    const x = cnt + '/' + n.vData.length;
     if (n.vInp) n.vInp.title = x;
     if (n.vRep) n.vRep.textContent = x;
   }
@@ -304,11 +315,11 @@ export default class extends Plugin {
   }
   
   countTotal(n, m, cnt) {
-    let d = n.vData;
-    let j = m.closest('th, td').cellIndex;
-    let a = m.dataset.total || '';
-    let dec = 1 * (m.dataset.dec || 2);
-    let mode = m.dataset.mode || n.vTypes[j];
+    const d = n.vData;
+    const j = m.closest('th, td').cellIndex;
+    const a = m.dataset.total || '';
+    const dec = 1 * (m.dataset.dec || 2);
+    const mode = m.dataset.mode || n.vTypes[j];
     let r = 0;
     //if (a == 'count' || a == 'cnt') r = cnt;
     if (a == 'count' || a == 'cnt') r = d.reduce((acc, cur) => acc + (cur.v && cur.x[j][0] !== '' ? 1 : 0), 0);
@@ -325,7 +336,7 @@ export default class extends Plugin {
   }
   
   dec(x, d) {
-    let m = Math.pow(10, d);
+    const m = Math.pow(10, d);
     if (d) x = Math.round(x * m) / m;
     return x;
   }
@@ -347,7 +358,7 @@ export default class extends Plugin {
   }
 
   build(n) {
-    let tb = n.querySelector('tbody');
+    const tb = n.querySelector('tbody');
     for (let i = 0; i < n.vData.length; i++) {
       tb.appendChild(n.vData[i].n);
     }
@@ -385,7 +396,7 @@ export default class extends Plugin {
   }
 
   fmtSz(x, dec) {
-    let i = x ? Math.min(5, Math.floor(Math.log(x) / Math.log(1024))) : 0;
+    const i = x ? Math.min(5, Math.floor(Math.log(x) / Math.log(1024))) : 0;
     return (x / Math.pow(1024, i)).toFixed(dec) * 1 + ' ' + ['B', 'KB', 'MB', 'GB', 'TB', 'PB'/*, 'EB', 'ZB', 'YB'*/][i];
   }
   
@@ -420,7 +431,7 @@ export default class extends Plugin {
   }
 
   interval(s) {
-    let x = this.intervalUnits;
+    const x = this.intervalUnits;
     let m = s.match(/\d+\s?(y|m|w|d|h|min|mi|sec|s|msec|ms)\b/gi);
     if (m) m = m.map(v => v.match(/^(\d+)\s?(.*)$/));
     //matchAll && m = [...m];
@@ -428,8 +439,8 @@ export default class extends Plugin {
   }
 
   sz(s) {
-    let x = this.szUnits;
-    let m = s.match(/^((\d*\.)?\d+)\s*(([kmgtp]i?)?b)$/i);
+    const x = this.szUnits;
+    const m = s.match(/^((\d*\.)?\d+)\s*(([kmgtp]i?)?b)$/i);
     if (m) {
       m[3] = m[3].replace(/ib$/i, 'b').toLowerCase();
       if (x[m[3]]) return m[1] * x[m[3]];

@@ -4,12 +4,7 @@ export default class Url {
 
   // build url from link node or string, with additional parameters
   static build(a, args) {
-    if (!a.tagName) {
-      //a = this.ins('a', '', {href: a})
-      const h = a
-      a = document.createElement('a')
-      a.href = h
-    }
+    a = Url.url2a(a)
     const g = Url.get(a)
     Object.keys(args).forEach(k => g[encodeURIComponent(k)] = encodeURIComponent(args[k]))
     const q = Object.keys(g).map(k => k + '=' + g[k]).join('&')
@@ -20,7 +15,9 @@ export default class Url {
 
   // get url parameter(s) from link node or string
   static get(a, g) {
-    if (!a || a.tagName != 'A') return null
+    if (a === true) a = location.href
+    if (!a) return null
+    a = Url.url2a(a)
     let i, gets = {}
     const args = a.search ? a.search.replace(/^\?/, '').split('&') : []
     for (i=0; i<args.length; i++) {
@@ -29,6 +26,15 @@ export default class Url {
     }
     return g ? gets[g] : gets
     //protocol, host (hostname, port), pathname, search, hash
+  }
+  
+  static url2a(a) {
+    if (a && !a.tagName) {
+      const h = a
+      a = document.createElement('a')
+      a.href = h
+    }
+    return a
   }
 
 }
