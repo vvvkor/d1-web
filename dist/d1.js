@@ -1,4 +1,4 @@
-/*! d1-web v2.5.19 */
+/*! d1-web v2.5.20 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -244,12 +244,18 @@ var Dt = /*#__PURE__*/function () {
     /*
       x: date object
       t: include time
-      f: y=Y-m-d (default), d=d.m.Y, m=m/d Y
+      f: y=Y-m-d (default), d=d.m.Y, m=m/d Y, i=ISO
     */
 
   }, {
     key: "fmt",
     value: function fmt(x, t, f) {
+      if (!x) return '';
+
+      if (f == 'i') {
+        return new Date(x - x.getTimezoneOffset() * 60000).toISOString().replace(/Z$/, '').substr(0, t ? 30 : 10);
+      }
+
       var y = x.getFullYear();
       var m = Dt.n(x.getMonth() + 1);
       var d = Dt.n(x.getDate());
@@ -1958,11 +1964,11 @@ var _default = /*#__PURE__*/function (_Plugin) {
       var n = _ref.n;
 
       if (!n) {
-        this.app.ee(n, 'form[data-get]', function (m) {
-          return _this3.initValues(m, m.dataset.get);
+        this.app.ee(n, 'form[data-q]', function (m) {
+          return _this3.initValues(m, m.dataset.q);
         });
-        this.app.ee(n, '[data-get][name]', function (m) {
-          return _this3.initValue(m, m.dataset.get);
+        this.app.ee(n, '[name][data-q]', function (m) {
+          return _this3.initValue(m, m.dataset.q);
         });
       }
 
@@ -1986,12 +1992,9 @@ var _default = /*#__PURE__*/function (_Plugin) {
         var v = _util_url_js__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].get(true, g);
 
         if (v !== undefined) {
-          if (n.matches('.calendar')) {
-            var t = _util_dt_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"].parse(v);
-            if (t) v = new Date(t - t.getTimezoneOffset() * 60000).toISOString().replace(/Z$/, '');
-          }
+          var _n$type;
 
-          if (n.type == 'checkbox') n.checked = v && v !== '0';else if (n.type == 'radio') n.checked = v && n.value === v;else n.value = v;
+          if (n.type == 'checkbox') n.checked = v && v !== '0';else if (n.type == 'radio') n.checked = v && n.value === v;else if ((_n$type = n.type) === null || _n$type === void 0 ? void 0 : _n$type.match(/^date/)) n.value = _util_dt_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"].fmt(_util_dt_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"].parse(v), n.type.match(/^datetime/), 'i');else n.value = v;
         }
       }
     }
@@ -4815,12 +4818,13 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
       this.paginate(nav.vTable, 1 * e.recv.hash.substr(1));
     }
   }, {
-    key: "inp",
-    value: function inp(n, getVar, attr) {
-      var v;
-      if (n.dataset[getVar]) v = url["a" /* default */].get(true, n.dataset[getVar]);
-      if (v === undefined && attr in n.dataset) v = n.dataset[attr];
-      return v;
+    key: "param",
+    value: function param(n, attr, def, getVar) {
+      var _ref2;
+
+      if (!getVar) getVar = 'q' + attr;
+      var g = n.dataset[getVar] ? url["a" /* default */].get(true, n.dataset[getVar]) : null;
+      return (_ref2 = g !== null && g !== void 0 ? g : n.dataset[attr]) !== null && _ref2 !== void 0 ? _ref2 : def;
     }
   }, {
     key: "prepare",
@@ -4869,9 +4873,7 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
       if (n.vLimit && tb.rows.length > n.vLimit) this.addPageNav(n);
 
       if (n.vInp) {
-        var _this$inp;
-
-        n.vInp.value = (_this$inp = this.inp(n, 'getF', 'f')) !== null && _this$inp !== void 0 ? _this$inp : ''; // initial filter
+        n.vInp.value = this.param(n, 'f', ''); // initial filter
         //n.vInp.onsearch = n.vInp.onkeyup = this.doFilter.bind(this,n);
         //1.
         //if (!n.vInp.vListen) n.vInp.addEventListener('input', this.doFilter.bind(this, n), false);
@@ -4926,8 +4928,6 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
       if (n.vInp) this.doFilter(n);
 
       if (n.classList.contains(this.opt.cSort)) {
-        var _this$inp2;
-
         for (j = 0; j < h.length; j++) {
           if (this.isSortable(h[j])) {
             if (this.opt.cSortable) h[j].classList.add(this.opt.cSortable);
@@ -4936,15 +4936,13 @@ var tablex_default = /*#__PURE__*/function (_Plugin) {
           }
         }
 
-        var s = parseInt((_this$inp2 = this.inp(n, 'getS', 's')) !== null && _this$inp2 !== void 0 ? _this$inp2 : 0, 10); // initial sort
+        var s = parseInt(this.param(n, 's', 0), 10); // initial sort
 
         if (s) this.doSort(n, h[Math.abs(s) - 1], s < 0);
       }
 
       if (n.vLimit) {
-        var _this$inp3;
-
-        var p = parseInt((_this$inp3 = this.inp(n, 'getP', 'p')) !== null && _this$inp3 !== void 0 ? _this$inp3 : 1, 10); // initial page
+        var p = parseInt(this.param(n, 'p', 1), 10); // initial page
 
         this.paginate(n, p || 1); // initial page
       }

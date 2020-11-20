@@ -15,13 +15,20 @@ export default class Dt {
     }
     return d;// || NaN;
   }
-
+  
   /*
     x: date object
     t: include time
-    f: y=Y-m-d (default), d=d.m.Y, m=m/d Y
+    f: y=Y-m-d (default), d=d.m.Y, m=m/d Y, i=ISO
   */
   static fmt(x, t, f) {
+    if (!x) return '';
+    if (f == 'i') {
+      return (new Date(x - x.getTimezoneOffset() * 60000))
+        .toISOString()
+        .replace(/Z$/, '')
+        .substr(0, t ? 30 : 10);
+    }
     const y = x.getFullYear();
     const m = Dt.n(x.getMonth()+1);
     const d = Dt.n(x.getDate());

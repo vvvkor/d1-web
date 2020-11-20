@@ -176,6 +176,7 @@ data-d1='{"hOk":"#yes","debug":false,"disable":[
 			<li><a href="#form-stacked">Stacked form</a>
 			<li><a href="#form-grid">Form as grid</a>
 			<li><a href="#form-table">Form as table</a>
+			<li><a href="#form-init">Initial values</a>
 			<li><a href="#input-boxes">Checkboxes</a>
 			<li><a href="#input-color">Color input</a>
 			<li><a href="#input-set">Set value</a>
@@ -819,20 +820,24 @@ By default, <code>table</code> is styled with border, unless it is a direct desc
 	<small class="btn bg-i" title="Uses plugin: tablex">tablex</small>
 </h3>
 
-<p>
-Filter and sort table rows <code>table.sort</code>.<br>
-Filter field query selector in <code>table[data-filter]</code>.<br>
-Auto-add filter field <code>table.filter</code>.<br>
-Automatic dynamic totals (<i>sum</i> for numbers, <i>max</i> for dates) <code>table.totals</code>.
+<p>Sort table rows <code>table.sort</code>.<br>
+<p>Initial sort column number can be set in <code>[data-s]</code> attribute, or (with higher priority) in URL query string parameter with the name defined in <code>[data-qs]</code> attribute (one-based indexing, negative values for descending order).
+
+<p>Filter field query selector in <code>table[data-filter]</code> or add filter field automatically <code>table.filter</code>.
+<p>Initial filter value can be set in <code>[data-f]</code> attribute, or (with higher priority) in URL query string parameter with the name defined in <code>[data-qf]</code> attribute.
+
+<p>Automatic dynamic totals (<i>sum</i> for numbers, <i>max</i> for dates, <i>count</i> for strings) <code>table.totals</code>.
 <p>Custom dynamic totals in <code>tfoot span</code>:
 <code>[data-total="count|sum|avg|min|max"]</code>, 
 decimal digits <code>[data-dec]</code> (default 2),
 mode <code>[data-mode="s|n|b|i|d"]</code> (default "n"),
 where "s" is string, "n" is numeric, "b" is byte size, "i" is time interval, "d" is datetime.
+
 <p>To enable page navigation set <code>[data-limit]</code> to number of rows per page
 and optionally set <code>[data-pages]</code> to maximum number of page links to show (default is 10).
 Page navigation is placed before table by default.
-To place it after table add <code>[data-pages-after]</code> without value.
+To place it after table add <code>[data-pages-after]</code> attribute.
+<p>Initially shown page can be set in <code>[data-p]</code> attribute, or (with higher priority) in URL query string parameter with the name defined in <code>[data-qp]</code> attribute.
 <!--
 <table class="sort totals bord filter" data-limit="10" data-pages-x="10" data-pages-after>
 <tr><th>h
@@ -871,7 +876,7 @@ To place it after table add <code>[data-pages-after]</code> without value.
 
 <div class="code">
 <div class="roll">
-<table class="sort totals bord filter" data-filter-cols="0 2 4" data-case data-limit="2" data-pages="10">
+<table class="sort totals bord filter" data-filter-cols="0 2 4" data-case data-limit="2" data-pages="10" data-f="" data-qf="q">
 	<thead>
 	<tr><th>String<th>Number<th>Bytes<th>Interval<th>Date
 	</thead>
@@ -1093,6 +1098,30 @@ Table will become stacked on small screen.
 				<input type="submit" value="Confirm" class="bg-w dialog" name="btn2" title="Confirm?">
 		</table>
 	</form>
+</div>
+
+
+<h3 id="form-init">Initial values</h3>
+
+<p>Initial values for all inputs in a form can be set in URL query string parameter with the name defined in form's <code>[data-q]</code> attribute.
+<p>Initial input value can be set in URL query string parameter with the name defined in input's <code>[data-q]</code> attribute. This takes precenence over form's initial values.
+
+<div class="code">
+<a href="?name=John&amp;age=33#form-init">Set initial values from URL params (directly)</a>
+<form data-q="" action="#form-init">
+	Name: <input name="name" size="5" data-q="nm">
+	Age: <input name="age" size="2">
+	<input type="submit" value="Submit">
+</form>
+<hr>
+<a href="?person[name]=Paul&amp;person[age]=32#form-init">Set initial values from URL params (as array)</a>
+<form data-q="person" action="#form-init">
+	Name: <input name="name" size="5" data-q="nm">
+	Age: <input name="age" size="2">
+	<input type="submit" value="Submit">
+</form>
+<hr>
+<a href="?nm=George#form-init">Set initial name in both forms from URL param</a>
 </div>
 
 

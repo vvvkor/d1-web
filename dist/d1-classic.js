@@ -1,4 +1,4 @@
-/*! d1-web v2.5.19 */
+/*! d1-web v2.5.20 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -244,12 +244,18 @@ var Dt = /*#__PURE__*/function () {
     /*
       x: date object
       t: include time
-      f: y=Y-m-d (default), d=d.m.Y, m=m/d Y
+      f: y=Y-m-d (default), d=d.m.Y, m=m/d Y, i=ISO
     */
 
   }, {
     key: "fmt",
     value: function fmt(x, t, f) {
+      if (!x) return '';
+
+      if (f == 'i') {
+        return new Date(x - x.getTimezoneOffset() * 60000).toISOString().replace(/Z$/, '').substr(0, t ? 30 : 10);
+      }
+
       var y = x.getFullYear();
       var m = Dt.n(x.getMonth() + 1);
       var d = Dt.n(x.getDate());
@@ -1958,11 +1964,11 @@ var _default = /*#__PURE__*/function (_Plugin) {
       var n = _ref.n;
 
       if (!n) {
-        this.app.ee(n, 'form[data-get]', function (m) {
-          return _this3.initValues(m, m.dataset.get);
+        this.app.ee(n, 'form[data-q]', function (m) {
+          return _this3.initValues(m, m.dataset.q);
         });
-        this.app.ee(n, '[data-get][name]', function (m) {
-          return _this3.initValue(m, m.dataset.get);
+        this.app.ee(n, '[name][data-q]', function (m) {
+          return _this3.initValue(m, m.dataset.q);
         });
       }
 
@@ -1986,12 +1992,9 @@ var _default = /*#__PURE__*/function (_Plugin) {
         var v = _util_url_js__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].get(true, g);
 
         if (v !== undefined) {
-          if (n.matches('.calendar')) {
-            var t = _util_dt_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"].parse(v);
-            if (t) v = new Date(t - t.getTimezoneOffset() * 60000).toISOString().replace(/Z$/, '');
-          }
+          var _n$type;
 
-          if (n.type == 'checkbox') n.checked = v && v !== '0';else if (n.type == 'radio') n.checked = v && n.value === v;else n.value = v;
+          if (n.type == 'checkbox') n.checked = v && v !== '0';else if (n.type == 'radio') n.checked = v && n.value === v;else if ((_n$type = n.type) === null || _n$type === void 0 ? void 0 : _n$type.match(/^date/)) n.value = _util_dt_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"].fmt(_util_dt_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"].parse(v), n.type.match(/^datetime/), 'i');else n.value = v;
         }
       }
     }

@@ -26,7 +26,8 @@
 			<link href="../dist/d1-icons.css" rel="stylesheet">
 		</noscript>
 	<!-- -->
-
+		<!--script>
+		</script-->
   </head>
   <body class="swipe trans" data-swipe-right="#menu" data-swipe-left="#cancel">
 <main>
@@ -140,16 +141,12 @@
 <h2 id="gallery">Gallery
 	<a href="#gal" id="a-gal"
 		title="Columns"
-		class="mem hide-desktop small text-n icon-grid act-icon-menu empty"
-		data-act="text-i"
-		data-inact="inact"
+		class="mem hide-desktop small text-n icon-grid act-icon-menu empty tip c"
 		data-set="grid-2-mobile grid-1-phone"
 		data-unset="grid-4-mobile grid-2-phone"></a>
 	<a href="#gal" id="a-gal-let"
-		title="Gap"
-		class="act mem small text-n icon-expand act-icon-no empty"
-		data-act="inact"
-		data-inact="text-y"
+		title="Gaps"
+		class="act mem small text-n icon-expand act-icon-no empty tip c"
 		data-set="let"></a>
 </h2>
 <div id="gal" class="grid-4 grid-4-mobile grid-2-phone gallery let">
@@ -164,11 +161,15 @@
 <h2 id="table">Table
 	<a href="#tbl" id="a-tbl"
 		title="Responsive"
-		class="mem hide-desktop small text-n icon-grid act-icon-menu empty"
+		class="mem hide-desktop small text-n icon-grid act-icon-menu empty tip c"
+		data-inact="inact"
+		data-act="text-i"
 		data-set="flip"></a>
 	<a href="#tbl" id="a-tbl-bord"
 		title="Borders and width"
-		class="mem small text-n icon-no act-icon-expand empty"
+		class="mem small text-n icon-no act-icon-expand empty tip c"
+		data-inact="inact"
+		data-act="text-y"
 		data-set="bord shift"></a>
 </h2>
 <form>
@@ -176,7 +177,7 @@
 <table id="tbl"
 	class="hover let shift sort filter totals replace"
 	data-limit=5 data-f="" data-s="2" data-p="1"
-	data-get-f="q" data-get-s="sort" data-get-p="page"
+	data-qf="q" data-qs="sort" data-qp="page"
 >
 	<thead>
 		<tr><th><input type="checkbox" data-group="bulk"><th>#<th>Icon<th>Text<th>Bar
@@ -198,25 +199,29 @@
 <h2 id="form">Form
 	<a href="#ftab" id="a-ftab"
 		title="Responsive"
-		class="mem act hide-desktop small text-n icon-grid act-icon-menu empty"
+		class="mem act hide-desktop small text-n icon-grid act-icon-menu empty tip c"
+		data-inact="inact"
+		data-act="text-i"
 		data-set="flip"></a>
 	<a href="#frm" id="a-frm"
 		title="Background"
-		class="mem small text-n icon-no act-icon-expand empty"
+		class="mem small text-n icon-no act-icon-expand empty tip c"
+		data-inact="inact"
+		data-act="text-y"
 		data-set="bg pad rad"></a>
 	<a href="#frm" id="a-frm"
-		title="Method: POST/GET"
-		class="mem small text-n icon-send act-icon-link empty"
+		title="HTTP method: POST/GET"
+		class="mem small text-n icon-send act-icon-link empty tip c"
 		data-attr="method"
 		data-set="get"
 		data-unset="post"
 		></a>
 </h2>
-<form id="frm" method="post" action="?#form" enctype="multipart/form-data" class="js-unhint" data-get=""> <!-- data-get="form": form[name]-->
+<form id="frm" method="post" action="?#form" enctype="multipart/form-data" class="js-unhint" data-q=""> <!-- data-get="form": form[name]-->
 <table id="ftab" class="flip shift">
 <tr>
 	<td><label for="in-text">Name</label>
-	<td><input type="text" id="in-text" name="name" required pattern="[A-Za-z]+" size="15" data-get="nm">
+	<td><input type="text" id="in-text" name="name" required pattern="[A-Za-z]+" size="15" data-q="nm">
 		<small class="hide-nojs">
 		<a href="#in-text" data-value="John"><span class="btn bg-n">John</span></a>
 		<a href="#in-text" data-value="Paul"><span class="btn bg-n">Paul</span></a>
@@ -231,7 +236,7 @@
 		<label for="in-box">Invert</label>
 <tr>
 	<td><label for="in-date">Datetime</label>
-	<td><input type="datetime-local" id="in-date" name="date" class="calendar" min="2020-01-10" max="2035-02-03">
+	<td><input type="datetime-local" id="in-date" name="datetime" class="calendar" min="2020-01-10" max="2035-02-03" step="1">
 <tr>
 	<td><label for="in-lookup">Country</label>
 	<td><input type="text" id="in-lookup" name="country"
@@ -261,10 +266,10 @@
 			<td><label for="in-file">File</label>
 			<td><input type="file" id="in-file" name="up[]" class="pick drop" multiple>
 		<tr>
-			<td><label for="in-radio">Body</label>
+			<td>Object
 			<td>
-				<label><input type="radio" id="in-radio" name="radio" value="sun"> Sun</label><br>
-				<label><input type="radio" name="radio" value="moon"> Moon</label>
+				<label><input type="radio" name="object" value="sun"> Sun</label><br>
+				<label><input type="radio" name="object" value="moon"> Moon</label>
 		</table>
 </div>
 </fieldset>
@@ -282,12 +287,14 @@
 <h2 id="grid">Grid
 	<a href="#grd" id="a-grd"
 		title="Responsive"
-		class="mem act hide-desktop small text-n icon-grid act-icon-menu empty"
+		class="mem act hide-desktop small text-n icon-grid act-icon-menu empty tip c"
+		data-inact="inact"
+		data-act="text-i"
 		data-nodes="#grd>.row"
 		data-set="flip"></a>
 	<a href="#grd" id="a-grd-fit"
-		title="Gap"
-		class="mem small text-n icon-no act-icon-expand empty"
+		title="Gaps"
+		class="mem small text-n icon-no act-icon-expand empty tip c"
 		data-nodes="#grd>.row"
 		data-unset="mar"
 		data-set="fit"></a>
@@ -357,7 +364,9 @@
 <h2 id="tabs">Tabs
 	<a href="#tbs" id="a-tbs-bord"
 		title="Border"
-		class="mem small text-n icon-no act-icon-expand empty"
+		class="mem small text-n icon-no act-icon-expand empty tip c"
+		data-inact="inact"
+		data-act="text-y"
 		data-nodes="#tbs+div"
 		data-set="bord pad"></a>
 </h2>
@@ -378,7 +387,9 @@
 <h2 id="code">Code
 	<a href="#cod" id="a-cod-bord"
 		title="Border"
-		class="mem small text-n icon-no act-icon-expand empty"
+		class="mem small text-n icon-no act-icon-expand empty tip c"
+		data-inact="inact"
+		data-act="text-y"
 		data-nodes="#cod"
 		data-set="bord"></a>
 </h2>

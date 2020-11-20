@@ -76,11 +76,10 @@ export default class extends Plugin {
     this.paginate(nav.vTable, 1 * e.recv.hash.substr(1))
   }
   
-  inp(n, getVar, attr) {
-    let v;
-    if (n.dataset[getVar]) v = Url.get(true, n.dataset[getVar]);
-    if (v === undefined && attr in n.dataset) v = n.dataset[attr];
-    return v;
+  param(n, attr, def, getVar) {
+    if (!getVar) getVar = 'q' + attr;
+    const g = n.dataset[getVar] ? Url.get(true, n.dataset[getVar]) : null;
+    return g ?? n.dataset[attr] ?? def;
   }
 
   prepare(n) {
@@ -113,7 +112,7 @@ export default class extends Plugin {
     if (n.vLimit && tb.rows.length>n.vLimit) this.addPageNav(n);
     
     if (n.vInp) {
-      n.vInp.value = this.inp(n, 'getF', 'f') ?? ''; // initial filter
+      n.vInp.value = this.param(n, 'f', ''); // initial filter
       //n.vInp.onsearch = n.vInp.onkeyup = this.doFilter.bind(this,n);
       //1.
       //if (!n.vInp.vListen) n.vInp.addEventListener('input', this.doFilter.bind(this, n), false);
@@ -159,11 +158,11 @@ export default class extends Plugin {
           h[j].vListen = 1;
         }
       }
-      const s = parseInt(this.inp(n, 'getS', 's') ?? 0, 10); // initial sort
+      const s = parseInt(this.param(n, 's', 0), 10); // initial sort
       if (s) this.doSort(n, h[Math.abs(s)-1], s<0);
     }
     if (n.vLimit){
-      const p = parseInt(this.inp(n, 'getP', 'p') ?? 1, 10); // initial page
+      const p = parseInt(this.param(n, 'p', 1), 10); // initial page
       this.paginate(n, p || 1); // initial page
     }
   }

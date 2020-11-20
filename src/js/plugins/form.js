@@ -21,8 +21,8 @@ export default class extends Plugin {
   
   arrange({n}) {
     if (!n) {
-      this.app.ee(n, 'form[data-get]', m => this.initValues(m, m.dataset.get));
-      this.app.ee(n, '[data-get][name]', m => this.initValue(m, m.dataset.get));
+      this.app.ee(n, 'form[data-q]', m => this.initValues(m, m.dataset.q));
+      this.app.ee(n, '[name][data-q]', m => this.initValue(m, m.dataset.q));
     }
     this.app.ee(n, 'input[type="color"]', m => this.prepareColor(m));
   }
@@ -33,14 +33,11 @@ export default class extends Plugin {
   
   initValue(n, g) {
     if (g) {
-      let v = Url.get(true, g);
+      const v = Url.get(true, g);
       if (v !== undefined) {
-        if (n.matches('.calendar')){
-          const t = Dt.parse(v);
-          if (t) v = (new Date(t - t.getTimezoneOffset() * 60000)).toISOString().replace(/Z$/, '');
-        }
         if (n.type == 'checkbox') n.checked = (v && v !== '0');
         else if (n.type == 'radio') n.checked = (v && n.value === v);
+        else if (n.type?.match(/^date/)) n.value = Dt.fmt(Dt.parse(v), n.type.match(/^datetime/), 'i');
         else n.value = v;
       }
     }

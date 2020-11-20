@@ -1,4 +1,4 @@
-/*! d1-web v2.5.19 */
+/*! d1-web v2.5.20 */
 
 :root, .invert .invert {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -438,6 +438,7 @@ form>p, form>.row {
     text-align: left;
     font-weight: normal;
     font-style: normal;
+    font-size: 1rem;
 }
 
 [data-tip]:not(:hover):after {
