@@ -1,4 +1,4 @@
-/*! d1-web v2.5.20 */
+/*! d1-web v2.5.21 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -182,8 +182,9 @@ var Url = /*#__PURE__*/function () {
       var args = a.search ? a.search.replace(/^\?/, '').split('&') : [];
 
       for (i = 0; i < args.length; i++) {
-        var v = args[i].split('=');
-        gets[v[0]] = decodeURIComponent(v[1]).replace(/\+/, ' ');
+        var v = args[i].split('='); // fix "+": https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/decodeURIComponent
+
+        gets[v[0]] = decodeURIComponent(v[1].replace(/\+/g, ' '));
       }
 
       return g ? gets[g] : gets; //protocol, host (hostname, port), pathname, search, hash
