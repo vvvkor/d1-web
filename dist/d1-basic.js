@@ -1,4 +1,4 @@
-/*! d1-web v2.5.21 */
+/*! d1-web v2.5.22 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -161,7 +161,7 @@ var Url = /*#__PURE__*/function () {
     // build url from link node or string, with additional parameters
     value: function build(a, args) {
       a = Url.url2a(a);
-      var g = Url.get(a);
+      var g = Url.get(true, a);
       Object.keys(args).forEach(function (k) {
         return g[encodeURIComponent(k)] = encodeURIComponent(args[k]);
       });
@@ -173,7 +173,8 @@ var Url = /*#__PURE__*/function () {
 
   }, {
     key: "get",
-    value: function get(a, g) {
+    value: function get(g) {
+      var a = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
       if (a === true) a = location.href;
       if (!a) return null;
       a = Url.url2a(a);
@@ -187,7 +188,7 @@ var Url = /*#__PURE__*/function () {
         gets[v[0]] = decodeURIComponent(v[1].replace(/\+/g, ' '));
       }
 
-      return g ? gets[g] : gets; //protocol, host (hostname, port), pathname, search, hash
+      return g === true ? gets : gets[g]; //protocol, host (hostname, port), pathname, search, hash
     }
   }, {
     key: "url2a",
@@ -1443,7 +1444,7 @@ var _default = /*#__PURE__*/function (_Plugin) {
       if (!src && n.form) src = n.form.elements[p];
       var v = null;
       var al = n.matches(this.opt.qAlert);
-      var def = p ? src ? src.value : _util_url_js__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].get(n, p) : null;
+      var def = p ? src ? src.value : _util_url_js__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].get(p, n) || '' : null;
       if (def && 'go' in n.dataset) this.onAnswer(n, def, p); //go with default
       else if (this.opt.customDialog) {
           this.openDialog(h, t, al ? null : function (w) {

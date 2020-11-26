@@ -5,7 +5,7 @@ export default class Url {
   // build url from link node or string, with additional parameters
   static build(a, args) {
     a = Url.url2a(a)
-    const g = Url.get(a)
+    const g = Url.get(true, a)
     Object.keys(args).forEach(k => g[encodeURIComponent(k)] = encodeURIComponent(args[k]))
     const q = Object.keys(g).map(k => k + '=' + g[k]).join('&')
     return a.host
@@ -14,7 +14,7 @@ export default class Url {
   }
 
   // get url parameter(s) from link node or string
-  static get(a, g) {
+  static get(g, a=true) {
     if (a === true) a = location.href
     if (!a) return null
     a = Url.url2a(a)
@@ -25,7 +25,7 @@ export default class Url {
       // fix "+": https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/decodeURIComponent
       gets[v[0]] = decodeURIComponent(v[1].replace(/\+/g, ' '))
     }
-    return g ? gets[g] : gets
+    return g === true ? gets : gets[g]
     //protocol, host (hostname, port), pathname, search, hash
   }
   

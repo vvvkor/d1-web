@@ -78,7 +78,7 @@ export default class extends Plugin {
   
   param(n, attr, def, getVar) {
     if (!getVar) getVar = 'q' + attr;
-    const g = n.dataset[getVar] ? Url.get(true, n.dataset[getVar]) : null;
+    const g = n.dataset[getVar] ? Url.get(n.dataset[getVar]) : null;
     return g ?? n.dataset[attr] ?? def;
   }
 

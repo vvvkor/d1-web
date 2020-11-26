@@ -90,7 +90,7 @@ export default class extends Plugin {
     if (!src && n.form) src = n.form.elements[p];
     let v = null;
     let al = n.matches(this.opt.qAlert);
-    let def = p ? (src ? src.value : Url.get(n, p)) : null;
+    let def = p ? (src ? src.value : (Url.get(p, n) || '')) : null;
     
     if (def && 'go' in n.dataset) this.onAnswer(n, def, p);//go with default
     else if (this.opt.customDialog) {

@@ -33,7 +33,7 @@ export default class extends Plugin {
   
   initValue(n, g) {
     if (g) {
-      const v = Url.get(true, g);
+      const v = Url.get(g);
       if (v !== undefined) {
         if (n.type == 'checkbox') n.checked = (v && v !== '0');
         else if (n.type == 'radio') n.checked = (v && n.value === v);
