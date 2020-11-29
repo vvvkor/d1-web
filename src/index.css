@@ -64,7 +64,7 @@ css restructure (maybe)
 
 */
 
-:root, .invert .invert{
+:root/*, .invert .invert*/{
 --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
 --font-cap: var(--font); /*"PT Serif", serif;*/
 --font-mono: "PT Mono", monospace;

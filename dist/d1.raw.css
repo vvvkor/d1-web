@@ -1,4 +1,4 @@
-/*! d1-web v2.5.23 */
+/*! d1-web v2.5.24 */
 
 /* @import url("css/columns.css"); */
 /* @import url("css/grid.css"); */
@@ -64,7 +64,7 @@ css restructure (maybe)
 
 */
 
-:root, .invert .invert{
+:root/*, .invert .invert*/{
 --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
 --font-cap: var(--font); /*"PT Serif", serif;*/
 --font-mono: "PT Mono", monospace;
