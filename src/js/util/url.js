@@ -22,7 +22,6 @@ export default class Url {
     const args = a.search ? a.search.replace(/^\?/, '').split('&') : []
     for (i=0; i<args.length; i++) {
       const v = args[i].split('=')
-      // fix "+": https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/decodeURIComponent
       gets[v[0]] = decodeURIComponent(v[1].replace(/\+/g, ' '))
     }
     return g === true ? gets : gets[g]

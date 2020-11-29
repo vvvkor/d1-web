@@ -1,4 +1,4 @@
-/*! d1-web v2.5.22 */
+/*! d1-web v2.5.23 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -183,8 +183,7 @@ var Url = /*#__PURE__*/function () {
       var args = a.search ? a.search.replace(/^\?/, '').split('&') : [];
 
       for (i = 0; i < args.length; i++) {
-        var v = args[i].split('='); // fix "+": https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/decodeURIComponent
-
+        var v = args[i].split('=');
         gets[v[0]] = decodeURIComponent(v[1].replace(/\+/g, ' '));
       }
 
