@@ -1,4 +1,4 @@
-/*! d1-web v2.5.24 */
+/*! d1-web v2.5.25 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -309,8 +309,6 @@ a.hover.act, table.hover tr:hover {
 }
 
 table.hover tr:hover a {
-    color: inherit;
-    color: var(--text-hilite);
 }
 
 svg {
@@ -1488,8 +1486,18 @@ ul.fit li {
     list-style: none;
 }
 
-a.let {
+a.let:not([class*="text-"]) {
     color: inherit;
+}
+
+a.let[class*="text-"][class*="icon-"]>:not(.icon) {
+    color: #04b;
+    color: var(--link);
+}
+
+a.let.act[class*="text-"][class*="icon-"]>:not(.icon) {
+    color: #07f;
+    color: var(--hover);
 }
 
 img.fit {

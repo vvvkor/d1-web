@@ -14,10 +14,10 @@
 		-->
 		
 	<!-- CDN -->
-		<link href="https://unpkg.com/d1-web@2.5.24/dist/d1.min.css" rel="stylesheet">
-		<script src="https://unpkg.com/d1-web@2.5.24/dist/d1.min.js" defer></script>
+		<link href="https://unpkg.com/d1-web@2.5.25/dist/d1.min.css" rel="stylesheet">
+		<script src="https://unpkg.com/d1-web@2.5.25/dist/d1.min.js" defer></script>
 		<noscript>
-			<link href="https://unpkg.com/d1-web@2.5.24/dist/d1-icons.min.css" rel="stylesheet">
+			<link href="https://unpkg.com/d1-web@2.5.25/dist/d1-icons.min.css" rel="stylesheet">
 		</noscript>
 	<!-- local-module (test with no need to compile) ->
 		<link href="../src/index.css" rel="stylesheet">
@@ -47,10 +47,10 @@
 <nav class="stick let toggle">
 <div class="hide-desktop pad">
 	<a href="#nav" class="icon-menu act-icon-delete empty" title="Navigation"><span>Navigation</span></a>
-	<a href="demo.html" class="pad"><b>d1</b></a> <span class="text-n">v2.5.24</span>
+	<a href="demo.html" class="pad"><b>d1</b></a> <span class="text-n">v2.5.25</span>
 </div>
 <ul id="nav" class="nav flip hover target-mobile">
-<li><a href="demo.html"><b>d1</b> <span class="text-n">v2.5.24</span></a>
+<li><a href="demo.html"><b>d1</b> <span class="text-n">v2.5.25</span></a>
 <li><a href="#1">Sections</a>
 	<ul>
 	<li><a href="#menu" class="icon-open">Drawer</a>
@@ -95,7 +95,7 @@
 		<a href="#cancel" class="icon-close empty"><span>Close</span></a>
 		<form>
 		<ul class="l tree accordion mem fit mar">
-		<li><a class="icon-folder act-icon-open">Background</a>
+		<li><a class="icon-folder act-icon-open" data-act="text-w let">Background</a>
 			<ul>
 			<li><label><input class="mem" type="radio" name="bg" data-nodes="main" value="" checked> Default</label>
 			<li><label><input class="mem" type="radio" name="bg" data-nodes="main" value="bg"> Grey</label>
@@ -104,7 +104,7 @@
 			<li><label><input class="mem" type="radio" name="bg" data-nodes="main" value="bg-w"> Yellow</label>
 			<li><label><input class="mem" type="radio" name="bg" data-nodes="main" value="bg-e"> Red</label>
 			</ul>
-		<li><a class="icon-folder act-icon-open">Text</a>
+		<li><a class="icon-folder act-icon-open" data-act="text-w let">Text</a>
 			<ul>
 			<li><label><input class="mem" type="radio" name="text" data-nodes="main" value="" checked> Default</label>
 			<li><label><input class="mem" type="radio" name="text" data-nodes="main" value="text-n"> Grey</label>
@@ -113,8 +113,8 @@
 			<li><label><input class="mem" type="radio" name="text" data-nodes="main" value="text-w"> Yellow</label>
 			<li><label><input class="mem" type="radio" name="text" data-nodes="main" value="text-e"> Red</label>
 			</ul>
-		<li><a href="#" id="set-small" class="icon-text mem" data-nodes="main" data-set="small" data-act="text-" data-inact="text-n">Small</a>
-		<li><a href="#" id="set-trans" class="act icon-play mem" data-nodes="body" data-set="trans" data-act="text-" data-inact="text-n">Transitions</a>
+		<li><a href="#" id="set-small" class="icon-text mem" data-nodes="main" data-set="small" data-act="text-y let" data-inact="inact">Small</a>
+		<li><a href="#" id="set-trans" class="act icon-play mem" data-nodes="body" data-set="trans" data-act="text-y let" data-inact="inact">Transitions</a>
 		<!--li><a href="#alert" class="icon-tag">Sticky alert</a-->
 		<!--li><a href="#" id="set-topbar" class="icon-desc mem" data-nodes="#topbar" data-set="small toggle row" data-unset="hide">Topbar</a-->
 		</ul>
