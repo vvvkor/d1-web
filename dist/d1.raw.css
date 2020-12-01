@@ -1,4 +1,4 @@
-/*! d1-web v2.5.25 */
+/*! d1-web v2.5.27 */
 
 /* @import url("css/columns.css"); */
 /* @import url("css/grid.css"); */
@@ -223,14 +223,16 @@ sub,sup{line-height:0em;} /* normalize line height */
 /* link */
 /*
 	color priority (#<class/attr><tag><line>):
-	- hilited (--hilite) #20+af
-	- status (text-x) #20c
-	- btn (--bg) #20b
-	- no href (--text) #11ae
-	- hover, act (--hover) #11ad
-	- nav, hash (--link) 11ac
-	- visited (--visited) 1ab
-	- normal (--link) 01aa
+	- normal    (--link)   #01aa
+	- visited   (--visited)#10ab
+	- nav, hash (--link)   #11ac
+	- hover,act (--hover)  #11ad
+	- no href   (--text)   #11ae
+	- btn       (--bg)     #20b
+	- status    (--text-x) #20c
+	- hilited   (--hilite) #21+af
+	- let       (--text)   #21d
+	- let.text.icon(--link)#41d
 */
 a{color:var(--link);}
 :visited{color:var(--visited);} /* a:not(.btn) */
@@ -456,7 +458,7 @@ mark{background-color:var(--bg-warning);}
 
 @media (max-width: 899px){
 	/* mobile (phone, tablet) */
-	body{font-size:medium;}
+	html{font-size:medium;}
 	/*input[name],select[name],[contenteditable]{max-width:50%;}*/
 
 	ul.flip, .flip /*.row.flip, .nav.flip*/{display:block;} /* should have less priority then hiding (like .off) */

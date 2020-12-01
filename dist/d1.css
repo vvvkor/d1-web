@@ -1,4 +1,4 @@
-/*! d1-web v2.5.25 */
+/*! d1-web v2.5.27 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -866,7 +866,7 @@ mark {
 }
 
 @media (max-width: 899px) {
-    body {
+    html {
         font-size: medium;
     }
 
