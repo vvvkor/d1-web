@@ -7,12 +7,12 @@ export default [
     input: "src/index.js",
     output: [
       {
-        banner: '/*! ' + name + ' ' + version + ' */',
+        banner: '/*! ' + name + ' v' + version + ' */',
         file: "dist/d1.js",
         format: "iife" // iife | es | cjs
       },
       {
-        banner: '/*! ' + name + ' ' + version + ' */',
+        banner: '/*! ' + name + ' v' + version + ' */',
         file: "dist/d1.min.js",
         format: "iife",
         plugins: [ terser() ]
@@ -24,12 +24,12 @@ export default [
     input: "src/basic.js",
     output: [
       {
-        banner: '/*! ' + name + '/basic ' + version + ' */',
+        banner: '/*! ' + name + '/basic v' + version + ' */',
         file: "dist/d1-basic.js",
         format: "iife"
       },
       {
-        banner: '/*! ' + name + '/basic ' + version + ' */',
+        banner: '/*! ' + name + '/basic v' + version + ' */',
         file: "dist/d1-basic.min.js",
         format: "iife",
         plugins: [ terser() ]
@@ -41,12 +41,12 @@ export default [
     input: "src/classic.js",
     output: [
       {
-        banner: '/*! ' + name + '/classic ' + version + ' */',
+        banner: '/*! ' + name + '/classic v' + version + ' */',
         file: "dist/d1-classic.js",
         format: "iife"
       },
       {
-        banner: '/*! ' + name + '/classic ' + version + ' */',
+        banner: '/*! ' + name + '/classic v' + version + ' */',
         file: "dist/d1-classic.min.js",
         format: "iife",
         plugins: [ terser() ]
