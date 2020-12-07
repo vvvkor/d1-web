@@ -14,7 +14,7 @@ const buildCssIcons = () => {
   // process
   
   const fs = require('fs')
-  const icons = require('./dist/iconset.js')
+  const icons = require('../dist/iconset.js')
   const src = './src/icons.css'
   const dst = './dist/d1-icons.css'
 

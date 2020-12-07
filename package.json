@@ -1,6 +1,6 @@
 {
   "name": "d1-web",
-  "version": "2.5.27",
+  "version": "2.6.0",
   "description": "Lightweight responsive front-end framework",
   "main": "dist/d1.css",
   "directories": {
@@ -10,7 +10,7 @@
     "copy:css": "copyfiles ./src/index.css ./dist -f",
     "rename:css": "node -e \"require('fs').rename('dist/index.css', 'dist/d1.raw.css', err => console.log(err  || 'Renamed d1.raw.css.'))\"",
     "build:css": "postcss src/index.css -o dist/d1.css",
-    "build:css-icons": "node ./css-icons.js",
+    "build:css-icons": "node ./src/css-icons.js",
     "build:css-icons-post": "postcss dist/d1-icons.css -o dist/d1-icons.css",
     "minify:css": "postcss dist/d1.css -u cssnano -o dist/d1.min.css --no-map",
     "minify:css-icons": "postcss dist/d1-icons.css -u cssnano -o dist/d1-icons.min.css --no-map",
@@ -18,9 +18,9 @@
     "build:docs.cmt": "cross-var replace-in-file \"/REMOVE-/g\" \"\" \"docs/*.*\" --isRegex",
     "build:version": "cross-var replace-in-file \"/0\\.0\\.0/g\" \"$npm_package_version\" \"dist/*.*\" --isRegex",
     "build:docs.version": "cross-var replace-in-file \"/0\\.0\\.0/g\" \"$npm_package_version\" \"docs/*.*\" --isRegex",
-    "webpack": "webpack",
+    "rollup": "rollup -c",
     "lint": "./node_modules/.bin/eslint ./src/js/*.js ./src/js/plugins/*.js ./src/js/util/*.js",
-    "build": "npm run copy:css && npm run rename:css && npm run build:css && npm run build:css-icons && npm run build:css-icons-post && npm run minify:css-icons && npm run minify:css && npm run build:docs && npm run build:docs.cmt && npm run build:docs.version && webpack && npm run build:version",
+    "build": "npm run copy:css && npm run rename:css && npm run build:css && npm run build:css-icons && npm run build:css-icons-post && npm run minify:css-icons && npm run minify:css && npm run build:docs && npm run build:docs.cmt && npm run build:docs.version && npm run rollup && npm run build:version",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -42,22 +42,20 @@
   "homepage": "https://github.com/vvvkor/d1-web#readme",
   "dependencies": {},
   "devDependencies": {
-    "@babel/cli": "^7.12.1",
-    "@babel/core": "^7.12.3",
-    "@babel/preset-env": "^7.12.1",
-    "babel-loader": "^8.2.1",
-    "copyfiles": "^2.4.0",
+    "@babel/core": "^7.12.9",
+    "@babel/preset-env": "^7.12.7",
+    "@rollup/plugin-babel": "^5.2.2",
+    "copyfiles": "^2.4.1",
     "cross-var": "^1.1.0",
     "cssnano": "^4.1.10",
-    "eslint": "^7.13.0",
+    "eslint": "^7.15.0",
     "perfectionist": "^2.4.0",
     "postcss-calc": "^7.0.5",
     "postcss-cli": "^7.1.2",
     "postcss-custom-properties": "^8.0.11",
     "postcss-discard-comments": "^2.0.4",
     "replace-in-file": "^3.4.4",
-    "terser": "^4.8.0",
-    "webpack": "^4.44.2",
-    "webpack-cli": "^3.3.12"
+    "rollup": "^2.34.2",
+    "rollup-plugin-terser": "^7.0.2"
   }
 }
