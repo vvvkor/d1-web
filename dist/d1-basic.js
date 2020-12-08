@@ -1,4 +1,4 @@
-/*! d1-web/basic 2.6.0 */
+/*! d1-web/basic v2.6.1 */
 (function () {
   'use strict';
 
@@ -714,6 +714,7 @@
         qDrawer: '.drawer[id]:not(.shift)',
         qTip: '[data-tip=""][title], .tip[title]',
         qModal: '.gal>a[id], .dlg',
+        qMassTgl: 'a[data-nodes]:not([data-set])',
         cMem: 'mem',
         cFade: 'fade',
         cTarget: 'target',
@@ -759,6 +760,9 @@
         app.listen('active', function (e) {
           return _this2.hiliteLink(e.n, e.on);
         });
+        app.h('click', this.opt.qMassTgl, function (e) {
+          return _this2.massToggle(e.recv, e);
+        });
         app.listen('modal', function (e) {
           return _this2.modalStyle(e);
         }); //toggle
@@ -790,17 +794,21 @@
         var q = this.opt;
         var togglers = [q.qTrg, q.qPop, q.qNav, q.qDlg, q.qTab, q.qTre, q.qDrw
         /*, q.qMedia/*, q.qGal*/
-        ].join(', ');
+        ].join(', '); //initialize togglers
+
         app.e(togglers, function (n) {
           return _this3.initToggler(n);
-        }); //initialize togglers
-
+        });
         this.opt.mediaSuffixes.forEach(function (x) {
           return app.e(_this3.opt.qTrg + x, function (n) {
             return _this3.initToggler(n, x);
           });
-        }); //initialize togglers by media
-        //let autohide = [        q.qPop, q.qNav, q.qDlg, q.qTab, q.qAcc, q.qDrw, q.qMedia/*, q.qGal*/].join(', ');
+        });
+        app.e(this.opt.qMassTgl, function (n) {
+          return app.e(n.dataset.nodes, function (m) {
+            return _this3.initToggler(m, '', true);
+          });
+        }); //let autohide = [        q.qPop, q.qNav, q.qDlg, q.qTab, q.qAcc, q.qDrw, q.qMedia/*, q.qGal*/].join(', ');
         //app.e(autohide, n => this.tgl(n, 0)); //autohide
 
         app.ee(n, this.opt.qNav + ', ' + this.opt.qTre, function (m) {
@@ -828,10 +836,14 @@
             return app.vis(m);
           }).length ? null : _this3.tgl(app.q(app.q('a[href^="#"]', m.parentNode.previousElementSibling).hash), 1);
         }); //inactive tabs: show first
+        //init links state
 
         app.ee(n, '.' + app.opt.cToggle + '[id]', function (m) {
           return _this3.hiliteLinks(m);
-        }); //init links state
+        });
+        app.ee(n, this.opt.qMassTgl, function (m) {
+          return _this3.massToggle(m);
+        });
       }
     }, {
       key: "arrange",
@@ -999,6 +1011,23 @@
         }
       }
     }, {
+      key: "massToggle",
+      value: function massToggle(n, e) {
+        var _this4 = this;
+
+        if (e) e.preventDefault(); //const on = !n.classList.contains(this.app.opt.cAct);
+
+        var on = this.app.vis(this.app.q(n.dataset.nodes));
+        if (e) on = !on;
+        this.app.fire('active', {
+          n: n,
+          on: on
+        });
+        if (e) this.app.qq(n.dataset.nodes).forEach(function (d) {
+          return _this4.toggle(d, on);
+        });
+      }
+    }, {
       key: "onClick",
       value: function onClick(e) {
         this.nEsc = 0; //if (!e.target.closest('a, input, select, textarea')) this.addHistory();
@@ -1006,10 +1035,10 @@
       }
     }, {
       key: "initToggler",
-      value: function initToggler(n, suffix) {
+      value: function initToggler(n, suffix, keep) {
         n.classList.remove(this.opt.cTarget + (suffix || ''));
         n.classList.add(this.app.opt.cToggle + (suffix || ''));
-        this.tgl(n, 0);
+        if (!keep) this.tgl(n, 0);
       }
     }, {
       key: "attachSubNav",
@@ -1093,22 +1122,22 @@
     }, {
       key: "toggleDependent",
       value: function toggleDependent(d) {
-        var _this4 = this;
+        var _this5 = this;
 
         if (this.app.vis(d)) {
           if (d.matches(this.opt.qDlg)) ; //this.app.e(this.opt.qDlg, n => n == d ? null : this.toggle(n, false, 1)); //hide other dialogs
           else if (d.matches(this.opt.qTab)) this.app.e(d.parentNode.children, function (n) {
-              return n == d ? null : _this4.toggle(n, false, 1);
+              return n == d ? null : _this5.toggle(n, false, 1);
             }); //hide sibling tabs
             else if (d.matches(this.opt.qAcc)) this.app.ee(d.closest(this.opt.qAccRoot), this.opt.qAcc, function (n) {
-                return n.contains(d) ? null : _this4.toggle(n, false, 1);
+                return n.contains(d) ? null : _this5.toggle(n, false, 1);
               }); //hide other ul
         }
       }
     }, {
       key: "unpop",
       value: function unpop(x, force) {
-        var _this5 = this;
+        var _this6 = this;
 
         var keep = [x];
 
@@ -1128,16 +1157,16 @@
         if (!force) {
           // to close nested subsequently
           nn = nn.filter(function (n) {
-            return !_this5.app.q(_this5.opt.qUnpopOn, n);
+            return !_this6.app.q(_this6.opt.qUnpopOn, n);
           });
         } // to close vRel subsequently
 
 
         nn = nn.filter(function (n) {
-          return !_this5.containsRels(n);
+          return !_this6.containsRels(n);
         });
         this.app.e(nn, function (n) {
-          return _this5.toggle(n, false, !force);
+          return _this6.toggle(n, false, !force);
         });
       }
     }, {
@@ -1170,11 +1199,11 @@
     }, {
       key: "hiliteLinks",
       value: function hiliteLinks(d) {
-        var _this6 = this;
+        var _this7 = this;
 
         var on = this.app.vis(d);
         if (d.id) this.app.e('a[href="#' + d.id + '"]', function (n) {
-          return _this6.app.fire('active', {
+          return _this7.app.fire('active', {
             n: n,
             on: on
           });

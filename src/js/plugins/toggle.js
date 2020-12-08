@@ -33,6 +33,7 @@ export default class extends Plugin{
       qDrawer: '.drawer[id]:not(.shift)',
       qTip: '[data-tip=""][title], .tip[title]',
       qModal: '.gal>a[id], .dlg',
+      qMassTgl: 'a[data-nodes]:not([data-set])',
 
       cMem: 'mem',
       cFade: 'fade',
@@ -53,6 +54,7 @@ export default class extends Plugin{
     app.listen('hashchange', e => this.onHash(e));//initial state, #
     app.listen('esc', e => this.esc(e));//click #cancel, hash #cancel, key-27
     app.listen('active', e => this.hiliteLink(e.n, e.on));
+    app.h('click', this.opt.qMassTgl, e => this.massToggle(e.recv, e));
 
     app.listen('modal', e => this.modalStyle(e));
     //toggle
@@ -68,8 +70,12 @@ export default class extends Plugin{
     const app = this.app;
     const q = this.opt;
     const togglers = [q.qTrg, q.qPop, q.qNav, q.qDlg, q.qTab, q.qTre, q.qDrw/*, q.qMedia/*, q.qGal*/].join(', ');
-    app.e(togglers, n => this.initToggler(n)); //initialize togglers
-    this.opt.mediaSuffixes.forEach(x => app.e(this.opt.qTrg + x, n => this.initToggler(n, x))); //initialize togglers by media
+    
+    //initialize togglers
+    app.e(togglers, n => this.initToggler(n));
+    this.opt.mediaSuffixes.forEach(x => app.e(this.opt.qTrg + x, n => this.initToggler(n, x)));
+    app.e(this.opt.qMassTgl, n => app.e(n.dataset.nodes, m => this.initToggler(m, '', true)));
+    
     //let autohide = [        q.qPop, q.qNav, q.qDlg, q.qTab, q.qAcc, q.qDrw, q.qMedia/*, q.qGal*/].join(', ');
     //app.e(autohide, n => this.tgl(n, 0)); //autohide
     app.ee(n, this.opt.qNav + ', ' + this.opt.qTre, m => this.attachSubNav(m)); //nav, tree: attach to links
@@ -78,7 +84,10 @@ export default class extends Plugin{
     app.ee(n, '[id]', m => this.restoreVisibility(m));//restore visibility
     app.ee(n, this.opt.qTab + ':not(.'+app.opt.cOff+') ~ [id]:not(.'+app.opt.cOff+')', m => this.tgl(m, 0)); //undup tabs
     app.ee(n, this.opt.qTab + ':first-of-type', m => app.qq(this.opt.qTab, m.parentNode).filter(m => app.vis(m)).length ? null : this.tgl(app.q(app.q('a[href^="#"]', m.parentNode.previousElementSibling).hash), 1));//inactive tabs: show first
-    app.ee(n, '.' + app.opt.cToggle + '[id]', m => this.hiliteLinks(m));//init links state
+    
+    //init links state
+    app.ee(n, '.' + app.opt.cToggle + '[id]', m => this.hiliteLinks(m));
+    app.ee(n, this.opt.qMassTgl, m => this.massToggle(m));
   }
 
   arrange({n}) {
@@ -215,16 +224,25 @@ export default class extends Plugin{
     }
   }
   
+  massToggle(n, e) {
+    if (e) e.preventDefault();
+    //const on = !n.classList.contains(this.app.opt.cAct);
+    let on = this.app.vis(this.app.q(n.dataset.nodes));
+    if(e) on = !on;
+    this.app.fire('active', {n, on})
+    if (e) this.app.qq(n.dataset.nodes).forEach(d => this.toggle(d, on));
+  }
+  
   onClick(e) {
     this.nEsc = 0;
     //if (!e.target.closest('a, input, select, textarea')) this.addHistory();
     //if (e.clientX>=0 && e.clientX<=10 && e.clientY>5 && this.opt.qDrawer) this.toggle(this.opt.qDrawer);
   }
   
-  initToggler(n, suffix) {
+  initToggler(n, suffix, keep) {
     n.classList.remove(this.opt.cTarget + (suffix || ''));
     n.classList.add(this.app.opt.cToggle + (suffix || ''));
-    this.tgl(n, 0);
+    if (!keep) this.tgl(n, 0);
   }
 
   attachSubNav(n) {

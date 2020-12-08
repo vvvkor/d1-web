@@ -10,21 +10,23 @@ export default class extends Plugin {
     this.opt = {
       cMem: 'mem',
       qHeading: 'h2[id], h3[id], h4[id], h5[id], h6[id]', // h1[id],
-      qSet: '[data-set], [data-nodes]',
+      qSetClick: '[data-set]',
+      qSetChange: 'input[data-nodes], select[data-nodes]',
       minDesktop: 900
     };
   }
   
   init() {
-    this.app.h('change', 'input[data-nodes], select[data-nodes]', e => this.toggleClass(e.target));
-    this.app.h('click', 'a[data-set]', e => this.toggleClass(e.recv, e));
+    this.app.h('change', this.opt.qSetChange, e => this.toggleClass(e.target));
+    this.app.h('click', this.opt.qSetClick, e => this.toggleClass(e.recv, e));
     this.app.b([window], 'resize', e => this.onResize(e));
   }
   
   arrange({n}) {
-    this.app.ee(n, this.opt.qSet, m => this.restore(m));
+    const q = this.opt.qSetClick + ', ' + this.opt.qSetChange;
+    this.app.ee(n, q, m => this.restore(m));
     this.app.ee(n, 'table[class]', m => this.alignCells(m));
-    this.app.ee(n, this.opt.qSet, m => this.toggleClass(m));
+    this.app.ee(n, q, m => this.toggleClass(m));
     this.app.ee(n, this.opt.qHeading, m => this.smartHeading(m));
     this.onResize();
   }
