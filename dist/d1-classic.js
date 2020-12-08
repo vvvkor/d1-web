@@ -1,4 +1,4 @@
-/*! d1-web/classic v2.6.1 */
+/*! d1-web/classic v2.6.2 */
 (function () {
   'use strict';
 
@@ -610,7 +610,7 @@
     }, {
       key: "vis",
       value: function vis(n) {
-        return !n.classList.contains(this.opt.cOff);
+        return n && !n.classList.contains(this.opt.cOff);
       } // fix clone IDs
 
     }, {
@@ -1275,23 +1275,6 @@
         }
       }
     }, {
-      key: "massToggle",
-      value: function massToggle(n, e) {
-        var _this4 = this;
-
-        if (e) e.preventDefault(); //const on = !n.classList.contains(this.app.opt.cAct);
-
-        var on = this.app.vis(this.app.q(n.dataset.nodes));
-        if (e) on = !on;
-        this.app.fire('active', {
-          n: n,
-          on: on
-        });
-        if (e) this.app.qq(n.dataset.nodes).forEach(function (d) {
-          return _this4.toggle(d, on);
-        });
-      }
-    }, {
       key: "onClick",
       value: function onClick(e) {
         this.nEsc = 0; //if (!e.target.closest('a, input, select, textarea')) this.addHistory();
@@ -1381,21 +1364,42 @@
         this.app.fire('toggle', {
           n: n,
           on: on
-        });
+        }); //this.app.fire('update', {n});
       }
     }, {
       key: "toggleDependent",
       value: function toggleDependent(d) {
-        var _this5 = this;
+        var _this4 = this;
 
         if (this.app.vis(d)) {
           if (d.matches(this.opt.qDlg)) ; //this.app.e(this.opt.qDlg, n => n == d ? null : this.toggle(n, false, 1)); //hide other dialogs
           else if (d.matches(this.opt.qTab)) this.app.e(d.parentNode.children, function (n) {
-              return n == d ? null : _this5.toggle(n, false, 1);
+              return n == d ? null : _this4.toggle(n, false, 1);
             }); //hide sibling tabs
             else if (d.matches(this.opt.qAcc)) this.app.ee(d.closest(this.opt.qAccRoot), this.opt.qAcc, function (n) {
-                return n.contains(d) ? null : _this5.toggle(n, false, 1);
+                return n.contains(d) ? null : _this4.toggle(n, false, 1);
               }); //hide other ul
+        }
+      }
+    }, {
+      key: "massToggle",
+      value: function massToggle(n, e) {
+        var _this5 = this;
+
+        if (e) e.preventDefault(); //const on = !n.classList.contains(this.app.opt.cAct);
+
+        var on = this.app.vis(this.app.q(n.dataset.nodes));
+        if (e) on = !on;
+        this.app.fire('active', {
+          n: n,
+          on: on
+        });
+
+        if (e) {
+          this.app.qq(n.dataset.nodes).forEach(function (d) {
+            return _this5.toggle(d, on);
+          });
+          this.addHistory(); //this.app.fire('update', {n});
         }
       }
     }, {

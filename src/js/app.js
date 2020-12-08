@@ -293,7 +293,7 @@ export default class {
   
   // get node toggle status
   vis(n) {
-    return !n.classList.contains(this.opt.cOff)
+    return n && !n.classList.contains(this.opt.cOff)
   }
   
   // fix clone IDs

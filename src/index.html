@@ -1603,6 +1603,26 @@ If target element should be visible with JavaScript disabled, but initially invi
 <div id="tog" class="pad bord yel target mem">Togglable</div>
 </div>
 
+<h4 id="mass-toggle">
+	Mass toggle
+	<small class="btn bg-i" title="Requires plugin: toggle">toggle</small>
+</h4>
+
+<p>
+To toggle many elements at once, use link with <code>data-nodes</code> attribute and query selector as its value.
+To initially hide elements add <code>off</code> class on them.
+To remember state, add <code>mem</code> class to the element and give it unique <code>id</code> or <code>name</code>.
+</p>
+
+<div class="code">
+<a href="#" data-nodes="#togs b">Mass toggle</a>
+<p id="togs">
+	Toggle:
+  <b class="bg-y mem" id="mt1">One</b>
+  <b class="bg-w mem" id="mt2">Two</b>
+</p>
+</div>
+
 <h3 id="popup">Popup</h3>
 
 <p>

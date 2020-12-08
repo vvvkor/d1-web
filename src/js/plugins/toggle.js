@@ -224,15 +224,6 @@ export default class extends Plugin{
     }
   }
   
-  massToggle(n, e) {
-    if (e) e.preventDefault();
-    //const on = !n.classList.contains(this.app.opt.cAct);
-    let on = this.app.vis(this.app.q(n.dataset.nodes));
-    if(e) on = !on;
-    this.app.fire('active', {n, on})
-    if (e) this.app.qq(n.dataset.nodes).forEach(d => this.toggle(d, on));
-  }
-  
   onClick(e) {
     this.nEsc = 0;
     //if (!e.target.closest('a, input, select, textarea')) this.addHistory();
@@ -291,6 +282,7 @@ export default class extends Plugin{
     this.hiliteLinks(n);
     on = on ?? this.app.vis(n);
     this.app.fire('toggle', {n, on});
+    //this.app.fire('update', {n});
   }
 
   toggleDependent(d) {
@@ -301,6 +293,19 @@ export default class extends Plugin{
     }
   }
 
+  massToggle(n, e) {
+    if (e) e.preventDefault();
+    //const on = !n.classList.contains(this.app.opt.cAct);
+    let on = this.app.vis(this.app.q(n.dataset.nodes));
+    if(e) on = !on;
+    this.app.fire('active', {n, on})
+    if (e) {
+      this.app.qq(n.dataset.nodes).forEach(d => this.toggle(d, on));
+      this.addHistory();
+      //this.app.fire('update', {n});
+    }
+  }
+  
   unpop(x, force) {
     let keep = [x];
     if (x) {
