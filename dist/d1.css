@@ -1,4 +1,4 @@
-/*! d1-web v2.6.2 */
+/*! d1-web v2.6.3 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -300,15 +300,15 @@ a.pad, a.btn {
     line-height: normal;
 }
 
-.hover:not(table) a:hover, .hover:not(table) .act, a.hover:hover, a.hover.act,
-table.hover tr:hover {
+.hover:not(table) a:not(.inact):hover, .hover:not(table) .act, a.hover:hover,
+a.hover.act, table.hover tr:hover {
     color: inherit;
     color: var(--text-hilite);
     box-shadow: inset 0 0 0 30em rgba(0, 0, 0, .05);
     box-shadow: inset 0 0 0 30em var(--bg-hilite);
 }
 
-table.hover tr:hover a:hover {
+table.hover a:hover {
     color: inherit;
     color: var(--text-hilite);
 }
@@ -1265,7 +1265,7 @@ mark {
         color: var(--text-lite);
     }
 
-    [class*="text-"]>.icon[class] {
+    [class*="text-"]>.icon:not([class*="text-"]) {
         color: inherit;
     }
 
@@ -1488,18 +1488,8 @@ ul.fit li {
     list-style: none;
 }
 
-a.let:not([class*="text-"]) {
+a.let {
     color: inherit;
-}
-
-a.let[class*="text-"][class*="icon-"]>:not(.icon) {
-    color: #04b;
-    color: var(--link);
-}
-
-a.let.act[class*="text-"][class*="icon-"]>:not(.icon) {
-    color: #07f;
-    color: var(--hover);
 }
 
 img.fit {

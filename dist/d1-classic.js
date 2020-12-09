@@ -1,4 +1,4 @@
-/*! d1-web/classic v2.6.2 */
+/*! d1-web/classic v2.6.3 */
 (function () {
   'use strict';
 
@@ -843,7 +843,7 @@
     }, {
       key: "iconize",
       value: function iconize(n, on) {
-        var m = n.className.match(new RegExp('(?:^|\\s)' + (on ? '(?:act-)' : '') + this.opt.pIcon + '([\\w\\-_]+)'));
+        var m = n.className.match(new RegExp('(?:^|\\s)' + (on ? '(?:act-)' : '') + this.opt.pIcon + '([\\w\\-_\\/]+)'));
 
         if (m && (on === undefined || n.matches('[class*="act-"]'))) {
           this.app.ee(n, 'svg', function (s) {
@@ -859,6 +859,8 @@
         var icon = this.i(i);
 
         if (icon) {
+          var _icon$classList;
+
           if (n.classList.contains(this.opt.cEmpty)) {
             this.app.clr(n);
             if (!n.hasAttribute('title')) n.title = t;
@@ -866,7 +868,10 @@
           }
 
           if (n.firstChild && !n.firstChild.tagName) this.app.ins('span', n.firstChild, {}, n, false);
-          n.insertBefore(icon, n.firstChild);
+          n.insertBefore(icon, n.firstChild); // n.classList.add(this.opt.pIcon + i.split(/[\/_]/)[0]);
+
+          var m = n.className.match(/\bic_([\w\-_]+)\b/);
+          if (m) (_icon$classList = icon.classList).add.apply(_icon$classList, _toConsumableArray(m[1].split('_')));
         }
       }
     }, {
@@ -911,9 +916,14 @@
     }, {
       key: "prepareSvg",
       value: function prepareSvg(n, a) {
-        if (a[0]) n.setAttribute('width', a[0]);
-        if (a[1]) n.setAttribute('height', a[1]);
-        if (a.length > 0) n.setAttribute('class', a.slice(2).join(' ') || '');
+        var _n$classList;
+
+        // if (a[0]) n.setAttribute('width', a[0]);
+        // if (a[1]) n.setAttribute('height', a[1]);
+        // if (a.length>0) n.setAttribute('class', a.slice(2).join(' ') || '');
+        if (a[0]) n.style.width = a[0] + 'px';
+        if (a[1]) n.style.height = a[1] + 'px';
+        if (a[2]) (_n$classList = n.classList).add.apply(_n$classList, _toConsumableArray(a.slice(2)));
         return n;
       }
     }, {
@@ -928,7 +938,7 @@
     }, {
       key: "replaceItem",
       value: function replaceItem(n, p) {
-        var t = 'innerText' in n ? n.innerText.replace(/^\s+|\s+$/g, '') : '';
+        var t = 'innerText' in n && !n.firstElementChild ? n.innerText.replace(/^\s+|\s+$/g, '') : '';
 
         if (t.length == 1 && t in this.opt.re && !('val' in n.dataset)) {
           n.innerHTML = '';

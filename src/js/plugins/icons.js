@@ -37,7 +37,7 @@ export default class extends Plugin {
   }
   
   iconize(n, on) {
-    let m = n.className.match(new RegExp('(?:^|\\s)' + (on ? '(?:act-)' : '') + this.opt.pIcon + '([\\w\\-_]+)'));
+    let m = n.className.match(new RegExp('(?:^|\\s)' + (on ? '(?:act-)' : '') + this.opt.pIcon + '([\\w\\-_\\/]+)'));
     if (m && (on === undefined || n.matches('[class*="act-"]'))) {
       this.app.ee(n, 'svg', s => s.parentNode.removeChild(s));
       this.addIcon(m[1], n);
@@ -55,6 +55,9 @@ export default class extends Plugin {
       }
       if (n.firstChild && !n.firstChild.tagName) this.app.ins('span', n.firstChild, {}, n, false);
       n.insertBefore(icon, n.firstChild);
+      // n.classList.add(this.opt.pIcon + i.split(/[\/_]/)[0]);
+      let m = n.className.match(/\bic_([\w\-_]+)\b/);
+      if (m) icon.classList.add(...m[1].split('_'));
     }
   }
 
@@ -96,9 +99,12 @@ export default class extends Plugin {
   }
   
   prepareSvg(n, a) {
-    if (a[0]) n.setAttribute('width', a[0]);
-    if (a[1]) n.setAttribute('height', a[1]);
-    if (a.length>0) n.setAttribute('class', a.slice(2).join(' ') || '');
+    // if (a[0]) n.setAttribute('width', a[0]);
+    // if (a[1]) n.setAttribute('height', a[1]);
+    // if (a.length>0) n.setAttribute('class', a.slice(2).join(' ') || '');
+    if (a[0]) n.style.width = a[0] + 'px';
+    if (a[1]) n.style.height = a[1] + 'px';
+    if (a[2]) n.classList.add(...a.slice(2));
     return n;
   }
   
@@ -107,7 +113,7 @@ export default class extends Plugin {
   }
   
   replaceItem (n, p) {
-    const t = ('innerText' in n) ? n.innerText.replace(/^\s+|\s+$/g, '') : '';
+    const t = ('innerText' in n && !n.firstElementChild) ? n.innerText.replace(/^\s+|\s+$/g, '') : '';
     if (t.length == 1 && t in this.opt.re && !('val' in n.dataset)) {
       n.innerHTML = '';
       const i = p.dataset[this.opt.re[t][1]] || this.opt.re[t][0];
