@@ -1,4 +1,4 @@
-/*! d1-web v2.6.3 */
+/*! d1-web v2.6.4 */
 (function () {
   'use strict';
 
@@ -1087,12 +1087,16 @@
       value: function prepareSvg(n, a) {
         var _n$classList;
 
-        // if (a[0]) n.setAttribute('width', a[0]);
-        // if (a[1]) n.setAttribute('height', a[1]);
-        // if (a.length>0) n.setAttribute('class', a.slice(2).join(' ') || '');
-        if (a[0]) n.style.width = a[0] + 'px';
-        if (a[1]) n.style.height = a[1] + 'px';
-        if (a[2]) (_n$classList = n.classList).add.apply(_n$classList, _toConsumableArray(a.slice(2)));
+        var w = a.filter(function (x) {
+          return x.match(/^\d+$/);
+        });
+        var c = a.filter(function (x) {
+          return x && !x.match(/^\d+$/);
+        });
+        if (w.length) n.classList.add('js-resized');
+        if (w[0]) n.style.width = w[0] + 'px';
+        if (w[1]) n.style.height = w[1] + 'px';
+        if (c.length) (_n$classList = n.classList).add.apply(_n$classList, _toConsumableArray(c));
         return n;
       }
     }, {

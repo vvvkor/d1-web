@@ -37,7 +37,7 @@ export default class extends Plugin {
   }
   
   iconize(n, on) {
-    let m = n.className.match(new RegExp('(?:^|\\s)' + (on ? '(?:act-)' : '') + this.opt.pIcon + '([\\w\\-_\\/]+)'));
+    const m = n.className.match(new RegExp('(?:^|\\s)' + (on ? '(?:act-)' : '') + this.opt.pIcon + '([\\w\\-_\\/]+)'));
     if (m && (on === undefined || n.matches('[class*="act-"]'))) {
       this.app.ee(n, 'svg', s => s.parentNode.removeChild(s));
       this.addIcon(m[1], n);
@@ -45,8 +45,8 @@ export default class extends Plugin {
   }
   
   addIcon(i, n) {
-    let t = n.textContent;
-    let icon = this.i(i);
+    const t = n.textContent;
+    const icon = this.i(i);
     if (icon) {
       if (n.classList.contains(this.opt.cEmpty)) {
         this.app.clr(n);
@@ -56,19 +56,19 @@ export default class extends Plugin {
       if (n.firstChild && !n.firstChild.tagName) this.app.ins('span', n.firstChild, {}, n, false);
       n.insertBefore(icon, n.firstChild);
       // n.classList.add(this.opt.pIcon + i.split(/[\/_]/)[0]);
-      let m = n.className.match(/\bic_([\w\-_]+)\b/);
+      const m = n.className.match(/\bic_([\w\-_]+)\b/);
       if (m) icon.classList.add(...m[1].split('_'));
     }
   }
 
   i(ico, alt) {
-    let a = ico.split(/[\/_]/);
+    const a = ico.split(/[\/_]/);
     ico = a[0];
     if (this.parsed[ico] === undefined) {
       let svg = '';
       if (this.opt.pSvg !== false) {
-        let id = this.opt.pSvg + ico;
-        let sym = document.getElementById(id);
+        const id = this.opt.pSvg + ico;
+        const sym = document.getElementById(id);
         if (sym && sym.tagName.toLowerCase() == 'symbol') svg = '<svg><use xlink:href="#' + id + '"></use></svg>'; // from page
       }
       if (!svg) {
@@ -80,7 +80,7 @@ export default class extends Plugin {
 
       let n;
       if (svg) {
-        let div = document.createElement('div');
+        const div = document.createElement('div');
         div.innerHTML = svg;
         n = div.firstChild;
         if (!n.getAttribute('width'))  n.setAttribute('width', this.opt.iconSize);
@@ -99,12 +99,12 @@ export default class extends Plugin {
   }
   
   prepareSvg(n, a) {
-    // if (a[0]) n.setAttribute('width', a[0]);
-    // if (a[1]) n.setAttribute('height', a[1]);
-    // if (a.length>0) n.setAttribute('class', a.slice(2).join(' ') || '');
-    if (a[0]) n.style.width = a[0] + 'px';
-    if (a[1]) n.style.height = a[1] + 'px';
-    if (a[2]) n.classList.add(...a.slice(2));
+    const w = a.filter(x => x.match(/^\d+$/));
+    const c = a.filter(x => x && !x.match(/^\d+$/));
+    if (w.length) n.classList.add('js-resized');
+    if (w[0]) n.style.width = w[0] + 'px';
+    if (w[1]) n.style.height = w[1] + 'px';
+    if (c.length) n.classList.add(...c);
     return n;
   }
   

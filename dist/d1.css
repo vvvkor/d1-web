@@ -1,4 +1,4 @@
-/*! d1-web v2.6.3 */
+/*! d1-web v2.6.4 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -321,7 +321,13 @@ svg {
     display: inline-block;
     width: 1em;
     height: 1em;
-    transform: translate(0, .15em) scale(1.2);
+    transform: scale(1.2);
+    vertical-align: -10%;
+}
+
+.icon.js-resized {
+    transform: none;
+    vertical-align: middle;
 }
 
 .icon+* {

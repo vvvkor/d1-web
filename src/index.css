@@ -252,7 +252,8 @@ table.hover /*tr:hover a*/ a:hover{color:var(--text-hilite);}
 
 /* image */
 svg{fill:currentColor;}
-.icon{display:inline-block;width:1em;height:1em;transform:translate(0,.15em) scale(1.2);}
+.icon{display:inline-block;width:1em;height:1em;transform:scale(1.2);vertical-align:-10%;}
+.icon.js-resized{transform:none;vertical-align:middle;}
 	/*.icon:not(:last-child){margin-right:var(--gap-s);}*/
 	.icon+*{margin-left:var(--gap-s);}
 	/*.icon.line{fill:none;stroke:currentColor;stroke-width:8%;stroke-linecap:round;stroke-linejoin:round;transform:translate(0,.15em);}/*!*/
