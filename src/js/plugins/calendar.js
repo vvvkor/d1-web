@@ -120,7 +120,7 @@ export default class extends Plugin {
     if (n.dataset.ready) return;
     n.dataset.ready = 1;
     
-    n.dataset.tm = (n.type == 'datetime-local' || n.classList.contains('datetime'));
+    n.dataset.tm = (n.type == 'datetime-local' || n.classList.contains('datetime')) ? '1' : '';
     n.type = 'text';
     n.autocomplete = 'off';
     if (n.value) n.value = this.fmt(this.parse(n.value), 0, n.dataset.tm);

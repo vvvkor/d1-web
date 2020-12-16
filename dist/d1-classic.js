@@ -1,4 +1,4 @@
-/*! d1-web/classic v2.6.4 */
+/*! d1-web/classic v2.6.5 */
 (function () {
   'use strict';
 
@@ -1911,7 +1911,7 @@
       value: function prepare(n) {
         if (n.dataset.ready) return;
         n.dataset.ready = 1;
-        n.dataset.tm = n.type == 'datetime-local' || n.classList.contains('datetime');
+        n.dataset.tm = n.type == 'datetime-local' || n.classList.contains('datetime') ? '1' : '';
         n.type = 'text';
         n.autocomplete = 'off';
         if (n.value) n.value = this.fmt(this.parse(n.value), 0, n.dataset.tm);
