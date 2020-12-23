@@ -357,7 +357,7 @@ ul.nav, .nav ul{list-style:none;padding:0;margin:0;}
 .gal a:target{background-image:var(--img);} /* current */
 	.gal a:target+a{background-image:var(--img);background-position:999em 999em;} /* preload next */
 	.gal a:not([id]), .gal a:after{z-index:111;position:fixed;top:0;color:#fff;padding:0 calc(var(--gap-n) / 2);}
-	.gal a[data-caption]:after{content:attr(data-caption);left:0;display:block;}
+	.gal a[data-caption]:after{content:attr(data-caption);left:0;right:3em;display:block;}
 	.gal a:not([id]){right:0;}
 	.gal a.dragging:after{content:"";}
 

@@ -1,4 +1,4 @@
-/*! d1-web v2.6.6 */
+/*! d1-web v2.6.7 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -717,6 +717,7 @@ ul.nav, .nav ul {
 .gal a[data-caption]:after {
     content: attr(data-caption);
     left: 0;
+    right: 3em;
     display: block;
 }
 
