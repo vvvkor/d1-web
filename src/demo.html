@@ -5,6 +5,21 @@
     <meta charset="utf-8">
     <title>d1-web / demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+	var demoIcons = function(){
+		if (d1.plugins.icons){
+			var d = d1.q('#demo-all-icons');
+			if(d && d1.plugins.icons){
+				var icons = Object.keys(d1.plugins.icons.icons);
+				for (i=0; i<icons.length; i++) {
+					var dd = d1.ins('a', '', {title: '' + (i+1) + '. ' + icons[i], className: 'pad hover tip c'}, d);
+					d1.plugins.icons.addIcon(icons[i], dd);
+				}
+			}
+		}
+	}
+	document.addEventListener('DOMContentLoaded', e => d1.plugins.icons ? d1.listen('start', demoIcons) : null);
+</script>
 		<!--
     <link rel="stylesheet" href="https://unpkg.com/d1-web">
     <script src="https://unpkg.com/d1-web/dist/d1.min.js"></script>
@@ -44,19 +59,20 @@
 
 <!-- nav, stick, shift, sub/sub -->
 
-<nav class="stick let toggle">
-<div class="hide-desktop pad">
-	<a href="#nav" class="icon-menu act-icon-delete empty" title="Navigation"><span>Navigation</span></a>
+<nav class="stick let toggle -shade">
+<div class="hide-desktop -pad">
+	<a href="#menu" class="icon-right act-icon-left empty hide-js pad" title="Menu"><span>Menu</span></a>
+	<a href="#nav" class="icon-menu act-icon-delete empty pad" title="Navigation"><span>Navigation</span></a>
 	<a href="demo.html" class="pad"><b>d1</b></a> <span class="text-n">v0.0.0</span>
 </div>
 <ul id="nav" class="nav flip hover target-mobile">
 <li><a href="demo.html"><b>d1</b> <span class="text-n">v0.0.0</span></a>
-<li><a href="#1">Sections</a>
+<li><a>Sections</a>
 	<ul>
 	<li><a href="#menu" class="icon-open">Drawer</a>
 	<li><a href="#gallery" class="icon-image">Gallery</a>
 	<li><a href="#table" class="icon-columns">Table</a>
-	<li><a href="#form" class="icon-send text-w bg-w ic_text-i act-icon-link_text-e_bg-n_shade">Form</a>
+	<li><a class="icon-send text-w bg-w ic_text-i act-icon-link_text-e_bg-n_shade">Form</a>
 		<ul>
 		<li><a href="#form">Basic inputs</a>
 		<li><a href="#advanced" class="inact">More inputs</a>
@@ -64,6 +80,7 @@
 	<li><a href="#grid" class="icon-grid text-y">Grid</a>
 	<li><a href="#tabs" class="icon-more">Tabs</a>
 	<li><a href="#code" class="icon-text">Code</a>
+	<li class="hide-nojs"><a href="#icons" class="icon-heart">Icons</a>
 	</ul>
 <li><a href="index.html">Docs</a>
 <li><a href="test.html">Test</a>
@@ -71,15 +88,15 @@
 	<input id="q" name="q" type="search" placeholder="search" size="5" accesskey="4" class="rad">
 	<!--button class="bg-n icon-find empty"><span>Find</span></button-->
 </form>
-<li><a href="#last">GitHub</a>
+<li><a>GitHub</a>
 	<ul>
 	<li><a href="https://github.com/vvvkor/d1-web" class="icon-info">Project page</a>
 	<li><a href="https://github.com/vvvkor/d1-web/archive/master.zip" class="icon-download">Download</a>
 	</ul>
 <li><a href="#about" class="icon-info empty text-i"><span>About</span></a>
 </ul>
+<hr class="fit hide-js">
 </nav>
-
 <div id="about" class="dlg pad c rad">
 	<div class="r"><a href="#cancel" class="icon-close empty"><span>&times;</span></a></div>
 	<h2 class="mar"><a href="https://github.com/vvvkor/d1-web"><b>d1-web</b></a></h2>
@@ -401,7 +418,13 @@
 	<hr class="fit">
 	<div id="tab2" class="-pad -bg"><figure class="c"><img src="https://picsum.photos/id/1021/400/200.jpg" alt=""><figcaption>Caption</figcaption></figure></div>
 	<div id="tab3" class="-pad -bg-w"><blockquote>Simplicity is the ultimate sophistication.</blockquote></div>
-	<div id="tab1" class="-pad"><ul><li>HTML<li>CSS<li>JavaScript</ul></div>
+	<div id="tab1" class="-pad">
+		<ul>
+		<li><abbr title="Hypertext Markup Language" class="tip">HTML</abbr>
+		<li><div class="pop"><a href="#pop">CSS</a><div id="pop" class="pad">Cascading Style Sheets</div></div>
+		<li>JavaScript
+		</ul>
+	</div>
 </div>
 
 <!-- code -->
@@ -422,6 +445,22 @@
   &lt;link href="https://unpkg.com/d1-web/dist/d1-icons.min.css" rel="stylesheet"&gt;
 &lt;/noscript&gt;</code></pre>
 
+
+<!-- icons -->
+
+<div class="hide-nojs">
+<h2 id="icons">Icons
+	<a href="#demo-all-icons" id="a-icon-bord"
+		title="Color"
+		class="mem small text-n icon-bookmark empty tip c"
+		data-inact="inact"
+		data-act="text-i"
+		data-nodes="#demo-all-icons a"
+		data-set="text-i"></a>
+</h2>
+
+<div id="demo-all-icons"></div>
+</div>
 
 <!-- end -->
 

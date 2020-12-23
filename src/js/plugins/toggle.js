@@ -130,7 +130,7 @@ export default class extends Plugin{
 
   esc(e) {
     this.app.dbg(['esc', e]);
-    if (e) e.preventDefault();
+    if (e && e.preventDefault) e.preventDefault();
     this.unpop();
     //if (e.type != 'hashchange') {
       this.addHistory();

@@ -1,4 +1,4 @@
-/*! d1-web/classic v2.6.5 */
+/*! d1-web/classic v2.6.6 */
 (function () {
   'use strict';
 
@@ -1175,7 +1175,7 @@
       key: "esc",
       value: function esc(e) {
         this.app.dbg(['esc', e]);
-        if (e) e.preventDefault();
+        if (e && e.preventDefault) e.preventDefault();
         this.unpop(); //if (e.type != 'hashchange') {
 
         this.addHistory(); //this.modalStyle(null, 'esc');
