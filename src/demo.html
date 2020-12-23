@@ -12,7 +12,7 @@
 			if(d && d1.plugins.icons){
 				var icons = Object.keys(d1.plugins.icons.icons);
 				for (i=0; i<icons.length; i++) {
-					var dd = d1.ins('a', '', {title: '' + (i+1) + '. ' + icons[i], className: 'pad hover tip c'}, d);
+					var dd = d1.ins('a', '', {title: /* '' + (i+1) + '. ' + */ icons[i], className: 'pad hover tip c'}, d);
 					d1.plugins.icons.addIcon(icons[i], dd);
 				}
 			}
@@ -60,9 +60,9 @@
 <!-- nav, stick, shift, sub/sub -->
 
 <nav class="stick let toggle -shade">
-<div class="hide-desktop -pad">
+<div class="hide-desktop pad">
 	<a href="#menu" class="icon-right act-icon-left empty hide-js pad" title="Menu"><span>Menu</span></a>
-	<a href="#nav" class="icon-menu act-icon-delete empty pad" title="Navigation"><span>Navigation</span></a>
+	<a href="#nav" class="icon-menu act-icon-delete empty -pad" title="Navigation"><span>Navigation</span></a>
 	<a href="demo.html" class="pad"><b>d1</b></a> <span class="text-n">v0.0.0</span>
 </div>
 <ul id="nav" class="nav flip hover target-mobile">
