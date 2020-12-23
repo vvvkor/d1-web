@@ -11,9 +11,8 @@
 			var d = d1.q('#demo-all-icons');
 			if(d && d1.plugins.icons){
 				var icons = Object.keys(d1.plugins.icons.icons);
-				for (i=0; i<icons.length; i++) {
-					var dd = d1.ins('a', '', {title: /* '' + (i+1) + '. ' + */ icons[i], className: 'pad hover tip c'}, d);
-					d1.plugins.icons.addIcon(icons[i], dd);
+				for (i = 0; i < icons.length; i++) {
+					d1.ins('a', icons[i], {title: icons[i], className: 'pad hover tip c empty icon-' + icons[i]}, d);
 				}
 			}
 		}
