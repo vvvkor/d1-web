@@ -1,4 +1,4 @@
-/*! d1-web v2.6.7 */
+/*! d1-web v2.6.8 */
 
 /* @import url("css/columns.css"); */
 /* @import url("css/grid.css"); */
@@ -243,7 +243,7 @@ abbr, a /*, .nav a, a.close, a.pad, a.btn,*/{text-decoration:none;}
 a.pad, a.btn{display:inline-block;line-height:normal;}
 
 /* hilite */
-.hover:not(table) a:not(.inact):hover, .hover:not(table) .act, a.hover:hover, a.hover.act, table.hover tr:hover{
+.hover:not(table) a:not(.inact):hover, .hover:not(table) .act, a.hover:hover, a.hover.act, table.hover tr:hover>*{
 	color:var(--text-hilite);
 	/*background-color:var(--bg-hilite);*/
 	box-shadow:inset 0 0 0 30em var(--bg-hilite);

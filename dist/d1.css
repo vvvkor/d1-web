@@ -1,4 +1,4 @@
-/*! d1-web v2.6.7 */
+/*! d1-web v2.6.8 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -301,7 +301,7 @@ a.pad, a.btn {
 }
 
 .hover:not(table) a:not(.inact):hover, .hover:not(table) .act, a.hover:hover,
-a.hover.act, table.hover tr:hover {
+a.hover.act, table.hover tr:hover>* {
     color: inherit;
     color: var(--text-hilite);
     box-shadow: inset 0 0 0 30em rgba(0, 0, 0, .05);
