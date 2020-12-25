@@ -1,6 +1,6 @@
 {
   "name": "d1-web",
-  "version": "2.6.8",
+  "version": "2.6.9",
   "description": "Lightweight responsive front-end framework",
   "main": "dist/d1.css",
   "directories": {
@@ -10,6 +10,12 @@
     "copy:css": "copyfiles ./src/index.css ./dist -f",
     "rename:css": "node -e \"require('fs').rename('dist/index.css', 'dist/d1.raw.css', err => console.log(err  || 'Renamed d1.raw.css.'))\"",
     "build:css": "postcss src/index.css -o dist/d1.css",
+			"copy:css-lite": "copyfiles ./src/index.css ./dist -f",
+			"rename:css-lite": "node -e \"require('fs').rename('dist/index.css', 'dist/d1-lite.css', err => console.log(err  || 'Renamed d1-lite.css.'))\"",
+			"replace:css-lite": "cross-var replace-in-file \"/\\/\\*\\(\\s*(\\S*)[\\s\\S]*?\\/\\*\\)\\*\\//g\" \"/* SKIP $1 */\" \"dist/d1-lite.css\" --isRegex",
+			"build:css-lite": "postcss dist/d1-lite.css -o dist/d1-lite.css --config src/css",
+			"minify:css-lite": "postcss dist/d1-lite.css -u cssnano -o dist/d1-lite.min.css --no-map",
+			"lite": "npm run copy:css-lite && npm run rename:css-lite && npm run replace:css-lite && npm run build:css-lite && npm run minify:css-lite",
     "build:css-icons": "node ./src/css-icons.js",
     "build:css-icons-post": "postcss dist/d1-icons.css -o dist/d1-icons.css",
     "minify:css": "postcss dist/d1.css -u cssnano -o dist/d1.min.css --no-map",
@@ -20,7 +26,7 @@
     "build:docs.version": "cross-var replace-in-file \"/0\\.0\\.0/g\" \"$npm_package_version\" \"docs/*.*\" --isRegex",
     "rollup": "rollup -c",
     "lint": "./node_modules/.bin/eslint ./src/js/*.js ./src/js/plugins/*.js ./src/js/util/*.js",
-    "build": "npm run copy:css && npm run rename:css && npm run build:css && npm run build:css-icons && npm run build:css-icons-post && npm run minify:css-icons && npm run minify:css && npm run build:docs && npm run build:docs.cmt && npm run build:docs.version && npm run rollup && npm run build:version",
+    "build": "npm run copy:css && npm run rename:css && npm run build:css && npm run lite && npm run build:css-icons && npm run build:css-icons-post && npm run minify:css-icons && npm run minify:css && npm run build:docs && npm run build:docs.cmt && npm run build:docs.version && npm run rollup && npm run build:version",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
