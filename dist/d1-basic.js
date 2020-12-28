@@ -1,4 +1,4 @@
-/*! d1-web/basic v2.6.9 */
+/*! d1-web/basic v2.6.10 */
 (function () {
   'use strict';
 

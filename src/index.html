@@ -1193,7 +1193,7 @@ Table will become stacked on small screen.
 	Auto-adjust <code>textarea</code> height to content <code>.adjust</code>.
 	<p>
 	Turn <code>textarea</code> into WYSIWYG editor <code>.edit</code>.<br>
-	Optionally define initial mode in <code>[data-mode]</code> ("w" for WYSIWYG, "t" for source editing).
+	Optionally define initial mode in <code>[data-mode]</code> attribute ("w" for WYSIWYG, "t" for source editing).
 	If absent, mode is defined automatically based on whether HTML tags are contained in text.<br>
 	Optionally define custom <a href="#editor-commands">set of tools</a> in <code>[data-tools]</code>.
 	Example: <code>data-tools="/bi_."</code>.
@@ -1573,7 +1573,7 @@ Buttons will be shown above the form: to restore input values, to reset inputs t
 </h2>
 
 <p>
-Pure CSS togglers based on <code>:target</code> behaviour.
+Pure CSS togglers are based on <code>:target</code> behaviour.
 This approach is semantic, but has some drawbacks:
 <ul>
 <li>only one togglable block can be active (open) at the moment

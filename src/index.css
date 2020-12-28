@@ -1,42 +1,8 @@
 /*! d1-web v0.0.0 */
 
-/* @import url("css/columns.css"); */
-/* @import url("css/grid.css"); */
-
-/* d1-lite skips: .invert, .tip, table.flip, .picker, .yel, .fade, .scroller, .trans */
-
-
-/* test */
-/*
-::placeholder {
-  color: var(--text-lite);
-  z-index: calc(1 + 1);
-}
-*/
+/* d1-lite skips: .invert, .tip, table.flip, .picker, .yel, .fade, .over, .scroller, .trans */
 
 /*
-
-# changes: d1css -> d1-web
-
-- .dlg.hide -> .dlg
-- .dlg -> .box -> .shade
-- .hide.full -> .dlg.full:not(.dlg)
-- .full -> .full:not(.dlg)
-- .hid) -> .hide / .target / .off
-- .hide-x -> .target-x / .toggle-x
-- table.let -> table.fit
-- table -> table.bord
-- (none) -> table.flip
-- (none) -> table.let
-- hx.let -> hx.fit
-- (none) -> nav.center
-- .full.c -> .full.center
-- (none) -> hr.fit
-- .topbar -> .stick.shift(.let)
-- (.col-3) -> form>.row>:first-child
-- [data-class] -> [data-set]
-- form>table -> table.flip
-- form>button / *?* /
 
 # js classes
 - .js
@@ -44,26 +10,20 @@
 - .js-live-val
 - .subinput
 - .input-tools
-x .th-dup
+- .cell-head
 ~ .hide(-x)
 - .target(-x)
 - .toggle(-x)
 - .off
-x .unpop
 - .mem
 - .gallery
 - .pic
-- .item, .over
+- .item
 + (.act, .inact)
 - (.is-on)
 - (.is-off)
 - .not-, .or, .or-
 
-# todo
-css restructure (maybe)
-- common modifiers
-- by-component modifiers (make list of specific usage of common modifiers)
-- js modifiers
 
 */
 
@@ -292,10 +252,11 @@ table.fit>*>tr>*{padding:0;}
 
 form>p, form>.row{margin:var(--gap-s) 0;}
 
-/* overlay */
+/*( overlay */
 .over{position:absolute;top:0;left:0;right:0;bottom:0;background:none;}
 .over.hover{transition:1s opacity;opacity:0;}
 .item:hover .over.hover, .over.let{opacity:.5;}
+/*)*/
 
 /* bar */
 .bar{display:flex;overflow:hidden;background-color:var(--bg-lite);border-radius:var(--radius);min-height:.3em;}
@@ -430,7 +391,7 @@ mark{background-color:var(--bg-warning);}
 	.row.center:not(.wrap){align-items:center;}
 	.shift{margin-left:auto;} /* .nav>li.shift, .row>*.shift */
 
-.row.let.mar{margin-bottom:0;} /* ! will not collapse with following element */
+.row.let.mar{margin-bottom:0;} /* will not collapse with following element */
 .row.let.mar>*{margin-bottom:var(--gap-n);}
 
 /* grid-regular */
