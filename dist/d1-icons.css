@@ -1,4 +1,4 @@
-/*! d1-web icons v2.6.10 */
+/*! d1-web icons v2.6.11 */
 
 .js-icons [class*="icon-"]:before {
     content: none;
@@ -6,7 +6,9 @@
 
 [class*="icon-"]:before {
     content: "";
-    margin-right: var(--gap-s);
+    margin-right: .5em;
+    margin-right: .5em;
+    margin-right: var(--gap-s, .5em);
     display: inline-block;
     width: 1em;
     height: 1em;
