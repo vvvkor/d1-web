@@ -124,7 +124,7 @@ export default class extends Plugin {
   }
 
   onResize() {
-    let m = (window.innerWidth <= this.opt.minDesktop);
+    let m = (window.innerWidth < this.opt.minDesktop);
     m
       ? this.app.e('[data-class-mobile]', n => n.className = (n.dataset.classMobile || ''))
       : this.app.e('[data-class-desktop]', n => n.className = (n.dataset.classDesktop || ''));

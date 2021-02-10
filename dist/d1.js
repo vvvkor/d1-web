@@ -1,4 +1,4 @@
-/*! d1-web v2.6.11 */
+/*! d1-web v2.6.12 */
 (function () {
   'use strict';
 
@@ -3468,7 +3468,7 @@
     }, {
       key: "onResize",
       value: function onResize() {
-        var m = window.innerWidth <= this.opt.minDesktop;
+        var m = window.innerWidth < this.opt.minDesktop;
         m ? this.app.e('[data-class-mobile]', function (n) {
           return n.className = n.dataset.classMobile || '';
         }) : this.app.e('[data-class-desktop]', function (n) {
