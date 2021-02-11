@@ -514,6 +514,7 @@ ul.nav, .nav ul {
     box-shadow: inset 0 3em 3em -1.5em rgba(0, 0, 0, .3);
     border-bottom: 10em solid #000;
     outline: 100em solid #000;
+    outline-offset: 0;
 }
 
 .gal a:target {
