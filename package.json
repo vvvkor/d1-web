@@ -1,6 +1,6 @@
 {
   "name": "d1-web",
-  "version": "2.6.12",
+  "version": "2.7.0",
   "description": "Lightweight responsive front-end framework",
   "main": "dist/d1.css",
   "directories": {
@@ -27,7 +27,8 @@
     "build:version": "cross-var replace-in-file \"/0\\.0\\.0/g\" \"$npm_package_version\" \"dist/*.*\" --isRegex",
     "build:docs.version": "cross-var replace-in-file \"/0\\.0\\.0/g\" \"$npm_package_version\" \"docs/*.*\" --isRegex",
     "lint": "./node_modules/.bin/eslint ./src/js/*.js ./src/js/plugins/*.js ./src/js/util/*.js",
-    "build": "npm run copy:css && npm run rename:css && npm run build:css && npm run lite && npm run build:css-icons && npm run build:css-icons-post && npm run minify:css-icons && npm run minify:css && npm run rollup && npm run build:docs && npm run build:docs.cmt && npm run build:docs.version && npm run build:version",
+    "build-cli": "npm run copy:css && npm run rename:css && npm run build:css && npm run lite && npm run build:css-icons && npm run build:css-icons-post && npm run minify:css-icons && npm run minify:css && npm run rollup && npm run build:docs && npm run build:docs.cmt && npm run build:docs.version && npm run build:version",
+		"build": "node ./build.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -52,7 +53,9 @@
     "@babel/core": "^7.12.16",
     "@babel/preset-env": "^7.12.16",
     "@rollup/plugin-babel": "^5.3.0",
+    "chalk": "^4.1.0",
     "copyfiles": "^2.4.1",
+    "cpy": "^8.1.1",
     "cross-var": "^1.1.0",
     "cssnano": "^4.1.10",
     "eslint": "^7.20.0",

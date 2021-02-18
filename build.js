@@ -1,4 +1,6 @@
+const chalk = require('chalk');
 const fs = require('fs')
+const cpy = require('cpy');
 const path = require('path');
 //const copyfiles = require('copyfiles');
 const postcss = require('postcss');
@@ -9,12 +11,18 @@ const perfectionist = require('perfectionist');
 const cssnano = require('cssnano');
 const cssIcons = require('./src/css-icons.js');
 const replace = require('replace-in-file');
+const rollup = require('rollup');
+const {name, version} = require('./package.json'); 
+const {babel} = require('@rollup/plugin-babel');
+const {terser} = require('rollup-plugin-terser');
 /*
 const replace = require('replace-in-file');
 const {name, version} = require('./package.json');
 const csso = require('csso');
 const UglifyJS = require("uglify-js");
 */
+
+(async () => {
 
 const cleanup = function(dir, callback) {
   fs.readdirSync(dir).forEach(n => {
@@ -27,15 +35,18 @@ const cleanup = function(dir, callback) {
   });
 }
 
-const copy = function (from, to, callback) {
+const copy = function (from, to/*, callback*/) {
   console.log('copy to ' + to);
+  fs.copyFileSync(from, to);
+  /*
   fs.copyFile(from, to, err => {
     if (err) console.error(err);
     if (callback) callback();
   });
+  */
 }
 
-const processCss = function (from, to, preserve, minify, callback) {
+const processCss = function (callback, from, to, preserve, minify) {
   console.log('postcss to ' + to);
   fs.readFile(from, (err, css) => {
     postcss([
@@ -64,113 +75,135 @@ const processCss = function (from, to, preserve, minify, callback) {
   })
 }
 
+const promiseCss = (...args) => new Promise(resolve => { processCss(resolve, ...args) });
+
 // prepare dir
 cleanup('./dist');
-console.log('-- dist cleared --');
+console.log(chalk.cyan('-- dist cleared --'));
 
 // css
-copy('./src/index.css', './dist/d1.raw.css', _ => console.log('-- raw css ready --'));
-processCss('./src/index.css', './dist/d1.css', true, true, _ => {
-  console.log('-- postcss minified ready  --');
-  // icons
-  cssIcons.build('./src/icons.css', './dist/d1-icons.css', './src/js/iconset.js', _ => {
-    processCss('./dist/d1-icons.css', './dist/d1-icons.css', true, true, _ => console.log('-- postcss minified iconset ready  --'));
-  });
-});
+copy('./src/index.css', './dist/d1.raw.css');
+console.log(chalk.cyan('-- raw css ready --'));
+await promiseCss('./src/index.css', './dist/d1.css', true, true);
+console.log(chalk.cyan('-- d1 css ready --'));
+await cssIcons.promiseBuild('./src/icons.css', './dist/d1-icons.css', './src/js/iconset.js');
+await promiseCss('./dist/d1-icons.css', './dist/d1-icons.css', true, true);
+console.log(chalk.cyan('-- css iconset ready  --'));
 
 // css lite
-copy('./src/index.css', './dist/d1-lite.css', _ => {
-  console.log('-- lite css copy --');
-  try {
-    const results = replace.sync({
-      files: './dist/d1-lite.css',
-      from: /\/\*\(\s*(\S*)[\s\S]*?\/\*\)\*\//g,
-      to: '/* SKIP $1 */'
-    });
-    console.log('Replace', results);
-  }
-  catch (error) {
-    console.error('Replace error', error);
-  }
-  processCss('./dist/d1-lite.css', './dist/d1-lite.css', false, true, _ => console.log('-- postcss minified lite ready  --'));
-});
-/*
-    + "copy:css": "copyfiles ./src/index.css ./dist -f",
-    + "rename:css": "node -e \"require('fs').rename('dist/index.css', 'dist/d1.raw.css', err => console.log(err  || 'Renamed d1.raw.css.'))\"",
-    + "build:css": "postcss src/index.css -o dist/d1.css",
-    +  "copy:css-lite": "copyfiles ./src/index.css ./dist -f",
-    +  "rename:css-lite": "node -e \"require('fs').rename('dist/index.css', 'dist/d1-lite.css', err => console.log(err  || 'Renamed d1-lite.css.'))\"",
-    +  "replace:css-lite": "cross-var replace-in-file \"/\\/\\*\\(\\s*(\\S*)[\\s\\S]*?\\/\\*\\)\\*\\//g\" \"/* SKIP $1 * /\" \"dist/d1-lite.css\" --isRegex",
-    +  "build:css-lite": "postcss dist/d1-lite.css -o dist/d1-lite.css --config src/css",
-    +  "minify:css-lite": "postcss dist/d1-lite.css -u cssnano -o dist/d1-lite.min.css --no-map",
-    +  "lite": "npm run copy:css-lite && npm run rename:css-lite && npm run replace:css-lite && npm run build:css-lite && npm run minify:css-lite",
-    +"build:css-icons": "node ./src/css-icons.js",
-    +"build:css-icons-post": "postcss dist/d1-icons.css -o dist/d1-icons.css",
-    +"minify:css-icons": "postcss dist/d1-icons.css -u cssnano -o dist/d1-icons.min.css --no-map",
-    + "minify:css": "postcss dist/d1.css -u cssnano -o dist/d1.min.css --no-map",
-"rollup": "rollup -c",
-"build:docs": "copyfiles ./src/*.html ./dist/d1.min.css ./dist/d1.min.js ./dist/d1-icons.min.css ./docs -f",
-"build:docs.cmt": "cross-var replace-in-file \"/REMOVE-/g\" \"\" \"docs/*.*\" --isRegex",
-"build:docs.version": "cross-var replace-in-file \"/0\\.0\\.0/g\" \"$npm_package_version\" \"docs/*.*\" --isRegex",
-"build:version": "cross-var replace-in-file \"/0\\.0\\.0/g\" \"$npm_package_version\" \"dist/*.*\" --isRegex",
-*/
-
-/*
-
-// replace version
-
-const replace_options = {
-  files: [
-    './*.css',
-    './*.js',
-    './*.html'
-  ],
-  from: /v\d+\.\d+\.\d+/g,
-  to: 'v' + version,
-};
-
+copy('./src/index.css', './dist/d1-lite.css');
 try {
-  const results = replace.sync(replace_options);
-  console.log('Replacement (' + name +  ' v' + version + '):', results);
+  const results = replace.sync({
+    files: './dist/d1-lite.css',
+    from: /\/\*\(\s*(\S*)[\s\S]*?\/\*\)\*\//g,
+    to: '/* SKIP $1 */'
+  });
+  console.log('Replace lite css', results.length);
 }
 catch (error) {
-  console.error('Error occurred:', error);
+  console.error('Replace error', error);
 }
+await promiseCss('./dist/d1-lite.css', './dist/d1-lite.css', false, true);
+console.log(chalk.cyan('-- lite css ready  --'));
 
-// minify css
+// js
 
-['granum', 'granum-icons', 'granum-dropdown']
-.forEach(n => {
-  console.log('Minify ' + n + '.css...');
-  const css = fs.readFileSync('./' + n + '.css', 'utf8');
-  let min = csso.minify(css, {
-    restructure: false,
-  }).css;
-  //min = '/*! ' + n + '.css v' + version + ' *' + '/\n' + min;
-  fs.writeFileSync('./' + n + '.min.css', min);
-});
+const rollupOptions = [
+  {
+    input: "src/index.js",
+    output: [
+      {
+        banner: '/*! ' + name + ' v' + version + ' */',
+        file: "dist/d1.js",
+        format: "iife" // iife | es | cjs
+      },
+      {
+        banner: '/*! ' + name + ' v' + version + ' */',
+        file: "dist/d1.min.js",
+        format: "iife",
+        plugins: [ terser() ]
+      }
+    ],
+    plugins: [ babel({ babelHelpers: 'bundled' }) ]
+  },
+  {
+    input: "src/basic.js",
+    output: [
+      {
+        banner: '/*! ' + name + '/basic v' + version + ' */',
+        file: "dist/d1-basic.js",
+        format: "iife"
+      },
+      {
+        banner: '/*! ' + name + '/basic v' + version + ' */',
+        file: "dist/d1-basic.min.js",
+        format: "iife",
+        plugins: [ terser() ]
+      }
+    ],
+    plugins: [ babel({ babelHelpers: 'bundled' }) ]
+  },
+  {
+    input: "src/classic.js",
+    output: [
+      {
+        banner: '/*! ' + name + '/classic v' + version + ' */',
+        file: "dist/d1-classic.js",
+        format: "iife"
+      },
+      {
+        banner: '/*! ' + name + '/classic v' + version + ' */',
+        file: "dist/d1-classic.min.js",
+        format: "iife",
+        plugins: [ terser() ]
+      }
+    ],
+    plugins: [ babel({ babelHelpers: 'bundled' }) ]
+  }
+];
 
-// minify js
+async function buildJs() {
+  await Promise.all(rollupOptions.map(async ({input, output, plugins}) => {
+    console.log('rollup', input);
+    const bundle = await rollup.rollup({input, plugins});
+    //console.log(bundle.watchFiles); // an array of file names this bundle depends on
+    // const { output } = await bundle.generate(outputOptions); // to mem
+    //await bundle.write(outputOptions); // to disk
+    await Promise.all(output.map(opt => bundle.write(opt)));
+    const p = await bundle.close();
+    console.log('rollup done', input);
+    return p;
+  }));
+}
+console.log('rollup...');
+await buildJs();
+console.log(chalk.cyan('-- d1 js ready --'));
 
-['granum', 'granum-edit']
-.forEach(n => {
-  console.log('Minify ' + n + '.js...');
-  const js = fs.readFileSync('./' + n + '.js', 'utf8');
-  var res = UglifyJS.minify(js, {
-    compress: {
-      // arrows: false,
-      // comparisons: false,
-      // sequences: false,
-      // conditionals: false,
-      // reduce_vars: false
-    },
-    output: {
-      //preamble: '/*! ' + n + '.js v' + version + ' *' + '/',
-      comments: /^!/,
-    }
-  });
-  fs.writeFileSync('./' + n + '.min.js', res.code);
-  if (res.error) console.error('UglifyJS failed [' + n + '.js]: ' + res.error);
-});
+// docs
 
-*/
+// copyfiles ./src/*.html ./dist/d1.min.css ./dist/d1.min.js ./dist/d1-icons.min.css ./docs -f
+(async () => {
+    await cpy(['./src/*.html', './dist/d1.min.css', './dist/d1.min.js', './dist/d1-icons.min.css'], './docs');
+    console.log(chalk.cyan('-- docs copied --')); //fix: css may not be ready
+    //replace
+    let results = replace.sync({
+      files: './docs/*.*',
+      from: /REMOVE-/g,
+      to: ''
+    });
+    console.log('Replace asset source', results.length);
+    results = replace.sync({
+      files: './docs/*.*',
+      from: /0\.0\.0/g,
+      to: version
+    });
+    console.log('Replace docs version', results.length);
+    results = replace.sync({
+      files: './dist/*.*',
+      from: /0\.0\.0/g,
+      to: version
+    });
+    console.log('Replace dist version', results.length);
+})();
+
+})();

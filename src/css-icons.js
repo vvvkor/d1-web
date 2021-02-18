@@ -3,9 +3,7 @@
 //const buildCssIcons = (callback) => {
 const fs = require('fs');
 
-module.exports = {
-
-build: (from, to, iconset, callback) => {
+const build = (from, to, iconset, callback) => {
   const tmp = './dist/_iconset.tmp';
   console.log('iconset...');
   fs.copyFileSync(iconset, tmp);
@@ -53,7 +51,7 @@ build: (from, to, iconset, callback) => {
       stream.write(".icon-" + name + ":before{" + bg + "}\n");
     })
     stream.end(null, null, _ => {
-      console.log('-- iconset done --');
+      console.log('-- iconset inserted --');
       if (callback) callback();
     });
   })
@@ -62,6 +60,12 @@ build: (from, to, iconset, callback) => {
   fs.unlinkSync(tmp)
   
 }
+
+const promiseBuild = (from, to, iconset) => new Promise(resolve => build(from, to, iconset, resolve));
+
+module.exports = {
+  build,
+  promiseBuild
 }
 /*
 const copyfiles = require('copyfiles')
