@@ -118,7 +118,7 @@ export default class extends Plugin {
     let to = m;
     for (let i in t) {
       let b = this.btn[t[i]];
-      let a = app.ins('a', b[2], {href: '#cmd-' + b[0]/*i*/, title: b[3], className: app.opt.cToggle + ' pad hover', 'data-cmd': t[i]}, to);
+      app.ins('a', b[2], {href: '#cmd-' + b[0]/*i*/, title: b[3], className: app.opt.cToggle + ' pad hover', 'data-cmd': t[i]}, to);
       if (b[0] == 'tools') to = mm;
     }
     m.appendChild(mm);

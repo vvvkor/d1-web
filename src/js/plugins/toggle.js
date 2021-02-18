@@ -172,7 +172,7 @@ export default class extends Plugin{
       let d = this.app.q(location.hash);
       if (d) {
         let t = d.matches(this.opt.qTgl);
-        let g = d.matches(this.opt.qGal);
+        // let g = d.matches(this.opt.qGal);
         if (t) {
           this.unpop();
           this.toggle(d, true);

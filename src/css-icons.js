@@ -47,12 +47,22 @@ const buildCssIcons = () => {
       const bg = "background-image:url(\"data:image/svg+xml," + svg + "\");"
       stream.write(".icon-" + name + ":before{" + bg + "}\n");
     })
-    stream.end()
+    stream.end(null, null, _ => console.log('-- icons done --'));
   })
 
-  // clanup module
+  // cleanup module
   fs.unlinkSync('./dist/iconset.js')
+  
 }
 
+/*
 const copyfiles = require('copyfiles')
-copyfiles(['./src/js/iconset.js', './dist'], true, buildCssIcons)
+copyfiles(['./src/js/iconset.js', './dist'], true, _ => {
+  console.log('-- icons done --');
+  buildCssIcons();
+});
+*/
+
+const fs = require('fs')
+fs.copyFileSync('./src/js/iconset.js', './dist/iconset.js');
+buildCssIcons();

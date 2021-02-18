@@ -2,6 +2,12 @@ const fs = require('fs')
 const path = require('path');
 var copyfiles = require('copyfiles');
 const postcss = require('postcss');
+const customProperties = require('postcss-custom-properties');
+const calc = require('postcss-calc');
+const discardComments = require('postcss-discard-comments');
+const perfectionist = require('perfectionist');
+const cssnano = require('cssnano');
+//const buildCssIcons = require('./src/css-icons.js');
 /*
 const replace = require('replace-in-file');
 const {name, version} = require('./package.json');
@@ -9,44 +15,86 @@ const csso = require('csso');
 const UglifyJS = require("uglify-js");
 */
 
-// cleanup dist
-const dist = 'dist'
-fs.readdir(dist, (err, files) => {
-  if (err) throw err;
-  files.forEach(n => {
-    try {
-      fs.unlinkSync(path.join(dist, n))
-      console.error('Remove ' + n);
-    } catch (error) {
-      console.error(error);
-    }
+const cleanup = function(dir, callback) {
+  fs.readdir(dir, (err, files) => {
+    if (err) throw err;
+    files.forEach(n => {
+      try {
+        console.log('Remove ' + n);
+        fs.unlinkSync(path.join(dir, n))
+      } catch (error) {
+        console.error(error);
+      }
+    });
+    if (callback) callback();
   });
-});
+}
 
-copyfiles(['./src/index.css', './dist'], true, _ => console.log('copied'));
-fs.rename('dist/index.css', 'dist/d1.raw.css', err => console.log(err  || 'Renamed d1.raw.css.'));
-fs.readFile('src/index.css', (err, css) => {
-  postcss([/*precss, autoprefixer*/])
-    .process(css, { from: 'src/index.css', to: 'dist/d1.css' })
+const copy = function (from, to, callback) {
+  console.log('copy to ' + to);
+  fs.copyFile(from, to, err => {
+    if (err) console.error(err);
+    if (callback) callback();
+  });
+}
+
+const processCss = function (from, to, minify, callback) {
+  console.log('postcss to ' + to);
+  fs.readFile(from, (err, css) => {
+    postcss([
+      customProperties({preserve: true}),
+      calc,
+      discardComments,
+      perfectionist({format: 'expanded'}) //expanded | compact | compressed
+    ])
+    .process(css, { from, to})
     .then(result => {
-      fs.writeFile('dist/d1.css', result.css, () => true)
-      // if ( result.map ) fs.writeFile('dest/app.css.map', result.map.toString(), () => true)
+      fs.writeFile(to, result.css, () => true)
+      if ( result.map ) fs.writeFile(to + '.map', result.map.toString(), () => true)
+      
+      if (minify) {
+        to = to.replace('.css', '.min.css');
+        console.log('cssnano to ' + to);
+        postcss([cssnano])
+        .process(result.css, {from, to})
+        .then(min => {
+          fs.writeFile(to, min.css, () => true);
+          if (callback) callback();
+        });
+      }
+      else if (callback) callback();
     })
+  })
+}
+
+cleanup('./dist', _ => {
+  console.log('-- dist cleared --');
+  // css
+  copy('./src/index.css', './dist/d1.raw.css', _ => console.log('-- raw css ready --'));
+  processCss('./src/index.css', './dist/d1.css', true, _ => {
+    console.log('-- postcss minified ready  --');
+    // icons
+    require('./src/css-icons.js');
+    setTimeout(_ => {
+      processCss('./dist/d1-icons.css', './dist/d1-icons.css', true, _ => console.log('-- postcss minified icons ready  --'));
+    }, 100); //fix: make it sync
+  });
 })
+
 /*
     + "copy:css": "copyfiles ./src/index.css ./dist -f",
     + "rename:css": "node -e \"require('fs').rename('dist/index.css', 'dist/d1.raw.css', err => console.log(err  || 'Renamed d1.raw.css.'))\"",
-    "build:css": "postcss src/index.css -o dist/d1.css",
+    + "build:css": "postcss src/index.css -o dist/d1.css",
       "copy:css-lite": "copyfiles ./src/index.css ./dist -f",
       "rename:css-lite": "node -e \"require('fs').rename('dist/index.css', 'dist/d1-lite.css', err => console.log(err  || 'Renamed d1-lite.css.'))\"",
       "replace:css-lite": "cross-var replace-in-file \"/\\/\\*\\(\\s*(\\S*)[\\s\\S]*?\\/\\*\\)\\*\\//g\" \"/* SKIP $1 * /\" \"dist/d1-lite.css\" --isRegex",
       "build:css-lite": "postcss dist/d1-lite.css -o dist/d1-lite.css --config src/css",
       "minify:css-lite": "postcss dist/d1-lite.css -u cssnano -o dist/d1-lite.min.css --no-map",
       "lite": "npm run copy:css-lite && npm run rename:css-lite && npm run replace:css-lite && npm run build:css-lite && npm run minify:css-lite",
-    "build:css-icons": "node ./src/css-icons.js",
-    "build:css-icons-post": "postcss dist/d1-icons.css -o dist/d1-icons.css",
-    "minify:css-icons": "postcss dist/d1-icons.css -u cssnano -o dist/d1-icons.min.css --no-map",
-    "minify:css": "postcss dist/d1.css -u cssnano -o dist/d1.min.css --no-map",
+    +"build:css-icons": "node ./src/css-icons.js",
+  !+"build:css-icons-post": "postcss dist/d1-icons.css -o dist/d1-icons.css",
+  !+"minify:css-icons": "postcss dist/d1-icons.css -u cssnano -o dist/d1-icons.min.css --no-map",
+    + "minify:css": "postcss dist/d1.css -u cssnano -o dist/d1.min.css --no-map",
     "rollup": "rollup -c",
     "build:docs": "copyfiles ./src/*.html ./dist/d1.min.css ./dist/d1.min.js ./dist/d1-icons.min.css ./docs -f",
     "build:docs.cmt": "cross-var replace-in-file \"/REMOVE-/g\" \"\" \"docs/*.*\" --isRegex",

@@ -32,7 +32,6 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath fill='%2300f' d='M5 2a3 3 0 1 0 .01 0z'/%3E%3C/svg%3E");
 }
 
-
 /* for icons with black fill */
 /* add contrast(10) if originals not entirely black */
 /*
@@ -42,3 +41,4 @@
 [class*="icon-"].text-i:before{filter:invert(1) sepia(1) saturate(100) hue-rotate(178.3deg) saturate(30) brightness(.65);}
 [class*="icon-"].text-n:before{filter:invert(1) sepia(1) grayscale(1) brightness(.6);}
 */
+

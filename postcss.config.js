@@ -12,6 +12,6 @@ module.exports = ctx => ({
     'postcss-calc': {},
     'postcss-discard-comments': {},
     'perfectionist': { format: 'expanded'} //expanded | compact | compressed
-}
+  }
 //}
 })

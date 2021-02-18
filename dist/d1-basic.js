@@ -943,8 +943,7 @@
           var d = this.app.q(location.hash);
 
           if (d) {
-            var t = d.matches(this.opt.qTgl);
-            var g = d.matches(this.opt.qGal);
+            var t = d.matches(this.opt.qTgl); // let g = d.matches(this.opt.qGal);
 
             if (t) {
               this.unpop();
@@ -1272,8 +1271,8 @@
 
     _createClass(Url, null, [{
       key: "build",
-      // build url from link node or string, with additional parameters
-      value: function build(a, args) {
+      value: // build url from link node or string, with additional parameters
+      function build(a, args) {
         a = Url.url2a(a);
         var g = Url.get(true, a);
         Object.keys(args).forEach(function (k) {
