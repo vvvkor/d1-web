@@ -1,11 +1,19 @@
 // copy iconset, replace to "module.exports = ", require, remove
 
-const buildCssIcons = () => {
+//const buildCssIcons = (callback) => {
+const fs = require('fs');
+
+module.exports = {
+
+build: (from, to, iconset, callback) => {
+  const tmp = './dist/_iconset.tmp';
+  console.log('iconset...');
+  fs.copyFileSync(iconset, tmp);
   
   //prepare module
   const replace = require('replace-in-file')
   const re = {
-    files: './dist/iconset.js',
+    files: tmp,
     from: /export default /g,
     to: 'module.exports = ',
   }
@@ -13,17 +21,14 @@ const buildCssIcons = () => {
   
   // process
   
-  const fs = require('fs')
-  const icons = require('../dist/iconset.js')
-  const src = './src/icons.css'
-  const dst = './dist/d1-icons.css'
+  const icons = require('../' + tmp)
 
-  // fs.writeFileSync(dst, '/* Hey there! */')
+  // fs.writeFileSync(to, '/* Hey there! */')
 
-  const css = fs.readFileSync(src, 'utf8')
-  fs.writeFileSync(dst, css)
+  const css = fs.readFileSync(from, 'utf8')
+  fs.writeFileSync(to, css)
 
-  var stream = fs.createWriteStream(dst, {flags: 'a'})
+  var stream = fs.createWriteStream(to, {flags: 'a'})
   stream.once('open', fd => {
     Object.keys(icons).forEach(name => {
       const size = icons[name][0]
@@ -47,14 +52,17 @@ const buildCssIcons = () => {
       const bg = "background-image:url(\"data:image/svg+xml," + svg + "\");"
       stream.write(".icon-" + name + ":before{" + bg + "}\n");
     })
-    stream.end(null, null, _ => console.log('-- icons done --'));
+    stream.end(null, null, _ => {
+      console.log('-- iconset done --');
+      if (callback) callback();
+    });
   })
 
   // cleanup module
-  fs.unlinkSync('./dist/iconset.js')
+  fs.unlinkSync(tmp)
   
 }
-
+}
 /*
 const copyfiles = require('copyfiles')
 copyfiles(['./src/js/iconset.js', './dist'], true, _ => {
@@ -63,6 +71,4 @@ copyfiles(['./src/js/iconset.js', './dist'], true, _ => {
 });
 */
 
-const fs = require('fs')
-fs.copyFileSync('./src/js/iconset.js', './dist/iconset.js');
-buildCssIcons();
+//buildCssIcons();
