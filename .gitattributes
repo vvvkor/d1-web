@@ -1,4 +1,6 @@
 # Auto detect text files and perform LF normalization
+docs/*.html linguist-documentation
+src/*.html linguist-documentation
 * text=auto
 text eol=lf
 *.js text eol=lf
