@@ -1,4 +1,4 @@
-/*! d1-web v2.7.0 */
+/*! d1-web v2.7.1 */
 (function () {
   'use strict';
 
@@ -127,7 +127,7 @@
     if (typeof Proxy === "function") return true;
 
     try {
-      Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));
+      Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
       return true;
     } catch (e) {
       return false;
@@ -205,7 +205,7 @@
   /*! app - core of d1-web */
   // (() => {
   // const main = new (function () {
-  var _default = /*#__PURE__*/function () {
+  var _default$m = /*#__PURE__*/function () {
     function _default() {
       _classCallCheck(this, _default);
 
@@ -808,7 +808,7 @@
     return Url;
   }();
 
-  var _default$1 = /*#__PURE__*/function () {
+  var _default$l = /*#__PURE__*/function () {
     function _default(name) {
       _classCallCheck(this, _default);
 
@@ -944,7 +944,7 @@
     none: [1, 'M1 1z']
   };
 
-  var _default$2 = /*#__PURE__*/function (_Plugin) {
+  var _default$k = /*#__PURE__*/function (_Plugin) {
     _inherits(_default, _Plugin);
 
     var _super = _createSuper(_default);
@@ -1123,9 +1123,9 @@
     }]);
 
     return _default;
-  }(_default$1);
+  }(_default$l);
 
-  var _default$3 = /*#__PURE__*/function (_Plugin) {
+  var _default$j = /*#__PURE__*/function (_Plugin) {
     _inherits(_default, _Plugin);
 
     var _super = _createSuper(_default);
@@ -1259,9 +1259,9 @@
     }]);
 
     return _default;
-  }(_default$1);
+  }(_default$l);
 
-  var _default$4 = /*#__PURE__*/function (_Plugin) {
+  var _default$i = /*#__PURE__*/function (_Plugin) {
     _inherits(_default, _Plugin);
 
     var _super = _createSuper(_default);
@@ -1844,9 +1844,9 @@
     }]);
 
     return _default;
-  }(_default$1);
+  }(_default$l);
 
-  var _default$5 = /*#__PURE__*/function (_Plugin) {
+  var _default$h = /*#__PURE__*/function (_Plugin) {
     _inherits(_default, _Plugin);
 
     var _super = _createSuper(_default);
@@ -1961,9 +1961,9 @@
     }]);
 
     return _default;
-  }(_default$1);
+  }(_default$l);
 
-  var _default$6 = /*#__PURE__*/function (_Plugin) {
+  var _default$g = /*#__PURE__*/function (_Plugin) {
     _inherits(_default, _Plugin);
 
     var _super = _createSuper(_default);
@@ -2312,9 +2312,9 @@
     }]);
 
     return _default;
-  }(_default$1);
+  }(_default$l);
 
-  var _default$7 = /*#__PURE__*/function (_Plugin) {
+  var _default$f = /*#__PURE__*/function (_Plugin) {
     _inherits(_default, _Plugin);
 
     var _super = _createSuper(_default);
@@ -2677,9 +2677,9 @@
     }]);
 
     return _default;
-  }(_default$1);
+  }(_default$l);
 
-  var _default$8 = /*#__PURE__*/function (_Plugin) {
+  var _default$e = /*#__PURE__*/function (_Plugin) {
     _inherits(_default, _Plugin);
 
     var _super = _createSuper(_default);
@@ -3034,9 +3034,9 @@
     }]);
 
     return _default;
-  }(_default$1);
+  }(_default$l);
 
-  var _default$9 = /*#__PURE__*/function (_Plugin) {
+  var _default$d = /*#__PURE__*/function (_Plugin) {
     _inherits(_default, _Plugin);
 
     var _super = _createSuper(_default);
@@ -3274,9 +3274,9 @@
     }]);
 
     return _default;
-  }(_default$1);
+  }(_default$l);
 
-  var _default$a = /*#__PURE__*/function (_Plugin) {
+  var _default$c = /*#__PURE__*/function (_Plugin) {
     _inherits(_default, _Plugin);
 
     var _super = _createSuper(_default);
@@ -3477,7 +3477,7 @@
     }]);
 
     return _default;
-  }(_default$1);
+  }(_default$l);
 
   var _default$b = /*#__PURE__*/function (_Plugin) {
     _inherits(_default, _Plugin);
@@ -3628,9 +3628,9 @@
     }]);
 
     return _default;
-  }(_default$1);
+  }(_default$l);
 
-  var _default$c = /*#__PURE__*/function (_Plugin) {
+  var _default$a = /*#__PURE__*/function (_Plugin) {
     _inherits(_default, _Plugin);
 
     var _super = _createSuper(_default);
@@ -4204,9 +4204,9 @@
     }]);
 
     return _default;
-  }(_default$1);
+  }(_default$l);
 
-  var _default$d = /*#__PURE__*/function (_Plugin) {
+  var _default$9 = /*#__PURE__*/function (_Plugin) {
     _inherits(_default, _Plugin);
 
     var _super = _createSuper(_default);
@@ -4410,9 +4410,9 @@
     }]);
 
     return _default;
-  }(_default$1);
+  }(_default$l);
 
-  var _default$e = /*#__PURE__*/function (_Plugin) {
+  var _default$8 = /*#__PURE__*/function (_Plugin) {
     _inherits(_default, _Plugin);
 
     var _super = _createSuper(_default);
@@ -4582,9 +4582,9 @@
     }]);
 
     return _default;
-  }(_default$1);
+  }(_default$l);
 
-  var _default$f = /*#__PURE__*/function (_Plugin) {
+  var _default$7 = /*#__PURE__*/function (_Plugin) {
     _inherits(_default, _Plugin);
 
     var _super = _createSuper(_default);
@@ -4664,9 +4664,9 @@
     }]);
 
     return _default;
-  }(_default$1);
+  }(_default$l);
 
-  var _default$g = /*#__PURE__*/function (_Plugin) {
+  var _default$6 = /*#__PURE__*/function (_Plugin) {
     _inherits(_default, _Plugin);
 
     var _super = _createSuper(_default);
@@ -4787,9 +4787,9 @@
     }]);
 
     return _default;
-  }(_default$1);
+  }(_default$l);
 
-  var _default$h = /*#__PURE__*/function (_Plugin) {
+  var _default$5 = /*#__PURE__*/function (_Plugin) {
     _inherits(_default, _Plugin);
 
     var _super = _createSuper(_default);
@@ -4895,9 +4895,9 @@
     }]);
 
     return _default;
-  }(_default$1);
+  }(_default$l);
 
-  var _default$i = /*#__PURE__*/function (_Plugin) {
+  var _default$4 = /*#__PURE__*/function (_Plugin) {
     _inherits(_default, _Plugin);
 
     var _super = _createSuper(_default);
@@ -5073,9 +5073,9 @@
     }]);
 
     return _default;
-  }(_default$1);
+  }(_default$l);
 
-  var _default$j = /*#__PURE__*/function (_Plugin) {
+  var _default$3 = /*#__PURE__*/function (_Plugin) {
     _inherits(_default, _Plugin);
 
     var _super = _createSuper(_default);
@@ -5148,9 +5148,9 @@
     }]);
 
     return _default;
-  }(_default$1);
+  }(_default$l);
 
-  var _default$k = /*#__PURE__*/function (_Plugin) {
+  var _default$2 = /*#__PURE__*/function (_Plugin) {
     _inherits(_default, _Plugin);
 
     var _super = _createSuper(_default);
@@ -5370,9 +5370,9 @@
     }]);
 
     return _default;
-  }(_default$1);
+  }(_default$l);
 
-  var _default$l = /*#__PURE__*/function (_Plugin) {
+  var _default$1 = /*#__PURE__*/function (_Plugin) {
     _inherits(_default, _Plugin);
 
     var _super = _createSuper(_default);
@@ -5461,9 +5461,9 @@
     }]);
 
     return _default;
-  }(_default$1);
+  }(_default$l);
 
-  var _default$m = /*#__PURE__*/function (_Plugin) {
+  var _default = /*#__PURE__*/function (_Plugin) {
     _inherits(_default, _Plugin);
 
     var _super = _createSuper(_default);
@@ -5599,30 +5599,30 @@
     }]);
 
     return _default;
-  }(_default$1);
+  }(_default$l);
 
-  var app = new _default();
-  app.plug(_default$2);
-  app.plug(_default$3);
-  app.plug(_default$4);
-  app.plug(_default$5);
-  app.plug(_default$6);
-  app.plug(_default$7);
-  app.plug(_default$8);
-  app.plug(_default$a);
-  app.plug(_default$9);
-  app.plug(_default$b);
+  var app = new _default$m();
+  app.plug(_default$k);
+  app.plug(_default$j);
+  app.plug(_default$i);
+  app.plug(_default$h);
+  app.plug(_default$g);
+  app.plug(_default$f);
+  app.plug(_default$e);
   app.plug(_default$c);
   app.plug(_default$d);
-  app.plug(_default$e);
-  app.plug(_default$f);
-  app.plug(_default$g);
-  app.plug(_default$h);
-  app.plug(_default$i);
-  app.plug(_default$j);
-  app.plug(_default$k);
-  app.plug(_default$l);
-  app.plug(_default$m);
+  app.plug(_default$b);
+  app.plug(_default$a);
+  app.plug(_default$9);
+  app.plug(_default$8);
+  app.plug(_default$7);
+  app.plug(_default$6);
+  app.plug(_default$5);
+  app.plug(_default$4);
+  app.plug(_default$3);
+  app.plug(_default$2);
+  app.plug(_default$1);
+  app.plug(_default);
   app.Func = Func;
   app.Dt = Dt;
   app.Url = Url; // const opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}}

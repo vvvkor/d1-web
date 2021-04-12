@@ -1,4 +1,4 @@
-/*! d1-web v2.7.0 */
+/*! d1-web v2.7.1 */
 
 :root {
 }
@@ -303,7 +303,7 @@ table.fit>*>tr>* {
     border-width: medium;
 }
 
-form>p, form>.row {
+form>p, form>.row, fieldset>*>.row {
     margin: .5em 0;
 }
 

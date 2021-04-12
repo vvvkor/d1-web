@@ -1,4 +1,4 @@
-/*! d1-web/basic v2.7.0 */
+/*! d1-web/basic v2.7.1 */
 (function () {
   'use strict';
 
@@ -127,7 +127,7 @@
     if (typeof Proxy === "function") return true;
 
     try {
-      Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));
+      Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
       return true;
     } catch (e) {
       return false;
@@ -205,7 +205,7 @@
   /*! app - core of d1-web */
   // (() => {
   // const main = new (function () {
-  var _default = /*#__PURE__*/function () {
+  var _default$4 = /*#__PURE__*/function () {
     function _default() {
       _classCallCheck(this, _default);
 
@@ -639,7 +639,7 @@
     return _default;
   }(); // listen to all events
 
-  var _default$1 = /*#__PURE__*/function () {
+  var _default$3 = /*#__PURE__*/function () {
     function _default(name) {
       _classCallCheck(this, _default);
 
@@ -1261,7 +1261,7 @@
     }]);
 
     return _default;
-  }(_default$1);
+  }(_default$3);
 
   /*! url - url build and arguments */
   var Url = /*#__PURE__*/function () {
@@ -1318,7 +1318,7 @@
     return Url;
   }();
 
-  var _default$3 = /*#__PURE__*/function (_Plugin) {
+  var _default$1 = /*#__PURE__*/function (_Plugin) {
     _inherits(_default, _Plugin);
 
     var _super = _createSuper(_default);
@@ -1522,9 +1522,9 @@
     }]);
 
     return _default;
-  }(_default$1);
+  }(_default$3);
 
-  var _default$4 = /*#__PURE__*/function (_Plugin) {
+  var _default = /*#__PURE__*/function (_Plugin) {
     _inherits(_default, _Plugin);
 
     var _super = _createSuper(_default);
@@ -1694,12 +1694,12 @@
     }]);
 
     return _default;
-  }(_default$1);
+  }(_default$3);
 
-  var app = new _default();
+  var app = new _default$4();
   app.plug(_default$2);
-  app.plug(_default$3);
-  app.plug(_default$4); // let opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}}
+  app.plug(_default$1);
+  app.plug(_default); // let opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}}
 
   app.b([document], 'DOMContentLoaded', function (e) {
     return app.init();

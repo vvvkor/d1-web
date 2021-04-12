@@ -1,4 +1,4 @@
-/*! d1-web/classic v2.7.0 */
+/*! d1-web/classic v2.7.1 */
 (function () {
   'use strict';
 
@@ -127,7 +127,7 @@
     if (typeof Proxy === "function") return true;
 
     try {
-      Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));
+      Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
       return true;
     } catch (e) {
       return false;
@@ -205,7 +205,7 @@
   /*! app - core of d1-web */
   // (() => {
   // const main = new (function () {
-  var _default = /*#__PURE__*/function () {
+  var _default$b = /*#__PURE__*/function () {
     function _default() {
       _classCallCheck(this, _default);
 
@@ -639,7 +639,7 @@
     return _default;
   }(); // listen to all events
 
-  var _default$1 = /*#__PURE__*/function () {
+  var _default$a = /*#__PURE__*/function () {
     function _default(name) {
       _classCallCheck(this, _default);
 
@@ -775,7 +775,7 @@
     none: [1, 'M1 1z']
   };
 
-  var _default$2 = /*#__PURE__*/function (_Plugin) {
+  var _default$9 = /*#__PURE__*/function (_Plugin) {
     _inherits(_default, _Plugin);
 
     var _super = _createSuper(_default);
@@ -954,9 +954,9 @@
     }]);
 
     return _default;
-  }(_default$1);
+  }(_default$a);
 
-  var _default$3 = /*#__PURE__*/function (_Plugin) {
+  var _default$8 = /*#__PURE__*/function (_Plugin) {
     _inherits(_default, _Plugin);
 
     var _super = _createSuper(_default);
@@ -1539,7 +1539,7 @@
     }]);
 
     return _default;
-  }(_default$1);
+  }(_default$a);
 
   /*! url - url build and arguments */
   var Url = /*#__PURE__*/function () {
@@ -1652,7 +1652,7 @@
     return Dt;
   }();
 
-  var _default$4 = /*#__PURE__*/function (_Plugin) {
+  var _default$7 = /*#__PURE__*/function (_Plugin) {
     _inherits(_default, _Plugin);
 
     var _super = _createSuper(_default);
@@ -1767,9 +1767,9 @@
     }]);
 
     return _default;
-  }(_default$1);
+  }(_default$a);
 
-  var _default$5 = /*#__PURE__*/function (_Plugin) {
+  var _default$6 = /*#__PURE__*/function (_Plugin) {
     _inherits(_default, _Plugin);
 
     var _super = _createSuper(_default);
@@ -2118,7 +2118,7 @@
     }]);
 
     return _default;
-  }(_default$1);
+  }(_default$a);
 
   /*! func - function derorators */
   var Func = /*#__PURE__*/function () {
@@ -2178,7 +2178,7 @@
     return Func;
   }();
 
-  var _default$6 = /*#__PURE__*/function (_Plugin) {
+  var _default$5 = /*#__PURE__*/function (_Plugin) {
     _inherits(_default, _Plugin);
 
     var _super = _createSuper(_default);
@@ -2541,9 +2541,9 @@
     }]);
 
     return _default;
-  }(_default$1);
+  }(_default$a);
 
-  var _default$7 = /*#__PURE__*/function (_Plugin) {
+  var _default$4 = /*#__PURE__*/function (_Plugin) {
     _inherits(_default, _Plugin);
 
     var _super = _createSuper(_default);
@@ -2898,9 +2898,9 @@
     }]);
 
     return _default;
-  }(_default$1);
+  }(_default$a);
 
-  var _default$8 = /*#__PURE__*/function (_Plugin) {
+  var _default$3 = /*#__PURE__*/function (_Plugin) {
     _inherits(_default, _Plugin);
 
     var _super = _createSuper(_default);
@@ -3104,9 +3104,9 @@
     }]);
 
     return _default;
-  }(_default$1);
+  }(_default$a);
 
-  var _default$9 = /*#__PURE__*/function (_Plugin) {
+  var _default$2 = /*#__PURE__*/function (_Plugin) {
     _inherits(_default, _Plugin);
 
     var _super = _createSuper(_default);
@@ -3276,9 +3276,9 @@
     }]);
 
     return _default;
-  }(_default$1);
+  }(_default$a);
 
-  var _default$a = /*#__PURE__*/function (_Plugin) {
+  var _default$1 = /*#__PURE__*/function (_Plugin) {
     _inherits(_default, _Plugin);
 
     var _super = _createSuper(_default);
@@ -3358,9 +3358,9 @@
     }]);
 
     return _default;
-  }(_default$1);
+  }(_default$a);
 
-  var _default$b = /*#__PURE__*/function (_Plugin) {
+  var _default = /*#__PURE__*/function (_Plugin) {
     _inherits(_default, _Plugin);
 
     var _super = _createSuper(_default);
@@ -3481,20 +3481,20 @@
     }]);
 
     return _default;
-  }(_default$1);
+  }(_default$a);
 
-  var app = new _default(); // app.plug(Code)
+  var app = new _default$b(); // app.plug(Code)
 
-  app.plug(_default$2);
-  app.plug(_default$3);
-  app.plug(_default$4);
-  app.plug(_default$5);
-  app.plug(_default$6);
-  app.plug(_default$7);
-  app.plug(_default$8);
   app.plug(_default$9);
-  app.plug(_default$a);
-  app.plug(_default$b); // const opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}}
+  app.plug(_default$8);
+  app.plug(_default$7);
+  app.plug(_default$6);
+  app.plug(_default$5);
+  app.plug(_default$4);
+  app.plug(_default$3);
+  app.plug(_default$2);
+  app.plug(_default$1);
+  app.plug(_default); // const opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}}
 
   app.b([document], 'DOMContentLoaded', function (e) {
     return app.init();

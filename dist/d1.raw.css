@@ -1,4 +1,4 @@
-/*! d1-web v2.7.0 */
+/*! d1-web v2.7.1 */
 
 /* d1-lite skips: .invert, .tip, table.flip, .picker, .yel, .fade, .over, .scroller, .trans */
 
@@ -250,7 +250,7 @@ table.fit>*>tr>*{padding:0;}
 
 /* form, button */
 
-form>p, form>.row{margin:var(--gap-s) 0;}
+form>p, form>.row, fieldset>*>.row{margin:var(--gap-s) 0;}
 
 /*( overlay */
 .over{position:absolute;top:0;left:0;right:0;bottom:0;background:none;}
