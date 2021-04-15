@@ -1,4 +1,4 @@
-/*! d1-web v2.7.1 */
+/*! d1-web v2.7.2 */
 (function () {
   'use strict';
 
@@ -3741,7 +3741,7 @@
         var rh = n.querySelector('thead tr');
 
         if (!rh) {
-          rh = tb.rows[0];
+          rh = tb ? tb.rows[0] : null;
           start = 1;
         }
 

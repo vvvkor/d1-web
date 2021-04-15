@@ -89,7 +89,7 @@ export default class extends Plugin {
     const tb = n.querySelector('tbody');
     let rh = n.querySelector('thead tr');
     if (!rh) {
-      rh = tb.rows[0];
+      rh = tb ? tb.rows[0] : null;
       start = 1;
     }
     if (!rh || !tb || !tb.rows || tb.rows.length < 2) return;
