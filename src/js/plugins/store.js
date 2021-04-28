@@ -69,7 +69,7 @@ export default class extends Plugin {
   restoreInput(i, v, mode) {
     if (i instanceof NodeList) i.forEach(j => this.restoreInput(j, v, mode));
     else {
-      if (i.type.match(/file|submit|password/)) ;
+      if (i.type.match(/file|submit|password/) || i.classList.contains('unstore')) ;
       else if (i.type.match(/checkbox|radio/)) i.checked = Array.isArray(v) ? (v.indexOf(i.value) != -1) : (i.value === v);
       else i.value = v;
       this.app.fire('value', {n: i, modeAuto: mode});

@@ -1522,9 +1522,11 @@ Add <code>.fit</code> class for compact layout.<br>
 <p>To store user input in local storage, add <code>.store</code> class to the form.<br>
 Buttons will be shown above the form: to restore input values, to reset inputs to initial values, and to clear stored values.
 <p>To restore input values on page reload, add <code>.restore</code> class to the form.
+To avoid restoring of specific inputs, add <code>.unstore</code> class to theese inputs.
 
 <div class="code">
 	<form class="store restore" id="form-keep">
+	<!--input type="text" name="unstor" id="unstor" class="unstore"-->
 		<table class="flip">
 		<tbody>
 		<tr>

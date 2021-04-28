@@ -1,4 +1,4 @@
-/*! d1-web v2.7.2 */
+/*! d1-web v2.7.3 */
 (function () {
   'use strict';
 
@@ -3598,7 +3598,7 @@
         if (i instanceof NodeList) i.forEach(function (j) {
           return _this6.restoreInput(j, v, mode);
         });else {
-          if (i.type.match(/file|submit|password/)) ;else if (i.type.match(/checkbox|radio/)) i.checked = Array.isArray(v) ? v.indexOf(i.value) != -1 : i.value === v;else i.value = v;
+          if (i.type.match(/file|submit|password/) || i.classList.contains('unstore')) ;else if (i.type.match(/checkbox|radio/)) i.checked = Array.isArray(v) ? v.indexOf(i.value) != -1 : i.value === v;else i.value = v;
           this.app.fire('value', {
             n: i,
             modeAuto: mode
