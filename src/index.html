@@ -1180,8 +1180,9 @@ Table will become stacked on small screen.
 	<table class="flip">
 	<tr><td>Text<td><input name="txt" type="text">
 	<tr><td>Date<td><input name="dt" class="calendar" type="date">
-	<tr><td>Datetime<td><input name="dtm" class="calendar datetime" type="datetime-local" data-def="2001-02-03T04:05:06" min="2001-02-02T10:00" max="2001-02-15T20:00" data-mode="m">
+	<tr><td>Datetime<td><input name="dtm" class="calendar datetime" type="datetime-local" data-def="2001-02-03T04:05:06" min="2001-02-02T10:00" max="2001-02-15T20:00" data-mode="m"><!--value="2001-02-03T04:05:06"-->
 	<tr><td><td><input type="submit" value="OK">
+	<!--tr><td><td><input type="reset" value="Reset"-->
 	</table>
 	</form>
 </div>
@@ -2159,6 +2160,7 @@ If link needs to be outside of the item, point at item with query selector in li
 
 <ul>
 	<li><code>#copy</code> copy item
+	<li><code>#add</code> copy item and clear inputs
 	<li><code>#hide</code> hide item
 	<li><code>#del</code> delete item unless it is last in the container
 	<li><code>#delete</code> delete item, even the last one
@@ -2197,7 +2199,7 @@ If link needs to be outside of the item, point at item with query selector in li
 				<th>Value</th>
 			</tr>
 			<tr class="hide item" id="tab-item-tpl"><td><a href="#copy">+</a> <a href="#hide">&mdash;</a> <a href="#del">&#x2715;</a></td><td>Table row item</td><td>
-				<div class="item"><a href="#copy">+</a> <a href="#delete">&times;</a> <input name="items[]"> </div>
+				<div class="item"><a href="#copy">=</a> <a href="#add">+</a> <a href="#delete">&times;</a> <input name="items[]"> <input type="checkbox" name="chbx[]"> <select name="slct[]"><option>one</option><option>two</option></select> </div>
 			</td></tr>
 		</tbody>
 	</table>

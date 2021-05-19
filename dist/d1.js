@@ -1,4 +1,4 @@
-/*! d1-web v2.7.3 */
+/*! d1-web v2.7.4 */
 (function () {
   'use strict';
 
@@ -2107,7 +2107,7 @@
         n.dataset.tm = n.type == 'datetime-local' || n.classList.contains('datetime') ? '1' : '';
         n.type = 'text';
         n.autocomplete = 'off';
-        if (n.value) n.value = this.fmt(this.parse(n.value), 0, n.dataset.tm);
+        if (n.value) n.value = n.defaultValue = this.fmt(this.parse(n.value), 0, n.dataset.tm);
         var pop = this.app.ins('div', '', 'pop l', n, -1); //''
 
         if (!this.opt.inPop) pop.style.verticalAlign = 'bottom';
@@ -4851,9 +4851,21 @@
         });
       }
     }, {
+      key: "setInputs",
+      value: function setInputs(n, src, clear) {
+        var _this4 = this;
+
+        this.app.ee(n, 'select', function (m) {
+          return m.selectedIndex = clear ? 0 : _this4.app.q('select[name="' + m.name + '"]', src).selectedIndex;
+        });
+        if (clear) this.app.ee(n, 'input, textarea', function (m) {
+          return m.type == 'checkbox' ? m.checked = false : m.value = '';
+        });
+      }
+    }, {
       key: "process",
       value: function process(n, x, before) {
-        if (['copy', 'del', 'delete', 'delall', 'clear', 'hide'].indexOf(x) == -1) return false;
+        if (['copy', 'add', 'del', 'delete', 'delall', 'clear', 'hide'].indexOf(x) == -1) return false;
         var e = {
           n: n,
           a: x
@@ -4863,11 +4875,12 @@
           a: x
         });
 
-        if (x == 'copy') {
+        if (x == 'copy' || x == 'add') {
           if (before === undefined) before = n.classList.contains(this.app.opt.cHide);
           var m = n.parentNode.insertBefore(n.cloneNode(true), before ? n : n.nextSibling);
           m.classList.remove(this.app.opt.cHide);
           m.removeAttribute('id');
+          this.setInputs(m, n, x == 'add');
           this.app.fixIds(m);
           this.app.arrange(m);
           e.p = e.n; // prototype

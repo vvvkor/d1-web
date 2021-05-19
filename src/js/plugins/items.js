@@ -39,15 +39,21 @@ export default class extends Plugin {
       .filter(n => !n.classList.contains(this.app.opt.cHide));
   }
   
+  setInputs(n, src, clear) {
+    this.app.ee(n, 'select', m => m.selectedIndex = clear ? 0 : this.app.q('select[name="' + m.name + '"]', src).selectedIndex);
+    if (clear) this.app.ee(n, 'input, textarea', m => m.type == 'checkbox' ? m.checked = false : m.value = '');
+  }
+  
   process(n, x, before) {
-    if (['copy', 'del', 'delete', 'delall', 'clear', 'hide'].indexOf(x) == -1) return false;
+    if (['copy', 'add', 'del', 'delete', 'delall', 'clear', 'hide'].indexOf(x) == -1) return false;
     const e = {n, a: x};
     this.app.fire('beforeitem', {n, a: x});
-    if (x == 'copy') {
+    if (x == 'copy' || x == 'add') {
       if (before === undefined) before = n.classList.contains(this.app.opt.cHide);
       const m = n.parentNode.insertBefore(n.cloneNode(true), before ? n : n.nextSibling);
       m.classList.remove(this.app.opt.cHide);
       m.removeAttribute('id');
+      this.setInputs(m, n, x == 'add');
       this.app.fixIds(m);
       this.app.arrange(m);
       e.p = e.n; // prototype

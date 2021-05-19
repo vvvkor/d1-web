@@ -123,7 +123,7 @@ export default class extends Plugin {
     n.dataset.tm = (n.type == 'datetime-local' || n.classList.contains('datetime')) ? '1' : '';
     n.type = 'text';
     n.autocomplete = 'off';
-    if (n.value) n.value = this.fmt(this.parse(n.value), 0, n.dataset.tm);
+    if (n.value) n.value = n.defaultValue = this.fmt(this.parse(n.value), 0, n.dataset.tm);
     let pop = this.app.ins('div', '', 'pop l', n, -1); //''
     if (!this.opt.inPop) pop.style.verticalAlign = 'bottom';
     if (this.opt.addIcons.length>0) {
