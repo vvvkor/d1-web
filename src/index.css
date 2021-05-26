@@ -393,6 +393,8 @@ mark{background-color:var(--bg-warning);}
 
 .row.let.mar{margin-bottom:0;} /* will not collapse with following element */
 .row.let.mar>*{margin-bottom:var(--gap-n);}
+.row:not(.fit)>.col-2 {flex-basis:var(--gap-n);}
+.row:not(.fit)>.col-3 {flex-basis:calc(2 * var(--gap-n));}
 
 /* grid-regular */
 [class*="grid-"]{display:flex;flex-wrap:wrap;}

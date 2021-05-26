@@ -1,4 +1,4 @@
-/*! d1-web v2.7.4 */
+/*! d1-web v2.7.5 */
 
 :root {
 }
@@ -638,6 +638,14 @@ mark {
 
 .row.let.mar>* {
     margin-bottom: 1em;
+}
+
+.row:not(.fit)>.col-2 {
+    flex-basis: 1em;
+}
+
+.row:not(.fit)>.col-3 {
+    flex-basis: 2em;
 }
 
 [class*="grid-"] {

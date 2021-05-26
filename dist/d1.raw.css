@@ -1,4 +1,4 @@
-/*! d1-web v2.7.4 */
+/*! d1-web v2.7.5 */
 
 /* d1-lite skips: .invert, .tip, table.flip, .picker, .yel, .fade, .over, .scroller, .trans */
 
@@ -393,6 +393,8 @@ mark{background-color:var(--bg-warning);}
 
 .row.let.mar{margin-bottom:0;} /* will not collapse with following element */
 .row.let.mar>*{margin-bottom:var(--gap-n);}
+.row:not(.fit)>.col-2 {flex-basis:var(--gap-n);}
+.row:not(.fit)>.col-3 {flex-basis:calc(2 * var(--gap-n));}
 
 /* grid-regular */
 [class*="grid-"]{display:flex;flex-wrap:wrap;}

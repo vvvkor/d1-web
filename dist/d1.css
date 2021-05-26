@@ -1,4 +1,4 @@
-/*! d1-web v2.7.4 */
+/*! d1-web v2.7.5 */
 
 :root {
     --font: "PT Sans", Roboto, "Segoe UI", sans-serif;
@@ -823,6 +823,16 @@ mark {
 .row.let.mar>* {
     margin-bottom: 1em;
     margin-bottom: var(--gap-n);
+}
+
+.row:not(.fit)>.col-2 {
+    flex-basis: 1em;
+    flex-basis: var(--gap-n);
+}
+
+.row:not(.fit)>.col-3 {
+    flex-basis: 2em;
+    flex-basis: calc(var(--gap-n)*2);
 }
 
 [class*="grid-"] {
